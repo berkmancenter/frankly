@@ -1140,9 +1140,19 @@ class _FakeSize_82 extends _i1.SmartFake implements _i44.Size {
         );
 }
 
-class _FakeDeviceGestureSettings_83 extends _i1.SmartFake
+class _FakeEdgeInsets_83 extends _i1.SmartFake implements _i16.EdgeInsets {
+  _FakeEdgeInsets_83(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeDeviceGestureSettings_84 extends _i1.SmartFake
     implements _i45.DeviceGestureSettings {
-  _FakeDeviceGestureSettings_83(
+  _FakeDeviceGestureSettings_84(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1151,8 +1161,8 @@ class _FakeDeviceGestureSettings_83 extends _i1.SmartFake
         );
 }
 
-class _FakeTextScaler_84 extends _i1.SmartFake implements _i16.TextScaler {
-  _FakeTextScaler_84(
+class _FakeTextScaler_85 extends _i1.SmartFake implements _i16.TextScaler {
+  _FakeTextScaler_85(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1161,9 +1171,9 @@ class _FakeTextScaler_84 extends _i1.SmartFake implements _i16.TextScaler {
         );
 }
 
-class _FakeMediaQueryData_85 extends _i1.SmartFake
+class _FakeMediaQueryData_86 extends _i1.SmartFake
     implements _i16.MediaQueryData {
-  _FakeMediaQueryData_85(
+  _FakeMediaQueryData_86(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1172,8 +1182,8 @@ class _FakeMediaQueryData_85 extends _i1.SmartFake
         );
 }
 
-class _FakeStopwatch_86 extends _i1.SmartFake implements Stopwatch {
-  _FakeStopwatch_86(
+class _FakeStopwatch_87 extends _i1.SmartFake implements Stopwatch {
+  _FakeStopwatch_87(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1182,9 +1192,9 @@ class _FakeStopwatch_86 extends _i1.SmartFake implements Stopwatch {
         );
 }
 
-class _Fake$MeetingUserSuggestionCopyWith_87<$Res> extends _i1.SmartFake
+class _Fake$MeetingUserSuggestionCopyWith_88<$Res> extends _i1.SmartFake
     implements _i46.$MeetingUserSuggestionCopyWith<$Res> {
-  _Fake$MeetingUserSuggestionCopyWith_87(
+  _Fake$MeetingUserSuggestionCopyWith_88(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1193,9 +1203,9 @@ class _Fake$MeetingUserSuggestionCopyWith_87<$Res> extends _i1.SmartFake
         );
 }
 
-class _Fake$PartnerAgreementCopyWith_88<$Res> extends _i1.SmartFake
+class _Fake$PartnerAgreementCopyWith_89<$Res> extends _i1.SmartFake
     implements _i47.$PartnerAgreementCopyWith<$Res> {
-  _Fake$PartnerAgreementCopyWith_88(
+  _Fake$PartnerAgreementCopyWith_89(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1204,9 +1214,9 @@ class _Fake$PartnerAgreementCopyWith_88<$Res> extends _i1.SmartFake
         );
 }
 
-class _Fake$PrePostCardCopyWith_89<$Res> extends _i1.SmartFake
+class _Fake$PrePostCardCopyWith_90<$Res> extends _i1.SmartFake
     implements _i48.$PrePostCardCopyWith<$Res> {
-  _Fake$PrePostCardCopyWith_89(
+  _Fake$PrePostCardCopyWith_90(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1215,8 +1225,8 @@ class _Fake$PrePostCardCopyWith_89<$Res> extends _i1.SmartFake
         );
 }
 
-class _FakePrePostCard_90 extends _i1.SmartFake implements _i48.PrePostCard {
-  _FakePrePostCard_90(
+class _FakePrePostCard_91 extends _i1.SmartFake implements _i48.PrePostCard {
+  _FakePrePostCard_91(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1225,9 +1235,9 @@ class _FakePrePostCard_90 extends _i1.SmartFake implements _i48.PrePostCard {
         );
 }
 
-class _Fake$PrePostUrlParamsCopyWith_91<$Res> extends _i1.SmartFake
+class _Fake$PrePostUrlParamsCopyWith_92<$Res> extends _i1.SmartFake
     implements _i49.$PrePostUrlParamsCopyWith<$Res> {
-  _Fake$PrePostUrlParamsCopyWith_91(
+  _Fake$PrePostUrlParamsCopyWith_92(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1236,9 +1246,19 @@ class _Fake$PrePostUrlParamsCopyWith_91<$Res> extends _i1.SmartFake
         );
 }
 
-class _FakeBoxConstraints_92 extends _i1.SmartFake
+class _FakeRect_93 extends _i1.SmartFake implements _i44.Rect {
+  _FakeRect_93(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeBoxConstraints_94 extends _i1.SmartFake
     implements _i16.BoxConstraints {
-  _FakeBoxConstraints_92(
+  _FakeBoxConstraints_94(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1247,8 +1267,8 @@ class _FakeBoxConstraints_92 extends _i1.SmartFake
         );
 }
 
-class _FakeOffset_93 extends _i1.SmartFake implements _i44.Offset {
-  _FakeOffset_93(
+class _FakeOffset_95 extends _i1.SmartFake implements _i44.Offset {
+  _FakeOffset_95(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1257,33 +1277,8 @@ class _FakeOffset_93 extends _i1.SmartFake implements _i44.Offset {
         );
 }
 
-class _FakeOffsetLayer_94 extends _i1.SmartFake implements _i50.OffsetLayer {
-  _FakeOffsetLayer_94(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-
-  @override
-  String toString(
-          {_i16.DiagnosticLevel? minLevel = _i16.DiagnosticLevel.info}) =>
-      super.toString();
-}
-
-class _FakeMatrix4_95 extends _i1.SmartFake implements _i16.Matrix4 {
-  _FakeMatrix4_95(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeScaffold_96 extends _i1.SmartFake implements _i51.Scaffold {
-  _FakeScaffold_96(
+class _FakeOffsetLayer_96 extends _i1.SmartFake implements _i50.OffsetLayer {
+  _FakeOffsetLayer_96(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1297,9 +1292,34 @@ class _FakeScaffold_96 extends _i1.SmartFake implements _i51.Scaffold {
       super.toString();
 }
 
-class _FakePersistentBottomSheetController_97 extends _i1.SmartFake
+class _FakeMatrix4_97 extends _i1.SmartFake implements _i16.Matrix4 {
+  _FakeMatrix4_97(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeScaffold_98 extends _i1.SmartFake implements _i51.Scaffold {
+  _FakeScaffold_98(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+
+  @override
+  String toString(
+          {_i16.DiagnosticLevel? minLevel = _i16.DiagnosticLevel.info}) =>
+      super.toString();
+}
+
+class _FakePersistentBottomSheetController_99 extends _i1.SmartFake
     implements _i51.PersistentBottomSheetController {
-  _FakePersistentBottomSheetController_97(
+  _FakePersistentBottomSheetController_99(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1308,8 +1328,8 @@ class _FakePersistentBottomSheetController_97 extends _i1.SmartFake
         );
 }
 
-class _FakeTicker_98 extends _i1.SmartFake implements _i52.Ticker {
-  _FakeTicker_98(
+class _FakeTicker_100 extends _i1.SmartFake implements _i52.Ticker {
+  _FakeTicker_100(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1321,9 +1341,9 @@ class _FakeTicker_98 extends _i1.SmartFake implements _i52.Ticker {
   String toString({bool? debugIncludeStack = false}) => super.toString();
 }
 
-class _FakeStreamSubscription_99<T1> extends _i1.SmartFake
+class _FakeStreamSubscription_101<T1> extends _i1.SmartFake
     implements _i40.StreamSubscription<T1> {
-  _FakeStreamSubscription_99(
+  _FakeStreamSubscription_101(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1332,9 +1352,9 @@ class _FakeStreamSubscription_99<T1> extends _i1.SmartFake
         );
 }
 
-class _Fake$TemplateCopyWith_100<$Res> extends _i1.SmartFake
+class _Fake$TemplateCopyWith_102<$Res> extends _i1.SmartFake
     implements _i42.$TemplateCopyWith<$Res> {
-  _Fake$TemplateCopyWith_100(
+  _Fake$TemplateCopyWith_102(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1343,8 +1363,8 @@ class _Fake$TemplateCopyWith_100<$Res> extends _i1.SmartFake
         );
 }
 
-class _FakeMembership_101 extends _i1.SmartFake implements _i53.Membership {
-  _FakeMembership_101(
+class _FakeMembership_103 extends _i1.SmartFake implements _i53.Membership {
+  _FakeMembership_103(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1353,8 +1373,8 @@ class _FakeMembership_101 extends _i1.SmartFake implements _i53.Membership {
         );
 }
 
-class _FakeFirebaseAuth_102 extends _i1.SmartFake implements _i38.FirebaseAuth {
-  _FakeFirebaseAuth_102(
+class _FakeFirebaseAuth_104 extends _i1.SmartFake implements _i38.FirebaseAuth {
+  _FakeFirebaseAuth_104(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1363,9 +1383,9 @@ class _FakeFirebaseAuth_102 extends _i1.SmartFake implements _i38.FirebaseAuth {
         );
 }
 
-class _FakePublicUserInfo_103 extends _i1.SmartFake
+class _FakePublicUserInfo_105 extends _i1.SmartFake
     implements _i54.PublicUserInfo {
-  _FakePublicUserInfo_103(
+  _FakePublicUserInfo_105(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1374,9 +1394,9 @@ class _FakePublicUserInfo_103 extends _i1.SmartFake
         );
 }
 
-class _FakeCommunityUserSettings_104 extends _i1.SmartFake
+class _FakeCommunityUserSettings_106 extends _i1.SmartFake
     implements _i55.CommunityUserSettings {
-  _FakeCommunityUserSettings_104(
+  _FakeCommunityUserSettings_106(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1849,6 +1869,13 @@ class MockAgendaProvider extends _i1.Mock implements _i9.AgendaProvider {
   @override
   List<_i2.AgendaItem> get agendaItems => (super.noSuchMethod(
         Invocation.getter(#agendaItems),
+        returnValue: <_i2.AgendaItem>[],
+        returnValueForMissingStub: <_i2.AgendaItem>[],
+      ) as List<_i2.AgendaItem>);
+
+  @override
+  List<_i2.AgendaItem> get resolvedAgendaItems => (super.noSuchMethod(
+        Invocation.getter(#resolvedAgendaItems),
         returnValue: <_i2.AgendaItem>[],
         returnValueForMissingStub: <_i2.AgendaItem>[],
       ) as List<_i2.AgendaItem>);
@@ -2508,6 +2535,54 @@ class MockAgoraParticipant extends _i1.Mock implements _i27.AgoraParticipant {
       );
 
   @override
+  bool get videoTrackEnabled => (super.noSuchMethod(
+        Invocation.getter(#videoTrackEnabled),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  set videoTrackEnabled(bool? _videoTrackEnabled) => super.noSuchMethod(
+        Invocation.setter(
+          #videoTrackEnabled,
+          _videoTrackEnabled,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool get audioIsStreaming => (super.noSuchMethod(
+        Invocation.getter(#audioIsStreaming),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  set audioIsStreaming(bool? _audioIsStreaming) => super.noSuchMethod(
+        Invocation.setter(
+          #audioIsStreaming,
+          _audioIsStreaming,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool get videoIsStreaming => (super.noSuchMethod(
+        Invocation.getter(#videoIsStreaming),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  set videoIsStreaming(bool? _videoIsStreaming) => super.noSuchMethod(
+        Invocation.setter(
+          #videoIsStreaming,
+          _videoIsStreaming,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
   bool get videoLocalPreviewStarted => (super.noSuchMethod(
         Invocation.getter(#videoLocalPreviewStarted),
         returnValue: false,
@@ -2520,22 +2595,6 @@ class MockAgoraParticipant extends _i1.Mock implements _i27.AgoraParticipant {
         Invocation.setter(
           #videoLocalPreviewStarted,
           _videoLocalPreviewStarted,
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  bool get videoTrackEnabled => (super.noSuchMethod(
-        Invocation.getter(#videoTrackEnabled),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
-
-  @override
-  set videoTrackEnabled(bool? _videoTrackEnabled) => super.noSuchMethod(
-        Invocation.setter(
-          #videoTrackEnabled,
-          _videoTrackEnabled,
         ),
         returnValueForMissingStub: null,
       );
@@ -3532,6 +3591,17 @@ class MockCloudFunctionsEventService extends _i1.Mock
       (super.noSuchMethod(
         Invocation.method(
           #eventEnded,
+          [request],
+        ),
+        returnValue: _i40.Future<void>.value(),
+        returnValueForMissingStub: _i40.Future<void>.value(),
+      ) as _i40.Future<void>);
+
+  @override
+  _i40.Future<void> endMeetingForAll(_i18.EndMeetingForAllRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #endMeetingForAll,
           [request],
         ),
         returnValue: _i40.Future<void>.value(),
@@ -5574,8 +5644,22 @@ class MockConferenceRoom extends _i1.Mock implements _i13.ConferenceRoom {
       ) as bool);
 
   @override
+  bool get audioIsStreaming => (super.noSuchMethod(
+        Invocation.getter(#audioIsStreaming),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get videoEnabled => (super.noSuchMethod(
         Invocation.getter(#videoEnabled),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get videoIsStreaming => (super.noSuchMethod(
+        Invocation.getter(#videoIsStreaming),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
@@ -6580,6 +6664,20 @@ class MockEventProvider extends _i1.Mock implements _i11.EventProvider {
       ) as List<_i2.Participant>);
 
   @override
+  List<_i2.Participant> get presentParticipants => (super.noSuchMethod(
+        Invocation.getter(#presentParticipants),
+        returnValue: <_i2.Participant>[],
+        returnValueForMissingStub: <_i2.Participant>[],
+      ) as List<_i2.Participant>);
+
+  @override
+  bool get hasPresentParticipants => (super.noSuchMethod(
+        Invocation.getter(#hasPresentParticipants),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get isParticipant => (super.noSuchMethod(
         Invocation.getter(#isParticipant),
         returnValue: false,
@@ -6654,13 +6752,6 @@ class MockEventProvider extends _i1.Mock implements _i11.EventProvider {
   @override
   bool get enableFloatingChat => (super.noSuchMethod(
         Invocation.getter(#enableFloatingChat),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
-
-  @override
-  bool get allowPredefineBreakoutsOnHosted => (super.noSuchMethod(
-        Invocation.getter(#allowPredefineBreakoutsOnHosted),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
@@ -12381,6 +12472,58 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
       ) as _i44.Brightness);
 
   @override
+  _i16.EdgeInsets get viewInsets => (super.noSuchMethod(
+        Invocation.getter(#viewInsets),
+        returnValue: _FakeEdgeInsets_83(
+          this,
+          Invocation.getter(#viewInsets),
+        ),
+        returnValueForMissingStub: _FakeEdgeInsets_83(
+          this,
+          Invocation.getter(#viewInsets),
+        ),
+      ) as _i16.EdgeInsets);
+
+  @override
+  _i16.EdgeInsets get padding => (super.noSuchMethod(
+        Invocation.getter(#padding),
+        returnValue: _FakeEdgeInsets_83(
+          this,
+          Invocation.getter(#padding),
+        ),
+        returnValueForMissingStub: _FakeEdgeInsets_83(
+          this,
+          Invocation.getter(#padding),
+        ),
+      ) as _i16.EdgeInsets);
+
+  @override
+  _i16.EdgeInsets get viewPadding => (super.noSuchMethod(
+        Invocation.getter(#viewPadding),
+        returnValue: _FakeEdgeInsets_83(
+          this,
+          Invocation.getter(#viewPadding),
+        ),
+        returnValueForMissingStub: _FakeEdgeInsets_83(
+          this,
+          Invocation.getter(#viewPadding),
+        ),
+      ) as _i16.EdgeInsets);
+
+  @override
+  _i16.EdgeInsets get systemGestureInsets => (super.noSuchMethod(
+        Invocation.getter(#systemGestureInsets),
+        returnValue: _FakeEdgeInsets_83(
+          this,
+          Invocation.getter(#systemGestureInsets),
+        ),
+        returnValueForMissingStub: _FakeEdgeInsets_83(
+          this,
+          Invocation.getter(#systemGestureInsets),
+        ),
+      ) as _i16.EdgeInsets);
+
+  @override
   bool get alwaysUse24HourFormat => (super.noSuchMethod(
         Invocation.getter(#alwaysUse24HourFormat),
         returnValue: false,
@@ -12439,11 +12582,11 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
   @override
   _i45.DeviceGestureSettings get gestureSettings => (super.noSuchMethod(
         Invocation.getter(#gestureSettings),
-        returnValue: _FakeDeviceGestureSettings_83(
+        returnValue: _FakeDeviceGestureSettings_84(
           this,
           Invocation.getter(#gestureSettings),
         ),
-        returnValueForMissingStub: _FakeDeviceGestureSettings_83(
+        returnValueForMissingStub: _FakeDeviceGestureSettings_84(
           this,
           Invocation.getter(#gestureSettings),
         ),
@@ -12466,11 +12609,11 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
   @override
   _i16.TextScaler get textScaler => (super.noSuchMethod(
         Invocation.getter(#textScaler),
-        returnValue: _FakeTextScaler_84(
+        returnValue: _FakeTextScaler_85(
           this,
           Invocation.getter(#textScaler),
         ),
-        returnValueForMissingStub: _FakeTextScaler_84(
+        returnValueForMissingStub: _FakeTextScaler_85(
           this,
           Invocation.getter(#textScaler),
         ),
@@ -12490,10 +12633,10 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
     double? textScaleFactor,
     _i16.TextScaler? textScaler,
     _i44.Brightness? platformBrightness,
-    dynamic padding,
-    dynamic viewPadding,
-    dynamic viewInsets,
-    dynamic systemGestureInsets,
+    _i16.EdgeInsets? padding,
+    _i16.EdgeInsets? viewPadding,
+    _i16.EdgeInsets? viewInsets,
+    _i16.EdgeInsets? systemGestureInsets,
     bool? alwaysUse24HourFormat,
     bool? highContrast,
     bool? onOffSwitchLabels,
@@ -12531,7 +12674,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
             #displayFeatures: displayFeatures,
           },
         ),
-        returnValue: _FakeMediaQueryData_85(
+        returnValue: _FakeMediaQueryData_86(
           this,
           Invocation.method(
             #copyWith,
@@ -12559,7 +12702,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
             },
           ),
         ),
-        returnValueForMissingStub: _FakeMediaQueryData_85(
+        returnValueForMissingStub: _FakeMediaQueryData_86(
           this,
           Invocation.method(
             #copyWith,
@@ -12607,7 +12750,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
             #removeBottom: removeBottom,
           },
         ),
-        returnValue: _FakeMediaQueryData_85(
+        returnValue: _FakeMediaQueryData_86(
           this,
           Invocation.method(
             #removePadding,
@@ -12620,7 +12763,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
             },
           ),
         ),
-        returnValueForMissingStub: _FakeMediaQueryData_85(
+        returnValueForMissingStub: _FakeMediaQueryData_86(
           this,
           Invocation.method(
             #removePadding,
@@ -12653,7 +12796,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
             #removeBottom: removeBottom,
           },
         ),
-        returnValue: _FakeMediaQueryData_85(
+        returnValue: _FakeMediaQueryData_86(
           this,
           Invocation.method(
             #removeViewInsets,
@@ -12666,7 +12809,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
             },
           ),
         ),
-        returnValueForMissingStub: _FakeMediaQueryData_85(
+        returnValueForMissingStub: _FakeMediaQueryData_86(
           this,
           Invocation.method(
             #removeViewInsets,
@@ -12699,7 +12842,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
             #removeBottom: removeBottom,
           },
         ),
-        returnValue: _FakeMediaQueryData_85(
+        returnValue: _FakeMediaQueryData_86(
           this,
           Invocation.method(
             #removeViewPadding,
@@ -12712,7 +12855,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
             },
           ),
         ),
-        returnValueForMissingStub: _FakeMediaQueryData_85(
+        returnValueForMissingStub: _FakeMediaQueryData_86(
           this,
           Invocation.method(
             #removeViewPadding,
@@ -12734,14 +12877,14 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
           #removeDisplayFeatures,
           [subScreen],
         ),
-        returnValue: _FakeMediaQueryData_85(
+        returnValue: _FakeMediaQueryData_86(
           this,
           Invocation.method(
             #removeDisplayFeatures,
             [subScreen],
           ),
         ),
-        returnValueForMissingStub: _FakeMediaQueryData_85(
+        returnValueForMissingStub: _FakeMediaQueryData_86(
           this,
           Invocation.method(
             #removeDisplayFeatures,
@@ -12834,11 +12977,11 @@ class MockMeetingGuideCardStore extends _i1.Mock
   @override
   Stopwatch get pendingMeetingGuideAgendaItemElapsed => (super.noSuchMethod(
         Invocation.getter(#pendingMeetingGuideAgendaItemElapsed),
-        returnValue: _FakeStopwatch_86(
+        returnValue: _FakeStopwatch_87(
           this,
           Invocation.getter(#pendingMeetingGuideAgendaItemElapsed),
         ),
-        returnValueForMissingStub: _FakeStopwatch_86(
+        returnValueForMissingStub: _FakeStopwatch_87(
           this,
           Invocation.getter(#pendingMeetingGuideAgendaItemElapsed),
         ),
@@ -13035,12 +13178,12 @@ class MockMeetingUserSuggestion extends _i1.Mock
   _i46.$MeetingUserSuggestionCopyWith<_i46.MeetingUserSuggestion>
       get copyWith => (super.noSuchMethod(
             Invocation.getter(#copyWith),
-            returnValue: _Fake$MeetingUserSuggestionCopyWith_87<
+            returnValue: _Fake$MeetingUserSuggestionCopyWith_88<
                 _i46.MeetingUserSuggestion>(
               this,
               Invocation.getter(#copyWith),
             ),
-            returnValueForMissingStub: _Fake$MeetingUserSuggestionCopyWith_87<
+            returnValueForMissingStub: _Fake$MeetingUserSuggestionCopyWith_88<
                 _i46.MeetingUserSuggestion>(
               this,
               Invocation.getter(#copyWith),
@@ -13180,12 +13323,12 @@ class MockPartnerAgreement extends _i1.Mock implements _i47.PartnerAgreement {
   _i47.$PartnerAgreementCopyWith<_i47.PartnerAgreement> get copyWith =>
       (super.noSuchMethod(
         Invocation.getter(#copyWith),
-        returnValue: _Fake$PartnerAgreementCopyWith_88<_i47.PartnerAgreement>(
+        returnValue: _Fake$PartnerAgreementCopyWith_89<_i47.PartnerAgreement>(
           this,
           Invocation.getter(#copyWith),
         ),
         returnValueForMissingStub:
-            _Fake$PartnerAgreementCopyWith_88<_i47.PartnerAgreement>(
+            _Fake$PartnerAgreementCopyWith_89<_i47.PartnerAgreement>(
           this,
           Invocation.getter(#copyWith),
         ),
@@ -13292,12 +13435,12 @@ class MockPrePostCard extends _i1.Mock implements _i48.PrePostCard {
   _i48.$PrePostCardCopyWith<_i48.PrePostCard> get copyWith =>
       (super.noSuchMethod(
         Invocation.getter(#copyWith),
-        returnValue: _Fake$PrePostCardCopyWith_89<_i48.PrePostCard>(
+        returnValue: _Fake$PrePostCardCopyWith_90<_i48.PrePostCard>(
           this,
           Invocation.getter(#copyWith),
         ),
         returnValueForMissingStub:
-            _Fake$PrePostCardCopyWith_89<_i48.PrePostCard>(
+            _Fake$PrePostCardCopyWith_90<_i48.PrePostCard>(
           this,
           Invocation.getter(#copyWith),
         ),
@@ -13378,11 +13521,11 @@ class MockPrePostCardWidgetModel extends _i1.Mock
   @override
   _i48.PrePostCard get prePostCard => (super.noSuchMethod(
         Invocation.getter(#prePostCard),
-        returnValue: _FakePrePostCard_90(
+        returnValue: _FakePrePostCard_91(
           this,
           Invocation.getter(#prePostCard),
         ),
-        returnValueForMissingStub: _FakePrePostCard_90(
+        returnValueForMissingStub: _FakePrePostCard_91(
           this,
           Invocation.getter(#prePostCard),
         ),
@@ -13565,11 +13708,11 @@ class MockPrePostEventDialogModel extends _i1.Mock
   @override
   _i48.PrePostCard get prePostCard => (super.noSuchMethod(
         Invocation.getter(#prePostCard),
-        returnValue: _FakePrePostCard_90(
+        returnValue: _FakePrePostCard_91(
           this,
           Invocation.getter(#prePostCard),
         ),
-        returnValueForMissingStub: _FakePrePostCard_90(
+        returnValueForMissingStub: _FakePrePostCard_91(
           this,
           Invocation.getter(#prePostCard),
         ),
@@ -13633,12 +13776,12 @@ class MockPrePostUrlParams extends _i1.Mock implements _i49.PrePostUrlParams {
   _i49.$PrePostUrlParamsCopyWith<_i49.PrePostUrlParams> get copyWith =>
       (super.noSuchMethod(
         Invocation.getter(#copyWith),
-        returnValue: _Fake$PrePostUrlParamsCopyWith_91<_i49.PrePostUrlParams>(
+        returnValue: _Fake$PrePostUrlParamsCopyWith_92<_i49.PrePostUrlParams>(
           this,
           Invocation.getter(#copyWith),
         ),
         returnValueForMissingStub:
-            _Fake$PrePostUrlParamsCopyWith_91<_i49.PrePostUrlParams>(
+            _Fake$PrePostUrlParamsCopyWith_92<_i49.PrePostUrlParams>(
           this,
           Invocation.getter(#copyWith),
         ),
@@ -14315,7 +14458,20 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
       ) as bool);
 
   @override
-  set size(dynamic value) => super.noSuchMethod(
+  _i44.Size get size => (super.noSuchMethod(
+        Invocation.getter(#size),
+        returnValue: _FakeSize_82(
+          this,
+          Invocation.getter(#size),
+        ),
+        returnValueForMissingStub: _FakeSize_82(
+          this,
+          Invocation.getter(#size),
+        ),
+      ) as _i44.Size);
+
+  @override
+  set size(_i44.Size? value) => super.noSuchMethod(
         Invocation.setter(
           #size,
           value,
@@ -14324,17 +14480,43 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
       );
 
   @override
+  _i44.Rect get semanticBounds => (super.noSuchMethod(
+        Invocation.getter(#semanticBounds),
+        returnValue: _FakeRect_93(
+          this,
+          Invocation.getter(#semanticBounds),
+        ),
+        returnValueForMissingStub: _FakeRect_93(
+          this,
+          Invocation.getter(#semanticBounds),
+        ),
+      ) as _i44.Rect);
+
+  @override
   _i16.BoxConstraints get constraints => (super.noSuchMethod(
         Invocation.getter(#constraints),
-        returnValue: _FakeBoxConstraints_92(
+        returnValue: _FakeBoxConstraints_94(
           this,
           Invocation.getter(#constraints),
         ),
-        returnValueForMissingStub: _FakeBoxConstraints_92(
+        returnValueForMissingStub: _FakeBoxConstraints_94(
           this,
           Invocation.getter(#constraints),
         ),
       ) as _i16.BoxConstraints);
+
+  @override
+  _i44.Rect get paintBounds => (super.noSuchMethod(
+        Invocation.getter(#paintBounds),
+        returnValue: _FakeRect_93(
+          this,
+          Invocation.getter(#paintBounds),
+        ),
+        returnValueForMissingStub: _FakeRect_93(
+          this,
+          Invocation.getter(#paintBounds),
+        ),
+      ) as _i44.Rect);
 
   @override
   set parentData(_i50.ParentData? _parentData) => super.noSuchMethod(
@@ -14599,7 +14781,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
   @override
   double? getDryBaseline(
     _i16.BoxConstraints? constraints,
-    dynamic baseline,
+    _i44.TextBaseline? baseline,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -14615,7 +14797,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
   @override
   double? computeDryBaseline(
     _i16.BoxConstraints? constraints,
-    dynamic baseline,
+    _i44.TextBaseline? baseline,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -14647,6 +14829,28 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
       ) as bool);
 
   @override
+  _i44.Size debugAdoptSize(_i44.Size? value) => (super.noSuchMethod(
+        Invocation.method(
+          #debugAdoptSize,
+          [value],
+        ),
+        returnValue: _FakeSize_82(
+          this,
+          Invocation.method(
+            #debugAdoptSize,
+            [value],
+          ),
+        ),
+        returnValueForMissingStub: _FakeSize_82(
+          this,
+          Invocation.method(
+            #debugAdoptSize,
+            [value],
+          ),
+        ),
+      ) as _i44.Size);
+
+  @override
   void debugResetSize() => super.noSuchMethod(
         Invocation.method(
           #debugResetSize,
@@ -14657,7 +14861,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
 
   @override
   double? getDistanceToBaseline(
-    dynamic baseline, {
+    _i44.TextBaseline? baseline, {
     bool? onlyReal = false,
   }) =>
       (super.noSuchMethod(
@@ -14665,6 +14869,26 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
           #getDistanceToBaseline,
           [baseline],
           {#onlyReal: onlyReal},
+        ),
+        returnValueForMissingStub: null,
+      ) as double?);
+
+  @override
+  double? getDistanceToActualBaseline(_i44.TextBaseline? baseline) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getDistanceToActualBaseline,
+          [baseline],
+        ),
+        returnValueForMissingStub: null,
+      ) as double?);
+
+  @override
+  double? computeDistanceToActualBaseline(_i44.TextBaseline? baseline) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #computeDistanceToActualBaseline,
+          [baseline],
         ),
         returnValueForMissingStub: null,
       ) as double?);
@@ -14772,7 +14996,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
           [point],
           {#ancestor: ancestor},
         ),
-        returnValue: _FakeOffset_93(
+        returnValue: _FakeOffset_95(
           this,
           Invocation.method(
             #globalToLocal,
@@ -14780,7 +15004,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
             {#ancestor: ancestor},
           ),
         ),
-        returnValueForMissingStub: _FakeOffset_93(
+        returnValueForMissingStub: _FakeOffset_95(
           this,
           Invocation.method(
             #globalToLocal,
@@ -14801,7 +15025,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
           [point],
           {#ancestor: ancestor},
         ),
-        returnValue: _FakeOffset_93(
+        returnValue: _FakeOffset_95(
           this,
           Invocation.method(
             #localToGlobal,
@@ -14809,7 +15033,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
             {#ancestor: ancestor},
           ),
         ),
-        returnValueForMissingStub: _FakeOffset_93(
+        returnValueForMissingStub: _FakeOffset_95(
           this,
           Invocation.method(
             #localToGlobal,
@@ -15085,7 +15309,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
           [],
           {#oldLayer: oldLayer},
         ),
-        returnValue: _FakeOffsetLayer_94(
+        returnValue: _FakeOffsetLayer_96(
           this,
           Invocation.method(
             #updateCompositedLayer,
@@ -15093,7 +15317,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
             {#oldLayer: oldLayer},
           ),
         ),
-        returnValueForMissingStub: _FakeOffsetLayer_94(
+        returnValueForMissingStub: _FakeOffsetLayer_96(
           this,
           Invocation.method(
             #updateCompositedLayer,
@@ -15182,14 +15406,14 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
           #getTransformTo,
           [ancestor],
         ),
-        returnValue: _FakeMatrix4_95(
+        returnValue: _FakeMatrix4_97(
           this,
           Invocation.method(
             #getTransformTo,
             [ancestor],
           ),
         ),
-        returnValueForMissingStub: _FakeMatrix4_95(
+        returnValueForMissingStub: _FakeMatrix4_97(
           this,
           Invocation.method(
             #getTransformTo,
@@ -15598,11 +15822,11 @@ class MockScaffoldState extends _i1.Mock implements _i51.ScaffoldState {
   @override
   _i51.Scaffold get widget => (super.noSuchMethod(
         Invocation.getter(#widget),
-        returnValue: _FakeScaffold_96(
+        returnValue: _FakeScaffold_98(
           this,
           Invocation.getter(#widget),
         ),
-        returnValueForMissingStub: _FakeScaffold_96(
+        returnValueForMissingStub: _FakeScaffold_98(
           this,
           Invocation.getter(#widget),
         ),
@@ -15693,7 +15917,7 @@ class MockScaffoldState extends _i1.Mock implements _i51.ScaffoldState {
     _i44.Color? backgroundColor,
     double? elevation,
     _i16.ShapeBorder? shape,
-    dynamic clipBehavior,
+    _i44.Clip? clipBehavior,
     _i16.BoxConstraints? constraints,
     bool? enableDrag,
     bool? showDragHandle,
@@ -15716,7 +15940,7 @@ class MockScaffoldState extends _i1.Mock implements _i51.ScaffoldState {
             #sheetAnimationStyle: sheetAnimationStyle,
           },
         ),
-        returnValue: _FakePersistentBottomSheetController_97(
+        returnValue: _FakePersistentBottomSheetController_99(
           this,
           Invocation.method(
             #showBottomSheet,
@@ -15734,7 +15958,7 @@ class MockScaffoldState extends _i1.Mock implements _i51.ScaffoldState {
             },
           ),
         ),
-        returnValueForMissingStub: _FakePersistentBottomSheetController_97(
+        returnValueForMissingStub: _FakePersistentBottomSheetController_99(
           this,
           Invocation.method(
             #showBottomSheet,
@@ -15945,14 +16169,14 @@ class MockScaffoldState extends _i1.Mock implements _i51.ScaffoldState {
           #createTicker,
           [onTick],
         ),
-        returnValue: _FakeTicker_98(
+        returnValue: _FakeTicker_100(
           this,
           Invocation.method(
             #createTicker,
             [onTick],
           ),
         ),
-        returnValueForMissingStub: _FakeTicker_98(
+        returnValueForMissingStub: _FakeTicker_100(
           this,
           Invocation.method(
             #createTicker,
@@ -16104,6 +16328,27 @@ class MockSharedPreferencesService extends _i1.Mock
         returnValue: _i40.Future<bool>.value(false),
         returnValueForMissingStub: _i40.Future<bool>.value(false),
       ) as _i40.Future<bool>);
+
+  @override
+  bool hasMirrorCheckCompletedForEvent(String? eventId) => (super.noSuchMethod(
+        Invocation.method(
+          #hasMirrorCheckCompletedForEvent,
+          [eventId],
+        ),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i40.Future<void> setMirrorCheckCompleteForEvent(String? eventId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setMirrorCheckCompleteForEvent,
+          [eventId],
+        ),
+        returnValue: _i40.Future<void>.value(),
+        returnValueForMissingStub: _i40.Future<void>.value(),
+      ) as _i40.Future<void>);
 
   @override
   _i40.Future<void> setLastQueryParameters(String? lastQueryParameters) =>
@@ -16350,7 +16595,7 @@ class MockStream<T> extends _i1.Mock implements _i40.Stream<T> {
             #cancelOnError: cancelOnError,
           },
         ),
-        returnValue: _FakeStreamSubscription_99<T>(
+        returnValue: _FakeStreamSubscription_101<T>(
           this,
           Invocation.method(
             #listen,
@@ -16362,7 +16607,7 @@ class MockStream<T> extends _i1.Mock implements _i40.Stream<T> {
             },
           ),
         ),
-        returnValueForMissingStub: _FakeStreamSubscription_99<T>(
+        returnValueForMissingStub: _FakeStreamSubscription_101<T>(
           this,
           Invocation.method(
             #listen,
@@ -17033,11 +17278,11 @@ class MockTemplate extends _i1.Mock implements _i42.Template {
   @override
   _i42.$TemplateCopyWith<_i42.Template> get copyWith => (super.noSuchMethod(
         Invocation.getter(#copyWith),
-        returnValue: _Fake$TemplateCopyWith_100<_i42.Template>(
+        returnValue: _Fake$TemplateCopyWith_102<_i42.Template>(
           this,
           Invocation.getter(#copyWith),
         ),
-        returnValueForMissingStub: _Fake$TemplateCopyWith_100<_i42.Template>(
+        returnValueForMissingStub: _Fake$TemplateCopyWith_102<_i42.Template>(
           this,
           Invocation.getter(#copyWith),
         ),
@@ -17345,14 +17590,14 @@ class MockUserDataService extends _i1.Mock implements _i128.UserDataService {
           #getMembership,
           [communityId],
         ),
-        returnValue: _FakeMembership_101(
+        returnValue: _FakeMembership_103(
           this,
           Invocation.method(
             #getMembership,
             [communityId],
           ),
         ),
-        returnValueForMissingStub: _FakeMembership_101(
+        returnValueForMissingStub: _FakeMembership_103(
           this,
           Invocation.method(
             #getMembership,
@@ -17454,11 +17699,11 @@ class MockUserService extends _i1.Mock implements _i118.UserService {
   @override
   _i38.FirebaseAuth get firebaseAuth => (super.noSuchMethod(
         Invocation.getter(#firebaseAuth),
-        returnValue: _FakeFirebaseAuth_102(
+        returnValue: _FakeFirebaseAuth_104(
           this,
           Invocation.getter(#firebaseAuth),
         ),
-        returnValueForMissingStub: _FakeFirebaseAuth_102(
+        returnValueForMissingStub: _FakeFirebaseAuth_104(
           this,
           Invocation.getter(#firebaseAuth),
         ),
@@ -17541,7 +17786,7 @@ class MockUserService extends _i1.Mock implements _i118.UserService {
           [],
           {#displayName: displayName},
         ),
-        returnValue: _FakePublicUserInfo_103(
+        returnValue: _FakePublicUserInfo_105(
           this,
           Invocation.method(
             #getDefaultPublicUserInfo,
@@ -17549,7 +17794,7 @@ class MockUserService extends _i1.Mock implements _i118.UserService {
             {#displayName: displayName},
           ),
         ),
-        returnValueForMissingStub: _FakePublicUserInfo_103(
+        returnValueForMissingStub: _FakePublicUserInfo_105(
           this,
           Invocation.method(
             #getDefaultPublicUserInfo,
@@ -17568,7 +17813,7 @@ class MockUserService extends _i1.Mock implements _i118.UserService {
           [],
           {#communityId: communityId},
         ),
-        returnValue: _FakeCommunityUserSettings_104(
+        returnValue: _FakeCommunityUserSettings_106(
           this,
           Invocation.method(
             #getDefaultCommunityUserSettings,
@@ -17576,7 +17821,7 @@ class MockUserService extends _i1.Mock implements _i118.UserService {
             {#communityId: communityId},
           ),
         ),
-        returnValueForMissingStub: _FakeCommunityUserSettings_104(
+        returnValueForMissingStub: _FakeCommunityUserSettings_106(
           this,
           Invocation.method(
             #getDefaultCommunityUserSettings,
@@ -18004,11 +18249,11 @@ class MockUserServiceNullable extends _i1.Mock implements _i118.UserService {
   @override
   _i38.FirebaseAuth get firebaseAuth => (super.noSuchMethod(
         Invocation.getter(#firebaseAuth),
-        returnValue: _FakeFirebaseAuth_102(
+        returnValue: _FakeFirebaseAuth_104(
           this,
           Invocation.getter(#firebaseAuth),
         ),
-        returnValueForMissingStub: _FakeFirebaseAuth_102(
+        returnValueForMissingStub: _FakeFirebaseAuth_104(
           this,
           Invocation.getter(#firebaseAuth),
         ),
@@ -18091,7 +18336,7 @@ class MockUserServiceNullable extends _i1.Mock implements _i118.UserService {
           [],
           {#displayName: displayName},
         ),
-        returnValue: _FakePublicUserInfo_103(
+        returnValue: _FakePublicUserInfo_105(
           this,
           Invocation.method(
             #getDefaultPublicUserInfo,
@@ -18099,7 +18344,7 @@ class MockUserServiceNullable extends _i1.Mock implements _i118.UserService {
             {#displayName: displayName},
           ),
         ),
-        returnValueForMissingStub: _FakePublicUserInfo_103(
+        returnValueForMissingStub: _FakePublicUserInfo_105(
           this,
           Invocation.method(
             #getDefaultPublicUserInfo,
@@ -18118,7 +18363,7 @@ class MockUserServiceNullable extends _i1.Mock implements _i118.UserService {
           [],
           {#communityId: communityId},
         ),
-        returnValue: _FakeCommunityUserSettings_104(
+        returnValue: _FakeCommunityUserSettings_106(
           this,
           Invocation.method(
             #getDefaultCommunityUserSettings,
@@ -18126,7 +18371,7 @@ class MockUserServiceNullable extends _i1.Mock implements _i118.UserService {
             {#communityId: communityId},
           ),
         ),
-        returnValueForMissingStub: _FakeCommunityUserSettings_104(
+        returnValueForMissingStub: _FakeCommunityUserSettings_106(
           this,
           Invocation.method(
             #getDefaultCommunityUserSettings,

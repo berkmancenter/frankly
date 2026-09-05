@@ -8,7 +8,7 @@ import 'package:node_http/node_http.dart' as http;
 AnalyticsUtil analyticsUtil = AnalyticsUtil();
 
 class AnalyticsUtil {
-  String get _secretKey => functions.config.get('segment.write_key') as String;
+  String? get _secretKey => functions.config.get('segment.write_key') as String?;
 
   /// Call to track a user event
   void logEvent({required String userId, required AnalyticsEvent event}) {
@@ -19,7 +19,10 @@ class AnalyticsUtil {
     required String userId,
     required AnalyticsEvent event,
   }) async {
-    final encodedKey = base64.encode(('$_secretKey:').codeUnits);
+    final key = _secretKey;
+    if (key == null || key.isEmpty) return;
+
+    final encodedKey = base64.encode(('$key:').codeUnits);
     final headers = {
       'Authorization': 'Basic $encodedKey',
       "Content-Type": 'application/json',

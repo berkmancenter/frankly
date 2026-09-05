@@ -580,6 +580,29 @@ class _MeetingControlsMenuState extends State<_MeetingControlsMenu> {
             ),
           ),
         ),
+      if (liveMeetingProvider.isHost == true || canModerateContent)
+        PopupMenuItem<Function()>(
+          value: () => alertOnError(context, () async {
+            final confirmed = await ConfirmDialog(
+              mainText: context.l10n.endMeetingConfirmation,
+              confirmText: context.l10n.endMeeting,
+              cancelText: context.l10n.cancel,
+            ).show(context: context);
+            if (!confirmed) return;
+            await cloudFunctionsEventService.endMeetingForAll(
+              EndMeetingForAllRequest(
+                eventPath: provider.event.fullPath,
+              ),
+            );
+          }),
+          child: HeightConstrainedText(
+            context.l10n.endMeeting,
+            style: TextStyle(
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.error,
+            ),
+          ),
+        ),
       if (Environment.enableFakeParticipants)
         PopupMenuItem<Function()>(
           value: () => alertOnError(context, () async {

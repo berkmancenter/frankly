@@ -114,6 +114,9 @@ class EventCard extends StatelessWidget {
                 time: DateTime.fromMillisecondsSinceEpoch(
                   (event.scheduledTime?.millisecondsSinceEpoch ?? 0),
                 ),
+                endTime: event.scheduledTime?.add(
+                  Duration(minutes: event.durationInMinutes),
+                ),
               )
             else
               SizedBox(width: 100),

@@ -29,3 +29,9 @@ String durationString(Duration duration, {bool readAsHuman = false}) {
         : '$twoDigitMinutes:$twoDigitSeconds';
   }
 }
+
+/// Formats a DateTime as a short time string like "3:45p" (lowercase, no trailing 'm').
+String formatTimeShort(DateTime t) {
+  final s = DateFormat('h:mma').format(t);
+  return s.substring(0, s.length - 1).toLowerCase();
+}

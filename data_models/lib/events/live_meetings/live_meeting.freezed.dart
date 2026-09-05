@@ -38,6 +38,8 @@ mixin _$LiveMeeting {
   bool get isMeetingCardMinimized => throw _privateConstructorUsedError;
   List<String> get pinnedUserIds => throw _privateConstructorUsedError;
   String? get recordingSessionId => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+  DateTime? get meetingEndedAt => throw _privateConstructorUsedError;
 
   /// The agenda item that was current when a majority of participants marked themselves ready
   /// to advance. While this is set, a countdown is shown to all participants and no further
@@ -69,6 +71,8 @@ abstract class $LiveMeetingCopyWith<$Res> {
       bool isMeetingCardMinimized,
       List<String> pinnedUserIds,
       String? recordingSessionId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      DateTime? meetingEndedAt,
       String? pendingAdvanceAgendaItemId,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
       DateTime? pendingAdvanceTime});
@@ -97,6 +101,7 @@ class _$LiveMeetingCopyWithImpl<$Res, $Val extends LiveMeeting>
     Object? isMeetingCardMinimized = null,
     Object? pinnedUserIds = null,
     Object? recordingSessionId = freezed,
+    Object? meetingEndedAt = freezed,
     Object? pendingAdvanceAgendaItemId = freezed,
     Object? pendingAdvanceTime = freezed,
   }) {
@@ -133,6 +138,10 @@ class _$LiveMeetingCopyWithImpl<$Res, $Val extends LiveMeeting>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      meetingEndedAt: freezed == meetingEndedAt
+          ? _value.meetingEndedAt
+          : meetingEndedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       pendingAdvanceAgendaItemId: freezed == pendingAdvanceAgendaItemId
           ? _value.pendingAdvanceAgendaItemId
           : pendingAdvanceAgendaItemId // ignore: cast_nullable_to_non_nullable
@@ -175,6 +184,8 @@ abstract class _$$_LiveMeetingCopyWith<$Res>
       bool isMeetingCardMinimized,
       List<String> pinnedUserIds,
       String? recordingSessionId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      DateTime? meetingEndedAt,
       String? pendingAdvanceAgendaItemId,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
       DateTime? pendingAdvanceTime});
@@ -202,6 +213,7 @@ class __$$_LiveMeetingCopyWithImpl<$Res>
     Object? isMeetingCardMinimized = null,
     Object? pinnedUserIds = null,
     Object? recordingSessionId = freezed,
+    Object? meetingEndedAt = freezed,
     Object? pendingAdvanceAgendaItemId = freezed,
     Object? pendingAdvanceTime = freezed,
   }) {
@@ -238,6 +250,10 @@ class __$$_LiveMeetingCopyWithImpl<$Res>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      meetingEndedAt: freezed == meetingEndedAt
+          ? _value.meetingEndedAt
+          : meetingEndedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       pendingAdvanceAgendaItemId: freezed == pendingAdvanceAgendaItemId
           ? _value.pendingAdvanceAgendaItemId
           : pendingAdvanceAgendaItemId // ignore: cast_nullable_to_non_nullable
@@ -262,6 +278,8 @@ class _$_LiveMeeting implements _LiveMeeting {
       this.isMeetingCardMinimized = false,
       this.pinnedUserIds = const [],
       this.recordingSessionId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      this.meetingEndedAt,
       this.pendingAdvanceAgendaItemId,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
       this.pendingAdvanceTime});
@@ -298,6 +316,9 @@ class _$_LiveMeeting implements _LiveMeeting {
   final List<String> pinnedUserIds;
   @override
   final String? recordingSessionId;
+  @override
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+  final DateTime? meetingEndedAt;
 
   /// The agenda item that was current when a majority of participants marked themselves ready
   /// to advance. While this is set, a countdown is shown to all participants and no further
@@ -312,7 +333,7 @@ class _$_LiveMeeting implements _LiveMeeting {
 
   @override
   String toString() {
-    return 'LiveMeeting(meetingId: $meetingId, participants: $participants, events: $events, currentBreakoutSession: $currentBreakoutSession, record: $record, isMeetingCardMinimized: $isMeetingCardMinimized, pinnedUserIds: $pinnedUserIds, recordingSessionId: $recordingSessionId, pendingAdvanceAgendaItemId: $pendingAdvanceAgendaItemId, pendingAdvanceTime: $pendingAdvanceTime)';
+    return 'LiveMeeting(meetingId: $meetingId, participants: $participants, events: $events, currentBreakoutSession: $currentBreakoutSession, record: $record, isMeetingCardMinimized: $isMeetingCardMinimized, pinnedUserIds: $pinnedUserIds, recordingSessionId: $recordingSessionId, meetingEndedAt: $meetingEndedAt, pendingAdvanceAgendaItemId: $pendingAdvanceAgendaItemId, pendingAdvanceTime: $pendingAdvanceTime)';
   }
 
   @override
@@ -334,6 +355,8 @@ class _$_LiveMeeting implements _LiveMeeting {
                 .equals(other.pinnedUserIds, pinnedUserIds) &&
             (identical(other.recordingSessionId, recordingSessionId) ||
                 other.recordingSessionId == recordingSessionId) &&
+            (identical(other.meetingEndedAt, meetingEndedAt) ||
+                other.meetingEndedAt == meetingEndedAt) &&
             (identical(other.pendingAdvanceAgendaItemId,
                     pendingAdvanceAgendaItemId) ||
                 other.pendingAdvanceAgendaItemId ==
@@ -354,6 +377,7 @@ class _$_LiveMeeting implements _LiveMeeting {
       isMeetingCardMinimized,
       const DeepCollectionEquality().hash(pinnedUserIds),
       recordingSessionId,
+      meetingEndedAt,
       pendingAdvanceAgendaItemId,
       pendingAdvanceTime);
 
@@ -381,6 +405,8 @@ abstract class _LiveMeeting implements LiveMeeting {
       final bool isMeetingCardMinimized,
       final List<String> pinnedUserIds,
       final String? recordingSessionId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      final DateTime? meetingEndedAt,
       final String? pendingAdvanceAgendaItemId,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
       final DateTime? pendingAdvanceTime}) = _$_LiveMeeting;
@@ -411,6 +437,9 @@ abstract class _LiveMeeting implements LiveMeeting {
   List<String> get pinnedUserIds;
   @override
   String? get recordingSessionId;
+  @override
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+  DateTime? get meetingEndedAt;
   @override
 
   /// The agenda item that was current when a majority of participants marked themselves ready
@@ -1007,7 +1036,7 @@ mixin _$BreakoutRoom {
   String? get recordingSessionId => throw _privateConstructorUsedError;
 
   /// A per-group statement/prompt generated for this specific breakout
-  /// room, shown as the room's first agenda item when present.
+  /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
   String? get diffusionStatement => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1267,7 +1296,7 @@ class _$_BreakoutRoom implements _BreakoutRoom {
   final String? recordingSessionId;
 
   /// A per-group statement/prompt generated for this specific breakout
-  /// room, shown as the room's first agenda item when present.
+  /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
   @override
   final String? diffusionStatement;
 
@@ -1385,7 +1414,7 @@ abstract class _BreakoutRoom implements BreakoutRoom {
   @override
 
   /// A per-group statement/prompt generated for this specific breakout
-  /// room, shown as the room's first agenda item when present.
+  /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
   String? get diffusionStatement;
   @override
   @JsonKey(ignore: true)
