@@ -67,21 +67,23 @@ function buildCsp(nonce) {
     return directives.join('; ')
 }
 
-const ServeIndex = regionalFunctions().runWith({ minInstances: 1 }).https.onRequest((req, res) => {
-    if (req.method !== 'GET' && req.method !== 'HEAD') {
-        res.status(405).send('Method Not Allowed')
-        return
-    }
+const ServeIndex = regionalFunctions()
+    .runWith({ minInstances: 1 })
+    .https.onRequest((req, res) => {
+        if (req.method !== 'GET' && req.method !== 'HEAD') {
+            res.status(405).send('Method Not Allowed')
+            return
+        }
 
-    const nonce = crypto.randomBytes(16).toString('base64')
-    const html = stableTemplate.replace(/__SCRIPT_NONCE__/g, nonce)
-    const csp = buildCsp(nonce)
+        const nonce = crypto.randomBytes(16).toString('base64')
+        const html = stableTemplate.replace(/__SCRIPT_NONCE__/g, nonce)
+        const csp = buildCsp(nonce)
 
-    // no-store: the nonce is unique per response and must never be served from cache.
-    res.set('Cache-Control', 'no-store')
-    res.set('Content-Security-Policy', csp)
-    res.set('Content-Type', 'text/html; charset=utf-8')
-    res.send(html)
-})
+        // no-store: the nonce is unique per response and must never be served from cache.
+        res.set('Cache-Control', 'no-store')
+        res.set('Content-Security-Policy', csp)
+        res.set('Content-Type', 'text/html; charset=utf-8')
+        res.send(html)
+    })
 
 module.exports = ServeIndex

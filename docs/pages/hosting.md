@@ -147,6 +147,39 @@ Also configure your custom domains in Firebase Hosting for each target as needed
 
 For more information, see [Firebase Hosting deploy targets](https://firebase.google.com/docs/cli/targets#set-up-deploy-target-hosting).
 
+### Region configuration
+
+Frankly keeps the existing US defaults unless a deployment explicitly supplies a
+region. Set `FUNCTIONS_REGION` in the client build environment and set the same
+value as the `functions.region` runtime configuration for Firebase Functions.
+The Dart and JavaScript functions, callable clients, emulator URL, and Hosting
+rewrites all use this value. The default remains `us-central1`.
+
+Cloud Tasks can use a separate location through
+`functions.cloud_tasks_region`. If it is set, that value wins; otherwise the
+queue follows the configured Functions region, falling back to the existing
+`us-east4` location when neither value is set. Create the
+`scheduled-functions` queue in the selected location before deploying code
+that schedules work.
+
+To render Hosting rewrites for a local or CI deployment without changing the
+source configuration, run:
+
+```bash
+node scripts/render-firebase-config.mjs \
+  --region europe-west1 \
+  --output firebase.generated.json
+```
+
+The renderer includes the region on every function-backed Hosting rewrite,
+including the `ServeIndex` catch-all. Generated environment-specific files
+should not be committed.
+
+Firestore, Realtime Database, and Storage locations are selected when their
+resources are created and are generally not movable in place. Choose and verify
+those locations before bootstrapping a new environment; changing them later
+usually requires a new project or a data migration.
+
 ---
 
 ## 5. Configure Firebase Functions

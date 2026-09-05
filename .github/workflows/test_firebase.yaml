@@ -43,6 +43,10 @@ jobs:
         if: steps.changes.outputs.functions == 'true'
         run: npm ci
 
+      - name: Run JavaScript Function Tests
+        if: steps.changes.outputs.functions == 'true'
+        run: npm run test:js
+
       - name: Install Firestore NPM Dependencies
         if: steps.changes.outputs.firestore == 'true'
         run: npm ci

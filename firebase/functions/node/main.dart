@@ -72,6 +72,7 @@ import 'package:functions/community/trigger_email_digests.dart';
 import 'package:functions/events/live_meetings/update_live_stream_participant_count.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:functions/utils/infra/function_region.dart';
+import 'package:node_interop/node.dart';
 import 'package:uuid/uuid.dart';
 
 final _onCallFunctions = <CloudFunction>[

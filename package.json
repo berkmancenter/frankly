@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "./run-dev.sh",
     "build": "./build-all.sh",
-    "render:firebase-config": "node scripts/render-firebase-config.mjs"
+    "render:firebase-config": "node scripts/render-firebase-config.mjs",
+    "test:render-firebase-config": "node --test scripts/render-firebase-config.test.mjs"
   }
 }

@@ -38,9 +38,15 @@ jobs:
               - 'firebase/firestore/**'
             shared:
               - 'data_models/lib/**'
+              - 'firebase/functions/index.js'
+              - 'firebase/functions/js/function-region.js'
+              - 'firebase/functions/lib/utils/infra/function_region.dart'
               - 'firebase/functions/lib/utils/infra/firestore_utils.dart'
               - 'firebase/functions/lib/utils/infra/firebase_auth_utils.dart'
               - 'firebase/functions/lib/utils/utils.dart'
+              - 'firebase/functions/node/**'
+              - 'firebase/functions/package.json'
+              - 'firebase/functions/package-lock.json'
 
       - name: Setup Node
         if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'

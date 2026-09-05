@@ -6,7 +6,12 @@ import { resolve } from 'node:path';
 const defaultRegion = 'us-central1';
 const defaultInput = resolve('firebase.json');
 const defaultOutput = resolve('firebase.generated.json');
-const rewriteFunctionIds = new Set(['ShareLink', 'CalendarFeedIcs', 'CalendarFeedRss']);
+const rewriteFunctionIds = new Set([
+  'ShareLink',
+  'CalendarFeedIcs',
+  'CalendarFeedRss',
+  'ServeIndex',
+]);
 
 function parseArgs(argv) {
   const options = {
@@ -35,9 +40,7 @@ function parseArgs(argv) {
     options.output = options.input;
   }
 
-  if (!options.region.trim()) {
-    options.region = defaultRegion;
-  }
+  options.region = options.region.trim() || defaultRegion;
 
   return options;
 }

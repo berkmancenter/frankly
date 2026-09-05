@@ -1,6 +1,7 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const cors = require('cors')({ origin: true })
+const { regionalFunctions } = require('./function-region')
 
 const firestore = admin.firestore()
 const storage = admin.storage()
@@ -14,7 +15,7 @@ const bucketName = functions.config().agora.storage_bucket_name
 //
 // Called by the client when it detects a recording session that has STT enabled
 // (agoraRttAgentId is set) but no transcript_vtt_* keys in artifactPaths.
-const repairSessionArtifacts = functions.https.onRequest((req, res) => {
+const repairSessionArtifacts = regionalFunctions().https.onRequest((req, res) => {
     cors(req, res, async () => {
         try {
             const authToken = req.headers.authorization?.split('Bearer ')[1]

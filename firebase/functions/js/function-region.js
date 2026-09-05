@@ -2,8 +2,8 @@ const functions = require('firebase-functions')
 
 const defaultRegion = 'us-central1'
 
-function configuredFunctionRegion() {
-    const configured = functions.config().functions?.region
+function configuredFunctionRegion(config = functions.config()) {
+    const configured = config?.functions?.region
     if (typeof configured !== 'string') return defaultRegion
 
     const trimmed = configured.trim()
