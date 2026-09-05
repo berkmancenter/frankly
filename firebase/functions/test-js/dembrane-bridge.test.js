@@ -179,7 +179,7 @@ describe('dembrane-bridge', () => {
             bridgeUrl: 'https://bridge.example.com',
             bridgeToken: 'test-token',
             fetchImpl: async (_url, options) => {
-                assert.strictEqual(options.timeout, 15000)
+                assert.strictEqual(options.timeout, 450000)
                 return { ok: false, status: 503, text: async () => 'unavailable' }
             },
             fieldValue: createFieldValue(),

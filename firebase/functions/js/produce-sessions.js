@@ -58,7 +58,7 @@ function buildArtifactUpdates(mp4Files) {
 // Triggered when a recording session transitions to 'stopped'.
 // Locates artifacts Agora deposited under gcsPrefix (MP4 recordings, VTT
 // transcripts) and registers their paths on the session document.
-const produceSessions = regionalFunctions().runWith({ timeoutSeconds: 120 }).firestore
+const produceSessions = regionalFunctions().runWith({ timeoutSeconds: 540 }).firestore
     .document('recording-sessions/{sessionId}')
     .onUpdate(async (change, context) => {
         const before = change.before.data()

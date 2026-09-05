@@ -71,7 +71,7 @@ async function notifyDembraneBridge({
             })
             const response = await fetchImpl(bridgeUrl, {
                 method: 'POST',
-                timeout: 15000,
+                timeout: 450000,
                 headers: buildBridgeHeaders({ bridgeToken }),
                 body: JSON.stringify(
                     buildBridgePayload({
