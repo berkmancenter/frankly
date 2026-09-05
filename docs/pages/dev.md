@@ -194,6 +194,11 @@ firebase/functions/.runtimeconfig.json.local.example
 
 Copy the example and fill in any required values.
 
+Set `FUNCTIONS_REGION` in `client/.env` when testing a non-default region. It
+defaults to `us-central1`, and the local callable URL is generated with the
+same region segment. Keep the Functions runtime configuration and the client
+build value aligned when moving from the emulator to a deployed environment.
+
 ---
 
 ### Running Everything with One Command

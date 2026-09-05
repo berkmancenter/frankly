@@ -1187,5 +1187,17 @@
   "youtubeUrl": "YouTube链接",
   "youtubeVideoLookupFailed": "抱歉，YouTube 视频查找失败。",
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被从此活动中移除，无法重新加入。",
+  "dembraneJoinConsentMessage": "The host will receive a downloadable recording, and a recording of the session will be sent to Dembrane.",
+  "dembraneLinkedProjectId": "Linked project ID",
+  "dembraneName": "Dembrane",
+  "dembraneParticipantDisclaimer": "If you participate in this event, a recording of the session will be sent to Dembrane.",
+  "dembraneProjectIdLabel": "Dembrane project ID",
+  "dembraneProjectRecordingHint": "Linked events keep recording enabled so a recording of the session can be sent to Dembrane.",
+  "dembraneProjectSectionDescription": "Link an Echo project to send a recording of this event to Dembrane.",
+  "dembraneProjectUrlHint": "Paste the Echo project ID from the project URL. This is the value after `/projects/`.",
+  "dembraneRecordingMustStayOn": "Dembrane-linked events must stay recorded. Unlink the Dembrane project first if you want to turn recording off.",
+  "linkToDembraneProject": "Link to Dembrane Project",
+  "unlink": "Unlink",
+  "updateDembraneProjectLink": "Update Dembrane Project Link",
   "zoom": "放大"
 }

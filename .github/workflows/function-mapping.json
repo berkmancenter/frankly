@@ -12,6 +12,7 @@
       "getSessionDownloadUrl"
     ],
     "firebase/functions/js/image-proxy.js": ["imageProxy"],
+    "firebase/functions/js/dembrane-bridge.js": ["produceSessions"],
     "firebase/functions/js/produce-sessions.js": ["produceSessions"],
     "firebase/functions/js/repair-session-artifacts.js": [
       "repairSessionArtifacts"

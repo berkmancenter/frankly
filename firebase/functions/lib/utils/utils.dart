@@ -70,3 +70,12 @@ extension CommunityIterableExtension<T> on Iterable<T?> {
     ];
   }
 }
+
+/// Explicit deployment opt-in; absent configuration keeps integrations disabled.
+bool get dembraneEnabled {
+  try {
+    return functions.config.get('dembrane.enabled').toString() == 'true';
+  } catch (_) {
+    return false;
+  }
+}
