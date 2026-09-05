@@ -30,6 +30,8 @@ _$_LiveMeeting _$$_LiveMeetingFromJson(Map<String, dynamic> json) =>
           const [],
       recordingSessionId: json['recordingSessionId'] as String?,
       meetingEndedAt: dateTimeFromTimestamp(json['meetingEndedAt']),
+      pendingAdvanceAgendaItemId: json['pendingAdvanceAgendaItemId'] as String?,
+      pendingAdvanceTime: dateTimeFromTimestamp(json['pendingAdvanceTime']),
     );
 
 Map<String, dynamic> _$$_LiveMeetingToJson(_$_LiveMeeting instance) =>
@@ -43,6 +45,8 @@ Map<String, dynamic> _$$_LiveMeetingToJson(_$_LiveMeeting instance) =>
       'pinnedUserIds': instance.pinnedUserIds,
       'recordingSessionId': instance.recordingSessionId,
       'meetingEndedAt': serverTimestampOrNull(instance.meetingEndedAt),
+      'pendingAdvanceAgendaItemId': instance.pendingAdvanceAgendaItemId,
+      'pendingAdvanceTime': timestampFromDateTime(instance.pendingAdvanceTime),
     };
 
 _$_LiveMeetingParticipant _$$_LiveMeetingParticipantFromJson(
@@ -120,6 +124,7 @@ _$_BreakoutRoom _$$_BreakoutRoomFromJson(Map<String, dynamic> json) =>
       createdDate: dateTimeFromTimestamp(json['createdDate']),
       record: json['record'] as bool? ?? false,
       recordingSessionId: json['recordingSessionId'] as String?,
+      diffusionStatement: json['diffusionStatement'] as String?,
     );
 
 Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
@@ -135,6 +140,7 @@ Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
       'createdDate': serverTimestamp(instance.createdDate),
       'record': instance.record,
       'recordingSessionId': instance.recordingSessionId,
+      'diffusionStatement': instance.diffusionStatement,
     };
 
 const _$BreakoutRoomFlagStatusEnumMap = {

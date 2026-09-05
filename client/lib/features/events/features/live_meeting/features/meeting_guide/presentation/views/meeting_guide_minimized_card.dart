@@ -148,7 +148,7 @@ class _ForwardButton extends HookWidget {
       type: ActionButtonType.filled,
       minWidth: 40,
       onPressed: () => alertOnError(context, () async {
-        await agendaProvider.moveForward(
+        await agendaProvider.toggleMoveForward(
           currentAgendaItemId: currentAgendaItemId,
         );
         if (!context.mounted) return;

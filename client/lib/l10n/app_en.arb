@@ -151,6 +151,16 @@
       "appName": {}
     }
   },
+  "@majorityOfParticipantsExample": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -201,6 +211,16 @@
   "@passwordResetLinkSent": {
     "placeholders": {
       "email": {}
+    }
+  },
+  "@peopleRequiredToMoveOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "@playsAt": {
@@ -609,6 +629,7 @@
   "imageUrlIsNotSet": "(Image URL is not set.)",
   "imageUrlIsRequired": "Image URL is required",
   "imageUrlNotSet": "(Image URL is not set.)",
+  "imReadyToMoveOn": "I'm ready to move on",
   "incorrectEmailOrPassword": "Incorrect email or password",
   "instagramUrl": "Instagram URL",
   "instantMeeting": "Instant Meeting",
@@ -649,6 +670,8 @@
   "logo": "Logo",
   "logout": "Log out",
   "loopVideo": "Loop Video",
+  "majorityOfParticipants": "The majority of participants must agree to advance to the next event activity.",
+  "majorityOfParticipantsExample": "In this event, {count} out of the {total} people participating must indicate they’re ready to move on before starting the next item.",
   "makeASuggestion": "Make a suggestion",
   "makeThisSpacePrivate": "Make this space private",
   "manageCommunity": "Manage Community",
@@ -677,6 +700,7 @@
   "mins": "mins",
   "miscellaneous": "Miscellaneous",
   "moderator": "Moderator",
+  "movingOntoNextAgendaItem": "Moving onto the next agenda item",
   "mustAddAtLeastTwoCategories": "You must add at least two (2) categories.",
   "mustBeLoggedInToAccessThisSection": "Must be logged in to access this section",
   "mustBeValidHexColor": "Must be HEX format",
@@ -786,6 +810,8 @@
   "pasteOrEnterAUrl": "Paste or enter a URL",
   "pasteOrEnterUrl": "Paste or enter URL",
   "people": "people",
+  "peopleReady": "people ready",
+  "peopleRequiredToMoveOn": "{count} of {total} people required to move on",
   "permissionsAdminDescription": "Full control over community settings, member roles, and all content.",
   "permissionsFacilitatorDescription": "Can schedule and host events based on existing templates.",
   "permissionsMemberDescription": "Someone who has joined the community. May attend events, create posts, and receive community announcements.",
@@ -875,6 +901,7 @@
   "requestToFollow": "Request To Follow",
   "requests": "Requests",
   "required": "Required",
+  "requiredToMoveOn": "required to move on",
   "resendEmailAndTryAgain": "Resend the verification email and try again.",
   "resendVerificationEmail": "Resend Email",
   "resendVerificationEmailLink": "resend the email.",
@@ -904,6 +931,7 @@
   "search": "Search",
   "searchEvents": "Search events",
   "searchTemplates": "Search templates",
+  "sec": "Sec",
   "sectionNotFilledYet": "This section hasn't been filled in yet.",
   "seeManagingYourCommunity": "See Managing Your Community for details.",
   "selectADay": "Select a day",
@@ -980,6 +1008,8 @@
   "start": "Start",
   "startCommunity": "Start a community",
   "startEvent": "Start Event",
+  "startingNextAgendaItem": "Starting the Next Agenda Item",
+  "startsTomorrow": "Starts Tomorrow",
   "startTime": "Start Time",
   "startsTomorrow": "Starts Tomorrow",
   "submitChatButton": "Submit Chat Button",

@@ -28,6 +28,9 @@ class LiveMeeting with _$LiveMeeting implements SerializeableRequest {
   static const String kFieldIsMeetingCardMinimized = 'isMeetingCardMinimized';
   static const String kFieldRecordingSessionId = 'recordingSessionId';
   static const String kFieldMeetingEndedAt = 'meetingEndedAt';
+  static const String kFieldPendingAdvanceAgendaItemId =
+      'pendingAdvanceAgendaItemId';
+  static const String kFieldPendingAdvanceTime = 'pendingAdvanceTime';
 
   factory LiveMeeting({
     // TODO(null-safety): There are places that we set various fields on the live meeting possibly
@@ -48,6 +51,15 @@ class LiveMeeting with _$LiveMeeting implements SerializeableRequest {
     String? recordingSessionId,
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
     DateTime? meetingEndedAt,
+
+    /// The agenda item that was current when a majority of participants marked themselves ready
+    /// to advance. While this is set, a countdown is shown to all participants and no further
+    /// ready/unready votes can change the outcome.
+    String? pendingAdvanceAgendaItemId,
+
+    /// The server-computed time at which [pendingAdvanceAgendaItemId] will actually be advanced.
+    @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+    DateTime? pendingAdvanceTime,
   }) = _LiveMeeting;
 
   factory LiveMeeting.fromJson(Map<String, dynamic> json) =>
@@ -121,6 +133,7 @@ class BreakoutRoom with _$BreakoutRoom implements SerializeableRequest {
   static const String kFieldRoomName = 'roomName';
   static const String kFieldRoomId = 'roomId';
   static const String kFieldRecordingSessionId = 'recordingSessionId';
+  static const String kFieldDiffusionStatement = 'diffusionStatement';
 
   factory BreakoutRoom({
     required String roomId,
@@ -141,6 +154,10 @@ class BreakoutRoom with _$BreakoutRoom implements SerializeableRequest {
     DateTime? createdDate,
     @Default(false) bool record,
     String? recordingSessionId,
+
+    /// A per-group statement/prompt generated for this specific breakout
+    /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
+    String? diffusionStatement,
   }) = _BreakoutRoom;
 
   factory BreakoutRoom.fromJson(Map<String, dynamic> json) =>

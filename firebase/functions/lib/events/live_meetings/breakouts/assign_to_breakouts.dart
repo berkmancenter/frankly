@@ -10,11 +10,13 @@ import 'package:get_it/get_it.dart';
 import 'package:frankly_match/frankly_match.dart' as frankly_match;
 import 'package:node_http/node_http.dart' as http;
 import '../../../utils/infra/firestore_utils.dart';
+import '../../../utils/utils.dart';
 import '../agora_api.dart';
 import '../agora_stt_api.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/utils/utils.dart';
 import 'package:meta/meta.dart';
@@ -262,17 +264,21 @@ class AssignToBreakouts {
     // Smart match users who had valid survey responses
     profile('smart matching');
     List<frankly_match.MatchGroup>? smartMatches;
+    var diffusionStatementsByGroupId = <String, String>{};
     if (useHostedApi &&
         (participantSurveyResponsesLookup.isNotEmpty ||
             participantFreeTextResponsesLookup.isNotEmpty)) {
       print('Calling hosted Frankly Match API for smart matching');
       try {
-        smartMatches = await createFranklyMatchApiGroups(
+        final smartMatchApiResult = await createFranklyMatchApiGroups(
           participantSurveyResponsesLookup: participantSurveyResponsesLookup,
           participantFreeTextResponsesLookup:
               participantFreeTextResponsesLookup,
           targetParticipantsPerRoom: targetParticipantsPerRoom,
         );
+        smartMatches = smartMatchApiResult.groups;
+        diffusionStatementsByGroupId =
+            smartMatchApiResult.diffusionStatementsByGroupId;
       } catch (e) {
         // smartMatches will remain null if an exception is thrown.
         print('Error creating smart matches: $e');
@@ -359,6 +365,7 @@ class AssignToBreakouts {
           participantIds: allMatches[j].participantIds,
           originalParticipantIdsAssignment: allMatches[j].participantIds,
           record: event.eventSettings?.alwaysRecord ?? false,
+          diffusionStatement: diffusionStatementsByGroupId[allMatches[j].id],
         ),
     ];
   }
@@ -406,7 +413,8 @@ class AssignToBreakouts {
   Future<void> writeDocumentsToCollection({
     required CollectionReference breakoutSessionCollection,
     required List<BreakoutRoom> rooms,
-    String? firstAgendaItemId,
+    required List<AgendaItem> agendaItems,
+    String? parentMirroredAgendaItemId,
   }) {
     return Future.wait(
       partition(rooms, 249).map((sublist) {
@@ -420,7 +428,17 @@ class AssignToBreakouts {
               firestoreUtils.toFirestoreJson(room.toJson()),
             ),
           );
-          if (firstAgendaItemId != null) {
+          // Hosted breakouts mirror the parent meeting's current item;
+          // otherwise each room starts on its own resolved first item (which
+          // may substitute or skip a {diffusionStatement} token depending on
+          // this room's diffusionStatement).
+          final roomAgendaItemId = parentMirroredAgendaItemId ??
+              resolveAgendaItemsForDiffusionStatement(
+                agendaItems,
+                room.diffusionStatement,
+                showUnresolvedAsError: !isProductionEnvironment,
+              ).firstOrNull?.id;
+          if (roomAgendaItemId != null) {
             final liveMeetingDoc = roomDocumentRef
                 .collection('live-meetings')
                 .document(room.roomId);
@@ -434,7 +452,7 @@ class AssignToBreakouts {
                       events: [
                         LiveMeetingEvent(
                           event: LiveMeetingEventType.agendaItemStarted,
-                          agendaItem: firstAgendaItemId,
+                          agendaItem: roomAgendaItemId,
                           hostless: true,
                           timestamp: DateTime.now().toUtc(),
                         ),
@@ -714,23 +732,19 @@ class AssignToBreakouts {
 
     profile('writing rooms ${breakoutRooms.length}');
 
-    String? firstAgendaItemId;
+    String? parentMirroredAgendaItemId;
     if (event.eventType == EventType.hosted) {
-      final parentAgendaItemId = currentLiveMeeting.events
+      parentMirroredAgendaItemId = currentLiveMeeting.events
           .where((e) => LiveMeetingEventType.agendaItemStarted == e.event)
           .lastOrNull
           ?.agendaItem;
-
-      firstAgendaItemId =
-          parentAgendaItemId ?? event.agendaItems.firstOrNull?.id;
-    } else {
-      firstAgendaItemId = event.agendaItems.firstOrNull?.id;
     }
 
     await writeDocumentsToCollection(
       breakoutSessionCollection: breakoutRoomsCollection,
       rooms: breakoutRooms,
-      firstAgendaItemId: firstAgendaItemId,
+      agendaItems: event.agendaItems,
+      parentMirroredAgendaItemId: parentMirroredAgendaItemId,
     );
 
     // Start recordings immediately after room assignment so there is exactly
@@ -912,6 +926,16 @@ class AssignToBreakouts {
   }
 }
 
+/// The result of calling the hosted Frankly Match API: the matched groups
+/// (used to drive the matching pipeline) alongside any per-group diffusion
+/// statement returned for that group.
+class SmartMatchApiResult {
+  final List<frankly_match.MatchGroup> groups;
+  final Map<String, String> diffusionStatementsByGroupId;
+
+  SmartMatchApiResult(this.groups, this.diffusionStatementsByGroupId);
+}
+
 /// Builds the request payload for the hosted Frankly Match API.
 ///
 /// Each participant contributes a `binaryAnswerMask` (if they answered the
@@ -945,7 +969,7 @@ Map<String, dynamic> buildFranklyMatchApiPayload({
 }
 
 /// Call the hosted Frankly Match API to return matched groups.
-Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
+Future<SmartMatchApiResult> createFranklyMatchApiGroups({
   required Map<String, String> participantSurveyResponsesLookup,
   required Map<String, String> participantFreeTextResponsesLookup,
   required int targetParticipantsPerRoom,
@@ -983,8 +1007,9 @@ Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
   }
 
   final body = jsonDecode(response.body) as Map<String, dynamic>;
-  final results = body['results'] as List<dynamic>;
-  return results
+  final results =
+      (body['results'] as List<dynamic>).cast<Map<String, dynamic>>();
+  final groups = results
       .map(
         (g) => frankly_match.MatchGroup(
           g['groupId'] as String,
@@ -992,4 +1017,10 @@ Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
         ),
       )
       .toList();
+  final diffusionStatementsByGroupId = <String, String>{
+    for (final g in results)
+      if ((g['diffusionStatement'] as String?)?.isNotEmpty ?? false)
+        g['groupId'] as String: g['diffusionStatement'] as String,
+  };
+  return SmartMatchApiResult(groups, diffusionStatementsByGroupId);
 }
