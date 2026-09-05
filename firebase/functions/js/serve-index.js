@@ -21,8 +21,11 @@ const { regionalFunctions } = require('./function-region')
 // Read the template once at module load. If the file is missing the function
 // will fail to start, which surfaces the error at deploy time rather than
 // silently at request time.
-// index.js loads this module from js/; web/ is a sibling at the package root.
-const TEMPLATE_PATH = path.join(__dirname, '../web/index.html')
+// Loaded both from js/ by index.js and build/js/ by the Dart entrypoint.
+const packageTemplate = path.join(__dirname, '../web/index.html')
+const TEMPLATE_PATH = fs.existsSync(packageTemplate)
+    ? packageTemplate
+    : path.join(__dirname, '../../web/index.html')
 const rawTemplate = fs.readFileSync(TEMPLATE_PATH, 'utf8')
 
 // Substitute stable (non-per-request) placeholders once at startup.
