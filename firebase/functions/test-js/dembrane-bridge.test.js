@@ -156,4 +156,38 @@ describe('dembrane-bridge', () => {
         assert.strictEqual(fetchCalled, false)
         assert.deepStrictEqual(sessionRef.updates, [])
     })
+    it('records missing configuration without sending a recording', async () => {
+        const sessionRef = createSessionRef({ dembraneProjectId: 'project-123' })
+        await assert.rejects(notifyDembraneBridge({
+            enabled: true,
+            sessionRef,
+            sessionId: 'missing-config',
+            sessionData: {},
+            fieldValue: createFieldValue(),
+        }), /Missing .*bridge_url.*bridge_token/)
+        assert.match(sessionRef.updates[0]['dembraneBridge.lastError'], /Missing/)
+    })
+
+    it('records an HTTP failure without marking the artifact delivered', async () => {
+        const sessionRef = createSessionRef({ dembraneProjectId: 'project-123' })
+        await assert.rejects(notifyDembraneBridge({
+            enabled: true,
+            sessionRef,
+            sessionId: 'failed-delivery',
+            sessionData: {},
+            mp4Files: [{ name: 'complete.mp4', getSignedUrl: async () => ['https://signed.example.com/file'] }],
+            bridgeUrl: 'https://bridge.example.com',
+            bridgeToken: 'test-token',
+            fetchImpl: async (_url, options) => {
+                assert.strictEqual(options.timeout, 15000)
+                return { ok: false, status: 503, text: async () => 'unavailable' }
+            },
+            fieldValue: createFieldValue(),
+            signedUrlExpirationMs: 60000,
+        }), /503/)
+        assert.strictEqual(sessionRef.updates.length, 1)
+        assert.match(sessionRef.updates[0]['dembraneBridge.lastError'], /503/)
+        assert.strictEqual(sessionRef.updates[0]['dembraneBridge.sentArtifacts.complete_mp4_0.sentAt'], undefined)
+    })
+
 })
