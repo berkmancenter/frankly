@@ -196,6 +196,9 @@
     "firebase/functions/lib/events/live_meetings/update_presence_status.dart": [
       "UpdatePresenceStatus"
     ],
+    "firebase/functions/lib/events/live_meetings/cleanup_stale_participants.dart": [
+      "CleanupStaleParticipants"
+    ],
     "firebase/functions/lib/events/live_meetings/mux_webhooks.dart": [
       "MuxWebhooks"
     ],
