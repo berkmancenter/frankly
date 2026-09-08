@@ -16,7 +16,7 @@ var Membership;
     Membership["nonmember"] = "nonmember";
     Membership["member"] = "member";
     Membership["facilitator"] = "facilitator";
-    Membership["mod"] = "mod";
+    Membership["mod"] = "moderator";
     Membership["admin"] = "admin";
     Membership["owner"] = "owner";
 })(Membership || (exports.Membership = Membership = {}));

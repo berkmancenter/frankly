@@ -19,17 +19,25 @@ class CreateLiveStream extends OnCallMethod<CreateLiveStreamRequest> {
     CreateLiveStreamRequest request,
     CallableContext context,
   ) async {
+    if (context.authUid == null) {
+      throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
+    }
+
     final membershipDoc =
         'memberships/${context.authUid}/community-membership/${request.communityId}';
     final communityMembershipDoc =
         await firestore.document(membershipDoc).get();
 
+    if (!communityMembershipDoc.exists) {
+      throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
+    }
+
     final membership = Membership.fromJson(
       firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
 
-    if (!membership.isAdmin) {
-      print('member not admin: $membershipDoc');
+    if (!membership.isMod) {
+      print('member not moderator: $membershipDoc');
       throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
     }
 
