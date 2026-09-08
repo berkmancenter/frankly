@@ -1,3 +1,4 @@
+import 'package:data_models/user_input/word_cloud_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:client/services.dart';
@@ -85,27 +86,48 @@ class FirestoreMeetingGuideService {
     required String userId,
     required String liveMeetingPath,
     required String response,
+    required String prompt,
   }) async {
-    final documentPath =
-        '$liveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/$userId';
-
-    final meetingId = liveMeetingPath.split('/').last;
-
-    await firestoreDatabase.firestore.doc(documentPath).set(
-          jsonSubset([
-            ParticipantAgendaItemDetails.kFieldUserId,
-            ParticipantAgendaItemDetails.kFieldAgendaItemId,
-            ParticipantAgendaItemDetails.kFieldMeetingId,
-            ParticipantAgendaItemDetails.kFieldWordCloudResponses,
-          ], <String, dynamic>{
-            ParticipantAgendaItemDetails.kFieldUserId: userId,
-            ParticipantAgendaItemDetails.kFieldAgendaItemId: agendaItemId,
-            ParticipantAgendaItemDetails.kFieldMeetingId: meetingId,
-            ParticipantAgendaItemDetails.kFieldWordCloudResponses:
-                FieldValue.arrayUnion([response]),
-          }),
-          SetOptions(merge: true),
-        );
+    final ref = firestoreDatabase.firestore.doc(
+      _getAgendaItemsDocumentPath(
+        liveMeetingPath: liveMeetingPath,
+        agendaItemId: agendaItemId,
+        userId: userId,
+      ),
+    );
+    final entry = WordCloudData(
+      userId: userId,
+      agendaItemId: agendaItemId,
+      roomId: liveMeetingPath.split('/').last,
+      prompt: prompt,
+      message: response,
+      createdDate: clockService.now(),
+    );
+    await firestoreDatabase.firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(ref);
+      final details = ParticipantAgendaItemDetails.fromJson(
+        fromFirestoreJson(snapshot.data() ?? {}),
+      );
+      // Preserve the existing one-copy-per-word behavior and submission time.
+      if (details.wordCloudResponses.contains(response)) return;
+      transaction.set(
+        ref,
+        {
+          ParticipantAgendaItemDetails.kFieldUserId: userId,
+          ParticipantAgendaItemDetails.kFieldAgendaItemId: agendaItemId,
+          ParticipantAgendaItemDetails.kFieldMeetingId: entry.roomId,
+          ParticipantAgendaItemDetails.kFieldWordCloudResponses: [
+            ...details.wordCloudResponses,
+            response,
+          ],
+          ParticipantAgendaItemDetails.kFieldWordCloudEntries: [
+            ...details.wordCloudEntries,
+            entry,
+          ].map((e) => e.toJson()).toList(),
+        },
+        SetOptions(merge: true),
+      );
+    });
   }
 
   Future<void> removeWordCloudResponse({
@@ -114,25 +136,31 @@ class FirestoreMeetingGuideService {
     required String liveMeetingPath,
     required String response,
   }) async {
-    final documentPath = _getAgendaItemsDocumentPath(
-      liveMeetingPath: liveMeetingPath,
-      agendaItemId: agendaItemId,
-      userId: userId,
+    final ref = firestoreDatabase.firestore.doc(
+      _getAgendaItemsDocumentPath(
+        liveMeetingPath: liveMeetingPath,
+        agendaItemId: agendaItemId,
+        userId: userId,
+      ),
     );
-
-    await firestoreDatabase.firestore.doc(documentPath).set(
-          jsonSubset([
-            ParticipantAgendaItemDetails.kFieldUserId,
-            ParticipantAgendaItemDetails.kFieldAgendaItemId,
-            ParticipantAgendaItemDetails.kFieldWordCloudResponses,
-          ], <String, dynamic>{
-            ParticipantAgendaItemDetails.kFieldUserId: userId,
-            ParticipantAgendaItemDetails.kFieldAgendaItemId: agendaItemId,
-            ParticipantAgendaItemDetails.kFieldWordCloudResponses:
-                FieldValue.arrayRemove([response]),
-          }),
-          SetOptions(merge: true),
-        );
+    await firestoreDatabase.firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(ref);
+      if (!snapshot.exists) return;
+      final details = ParticipantAgendaItemDetails.fromJson(
+        fromFirestoreJson(snapshot.data()!),
+      );
+      transaction.update(ref, {
+        ParticipantAgendaItemDetails.kFieldWordCloudResponses: details
+            .wordCloudResponses
+            .where((word) => word != response)
+            .toList(),
+        ParticipantAgendaItemDetails.kFieldWordCloudEntries: details
+            .wordCloudEntries
+            .where((entry) => entry.message != response)
+            .map((entry) => entry.toJson())
+            .toList(),
+      });
+    });
   }
 
   Future<void> addUserSuggestion({
