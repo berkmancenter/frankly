@@ -938,23 +938,37 @@ class SmartMatchApiResult {
 
 /// Builds the request payload for the hosted Frankly Match API.
 ///
-/// If any participant has a free-text response, the request uses the
-/// `textGroupMatch` algorithm and omits `binaryAnswerMask` entirely (it is
-/// not required/used by textGroupMatch). Otherwise it uses `binaryGroupMatch`
-/// and sends only `binaryAnswerMask`, as before.
+/// If at least three participant's have a free-text response, the request uses the
+/// `textGroupMatch` algorithm. Otherwise, if binary questions are present and answered,
+/// it uses `binaryGroupMatch` and sends only `binaryAnswerMask`.
 @visibleForTesting
 Map<String, dynamic> buildFranklyMatchApiPayload({
   required Map<String, String> participantSurveyResponsesLookup,
   required Map<String, String> participantFreeTextResponsesLookup,
   required int targetParticipantsPerRoom,
 }) {
-  final useTextGroupMatch = participantFreeTextResponsesLookup.isNotEmpty;
+  // Sanity check: also ensure no empty free-text responses when using text group match
+  final useTextGroupMatch = participantFreeTextResponsesLookup.length >= 3 &&
+      participantFreeTextResponsesLookup.values
+          .every((response) => response.isNotEmpty);
   final participantIds = {
     ...participantSurveyResponsesLookup.keys,
     ...participantFreeTextResponsesLookup.keys,
   };
+  String? algorithm;
+
+  if (useTextGroupMatch) {
+    algorithm = 'textGroupMatch';
+  } else if (participantSurveyResponsesLookup.isNotEmpty) {
+    algorithm = 'binaryGroupMatch';
+  } else {
+    throw Exception(
+      'No suitable algorithm found for the given participant responses.',
+    );
+  }
+
   return {
-    'algorithm': useTextGroupMatch ? 'textGroupMatch' : 'binaryGroupMatch',
+    'algorithm': algorithm,
     'targetGroupSize': targetParticipantsPerRoom,
     'participants': {
       for (final id in participantIds)
