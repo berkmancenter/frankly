@@ -9,8 +9,8 @@ import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
-import 'package:provider/src/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:provider/provider.dart';
 
 /// This is a list indicating the number of users registered for an event.
 /// The profile icons are arranged in a stack next to text with a description
@@ -135,7 +135,9 @@ class _ParticipantsListState extends State<ParticipantsList> {
 
   Widget _buildParticipantCount() {
     final regCount = widget.registrationCount;
-    if (widget.event.useParticipantCountEstimate && regCount != null && regCount > 0) {
+    if (widget.event.useParticipantCountEstimate &&
+        regCount != null &&
+        regCount > 0) {
       return HeightConstrainedText(
         context.l10n.registrationCountLabel(regCount),
         style: context.theme.textTheme.bodyMedium!
@@ -150,8 +152,15 @@ class _ParticipantsListState extends State<ParticipantsList> {
     }
 
     if (_participantCount == 1 &&
-        !isParticipant) {
+        !isParticipant &&
+        widget.participantIds.isNotEmpty) {
       return _buildSingleParticipantName();
+    } else if (_participantCount == 1 && !isParticipant) {
+      return HeightConstrainedText(
+        '1 ${context.l10n.person}',
+        style: context.theme.textTheme.bodyMedium!
+            .copyWith(color: context.theme.colorScheme.onSurface),
+      );
     } else {
       final String text;
 
@@ -161,7 +170,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
       } else if (_participantCount > widget.numberOfIconsToShow) {
         text = '+${_participantCount - widget.numberOfIconsToShow}';
       } else if (_participantCount > 1) {
-        text = '$_participantCount People';
+        text = '$_participantCount ${context.l10n.people}';
       } else {
         text = '';
       }
@@ -180,7 +189,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
           bool showName = !loading && name != null;
 
           return HeightConstrainedText(
-            showName ? name : '1 person',
+            showName ? name : '1 ${context.l10n.person}',
             style: context.theme.textTheme.bodyMedium!
                 .copyWith(color: context.theme.colorScheme.onSurface),
           );
