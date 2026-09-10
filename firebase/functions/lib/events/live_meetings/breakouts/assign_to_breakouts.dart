@@ -938,9 +938,9 @@ class SmartMatchApiResult {
 
 /// Builds the request payload for the hosted Frankly Match API.
 ///
-/// If at least three participant's have a free-text response, the request uses the
-/// `textGroupMatch` algorithm. Otherwise, if binary questions are present and answered,
-/// it uses `binaryGroupMatch` and sends only `binaryAnswerMask`.
+/// If at least three participants have a non-empty free-text response, the request uses
+/// the `textGroupMatch` algorithm and omits all `binaryAnswerMask` fields. Otherwise,
+/// it uses `binaryGroupMatch` and includes `binaryAnswerMask` (and `freeTextResponse` when available).
 @visibleForTesting
 Map<String, dynamic> buildFranklyMatchApiPayload({
   required Map<String, String> participantSurveyResponsesLookup,
