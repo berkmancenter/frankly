@@ -1,3 +1,4 @@
+import 'package:functions/events/live_meetings/get_meeting_word_cloud_data.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
@@ -93,6 +94,7 @@ final _onCallFunctions = <CloudFunction>[
   GetCommunityPrePostEnabled(),
   GetMeetingChatSuggestionData(),
   GetMeetingPollData(),
+  GetMeetingWordCloudData(),
   GetMeetingJoinInfo(),
   GetMembersData(),
   GetServerTimestamp(),
