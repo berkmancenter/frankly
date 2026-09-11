@@ -60,7 +60,7 @@ class Event with _$Event implements SerializeableRequest {
 
   static const int defaultMinParticipants = 0;
   static const int defaultMaxParticipants = 8;
-  static const int defaultMaxParticipantsInHostlessEvent = 10000;
+  static const int defaultMaxParticipantsInHostlessEvent = 1000;
 
   Event._();
 
