@@ -169,6 +169,14 @@ class Event with _$Event implements SerializeableRequest {
 
   bool get isHosted => eventType == EventType.hosted;
 
+  /// The maxParticipants value to use, falling back to a per-type default
+  /// when the field itself hasn't been set.
+  int get effectiveMaxParticipants =>
+      maxParticipants ??
+      (eventType == EventType.hostless
+          ? defaultMaxParticipantsInHostlessEvent
+          : defaultMaxParticipants);
+
   bool get hasPreEventData => preEventCardData?.hasData ?? false;
 
   bool get hasPostEventData => postEventCardData?.hasData ?? false;
