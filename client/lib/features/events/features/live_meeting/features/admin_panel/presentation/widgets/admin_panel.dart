@@ -213,7 +213,9 @@ class _AdminPanelState extends State<AdminPanel> {
         ActionButton(
           expand: true,
           text: context.l10n.muteAll,
-          onPressed: () => _providerRead.muteAllParticipants(),
+          onPressed: _provider.meetingProviderParticipants == null
+              ? null
+              : () => _providerRead.muteAllParticipants(),
         ),
         Expanded(
           child: ListView(
