@@ -49,6 +49,7 @@ class AgoraUtils {
     required String eventId,
     required String communityId,
     required RecordingRoomType roomType,
+    String? dembraneProjectId,
     String? breakoutSessionId,
     String? chatPath,
     List<String> participantIds = const [],
@@ -59,39 +60,46 @@ class AgoraUtils {
         '$eventId/${breakoutSessionId ?? 'main'}/$roomId/$sessionId';
 
     // Write session document before any Agora calls so callers can recover on failure.
-    await sessionRef.setData(DocumentData.fromMap(
-      firestoreUtils.toFirestoreJson(
-        RecordingSession(
-          sessionId: sessionId,
-          communityId: communityId,
-          eventId: eventId,
-          roomId: roomId,
-          roomType: roomType,
-          status: RecordingSessionStatus.starting,
-          gcsPrefix: gcsPrefix,
-          chatPath: chatPath,
-          participantIds: participantIds,
-          breakoutSessionId: breakoutSessionId,
-        ).toJson(),
+    await sessionRef.setData(
+      DocumentData.fromMap(
+        firestoreUtils.toFirestoreJson(
+          RecordingSession(
+            sessionId: sessionId,
+            communityId: communityId,
+            eventId: eventId,
+            roomId: roomId,
+            roomType: roomType,
+            status: RecordingSessionStatus.starting,
+            dembraneProjectId: dembraneProjectId,
+            gcsPrefix: gcsPrefix,
+            chatPath: chatPath,
+            participantIds: participantIds,
+            breakoutSessionId: breakoutSessionId,
+          ).toJson(),
+        ),
       ),
-    ),);
+    );
 
     print(
-        'recording_start: sessionId=$sessionId roomId=$roomId eventId=$eventId roomType=${roomType.name} breakoutSessionId=$breakoutSessionId',);
+      'recording_start: sessionId=$sessionId roomId=$roomId eventId=$eventId roomType=${roomType.name} breakoutSessionId=$breakoutSessionId',
+    );
 
     String resourceId;
     try {
       resourceId = await _acquireResourceId(roomId: roomId);
       print(
-          'recording_acquired: sessionId=$sessionId roomId=$roomId resourceId=$resourceId',);
+        'recording_acquired: sessionId=$sessionId roomId=$roomId resourceId=$resourceId',
+      );
     } catch (e) {
       print('Agora acquire failed for room $roomId: $e');
-      await sessionRef.updateData(UpdateData.fromMap(
-        firestoreUtils.toFirestoreJson({
-          RecordingSession.kFieldStatus: RecordingSessionStatus.failed.name,
-          'errorMessage': e.toString(),
-        }),
-      ),);
+      await sessionRef.updateData(
+        UpdateData.fromMap(
+          firestoreUtils.toFirestoreJson({
+            RecordingSession.kFieldStatus: RecordingSessionStatus.failed.name,
+            'errorMessage': e.toString(),
+          }),
+        ),
+      );
       return;
     }
 
@@ -111,19 +119,24 @@ class AgoraUtils {
         fileNamePrefixSegments: prefixSegments,
       );
       print(
-          'recording_started: sessionId=$sessionId roomId=$roomId resourceId=$resourceId sid=$sid gcsPrefix=$gcsPrefix',);
-      await sessionRef.updateData(UpdateData.fromMap({
-        'agoraSid': sid,
-        RecordingSession.kFieldStatus: RecordingSessionStatus.recording.name,
-      }),);
+        'recording_started: sessionId=$sessionId roomId=$roomId resourceId=$resourceId sid=$sid gcsPrefix=$gcsPrefix',
+      );
+      await sessionRef.updateData(
+        UpdateData.fromMap({
+          'agoraSid': sid,
+          RecordingSession.kFieldStatus: RecordingSessionStatus.recording.name,
+        }),
+      );
     } catch (e) {
       print('Agora start failed for room $roomId: $e');
-      await sessionRef.updateData(UpdateData.fromMap(
-        firestoreUtils.toFirestoreJson({
-          RecordingSession.kFieldStatus: RecordingSessionStatus.failed.name,
-          'errorMessage': e.toString(),
-        }),
-      ),);
+      await sessionRef.updateData(
+        UpdateData.fromMap(
+          firestoreUtils.toFirestoreJson({
+            RecordingSession.kFieldStatus: RecordingSessionStatus.failed.name,
+            'errorMessage': e.toString(),
+          }),
+        ),
+      );
     }
   }
 
@@ -171,12 +184,14 @@ class AgoraUtils {
       }
     }
 
-    await sessionRef.updateData(UpdateData.fromMap(
-      firestoreUtils.toFirestoreJson({
-        RecordingSession.kFieldStatus: RecordingSessionStatus.stopped.name,
-        'stoppedAt': serverTimestampValue,
-      }),
-    ),);
+    await sessionRef.updateData(
+      UpdateData.fromMap(
+        firestoreUtils.toFirestoreJson({
+          RecordingSession.kFieldStatus: RecordingSessionStatus.stopped.name,
+          'stoppedAt': serverTimestampValue,
+        }),
+      ),
+    );
   }
 
   Map<String, String> _getAuthHeaders() {
@@ -208,7 +223,10 @@ class AgoraUtils {
     print('Acquire response (${result.statusCode}): ${result.body}');
     if (result.statusCode < 200 || result.statusCode > 299) {
       throw HttpsError(
-          HttpsError.internal, 'Acquire failed: ${result.body}', null,);
+        HttpsError.internal,
+        'Acquire failed: ${result.body}',
+        null,
+      );
     }
     return convert.jsonDecode(result.body)['resourceId'] as String;
   }
@@ -264,7 +282,10 @@ class AgoraUtils {
 
     if (result.statusCode < 200 || result.statusCode > 299) {
       throw HttpsError(
-          HttpsError.internal, 'Start failed: ${result.body}', null,);
+        HttpsError.internal,
+        'Start failed: ${result.body}',
+        null,
+      );
     }
 
     return convert.jsonDecode(result.body)['sid'] as String;

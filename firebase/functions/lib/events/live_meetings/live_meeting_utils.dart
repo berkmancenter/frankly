@@ -16,6 +16,7 @@ class PendingRecording {
   final String sessionId;
   final String eventId;
   final String communityId;
+  final String? dembraneProjectId;
   final RecordingRoomType roomType;
   final String chatPath;
   final List<String> participantIds;
@@ -25,6 +26,7 @@ class PendingRecording {
     required this.sessionId,
     required this.eventId,
     required this.communityId,
+    required this.dembraneProjectId,
     required this.roomType,
     required this.chatPath,
     required this.participantIds,
@@ -48,7 +50,9 @@ class MeetingJoinResult {
 }
 
 class LiveMeetingUtils {
-  bool _shouldRecord(Event event) => event.eventSettings?.alwaysRecord ?? false;
+  bool _shouldRecord(Event event) =>
+      (event.eventSettings?.alwaysRecord ?? false) ||
+      (dembraneEnabled && event.hasDembraneProjectLink);
   bool _shouldTranscribe(Event event) =>
       event.eventSettings?.alwaysTranscribe ?? false;
   AgoraUtils agoraUtils;
@@ -126,6 +130,7 @@ class LiveMeetingUtils {
         sessionId: newSessionId,
         eventId: event.id,
         communityId: communityId,
+        dembraneProjectId: dembraneEnabled ? event.dembraneProjectId : null,
         roomType: RecordingRoomType.main,
         chatPath: chatPath,
         participantIds: participantIds,
@@ -156,6 +161,7 @@ class LiveMeetingUtils {
     required String meetingId,
     required String userId,
     required bool record,
+    required String? dembraneProjectId,
     required String? existingRecordingSessionId,
     required List<String> participantIds,
   }) async {
@@ -169,6 +175,7 @@ class LiveMeetingUtils {
         breakoutSessionId: breakoutSessionId,
         breakoutRoomPath: breakoutRoomPath,
         meetingId: meetingId,
+        dembraneProjectId: dembraneProjectId,
         participantIds: participantIds,
       );
     } else if (record && existingRecordingSessionId != null) {
@@ -192,6 +199,7 @@ class LiveMeetingUtils {
             breakoutSessionId: breakoutSessionId,
             breakoutRoomPath: breakoutRoomPath,
             meetingId: meetingId,
+            dembraneProjectId: dembraneProjectId,
             participantIds: participantIds,
           );
         }
@@ -211,6 +219,7 @@ class LiveMeetingUtils {
     required String breakoutSessionId,
     required String breakoutRoomPath,
     required String meetingId,
+    required String? dembraneProjectId,
     required List<String> participantIds,
   }) async {
     final newSessionId = firestore
@@ -231,6 +240,7 @@ class LiveMeetingUtils {
       eventId: eventId,
       communityId: communityId,
       roomType: RecordingRoomType.breakout,
+      dembraneProjectId: dembraneProjectId,
       breakoutSessionId: breakoutSessionId,
       chatPath: chatPath,
       participantIds: participantIds,
@@ -253,21 +263,23 @@ class LiveMeetingUtils {
     await firestore
         .collection(RecordingSession.kCollection)
         .document(pending.sessionId)
-        .setData(DocumentData.fromMap(
-          firestoreUtils.toFirestoreJson(
-            RecordingSession(
-              sessionId: pending.sessionId,
-              communityId: pending.communityId,
-              eventId: pending.eventId,
-              roomId: pending.roomId,
-              roomType: pending.roomType,
-              status: RecordingSessionStatus.starting,
-              gcsPrefix: gcsPrefix,
-              chatPath: pending.chatPath,
-              participantIds: pending.participantIds,
-            ).toJson(),
+        .setData(
+          DocumentData.fromMap(
+            firestoreUtils.toFirestoreJson(
+              RecordingSession(
+                sessionId: pending.sessionId,
+                communityId: pending.communityId,
+                eventId: pending.eventId,
+                roomId: pending.roomId,
+                roomType: pending.roomType,
+                status: RecordingSessionStatus.starting,
+                gcsPrefix: gcsPrefix,
+                chatPath: pending.chatPath,
+                participantIds: pending.participantIds,
+              ).toJson(),
+            ),
           ),
-        ),);
+        );
   }
 
   Future<void> startTranscription({

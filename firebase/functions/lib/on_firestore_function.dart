@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
+    as functions_interop show functions;
+import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     show EventContext, Change, FirebaseFunctions, RuntimeOptions;
 import 'utils/infra/firestore_event_function.dart';
 import 'utils/infra/on_firestore_helper.dart';
@@ -149,20 +151,20 @@ abstract class OnFirestoreFunction<T extends SerializeableRequest>
   }
 
   @override
-  void register(FirebaseFunctions functions) {
+  void register(FirebaseFunctions targetFunctions) {
     for (var data in appFirestoreFunctionData) {
       final functionName = data.functionName;
       final eventType = data.firestoreEventType;
 
       switch (eventType) {
         case FirestoreEventType.onCreate:
-          functions[functionName] = functions
+          targetFunctions[functionName] = targetFunctions
               .runWith(
                 RuntimeOptions(
                   timeoutSeconds: 60,
                   memory: '1GB',
                   minInstances: int.parse(
-                    functions.config
+                    functions_interop.functions.config
                         .get('functions.on_firestore.min_instances'),
                   ),
                 ),
@@ -175,13 +177,13 @@ abstract class OnFirestoreFunction<T extends SerializeableRequest>
               );
           break;
         case FirestoreEventType.onUpdate:
-          functions[functionName] = functions
+          targetFunctions[functionName] = targetFunctions
               .runWith(
                 RuntimeOptions(
                   timeoutSeconds: 60,
                   memory: '1GB',
                   minInstances: int.parse(
-                    functions.config
+                    functions_interop.functions.config
                         .get('functions.on_firestore.min_instances'),
                   ),
                 ),
@@ -194,13 +196,13 @@ abstract class OnFirestoreFunction<T extends SerializeableRequest>
               );
           break;
         case FirestoreEventType.onWrite:
-          functions[functionName] = functions
+          targetFunctions[functionName] = targetFunctions
               .runWith(
                 RuntimeOptions(
                   timeoutSeconds: 60,
                   memory: '1GB',
                   minInstances: int.parse(
-                    functions.config
+                    functions_interop.functions.config
                         .get('functions.on_firestore.min_instances'),
                   ),
                 ),
@@ -213,13 +215,13 @@ abstract class OnFirestoreFunction<T extends SerializeableRequest>
               );
           break;
         case FirestoreEventType.onDelete:
-          functions[functionName] = functions
+          targetFunctions[functionName] = targetFunctions
               .runWith(
                 RuntimeOptions(
                   timeoutSeconds: 60,
                   memory: '1GB',
                   minInstances: int.parse(
-                    functions.config
+                    functions_interop.functions.config
                         .get('functions.on_firestore.min_instances'),
                   ),
                 ),

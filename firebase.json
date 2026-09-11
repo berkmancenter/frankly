@@ -33,7 +33,7 @@
         ]
       }
     ],
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "index.html"],
     "redirects": [
       {
         "regex": "/home/community/(.*)",

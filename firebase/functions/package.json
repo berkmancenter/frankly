@@ -7,13 +7,14 @@
     "emulators:stop": "chmod +x ./emulators-stop.sh && ./emulators-stop.sh",
     "emulators:reset": "chmod +x ./emulators-stop.sh ./emulators-start.sh && (./emulators-stop.sh || true) && ./emulators-start.sh",
     "test": "dart test --concurrency=1",
+    "test:js": "node --test test/function-region.test.js && mocha \"test-js/**/*.test.js\"",
     "postinstall": "patch-package",
     "lint": "npx eslint@8"
   },
   "engines": {
     "node": "20"
   },
-  "main": "build/node/main.dart.js",
+  "main": "index.js",
   "dependencies": {
     "@google-cloud/firestore": "^4.15.1",
     "@google-cloud/tasks": "^2.4.2",

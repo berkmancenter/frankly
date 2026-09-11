@@ -1,6 +1,7 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const cors = require('cors')({ origin: true })
+const { regionalFunctions } = require('./function-region')
 
 const firestore = admin.firestore()
 
@@ -13,7 +14,7 @@ const signedUrlExpiration = 15 * 60 * 1000
 // Expected path shape: community/{id}/templates/{id}/events/{id}
 const eventPathRegex = /^community\/[^\/]+\/templates\/[^\/]+\/events\/[^\/]+$/
 
-const downloadRecording = functions.https.onRequest((req, res) => {
+const downloadRecording = regionalFunctions().https.onRequest((req, res) => {
     cors(req, res, async () => {
         try {
             const authToken = req.headers.authorization?.split('Bearer ')[1]

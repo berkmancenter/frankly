@@ -1,10 +1,10 @@
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -12,8 +12,8 @@ import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/events/features/edit_event/presentation/widgets/app_radio_list_tile.dart';
 import 'package:client/core/widgets/custom_switch_tile.dart';
 import 'package:client/features/events/presentation/widgets/event_participants_list.dart';
+import 'package:client/features/events/presentation/widgets/dembrane_project_link_section.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
@@ -121,6 +121,8 @@ class EditEventDrawerState extends State<EditEventDrawer>
               SizedBox(height: 20),
               _buildDescriptionSection(),
               SizedBox(height: 20),
+              if (Environment.dembraneEnabled) _buildDembraneProjectSection(),
+              SizedBox(height: 20),
               _buildIsPublicSection(),
               SizedBox(height: 20),
               _buildDateSection(),
@@ -215,6 +217,13 @@ class EditEventDrawerState extends State<EditEventDrawer>
       labelText: context.l10n.description,
       initialValue: _model.event.description,
       onChanged: (value) => _presenter.updateDescription(value),
+    );
+  }
+
+  Widget _buildDembraneProjectSection() {
+    return DembraneProjectLinkSection(
+      projectId: _model.event.dembraneProjectId,
+      onProjectChanged: _presenter.updateDembraneProjectId,
     );
   }
 
@@ -403,24 +412,6 @@ class EditEventDrawerState extends State<EditEventDrawer>
               alertOnError(context, () => _presenter.cancelEvent()),
         ),
       ],
-    );
-  }
-
-  Widget _buildCopyable({required BuildContext context, required String text}) {
-    return CustomInkWell(
-      onTap: () {
-        Clipboard.setData(ClipboardData(text: text));
-        showRegularToast(
-          context,
-          'Copied to clipboard!',
-          toastType: ToastType.success,
-        );
-      },
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 4),
-        child: Icon(Icons.copy, size: 20),
-      ),
     );
   }
 }

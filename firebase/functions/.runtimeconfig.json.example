@@ -1,5 +1,7 @@
 {
   "functions": {
+    "region": "us-central1",
+    "cloud_tasks_region": "us-east4",
     "on_firestore": {
       "min_instances": "0"
     },
@@ -40,6 +42,11 @@
   "frankly_match": {
     "api_url": "<value>",
     "api_key": "<value>"
+  },
+  "dembrane": {
+    "enabled": "false",
+    "bridge_url": "https://frankly-dembrane-bridge.example.com",
+    "bridge_token": "<value>"
   },
   "ics": {
     "prod_id": "Frankly"

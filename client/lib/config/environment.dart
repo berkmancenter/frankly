@@ -1,4 +1,6 @@
 class Environment {
+  static const dembraneEnabled = bool.fromEnvironment('DEMBRANE_ENABLED');
+
   // Firebase connection properties
   static const firebaseApiKey =
       String.fromEnvironment('FIREBASE_API_KEY', defaultValue: 'any');
@@ -20,10 +22,14 @@ class Environment {
       String.fromEnvironment('FIREBASE_STORAGE_BUCKET', defaultValue: 'any');
   static const firebaseMeasurementId =
       String.fromEnvironment('FIREBASE_MEASUREMENT_ID', defaultValue: 'any');
+  static const functionsRegion = String.fromEnvironment(
+    'FUNCTIONS_REGION',
+    defaultValue: 'us-central1',
+  );
   static String get functionsUrlPrefix {
     const explicit = String.fromEnvironment('FUNCTIONS_URL_PREFIX');
     if (explicit.isNotEmpty) return explicit;
-    return 'http://127.0.0.1:5001/$firebaseProjectId/us-central1';
+    return 'http://127.0.0.1:5001/$firebaseProjectId/$functionsRegion';
   }
 
   static const agoraAppId = String.fromEnvironment('AGORA_APP_ID');

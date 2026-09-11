@@ -339,6 +339,8 @@ class AssignToBreakouts {
     }
     profile('total matches: ${prematches.length + allMatches.length}');
 
+    final alwaysRecord = (event.eventSettings?.alwaysRecord ?? false) ||
+        (dembraneEnabled && event.hasDembraneProjectLink);
     final breakoutMatchIdsToRecord = event.breakoutMatchIdsToRecord.toSet();
     final prematchEntries = prematches.entries.toList();
 
@@ -353,7 +355,7 @@ class AssignToBreakouts {
           participantIds: prematchEntries[i].value.map((p) => p.id).toList(),
           originalParticipantIdsAssignment:
               prematchEntries[i].value.map((p) => p.id).toList(),
-          record: (event.eventSettings?.alwaysRecord ?? false) ||
+          record: alwaysRecord ||
               breakoutMatchIdsToRecord.contains(prematchEntries[i].key),
         ),
       for (var j = 0; j < allMatches.length; j++)
@@ -364,7 +366,7 @@ class AssignToBreakouts {
           orderingPriority: j + i,
           participantIds: allMatches[j].participantIds,
           originalParticipantIdsAssignment: allMatches[j].participantIds,
-          record: event.eventSettings?.alwaysRecord ?? false,
+          record: alwaysRecord,
           diffusionStatement: diffusionStatementsByGroupId[allMatches[j].id],
         ),
     ];
@@ -649,7 +651,8 @@ class AssignToBreakouts {
         breakoutRoomsSessionDoc.collection('breakout-rooms');
 
     List<BreakoutRoom> breakoutRooms;
-    final alwaysRecord = event.eventSettings?.alwaysRecord ?? false;
+    final alwaysRecord = (event.eventSettings?.alwaysRecord ?? false) ||
+        (dembraneEnabled && event.hasDembraneProjectLink);
 
     if (assignmentMethod == BreakoutAssignmentMethod.targetPerRoom) {
       breakoutRooms = await _assignBreakoutsBasedOnTargetSize(
@@ -780,6 +783,7 @@ class AssignToBreakouts {
             eventId: event.id,
             communityId: event.communityId,
             roomType: RecordingRoomType.breakout,
+            dembraneProjectId: dembraneEnabled ? event.dembraneProjectId : null,
             breakoutSessionId: breakoutSessionId,
             chatPath: '$roomPath/chats/community_chat/messages',
             participantIds: room.participantIds,

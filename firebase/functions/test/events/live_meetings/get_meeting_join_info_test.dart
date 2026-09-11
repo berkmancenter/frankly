@@ -1,4 +1,5 @@
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/live_meeting_utils.dart';
 import 'package:get_it/get_it.dart';
@@ -23,6 +24,10 @@ void main() {
   final communityUtils = CommunityTestUtils();
   final liveMeetingTestUtils = LiveMeetingTestUtils();
   setupTestFixture();
+
+  setUpAll(() {
+    registerFallbackValue(<String>[]);
+  });
 
   setUp(() async {
     communityId = await communityUtils.createTestCommunity();
@@ -140,5 +145,88 @@ void main() {
         ),
       ),
     );
+  });
+
+  test('Dembrane-linked event records with the linked project id', () async {
+    var event = Event(
+      id: '91011',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: userId,
+      nullableEventType: EventType.hosted,
+      collectionPath: '',
+      dembraneProjectId: 'project-123',
+      agendaItems: [
+        AgendaItem(
+          id: '555',
+          title: 'Test Agenda',
+          content: 'Test Content',
+        ),
+      ],
+    );
+    event = await eventUtils.createEvent(
+      event: event,
+      userId: userId,
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.addPublicUser(
+      publicUser: PublicUserInfo(
+        id: userId,
+        displayName: 'Test User',
+        agoraId: 123,
+        imageUrl: 'http://example.com/image.jpg',
+      ),
+    );
+
+    final agoraUtils = MockAgoraUtils();
+    when(
+      () => agoraUtils.createToken(
+        uid: liveMeetingTestUtils.uidToInt(userId),
+        roomId: event.id,
+      ),
+    ).thenReturn('fakeToken');
+    when(
+      () => agoraUtils.recordRoom(
+        roomId: event.id,
+        sessionId: any(named: 'sessionId'),
+        eventId: event.id,
+        communityId: communityId,
+        roomType: RecordingRoomType.main,
+        dembraneProjectId: 'project-123',
+        chatPath: any(named: 'chatPath'),
+        participantIds: any(named: 'participantIds'),
+      ),
+    ).thenAnswer((_) async {});
+
+    final getMeetingJoinInfo = GetMeetingJoinInfo(
+      liveMeetingUtils: LiveMeetingUtils(agoraUtils: agoraUtils),
+    );
+
+    await getMeetingJoinInfo.action(
+      GetMeetingJoinInfoRequest(eventPath: event.fullPath),
+      CallableContext(userId, null, 'fakeInstanceId'),
+    );
+
+    verify(
+      () => agoraUtils.recordRoom(
+        roomId: event.id,
+        sessionId: any(named: 'sessionId'),
+        eventId: event.id,
+        communityId: communityId,
+        roomType: RecordingRoomType.main,
+        dembraneProjectId: 'project-123',
+        chatPath: any(named: 'chatPath'),
+        participantIds: any(named: 'participantIds'),
+      ),
+    ).called(1);
   });
 }

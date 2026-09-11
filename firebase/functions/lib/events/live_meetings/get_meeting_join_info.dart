@@ -87,6 +87,7 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
           eventId: pending.eventId,
           communityId: pending.communityId,
           roomType: pending.roomType,
+          dembraneProjectId: pending.dembraneProjectId,
           chatPath: pending.chatPath,
           participantIds: pending.participantIds,
         );

@@ -25,6 +25,7 @@ class RecordingSession with _$RecordingSession {
   static const String kFieldRoomId = 'roomId';
   static const String kFieldEventId = 'eventId';
   static const String kFieldCommunityId = 'communityId';
+  static const String kFieldDembraneProjectId = 'dembraneProjectId';
   static const String kArtifactMp4 = 'complete_mp4';
   static const String kArtifactTranscript = 'transcript_json';
 
@@ -43,6 +44,7 @@ class RecordingSession with _$RecordingSession {
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
     DateTime? stoppedAt,
     String? breakoutSessionId,
+    String? dembraneProjectId,
     String? agoraResourceId,
     String? agoraSid,
     String? agoraRttAgentId,

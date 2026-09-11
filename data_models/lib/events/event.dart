@@ -57,6 +57,7 @@ class Event with _$Event implements SerializeableRequest {
   static const String kDurationInMinutes = 'durationInMinutes';
   static const String kFieldEventSettings = 'eventSettings';
   static const String kFieldCommunityId = 'communityId';
+  static const String kFieldDembraneProjectId = 'dembraneProjectId';
 
   static const int defaultMinParticipants = 0;
   static const int defaultMaxParticipants = 8;
@@ -103,6 +104,9 @@ class Event with _$Event implements SerializeableRequest {
     PrePostCard? postEventCardData,
     EventSettings? eventSettings,
     @Default(60) int durationInMinutes,
+
+    /// Echo/Dembrane project that should receive this event's recording.
+    String? dembraneProjectId,
 
     /// ID used to tie meetings back to external communities
     String? externalCommunityId,
@@ -172,6 +176,9 @@ class Event with _$Event implements SerializeableRequest {
   bool get hasPreEventData => preEventCardData?.hasData ?? false;
 
   bool get hasPostEventData => postEventCardData?.hasData ?? false;
+
+  bool get hasDembraneProjectLink =>
+      dembraneProjectId?.trim().isNotEmpty ?? false;
 
   String get fullPath => '$collectionPath/$id';
 

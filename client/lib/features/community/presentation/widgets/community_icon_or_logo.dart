@@ -1,3 +1,4 @@
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/image_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 /// This widget either shows the app icon or a logo of the selected community, if one is selected.
 class CurrentCommunityIconOrLogo extends StatelessWidget {
@@ -67,6 +69,7 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
       child: SizedBox(
         height: isMobile ? 40 : 80,
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             // App logo
             Semantics(
@@ -79,6 +82,17 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
               ),
             ),
             SizedBox(width: 10),
+            if (Environment.dembraneEnabled)
+              Semantics(
+                label: 'Dembrane logo',
+                child: SvgPicture.asset(
+                  AppAsset.kDembraneLogoSvg.path,
+                  width: isMobile ? 88 : 138,
+                  height: isMobile ? 18 : 28,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            if (Environment.dembraneEnabled) SizedBox(width: 10),
             // TODO: I would prefer to use an SVG asset, but for some reason it looks terrible on web when loaded
             // Fix the SVG logo issue?
             /*    

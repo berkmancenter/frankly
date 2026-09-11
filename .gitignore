@@ -4,3 +4,17 @@ logs/
 docs/output
 *.log
 .local/
+
+# Per-environment config and deployment scratch.  The deploy flow writes
+# .env.<env> and firebase/functions/.runtimeconfig.<env>.json, which hold the
+# Agora app certificate, REST credentials and storage keys.
+.env*
+!.env*.example
+.tmp/
+.firebase/
+.deploy-home/
+*.generated.*
+
+# Firebase extension params; SMTP_CONNECTION_URI embeds SMTP credentials.
+extensions/*.env
+!extensions/*.env.example

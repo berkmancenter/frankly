@@ -1,9 +1,11 @@
+import 'package:client/config/environment.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
 import 'package:client/features/events/features/create_event/presentation/widgets/event_dialog_buttons.dart';
+import 'package:client/features/events/presentation/widgets/dembrane_project_link_section.dart';
 import 'package:client/features/community/presentation/widgets/featured_toggle_button.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
@@ -23,7 +25,7 @@ class SelectVisibilityPage extends StatefulWidget {
   const SelectVisibilityPage();
 
   @override
-  _SelectVisibilityPageState createState() => _SelectVisibilityPageState();
+  State<SelectVisibilityPage> createState() => _SelectVisibilityPageState();
 }
 
 class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
@@ -73,6 +75,15 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
             orientation: OptionsOrientation.vertical,
           ),
         ),
+        if (Environment.dembraneEnabled) SizedBox(height: 20),
+        if (Environment.dembraneEnabled)
+          SizedBox(
+            width: double.infinity,
+            child: DembraneProjectLinkSection(
+              projectId: dialogModel.event.dembraneProjectId,
+              onProjectChanged: dialogModel.updateDembraneProjectId,
+            ),
+          ),
         if (dialogModel.isEdit &&
             Provider.of<CommunityPermissionsProvider>(context)
                 .canEditCommunity) ...[
