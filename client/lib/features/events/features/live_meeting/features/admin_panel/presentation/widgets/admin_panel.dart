@@ -202,7 +202,9 @@ class _AdminPanelState extends State<AdminPanel> {
         ActionButton(
           expand: true,
           text: context.l10n.muteAll,
-          onPressed: () => _providerRead.muteAllParticipants(),
+          onPressed: _provider.meetingProviderParticipants == null
+              ? null
+              : () => _providerRead.muteAllParticipants(),
         ),
         Expanded(
           child: ListView(
@@ -994,11 +996,10 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
             color: context.theme.colorScheme.surfaceContainer,
             textColor: context.theme.colorScheme.onSurface,
             onPressed: () => alertOnError(context, () async {
-                  final liveMeetingProvider =
-                      LiveMeetingProvider.read(context);
-                  final localContext = context;
-                  final ReassignResult? newRoomAssignment =
-                    await ReassignBreakoutRoomDialog(
+              final liveMeetingProvider = LiveMeetingProvider.read(context);
+              final localContext = context;
+              final ReassignResult? newRoomAssignment =
+                  await ReassignBreakoutRoomDialog(
                 outerContext: context,
                 userId: id,
                 currentRoomNumber: [
@@ -1030,7 +1031,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                   confirmText: 'Continue',
                 ).show(context: localContext);
               }
-              }),
+            }),
             text: 'Reassign',
           ),
           if (!local)
