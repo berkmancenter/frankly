@@ -751,7 +751,7 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
     final menuItems = _getMenuItems();
     return Semantics(
       label: context.l10n.participantActionsForUserWithId(
-        widget.providerParticipant?.userId ?? '',
+        widget.kickedUserId,
       ),
       child: CustomInkWell(
         hoverColor: context.theme.colorScheme.scrim.withScrimOpacity,
