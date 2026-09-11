@@ -60,7 +60,7 @@ class Event with _$Event implements SerializeableRequest {
 
   static const int defaultMinParticipants = 0;
   static const int defaultMaxParticipants = 8;
-  static const int defaultMaxParticipantsInHostlessEvent = 10000;
+  static const int defaultMaxParticipantsInHostlessEvent = 1000;
 
   Event._();
 
@@ -168,6 +168,14 @@ class Event with _$Event implements SerializeableRequest {
   bool get isLiveStream => eventType == EventType.livestream;
 
   bool get isHosted => eventType == EventType.hosted;
+
+  /// The maxParticipants value to use, falling back to a per-type default
+  /// when the field itself hasn't been set.
+  int get effectiveMaxParticipants =>
+      maxParticipants ??
+      (eventType == EventType.hostless
+          ? defaultMaxParticipantsInHostlessEvent
+          : defaultMaxParticipants);
 
   bool get hasPreEventData => preEventCardData?.hasData ?? false;
 

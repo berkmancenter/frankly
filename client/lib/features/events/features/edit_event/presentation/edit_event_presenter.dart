@@ -71,8 +71,12 @@ class EditEventPresenter {
   }
 
   void updateEventType(EventType value) {
-    final updatedMaxParticipants =
-        value == EventType.hosted ? getHostedMaxParticipantsForUi() : null;
+    var updatedMaxParticipants = _model.event.maxParticipants;
+    if (value == EventType.hosted && updatedMaxParticipants != null) {
+      updatedMaxParticipants = updatedMaxParticipants
+          .clamp(hostedMinParticipants, hostedMaxParticipants)
+          .toInt();
+    }
 
     _model.event = _model.event.copyWith(
       nullableEventType: value,
@@ -83,9 +87,7 @@ class EditEventPresenter {
   }
 
   int getHostedMaxParticipantsForUi() {
-    final maxParticipants =
-        _model.event.maxParticipants ?? Event.defaultMaxParticipants;
-    return maxParticipants
+    return _model.event.effectiveMaxParticipants
         .clamp(hostedMinParticipants, hostedMaxParticipants)
         .toInt();
   }
