@@ -265,6 +265,16 @@
       }
     }
   },
+  "@participantsReadyToMoveOn": {
+    "placeholders": {
+      "readyCount": {
+        "type": "int"
+      },
+      "participantCount": {
+        "type": "int"
+      }
+    }
+  },
   "@passwordResetLinkSent": {
     "placeholders": {
       "email": {
@@ -379,6 +389,40 @@
       }
     }
   },
+  "@adminEventPagination": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@followCommunityAccess": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "@reassignUser": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "@takeRateDescription": {
+    "placeholders": {
+      "percentage": {
+        "type": "String"
+      }
+    }
+  },
   "about": "Acerca de",
   "aboutHint": "Añade más detalles sobre los objetivos de esta comunidad",
   "aboutMe": "Sobre mí",
@@ -389,6 +433,8 @@
   "addACategory": "Agregar una categoría",
   "addAComment": "Añadir un comentario",
   "addActionLink": "Añadir enlace de acción",
+  "addActionLinksAfter": "Añade enlaces de acción que los participantes deban visitar después del evento",
+  "addActionLinksBefore": "Añade enlaces de acción que los participantes deban visitar antes del evento",
   "addAgendaItem": "Añadir elemento de agenda",
   "addAPrerequisiteTemplate": "Agregar una plantilla de requisito previo",
   "addAQuestion": "Agregar una pregunta",
@@ -406,6 +452,7 @@
   "addTag": "Añadir etiqueta",
   "addToCalendar": "Añadir al calendario",
   "admin": "Administrador",
+  "adminEventPagination": "{start} - {end} de {total}",
   "agendaItemsWereRemoved": "Los elementos de agenda fueron eliminados",
   "adminBilling": "Facturación de administración",
   "agendaItemWasDeleted": "El elemento de agenda fue eliminado",
@@ -457,10 +504,12 @@
   "backgroundColor": "Color de fondo",
   "banned": "Prohibido",
   "basicInformation": "Información básica",
+  "beta": "BETA",
   "billing": "Facturación",
   "brandingAndTheme": "Marca y tema",
   "brandYourSpace": "Marcar tu espacio",
   "breakoutRoomTransitionTimeout": "¡No se pudo encontrar esa sala de grupo! Regresando a la reunión principal.",
+  "breakoutRooms": "Salas de grupos",
   "breakoutUpdated": "¡Sala de grupos actualizada!",
   "breakouts": "Grupos",
   "broadcast": "Transmisión",
@@ -468,6 +517,7 @@
   "bufferTimeDescription": "Aproximadamente {duration} de tiempo de espera antes de que comience el evento",
   "buildCommunitySpace": "Construir tu espacio comunitario",
   "buildYourCommunitySpace": "Construya su espacio de comunidad",
+  "buttonText": "Texto del botón",
   "buttonTextCannotBeEmpty": "El texto del botón no puede estar vacío",
   "byCategory": "Por categoría",
   "bySigningInRegisteringOrUsing": "Al iniciar sesión, registrarse o usar {appName}, acepto estar sujeto a los ",
@@ -523,6 +573,7 @@
   "confirmRemoveAllAgendaItems": "¿Está seguro de que desea eliminar todos los elementos de agenda de las salas de grupos? No podrá deshacer esta acción.",
   "confirmRemoveParticipant": "¿Está seguro de que desea eliminar a {name} de este evento?",
   "congratulations": "¡Felicidades!",
+  "contact": "Contacto",
   "contactEmail": "Correo de contacto",
   "continueAfterVerification": "He Verificado Mi Correo",
   "contactUs": "Contáctanos",
@@ -574,6 +625,10 @@
   "editEvent": "Editar evento",
   "editImage": "Editar imagen",
   "editItem": "Editar elemento",
+  "editingEventNotice": "Estás editando un evento. \n",
+  "editingFutureInstancesNotice": "Si quieres editar las instancias futuras, ",
+  "editTemplate": "Editar plantilla",
+  "editTheTemplate": "edita la plantilla.",
   "email": "Email",
   "emailAddressAlreadyInUse": "Ya ha creado una cuenta vinculada a esta dirección de email. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente.",
   "emailAddressAlreadyInUseLoginError": "Este correo electrónico ya está en uso. Inténtalo ",
@@ -594,9 +649,12 @@
   "enterHeadline": "Introducir título",
   "enterImageTitle": "Introducir título de la imagen",
   "enterMessage": "Ingrese un mensaje",
+  "enterMessageExampleAfter": "Ingrese un mensaje (p. ej., \"Realiza esta encuesta después del evento\")",
+  "enterMessageExampleBefore": "Ingrese un mensaje (p. ej., \"Realiza esta encuesta antes del evento\")",
   "enterQuestionWithNumber": "Ingrese la pregunta {number}",
   "enterRoom": "Entrar a la sala",
   "enterRoomNumber": "Ej: 2",
+  "enterUrl": "Ingrese URL",
   "enterValidCommunityUrl": "Por favor, introduzca una URL de comunidad válida",
   "enterValidName": "Por favor, introduzca un nombre válido",
   "enterValidSocialUrl": "Ingrese una dirección web válida de {platform} que incluya “{url}”",
@@ -640,6 +698,7 @@
   "facebookUrl": "URL de Facebook",
   "facilitator": "Facilitador",
   "fakeParticipantCount": "Recuento de participantes falsos",
+  "featuredTemplatesAndEventsHint": "Las plantillas y eventos destacados aparecerán en la parte superior de la página de inicio.",
   "freeTextRegistrationQuestion": "Pregunta de registro de texto libre",
   "freeTextRegistrationQuestionRequired": "Se requiere que los registrados respondan a esta pregunta",
   "filter": "filtrar",
@@ -648,6 +707,7 @@
   "finishRsvp": "Finalizar RSVP",
   "floatingChat": "Chat Flotante",
   "follow": "Seguir",
+  "followCommunityAccess": "Sigue {communityName} para acceder a todos los eventos y recursos.",
   "followCommunityButton": "Botón seguir comunidad",
   "followerRequest": "Solicitud de seguidor",
   "followRequestSent": "Solicitud de seguimiento enviada",
@@ -687,7 +747,9 @@
   "instagramUrl": "URL de Instagram",
   "instantMeeting": "Reunión instantánea",
   "insteadSuffix": " en cambio.",
+  "interactiveEventsWithTemplates": "Crea rápidamente eventos interactivos usando plantillas. ",
   "introBeforeBreakouts": "Aproximadamente {duration} de introducción antes de las salas de grupos",
+  "introImageVideo": "Imagen/Video de introducción",
   "introductionContent": "_¡Preséntense! Cada uno toma un minuto para responder una de las siguientes preguntas._\n\n* ¿Qué has hecho recientemente que fue muy divertido?\n* ¿Quién es tu personaje de dibujos animados favorito y por qué?\n* ¿Qué es algo que deseas lograr antes de morir?\n* ¿Qué película NO te gustó?\n",
   "introductions": "Introducciones",
   "invalidCharacters": "Caracteres no válidos",
@@ -697,7 +759,9 @@
   "joinEvent": "Unirse al evento",
   "joinNow": "Unirse ahora",
   "jumpTo": "Saltar a",
+  "jumpToRoom": "Ir a la sala",
   "kickOutUser": "¿Expulsar a {displayName}?",
+  "keepItShortHint": "¡Hazlo breve! No querrás que la gente pase tiempo leyendo.",
   "language": "Idioma",
   "languageSelector": "Selector de idioma",
   "lastSession": "Última sesión",
@@ -721,6 +785,8 @@
   "logo": "Logotipo",
   "logout": "Cerrar sesión",
   "loopVideo": "Repetir video",
+  "lowBandwidth": "Poco ancho de banda",
+  "lowBandwidthExplanation": "Intenta apagar tu cámara para disfrutar de una experiencia más fluida",
   "majorityOfParticipants": "La mayoría de los participantes deben estar de acuerdo para avanzar a la siguiente actividad del evento.",
   "majorityOfParticipantsExample": "En este evento, {count} de las {total} personas que participan deben indicar que están listas para continuar antes de comenzar el siguiente elemento.",
   "makeASuggestion": "Hacer una sugerencia",
@@ -735,6 +801,7 @@
   "meetingEndMessage": "Esta reunión ha terminado. Puede cerrar esta ventana.",
   "meetingEndWithFollowMessage": "Esta reunión ha terminado. Puede cerrar esta ventana o visitar {name} para continuar la conversación.",
   "meetingGuideCard": "tarjeta-guía-reunión",
+  "meetingGuideTutorial": "Haz clic aquí cuando\nestés listo para\ncomenzar",
   "member": "Miembro",
   "memberRolesHelpMessage": "Consulte el Centro de ayuda para obtener detalles sobre los permisos por rol.",
   "members": "Miembros",
@@ -763,6 +830,7 @@
   "myResponses": "Mis respuestas",
   "myUpcomingEvents": "Mis próximos eventos",
   "name": "Nombre",
+  "nameHintExample": "p. ej., Jane Doe",
   "needMoreHelp": "¿Necesitas más ayuda? ",
   "newAnnouncement": "Nuevo anuncio",
   "newRoomNumber": "Número de sala nueva:",
@@ -853,12 +921,14 @@
   "participantReassigned": "Participante reasignado",
   "participants": "Participantes",
   "participantsLoadError": "Algo salió mal al cargar los participantes. Por favor, actualice.",
+  "participantsReadyToMoveOn": "{readyCount} de {participantCount} participantes están listos para continuar.",
   "password": "Contraseña",
   "passwordInvalid": "La contraseña no es válida. Haga clic en Olvidé mi contraseña para restablecerla. O regístrese de nuevo con un email diferente.",
   "passwordRequirements": "Debe tener al menos 12 caracteres y contener una letra minúscula y una mayúscula.",
   "passwordResetLinkSent": "Enlace de restablecimiento de contraseña enviado a {email}",
   "pasteOrEnterAUrl": "Pegue o ingrese una URL",
   "pasteOrEnterUrl": "Pegar o ingresar URL",
+  "paymentTerms": "Términos de pago",
   "people": "personas",
   "peopleReady": "personas listas",
   "peopleRequiredToMoveOn": "{count} de {total} personas necesarias para continuar",
@@ -894,6 +964,7 @@
   "preEvent": "Pre-evento",
   "prereqRequired": "Requisito previo necesario",
   "prerequisiteRequired": "Requisito previo requerido",
+  "prerequisiteTemplate": "Plantilla de requisito previo",
   "presets": "Preajustes",
   "pressToPromote": "Presione para promover",
   "preview": "Vista previa",
@@ -923,9 +994,11 @@
   "reactivate": "Reactivar",
   "ready": "Listo",
   "reassign": "Reasignar",
+  "reassignUser": "Reasignar {displayName}",
   "recentRooms": "Salas Recientes",
   "record": "Grabaci\u00f3n",
   "recording": "Grabando",
+  "recordingIndicator": "Grabando",
   "recordingPreparing": "Preparando grabación...",
   "recordingStatusChecking": "(verificando...)",
   "recordingStatusFailed": "(error)",
@@ -948,6 +1021,7 @@
   "removeSuggestion": "Eliminar Sugerencia",
   "removeTemplate": "Eliminar plantilla",
   "reorderingNotSavedUntilQuestionsCompleted": "El reordenamiento no se guardará hasta que se completen todas las preguntas.",
+  "reply": "Responder",
   "requestToFollow": "Solicitar seguir",
   "requests": "Solicitudes",
   "required": "Requerido",
@@ -983,6 +1057,7 @@
   "sec": "Seg",
   "sectionNotFilledYet": "Esta sección aún no se ha completado.",
   "seeManagingYourCommunity": "Ver la gestión de su comunidad para más detalles.",
+  "seeMore": "Ver más",
   "selectADay": "Seleccionar un día",
   "selectATime": "Seleccionar una hora",
   "noMicrophoneAvailable": "No hay micrófono disponible",
@@ -993,6 +1068,7 @@
   "selectMaxParticipantCount": "Seleccionar número máximo de participantes",
   "selectSpace": "Seleccionar espacio:",
   "selectVideoInput": "Seleccionar entrada de video",
+  "send": "Enviar",
   "sendMessage": "Enviar mensaje",
   "setPayeeAccountDetails": "Establecer los detalles de tu cuenta de beneficiario",
   "settingAgendaPreview": "Vista previa de la agenda",
@@ -1071,6 +1147,7 @@
   "tag": "Etiqueta",
   "tagline": "Lema",
   "taglineHint": "Ej: Proteger la tierra de todos los invasores",
+  "takeRateDescription": "En nuestro plan gratuito, cualquier pago de usuario final incurrirá en una comisión del {percentage}%. Actualiza tu plan para obtener una tarifa más baja.",
   "targetParticipantsPerRoom": "Participantes\nPor Sala",
   "targetSize": "Tamaño objetivo",
   "targetSizeQuestion": "¿Tamaño objetivo?",
@@ -1114,6 +1191,7 @@
   "updateEmail": "Actualizar correo",
   "sendVerification": "Enviar verificación",
   "updatePlan": "Actualizar plan",
+  "updatePost": "Actualizar publicación",
   "updateProfile": "Actualizar perfil",
   "updateTemplate": "Actualizar plantilla",
   "updateToPlan": "Actualizar al plan {name}",
@@ -1156,9 +1234,12 @@
   "vimeoUrl": "URL de Vimeo",
   "vimeoVideoLookupFailed": "Lo sentimos, la búsqueda del video de Vimeo falló.",
   "waitingRoom": "Sala de espera",
+  "waitingRoomImageVideo": "Imagen/Video de la sala de espera",
   "welcome": "Bienvenido a Frankly",
   "welcomeName": "Bienvenido, {name}",
   "welcomeToApp": "Bienvenido a {appName}",
+  "whatMessageToShowParticipantsAfter": "¿Qué mensaje quieres mostrar a los participantes después del evento?",
+  "whatMessageToShowParticipantsBefore": "¿Qué mensaje quieres mostrar a los participantes antes del evento?",
   "whenNewItemsAdded": "Cuando se agreguen nuevos {name}, los verás aquí.",
   "whenYouUpgrade": "cuando actualice",
   "wordCloud": "Nube de palabras",

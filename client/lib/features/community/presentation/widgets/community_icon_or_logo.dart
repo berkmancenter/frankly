@@ -101,7 +101,7 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
                 borderRadius: BorderRadius.circular(64),
               ),
               child: Text(
-                'BETA',
+                context.l10n.beta,
                 style: AppTextStyle.bodySmall.copyWith(
                   color: context.theme.colorScheme.primary,
                   height: 1.2,

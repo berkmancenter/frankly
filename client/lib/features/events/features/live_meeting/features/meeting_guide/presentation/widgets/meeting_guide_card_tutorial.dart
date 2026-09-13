@@ -8,6 +8,7 @@ import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class MeetingGuideTutorial extends StatefulWidget {
   @override
@@ -75,7 +76,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
             height: 70,
           ),
           Text(
-            'Click here when\nyou’re ready to\nget started',
+            context.l10n.meetingGuideTutorial,
             style: GoogleFonts.fingerPaint(
               fontSize: _getDynamicSize(18),
               fontWeight: FontWeight.normal,

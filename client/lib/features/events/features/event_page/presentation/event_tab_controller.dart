@@ -209,10 +209,10 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       context,
       title: context.l10n.messageParticipants,
       isMobile: isMobile,
-      labelText: 'Message',
+      labelText: context.l10n.message,
       validator: (message) =>
           message == null || message.isEmpty ? 'Message cannot be empty' : null,
-      positiveButtonText: 'Send',
+      positiveButtonText: context.l10n.send,
     );
 
     if (message != null && mounted) {
