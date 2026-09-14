@@ -43,12 +43,13 @@ service cloud.firestore {
             return status in ['owner', 'admin'];
         }
 
+        // Current clients store 'moderator'; retain 'mod' for legacy memberships.
         function isMod(status) {
-            return status in ['owner', 'admin', 'mod'];
+            return status in ['owner', 'admin', 'moderator', 'mod'];
         }
 
         function isFacilitator(status) {
-            return status in ['owner', 'admin', 'mod', 'facilitator'];
+            return status in ['owner', 'admin', 'moderator', 'mod', 'facilitator'];
         }
 
         function requiresApprovalToJoin(communityId) {
@@ -131,7 +132,7 @@ service cloud.firestore {
         // Community
         match /community/{communityId} {
             function isCommunityMember(communityId) {
-                let memberSet = ['member', 'facilitator', 'mod', 'admin', 'owner'].toSet();
+                let memberSet = ['member', 'facilitator', 'moderator', 'mod', 'admin', 'owner'].toSet();
                 return hasAuth() && getMembershipStatus(communityId) in memberSet;
             }
 
@@ -394,8 +395,8 @@ service cloud.firestore {
                     }
 
                     match /private-live-stream-info/{liveStreamId} {
-                        allow read: if hasAuth() && isCommunityAdmin();
-                        allow create: if hasAuth() && isCommunityAdmin();
+                        allow read: if isCommunityMod();
+                        allow create: if isCommunityMod();
                     }
                 }
             }

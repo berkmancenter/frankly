@@ -10,7 +10,7 @@ export enum Membership {
     nonmember = 'nonmember',
     member = 'member',
     facilitator = 'facilitator',
-    mod = 'mod',
+    mod = 'moderator',
     admin = 'admin',
     owner = 'owner',
 }
