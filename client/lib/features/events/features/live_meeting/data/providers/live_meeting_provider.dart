@@ -267,6 +267,21 @@ class LiveMeetingProvider with ChangeNotifier {
 
   bool get isHost => eventProvider.event.creatorId == userService.currentUserId;
 
+  /// Write presence heartbeat for the local user instead of waiting for the
+  /// periodic timer in initialize.
+  Future<void> forcePresenceHeartbeat() {
+    if (activeUiState == MeetingUiState.leftMeeting ||
+        activeUiState == MeetingUiState.enterMeetingPrescreen) {
+      return Future.value();
+    }
+
+    return firestoreLiveMeetingService.updateMeetingPresence(
+      event: eventProvider.event,
+      currentBreakoutRoomId: _presenceRoomId,
+      isPresent: true,
+    );
+  }
+
   bool get isMeetingStarted =>
       liveMeeting?.events
           .any((e) => e.event == LiveMeetingEventType.agendaItemStarted) ??

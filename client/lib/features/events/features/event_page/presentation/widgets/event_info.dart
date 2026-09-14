@@ -146,7 +146,7 @@ class _EventInfoState extends State<EventInfo> {
       return _ParticipantStatus.needsParticipants;
     }
 
-    final maxParticipants = _event.maxParticipants ?? 0;
+    final maxParticipants = _event.effectiveMaxParticipants;
 
     if (_eventProvider.participantCount >= maxParticipants) {
       return _ParticipantStatus.full;

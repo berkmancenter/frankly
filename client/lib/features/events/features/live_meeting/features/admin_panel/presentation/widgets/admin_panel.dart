@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +58,13 @@ class _AdminPanelState extends State<AdminPanel> {
 
   EventProvider get _eventProvider => EventProvider.watch(context);
 
+  @override
+  void initState() {
+    super.initState();
+    // Force a presence heartbeat write whenever this panel is opened.
+    unawaited(_providerRead.forcePresenceHeartbeat());
+  }
+
   Widget _buildParticipantEntry(Participant participant) {
     return Container(
       key: Key('participant-entry-${participant.id}'),
@@ -75,28 +84,27 @@ class _AdminPanelState extends State<AdminPanel> {
     );
   }
 
-  Widget _buildMeetingProviderParticipantEntry(
-    MeetingProviderParticipant participant,
-  ) {
-    final id = participant.userId;
-    final local = participant.local;
+  Widget _buildPresenceParticipantEntry(Participant participant) {
+    final currentUserId = Provider.of<UserService>(context).currentUserId;
+    final providerParticipant = _provider.meetingProviderParticipants
+        ?.firstWhereOrNull((p) => p.userId == participant.id);
 
     return Padding(
-      key: Key('participant-entry-${participant.userId}'),
+      key: Key('participant-entry-${participant.id}'),
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
       child: Row(
         children: [
           Expanded(
             child: UserProfileChip(
-              userId: id,
+              userId: participant.id,
               imageHeight: 32,
             ),
           ),
           Spacer(),
-          if (!local)
+          if (participant.id != currentUserId)
             _ParticipantMenu(
-              kickedUserId: participant.userId,
-              providerParticipant: participant,
+              kickedUserId: participant.id,
+              providerParticipant: providerParticipant,
             ),
         ],
       ),
@@ -157,12 +165,15 @@ class _AdminPanelState extends State<AdminPanel> {
 
   List<Widget> _buildDefaultParticipantList() {
     var participantSuffix = '';
-    final useMeetingProviderParticipants = _eventProvider.event.isHosted;
-    final participantCount = (useMeetingProviderParticipants
-            ? _provider.meetingProviderParticipants?.length
-            : _eventProvider.participantCount) ??
-        0;
-    if (participantCount > 0 && useMeetingProviderParticipants) {
+    final isHostedEvent = _eventProvider.event.isHosted;
+    // Presence (Participant.isPresent) is only def of presence for hosted events.
+    // It live-updates via Firestore listener for both leave/join, plus RTDB offline
+    // detection and periodic heartbeat check.
+    final presentParticipants = _eventProvider.presentParticipants;
+    final participantCount = isHostedEvent
+        ? presentParticipants.length
+        : _eventProvider.participantCount;
+    if (participantCount > 0 && isHostedEvent) {
       participantSuffix = ' ($participantCount)';
     }
     return [
@@ -194,7 +205,7 @@ class _AdminPanelState extends State<AdminPanel> {
         ],
       ),
       SizedBox(height: 12),
-      if (!useMeetingProviderParticipants)
+      if (!isHostedEvent)
         Expanded(child: _buildPaginatedParticipants())
       else if (participantCount == 0)
         Text(context.l10n.noOneIsHereYet)
@@ -202,14 +213,15 @@ class _AdminPanelState extends State<AdminPanel> {
         ActionButton(
           expand: true,
           text: context.l10n.muteAll,
-          onPressed: () => _providerRead.muteAllParticipants(),
+          onPressed: _provider.meetingProviderParticipants == null
+              ? null
+              : () => _providerRead.muteAllParticipants(),
         ),
         Expanded(
           child: ListView(
-            children: _provider.meetingProviderParticipants
-                    ?.map(_buildMeetingProviderParticipantEntry)
-                    .toList() ??
-                [],
+            children: presentParticipants
+                .map(_buildPresenceParticipantEntry)
+                .toList(),
           ),
         ),
       ],
@@ -774,7 +786,7 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
     final menuItems = _getMenuItems();
     return Semantics(
       label: context.l10n.participantActionsForUserWithId(
-        widget.providerParticipant?.userId ?? '',
+        widget.kickedUserId,
       ),
       child: CustomInkWell(
         hoverColor: context.theme.colorScheme.scrim.withScrimOpacity,
@@ -1017,11 +1029,10 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
             color: context.theme.colorScheme.surfaceContainer,
             textColor: context.theme.colorScheme.onSurface,
             onPressed: () => alertOnError(context, () async {
-                  final liveMeetingProvider =
-                      LiveMeetingProvider.read(context);
-                  final localContext = context;
-                  final ReassignResult? newRoomAssignment =
-                    await ReassignBreakoutRoomDialog(
+              final liveMeetingProvider = LiveMeetingProvider.read(context);
+              final localContext = context;
+              final ReassignResult? newRoomAssignment =
+                  await ReassignBreakoutRoomDialog(
                 outerContext: context,
                 userId: id,
                 currentRoomNumber: [
@@ -1053,7 +1064,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                   confirmText: 'Continue',
                 ).show(context: localContext);
               }
-              }),
+            }),
             text: 'Reassign',
           ),
           if (!local)

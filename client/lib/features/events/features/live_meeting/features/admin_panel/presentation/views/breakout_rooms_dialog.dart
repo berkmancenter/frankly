@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
@@ -52,6 +54,11 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
             .breakoutRoomDefinition
             ?.targetParticipants ??
         5;
+
+    // Check heartbeat on each breakout admin/user mgmt drawer open.
+    unawaited(
+      LiveMeetingProvider.read(widget.outerContext).forcePresenceHeartbeat(),
+    );
   }
 
   Future<void> _startBreakouts(
