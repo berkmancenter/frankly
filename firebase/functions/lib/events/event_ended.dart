@@ -49,7 +49,6 @@ class EventEnded extends OnCallMethod<EventEndedRequest> {
       constructor: (map) => Event.fromJson(map),
     );
 
-    // Stop main room recording if one is active.
     final liveMeetingPath = '${request.eventPath}/live-meetings/${event.id}';
     try {
       final liveMeeting = await firestoreUtils.getFirestoreObject(

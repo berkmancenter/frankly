@@ -39,11 +39,18 @@ class CloudFunctionsEventService {
     await cloudFunctions.callFunction('eventEnded', request.toJson());
   }
 
+  Future<void> endMeetingForAll(EndMeetingForAllRequest request) async {
+    loggingService.log(
+      'CloudFunctionsService.endMeetingForAll: Data: ${request.toJson()}',
+    );
+    await cloudFunctions.callFunction('endMeetingForAll', request.toJson());
+  }
+
   Future<GetCommunityCalendarLinkResponse> getCommunityCalendarLink(
     GetCommunityCalendarLinkRequest request,
   ) async {
     final result = await cloudFunctions.callFunction(
-        'getCommunityCalendarLink', request.toJson());
+        'getCommunityCalendarLink', request.toJson(),);
     return GetCommunityCalendarLinkResponse.fromJson(result);
   }
 }

@@ -1093,6 +1093,8 @@ mixin _$EventSettings {
   bool? get alwaysTranscribe => throw _privateConstructorUsedError;
   bool? get enablePrerequisites => throw _privateConstructorUsedError;
   bool? get agendaPreview => throw _privateConstructorUsedError;
+  bool? get autoEndMeeting => throw _privateConstructorUsedError;
+  int? get autoEndGracePeriodMinutes => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1118,7 +1120,9 @@ abstract class $EventSettingsCopyWith<$Res> {
       bool? alwaysRecord,
       bool? alwaysTranscribe,
       bool? enablePrerequisites,
-      bool? agendaPreview});
+      bool? agendaPreview,
+      bool? autoEndMeeting,
+      int? autoEndGracePeriodMinutes});
 }
 
 /// @nodoc
@@ -1146,6 +1150,8 @@ class _$EventSettingsCopyWithImpl<$Res, $Val extends EventSettings>
     Object? alwaysTranscribe = freezed,
     Object? enablePrerequisites = freezed,
     Object? agendaPreview = freezed,
+    Object? autoEndMeeting = freezed,
+    Object? autoEndGracePeriodMinutes = freezed,
   }) {
     return _then(_value.copyWith(
       reminderEmails: freezed == reminderEmails
@@ -1196,6 +1202,14 @@ class _$EventSettingsCopyWithImpl<$Res, $Val extends EventSettings>
           ? _value.agendaPreview
           : agendaPreview // ignore: cast_nullable_to_non_nullable
               as bool?,
+      autoEndMeeting: freezed == autoEndMeeting
+          ? _value.autoEndMeeting
+          : autoEndMeeting // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      autoEndGracePeriodMinutes: freezed == autoEndGracePeriodMinutes
+          ? _value.autoEndGracePeriodMinutes
+          : autoEndGracePeriodMinutes // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -1220,7 +1234,9 @@ abstract class _$$_EventSettingsCopyWith<$Res>
       bool? alwaysRecord,
       bool? alwaysTranscribe,
       bool? enablePrerequisites,
-      bool? agendaPreview});
+      bool? agendaPreview,
+      bool? autoEndMeeting,
+      int? autoEndGracePeriodMinutes});
 }
 
 /// @nodoc
@@ -1246,6 +1262,8 @@ class __$$_EventSettingsCopyWithImpl<$Res>
     Object? alwaysTranscribe = freezed,
     Object? enablePrerequisites = freezed,
     Object? agendaPreview = freezed,
+    Object? autoEndMeeting = freezed,
+    Object? autoEndGracePeriodMinutes = freezed,
   }) {
     return _then(_$_EventSettings(
       reminderEmails: freezed == reminderEmails
@@ -1296,6 +1314,14 @@ class __$$_EventSettingsCopyWithImpl<$Res>
           ? _value.agendaPreview
           : agendaPreview // ignore: cast_nullable_to_non_nullable
               as bool?,
+      autoEndMeeting: freezed == autoEndMeeting
+          ? _value.autoEndMeeting
+          : autoEndMeeting // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      autoEndGracePeriodMinutes: freezed == autoEndGracePeriodMinutes
+          ? _value.autoEndGracePeriodMinutes
+          : autoEndGracePeriodMinutes // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -1315,7 +1341,9 @@ class _$_EventSettings implements _EventSettings {
       this.alwaysRecord,
       this.alwaysTranscribe,
       this.enablePrerequisites,
-      this.agendaPreview});
+      this.agendaPreview,
+      this.autoEndMeeting,
+      this.autoEndGracePeriodMinutes});
 
   factory _$_EventSettings.fromJson(Map<String, dynamic> json) =>
       _$$_EventSettingsFromJson(json);
@@ -1346,10 +1374,14 @@ class _$_EventSettings implements _EventSettings {
   final bool? enablePrerequisites;
   @override
   final bool? agendaPreview;
+  @override
+  final bool? autoEndMeeting;
+  @override
+  final int? autoEndGracePeriodMinutes;
 
   @override
   String toString() {
-    return 'EventSettings(reminderEmails: $reminderEmails, chat: $chat, showChatMessagesInRealTime: $showChatMessagesInRealTime, talkingTimer: $talkingTimer, defaultStageView: $defaultStageView, enableBreakoutsByCategory: $enableBreakoutsByCategory, allowMultiplePeopleOnStage: $allowMultiplePeopleOnStage, showSmartMatchingForBreakouts: $showSmartMatchingForBreakouts, alwaysRecord: $alwaysRecord, alwaysTranscribe: $alwaysTranscribe, enablePrerequisites: $enablePrerequisites, agendaPreview: $agendaPreview)';
+    return 'EventSettings(reminderEmails: $reminderEmails, chat: $chat, showChatMessagesInRealTime: $showChatMessagesInRealTime, talkingTimer: $talkingTimer, defaultStageView: $defaultStageView, enableBreakoutsByCategory: $enableBreakoutsByCategory, allowMultiplePeopleOnStage: $allowMultiplePeopleOnStage, showSmartMatchingForBreakouts: $showSmartMatchingForBreakouts, alwaysRecord: $alwaysRecord, alwaysTranscribe: $alwaysTranscribe, enablePrerequisites: $enablePrerequisites, agendaPreview: $agendaPreview, autoEndMeeting: $autoEndMeeting, autoEndGracePeriodMinutes: $autoEndGracePeriodMinutes)';
   }
 
   @override
@@ -1368,8 +1400,7 @@ class _$_EventSettings implements _EventSettings {
                 other.talkingTimer == talkingTimer) &&
             (identical(other.defaultStageView, defaultStageView) ||
                 other.defaultStageView == defaultStageView) &&
-            (identical(other.enableBreakoutsByCategory,
-                    enableBreakoutsByCategory) ||
+            (identical(other.enableBreakoutsByCategory, enableBreakoutsByCategory) ||
                 other.enableBreakoutsByCategory == enableBreakoutsByCategory) &&
             (identical(other.allowMultiplePeopleOnStage,
                     allowMultiplePeopleOnStage) ||
@@ -1386,7 +1417,12 @@ class _$_EventSettings implements _EventSettings {
             (identical(other.enablePrerequisites, enablePrerequisites) ||
                 other.enablePrerequisites == enablePrerequisites) &&
             (identical(other.agendaPreview, agendaPreview) ||
-                other.agendaPreview == agendaPreview));
+                other.agendaPreview == agendaPreview) &&
+            (identical(other.autoEndMeeting, autoEndMeeting) ||
+                other.autoEndMeeting == autoEndMeeting) &&
+            (identical(other.autoEndGracePeriodMinutes,
+                    autoEndGracePeriodMinutes) ||
+                other.autoEndGracePeriodMinutes == autoEndGracePeriodMinutes));
   }
 
   @JsonKey(ignore: true)
@@ -1404,7 +1440,9 @@ class _$_EventSettings implements _EventSettings {
       alwaysRecord,
       alwaysTranscribe,
       enablePrerequisites,
-      agendaPreview);
+      agendaPreview,
+      autoEndMeeting,
+      autoEndGracePeriodMinutes);
 
   @JsonKey(ignore: true)
   @override
@@ -1433,7 +1471,9 @@ abstract class _EventSettings implements EventSettings {
       final bool? alwaysRecord,
       final bool? alwaysTranscribe,
       final bool? enablePrerequisites,
-      final bool? agendaPreview}) = _$_EventSettings;
+      final bool? agendaPreview,
+      final bool? autoEndMeeting,
+      final int? autoEndGracePeriodMinutes}) = _$_EventSettings;
 
   factory _EventSettings.fromJson(Map<String, dynamic> json) =
       _$_EventSettings.fromJson;
@@ -1463,6 +1503,10 @@ abstract class _EventSettings implements EventSettings {
   bool? get enablePrerequisites;
   @override
   bool? get agendaPreview;
+  @override
+  bool? get autoEndMeeting;
+  @override
+  int? get autoEndGracePeriodMinutes;
   @override
   @JsonKey(ignore: true)
   _$$_EventSettingsCopyWith<_$_EventSettings> get copyWith =>

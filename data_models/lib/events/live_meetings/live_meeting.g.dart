@@ -29,6 +29,7 @@ _$_LiveMeeting _$$_LiveMeetingFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       recordingSessionId: json['recordingSessionId'] as String?,
+      meetingEndedAt: dateTimeFromTimestamp(json['meetingEndedAt']),
       pendingAdvanceAgendaItemId: json['pendingAdvanceAgendaItemId'] as String?,
       pendingAdvanceTime: dateTimeFromTimestamp(json['pendingAdvanceTime']),
     );
@@ -43,6 +44,7 @@ Map<String, dynamic> _$$_LiveMeetingToJson(_$_LiveMeeting instance) =>
       'isMeetingCardMinimized': instance.isMeetingCardMinimized,
       'pinnedUserIds': instance.pinnedUserIds,
       'recordingSessionId': instance.recordingSessionId,
+      'meetingEndedAt': serverTimestampOrNull(instance.meetingEndedAt),
       'pendingAdvanceAgendaItemId': instance.pendingAdvanceAgendaItemId,
       'pendingAdvanceTime': timestampFromDateTime(instance.pendingAdvanceTime),
     };
