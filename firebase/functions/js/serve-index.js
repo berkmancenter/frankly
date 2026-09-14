@@ -51,6 +51,7 @@ function buildCsp(nonce) {
             ` https://res.cloudinary.com https://api.cloudinary.com` +
             ` https://player.vimeo.com https://api.segment.io` +
             ` https://api.linkpreview.net https://*.stripe.com` +
+            ` https://stats.berkman.harvard.edu` +
             ` https://frankly.org https://fonts.gstatic.com https://www.gstatic.com`,
         `img-src 'self' data: blob:` +
             ` https://res.cloudinary.com https://*.googleusercontent.com` +
