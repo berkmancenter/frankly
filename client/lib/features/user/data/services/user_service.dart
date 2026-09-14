@@ -23,12 +23,15 @@ enum SignInState {
 }
 
 class UserService with ChangeNotifier {
+  UserService({FirebaseAuth? firebaseAuth})
+      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+
   static bool usingEmulator = false;
   // How long to wait for Firebase to automatically re-authenticate a returning
   // user before falling back to anonymous sign-in.
   static const Duration _returningUserSignInTimeout = Duration(seconds: 8);
 
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth;
 
   // ignore: close_sinks
   final BehaviorSubject<String> _currentUserChanges = BehaviorSubject();
@@ -338,11 +341,11 @@ class UserService with ChangeNotifier {
     required String email,
     required String password,
   }) async {
-    await _firebaseAuth.signInWithEmailAndPassword(
+    final credential = await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
-    // authStateChanges listener handles _handleUserSignedIn, same as registerWithEmail
+    _syncEmailAuthResult(credential);
   }
 
   Future<void> signInWithGoogle() async {
@@ -363,13 +366,25 @@ class UserService with ChangeNotifier {
     // to set the users name as.
     _emailRegistrationDisplayName = displayName;
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      final credential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      _syncEmailAuthResult(credential);
     } catch (e) {
       _emailRegistrationDisplayName = null;
       rethrow;
+    }
+  }
+
+  // The auth-state event can arrive after the email operation completes. Make
+  // the user available before the sign-in dialog resumes its guarded action.
+  // The event listener still handles profile initialization.
+  void _syncEmailAuthResult(UserCredential credential) {
+    final user = credential.user;
+    if (user != null) {
+      _setCurrentUser(user);
+      notifyListeners();
     }
   }
 
