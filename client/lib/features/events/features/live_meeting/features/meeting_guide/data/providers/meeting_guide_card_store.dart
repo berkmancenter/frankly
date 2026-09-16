@@ -266,6 +266,18 @@ class MeetingGuideCardStore with ChangeNotifier {
     return remaining;
   }
 
+  /// Filters [details] to the entries for current [agendaItemId] only;
+  /// don't briefly render a stale previous-item snapshot.
+  static List<ParticipantAgendaItemDetails> detailsForAgendaItem(
+    List<ParticipantAgendaItemDetails>? details,
+    String? agendaItemId,
+  ) {
+    if (details == null || agendaItemId == null) return const [];
+    return details
+        .where((detail) => detail.agendaItemId == agendaItemId)
+        .toList();
+  }
+
   bool isReadyToAdvance(
     List<ParticipantAgendaItemDetails>? participantAgendaItemDetailsList,
     String? userId,

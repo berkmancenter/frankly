@@ -467,12 +467,17 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               final canUserControlMeeting = _presenter.canUserControlMeeting;
               final currentAgendaItemId = _presenter.getCurrentAgendaItemId();
               final currentItem = _presenter.getCurrentAgendaItem();
+              // Filter to only build from the current agenda item's details.
+              final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
+                participantAgendaItemDetailsList,
+                currentAgendaItemId,
+              );
               final presentParticipantIds =
                   _presenter.getPresentParticipantIds().toSet();
               final readyThreshold =
                   _presenter.getReadyThreshold(presentParticipantIds);
               final readyToMoveOnCount = _presenter.readyToMoveOnCount(
-                participantAgendaItemDetailsList,
+                itemDetails,
                 presentParticipantIds,
               );
               final isMeetingStarted = _presenter.isMeetingStarted();
@@ -552,15 +557,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                   tooltipKey: tooltipKey,
                   readyThreshold: readyThreshold,
                   presentParticipantIds: presentParticipantIds,
-                  userIsReady: participantAgendaItemDetailsList
-                          ?.firstWhere(
-                            (p) => p.userId == _presenter.getUserId(),
-                            orElse: () => ParticipantAgendaItemDetails(
-                              readyToAdvance: false,
-                            ),
-                          )
-                          .readyToAdvance ??
-                      false,
+                  userIsReady: _presenter.isReadyToAdvance(itemDetails),
                   currentAgendaItemId: currentAgendaItemId,
                 );
               }

@@ -901,12 +901,16 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           return SizedBox.shrink();
         }
 
+        final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
+          participantAgendaItemDetailsList,
+          currentAgendaItemId,
+        );
         final presentParticipantIds =
             _presenter.getPresentParticipantIds().toSet();
         final readyThreshold =
             _presenter.getReadyThreshold(presentParticipantIds);
         final readyToMoveOnCount = _presenter.readyToMoveOnCount(
-          participantAgendaItemDetailsList,
+          itemDetails,
           presentParticipantIds,
         );
 
@@ -916,15 +920,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           tooltipKey: tooltipKey,
           readyThreshold: readyThreshold,
           presentParticipantIds: presentParticipantIds,
-          userIsReady: participantAgendaItemDetailsList
-                  ?.firstWhere(
-                    (p) => p.userId == _presenter.getUserId(),
-                    orElse: () => ParticipantAgendaItemDetails(
-                      readyToAdvance: false,
-                    ),
-                  )
-                  .readyToAdvance ??
-              false,
+          userIsReady: _presenter.isReadyToAdvance(itemDetails),
           currentAgendaItemId: currentAgendaItemId,
         );
       },

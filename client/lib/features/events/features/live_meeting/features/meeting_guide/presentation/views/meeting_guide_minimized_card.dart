@@ -90,7 +90,15 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
               stream: participantAgendaItemDetailsStream,
               showLoading: false,
               builder: (context, itemDetails) {
-                final isReadyToAdvance = _presenter.readyToAdvance(itemDetails);
+                // Scope to the current item so a stale details snapshot from
+                // the previous item can't render the ready state on the new item.
+                final scopedDetails =
+                    MeetingGuideCardStore.detailsForAgendaItem(
+                  itemDetails,
+                  currentItemId,
+                );
+                final isReadyToAdvance =
+                    _presenter.readyToAdvance(scopedDetails);
 
                 return Padding(
                   padding: spacerPadding,
