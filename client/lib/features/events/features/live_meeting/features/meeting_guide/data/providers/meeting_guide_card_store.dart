@@ -278,6 +278,47 @@ class MeetingGuideCardStore with ChangeNotifier {
         .toList();
   }
 
+  /// Optimistic "ready to move on" state for current user & agenda item, keyed
+  /// to agenda item id. Checkbox renders this (if present) immediately, before
+  /// the backend write/confirm; else falls back to the item-scoped stream value.
+  final Map<String, bool> _desiredReady = {};
+
+  /// The optimistic ready value for [agendaItemId], or null if untouched.
+  bool? desiredReadyFor(String? agendaItemId) =>
+      agendaItemId == null ? null : _desiredReady[agendaItemId];
+
+  /// Sets current user's ready state for current agenda item & writes to backend.
+  /// UI flips immediately, then backend confirms (or cancels) the change. Returns
+  /// true unless canceled at "just started" prompt or backend write fails.
+  Future<bool> setDesiredReady({
+    required String agendaItemId,
+    required bool ready,
+  }) async {
+    final previous = _desiredReady[agendaItemId];
+    _desiredReady[agendaItemId] = ready;
+    notifyListeners();
+
+    final proceed = await agendaProvider.confirmReadyToMoveOn(
+      currentAgendaItemId: agendaItemId,
+      userIsReady: ready,
+    );
+    if (!proceed) {
+      if (previous == null) {
+        _desiredReady.remove(agendaItemId);
+      } else {
+        _desiredReady[agendaItemId] = previous;
+      }
+      notifyListeners();
+      return false;
+    }
+
+    await agendaProvider.checkReadyToAdvance(
+      agendaItemId: agendaItemId,
+      ready: ready,
+    );
+    return true;
+  }
+
   bool isReadyToAdvance(
     List<ParticipantAgendaItemDetails>? participantAgendaItemDetailsList,
     String? userId,

@@ -473,7 +473,8 @@ class AgendaProvider with ChangeNotifier {
         )
         ?.agendaItem;
 
-    return resolvedAgendaItems.firstWhereOrNull((a) => a.id == currentAgendaItem);
+    return resolvedAgendaItems
+        .firstWhereOrNull((a) => a.id == currentAgendaItem);
   }
 
   bool isCurrentAgendaItem(String agendaItemId) {
@@ -630,32 +631,48 @@ class AgendaProvider with ChangeNotifier {
     );
   }
 
-  Future<void> toggleMoveForward({
+  /// Gate ready/advance actions for [currentAgendaItemId]. Show "just started"
+  /// confirmation when marking ready early on, and return false if canceled.
+  /// Return true if un-readying, host-manual advanced, or for polls/videos.
+  Future<bool> confirmReadyToMoveOn({
     required String currentAgendaItemId,
     bool userIsReady = true,
   }) async {
     // Undoing a ready-to-move-on vote never advances the meeting, so it
     // never needs the "just started" double-check.
-    if (userIsReady) {
-      final timeInState = timeInSection(currentAgendaItemId);
-      final doubleCheckDuration =
-          currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId
-              ? _startItemAdvanceConfirmationThreshold
-              : _agendaItemAdvanceConfirmationThreshold;
-      final suppressWarning = currentAgendaItem?.type == AgendaItemType.poll ||
-          currentAgendaItem?.type == AgendaItemType.video;
+    if (!userIsReady) return true;
 
-      if (timeInState < doubleCheckDuration &&
-          !suppressWarning &&
-          !canUserControlMeeting) {
-        final confirmed = await ConfirmDialog(
-          mainText:
-              'This agenda item just started! Are you sure you want to move on?',
-          cancelText: appLocalizationService.getLocalization().cancel,
-        ).show();
-        if (!confirmed) return;
-      }
+    final timeInState = timeInSection(currentAgendaItemId);
+    final doubleCheckDuration =
+        currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId
+            ? _startItemAdvanceConfirmationThreshold
+            : _agendaItemAdvanceConfirmationThreshold;
+    final suppressWarning = currentAgendaItem?.type == AgendaItemType.poll ||
+        currentAgendaItem?.type == AgendaItemType.video;
+
+    if (timeInState < doubleCheckDuration &&
+        !suppressWarning &&
+        !canUserControlMeeting) {
+      return ConfirmDialog(
+        mainText:
+            'This agenda item just started! Are you sure you want to move on?',
+        cancelText: appLocalizationService.getLocalization().cancel,
+      ).show();
     }
+    return true;
+  }
+
+  Future<void> toggleMoveForward({
+    required String currentAgendaItemId,
+    bool userIsReady = true,
+  }) async {
+    if (!await confirmReadyToMoveOn(
+      currentAgendaItemId: currentAgendaItemId,
+      userIsReady: userIsReady,
+    )) {
+      return;
+    }
+
     if (canUserControlMeeting) {
       if (currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId) {
         await startMeeting();

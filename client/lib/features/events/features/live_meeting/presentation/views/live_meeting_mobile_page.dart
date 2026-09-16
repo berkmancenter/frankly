@@ -864,7 +864,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
   /// Bottom section shown below the agenda item card body.
   Widget _buildReadyInfo() {
     context.watch<AgendaProvider>();
-    context.watch<MeetingGuideCardStore>();
+    final meetingGuideCardStore = context.watch<MeetingGuideCardStore>();
     context.watch<LiveMeetingProvider>();
     context.watch<UserService>();
 
@@ -902,7 +902,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           tooltipKey: tooltipKey,
           readyThreshold: readyThreshold,
           presentParticipantIds: presentParticipantIds,
-          userIsReady: _presenter.isReadyToAdvance(itemDetails),
+          userIsReady:
+              meetingGuideCardStore.desiredReadyFor(currentAgendaItemId) ??
+                  _presenter.isReadyToAdvance(itemDetails),
           currentAgendaItemId: currentAgendaItemId,
         );
       },

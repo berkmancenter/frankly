@@ -15,6 +15,7 @@ import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
 import 'meeting_guide_minimized_card_contract.dart';
@@ -47,7 +48,7 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
 
   @override
   Widget build(BuildContext context) {
-    context.watch<MeetingGuideCardStore>();
+    final meetingGuideCardStore = context.watch<MeetingGuideCardStore>();
     context.watch<LiveMeetingProvider>();
     context.watch<UserDataService>();
     context.watch<CommunityProvider>();
@@ -97,7 +98,13 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
                   itemDetails,
                   currentItemId,
                 );
-                final isReadyToAdvance =
+                final isController = _presenter.canUserControlMeeting();
+                // Participants optimistically render desired-ready result; hosts
+                // don't vote so they fall back to the stream value.
+                final isReadyToAdvance = (isController
+                        ? null
+                        : meetingGuideCardStore
+                            .desiredReadyFor(currentItemId)) ??
                     _presenter.readyToAdvance(scopedDetails);
 
                 return Padding(
@@ -107,7 +114,10 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
                           Icons.check_circle_outline_rounded,
                           color: context.theme.colorScheme.onPrimary,
                         )
-                      : _ForwardButton(currentAgendaItemId: currentItemId),
+                      : _ForwardButton(
+                          currentAgendaItemId: currentItemId,
+                          isController: isController,
+                        ),
                 );
               },
             ),
@@ -142,30 +152,52 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
 
 class _ForwardButton extends HookWidget {
   final String currentAgendaItemId;
+  final bool isController;
 
   const _ForwardButton({
     Key? key,
     required this.currentAgendaItemId,
+    required this.isController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final agendaProvider = AgendaProvider.watch(context);
-
     return ActionButton(
       type: ActionButtonType.filled,
       minWidth: 40,
-      onPressed: () => alertOnError(context, () async {
-        await agendaProvider.toggleMoveForward(
-          currentAgendaItemId: currentAgendaItemId,
+      // Fire-and-forget so the button doesn't need to be disabled;
+      // participants flip optimistically via the store's desired state,
+      // but the flip cancels if the confirmation is canceled.
+      onPressed: () {
+        final agendaProvider = AgendaProvider.read(context);
+        final store = context.read<MeetingGuideCardStore>();
+        unawaited(
+          alertOnError(
+            context,
+            () async {
+              final bool proceeded;
+              if (isController) {
+                await agendaProvider.toggleMoveForward(
+                  currentAgendaItemId: currentAgendaItemId,
+                );
+                proceeded = true;
+              } else {
+                proceeded = await store.setDesiredReady(
+                  agendaItemId: currentAgendaItemId,
+                  ready: true,
+                );
+              }
+              if (proceeded && context.mounted) {
+                showRegularToast(
+                  context,
+                  "You're ready to move on",
+                  toastType: ToastType.success,
+                );
+              }
+            },
+          ),
         );
-        if (!context.mounted) return;
-        showRegularToast(
-          context,
-          "You're ready to move on",
-          toastType: ToastType.success,
-        );
-      }),
+      },
       color: context.theme.colorScheme.surfaceContainerLowest,
       padding: EdgeInsets.zero,
       child: ProxiedImage(
