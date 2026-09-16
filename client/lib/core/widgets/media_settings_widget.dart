@@ -82,6 +82,24 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     });
   }
 
+  /// Hands the current preview stream to the video element and starts
+  /// playback. Called both when a new stream arrives AND when the platform
+  /// view mounts; the stream is may be acquired before the video element is
+  /// in the DOM.
+  /// Stream is not reliably able to start playing if it was attached to a
+  /// detached element.
+  void _attachPreviewStream() {
+    if (!widget.shouldShowVideoPreview || _disposed) return;
+    final stream = _mediaService.previewMediaStream;
+    _videoElement.srcObject = stream;
+    if (stream == null) return;
+    unawaited(
+      _videoElement.play().catchError((e) {
+        Debug.log('Error playing video preview: $e');
+      }),
+    );
+  }
+
   Future<void> updatePreviewWidget() async {
     if (!widget.shouldShowVideoPreview) return;
     try {
@@ -95,7 +113,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         _mediaService.stopPreviewMediaStream();
         return;
       }
-      _videoElement.srcObject = _mediaService.previewMediaStream;
+      _attachPreviewStream();
     } catch (e) {
       _videoElement.srcObject = null;
     }
@@ -340,7 +358,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                     )
                                   : Stack(
                                       children: [
-                                        HtmlElementView(viewType: _viewType),
+                                        HtmlElementView(
+                                          viewType: _viewType,
+                                          onPlatformViewCreated: (_) =>
+                                              _attachPreviewStream(),
+                                        ),
                                         isLoadingCameraChange
                                             ?
                                             // Cover the video element while setting video source
