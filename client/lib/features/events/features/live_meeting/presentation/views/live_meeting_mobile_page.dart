@@ -640,24 +640,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     }
   }
 
-  Widget _buildReadyText(
-    List<ParticipantAgendaItemDetails> participantAgendaItemDetailsList,
-  ) {
-    final presentParticipantIds = _presenter.getPresentParticipantIds().toSet();
-    final readyToMoveOnCount = _presenter.readyToMoveOnCount(
-      participantAgendaItemDetailsList,
-      presentParticipantIds,
-    );
-    // Still using the format directly as it's just displaying numbers with a divider
-    // No specific localization string needed as this is a counter format
-    return Text(
-      '$readyToMoveOnCount/${presentParticipantIds.length}',
-      style: context.theme.textTheme.bodyMedium?.copyWith(
-        color: context.theme.colorScheme.onPrimary,
-      ),
-    );
-  }
-
   Widget _buildBottomNavBar(bool isBottomSheetPresent) {
     context.watch<LiveMeetingProvider>();
 
