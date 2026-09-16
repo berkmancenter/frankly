@@ -240,4 +240,106 @@ void main() {
       equals(LiveMeetingEventType.agendaItemStarted),
     );
   });
+
+  test(
+      'Undoing a ready vote persists readyToAdvance false and does not advance',
+      () async {
+    var event = Event(
+      id: '12341undo0001',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType
+          .hosted, //intentionally set to hosted even though we are simulating a hostless event to avoid enqueueing the CheckAssignToBreakoutServer, which causes an error
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(
+          id: '55005',
+          title: "Role call",
+          content: "Shout out if you're here",
+        ),
+      ],
+    );
+    event = await eventTestUtils.createEvent(
+      event: event,
+      userId: adminUserId,
+    );
+
+    await eventTestUtils.joinEventMultiple(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: event.id,
+      participantIds: ['333', '444', '555', '666', '777', '888', '999', '000'],
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.initiateBreakoutSession(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      userId: adminUserId,
+    );
+
+    final breakoutRoom = await liveMeetingTestUtils.getBreakoutRoom(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      roomName: '1',
+    );
+
+    final guideAdvancer = CheckAdvanceMeetingGuide();
+    final req = CheckAdvanceMeetingGuideRequest(
+      eventPath: event.fullPath,
+      presentIds: ['333', '555', '777', '999'],
+      userReadyAgendaId: event.agendaItems.first.id,
+      breakoutRoomId: breakoutRoom.roomId,
+      breakoutSessionId: breakoutSessionId,
+    );
+
+    // Mark ready, then undo.
+    await guideAdvancer.action(
+      req,
+      CallableContext('333', null, 'fakeInstanceId'),
+    );
+    await guideAdvancer.action(
+      req.copyWith(ready: false),
+      CallableContext('333', null, 'fakeInstanceId'),
+    );
+
+    // The undo must persist readyToAdvance == false and not be overwritten
+    // back to true.
+    final documentId =
+        '${liveMeetingTestUtils.getBreakoutLiveMeetingPath(breakoutRoomId: breakoutRoom.roomId, event: event, breakoutSessionId: breakoutSessionId)}/participant-agenda-item-details/${event.agendaItems.first.id}/participant-details/333';
+    final participantDetailsDoc = await firestore.document(documentId).get();
+    final createdDetails = ParticipantAgendaItemDetails.fromJson(
+      firestoreUtils.fromFirestoreJson(participantDetailsDoc.data.toMap()),
+    );
+    expect(createdDetails.readyToAdvance, isFalse);
+
+    // The undo must not schedule an advance or move the agenda forward.
+    final meetingPathSnap = await firestore
+        .document(
+          liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+            breakoutRoomId: breakoutRoom.roomId,
+            event: event,
+            breakoutSessionId: breakoutSessionId,
+          ),
+        )
+        .get();
+    final createdMeeting = LiveMeeting.fromJson(
+      firestoreUtils.fromFirestoreJson(meetingPathSnap.data.toMap()),
+    );
+    expect(createdMeeting.pendingAdvanceAgendaItemId, isNull);
+    expect(createdMeeting.events.length, equals(1));
+    expect(
+      createdMeeting.events[0].event,
+      equals(LiveMeetingEventType.agendaItemStarted),
+    );
+  });
 }

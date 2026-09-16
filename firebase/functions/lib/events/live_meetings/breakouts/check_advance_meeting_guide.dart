@@ -142,10 +142,10 @@ class CheckAdvanceMeetingGuide
         event: event,
       );
 
-      if (!isNullOrEmpty(request.userReadyAgendaId)) {
+      if (!isNullOrEmpty(request.userReadyAgendaId) && request.ready) {
         // Persist this participant's ready vote regardless of whether it was the one that
         // crossed the threshold. Otherwise, the participant whose vote tips the advance never
-        // gets recorded as ready.
+        // gets recorded as ready. Also don't overwrite an unready vote back to ready.
         await _markReady(
           userId: context.authUid!,
           agendaItemId: request.userReadyAgendaId,
@@ -294,7 +294,9 @@ class CheckAdvanceMeetingGuide
                 presentParticipantIds.contains(a.userId),
           )
           .map((p) => p.userId ?? ''),
-      if (request.userReadyAgendaId == currentAgendaItemId &&
+      // Only optimistically include the caller when marking ready = true
+      if (request.ready &&
+          request.userReadyAgendaId == currentAgendaItemId &&
           !isNullOrEmpty(userId))
         userId,
     };
