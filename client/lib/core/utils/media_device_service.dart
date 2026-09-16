@@ -53,7 +53,7 @@ class MediaDeviceService {
   }
 
   /// Re-enumerates devices when we hold a live stream but have no labelled
-  /// devices to show for it. Browser expose device labels only once
+  /// The browser exposes device labels only once
   /// permission has actually been granted, so whenever permission is granted
   /// during [getUserMedia] itself, lists built by [init]
   /// are still empty and the UI has nothing to render even though the camera was acquired.

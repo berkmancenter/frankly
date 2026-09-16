@@ -84,7 +84,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   /// Hands the current preview stream to the video element and starts
   /// playback. Called both when a new stream arrives AND when the platform
-  /// view mounts; the stream is may be acquired before the video element is
+  /// view mounts; the stream may be acquired before the video element is
   /// in the DOM.
   /// Stream is not reliably able to start playing if it was attached to a
   /// detached element.
