@@ -1,3 +1,5 @@
+import 'package:firebase_admin_interop/firebase_admin_interop.dart'
+    show DocumentData, SetOptions;
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:get_it/get_it.dart';
 import 'package:functions/events/live_meetings/breakouts/check_advance_meeting_guide.dart';
@@ -339,6 +341,141 @@ void main() {
     expect(createdMeeting.events.length, equals(1));
     expect(
       createdMeeting.events[0].event,
+      equals(LiveMeetingEventType.agendaItemStarted),
+    );
+  });
+
+  test('Undoing a ready vote below threshold cancels a pending advance',
+      () async {
+    var event = Event(
+      id: '12341cancel001',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType
+          .hosted, //intentionally set to hosted even though we are simulating a hostless event to avoid enqueueing the CheckAssignToBreakoutServer, which causes an error
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(
+          id: '55005',
+          title: "Role call",
+          content: "Shout out if you're here",
+        ),
+      ],
+    );
+    event = await eventTestUtils.createEvent(
+      event: event,
+      userId: adminUserId,
+    );
+
+    await eventTestUtils.joinEventMultiple(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: event.id,
+      participantIds: ['333', '444', '555', '666', '777', '888', '999', '000'],
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.initiateBreakoutSession(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      userId: adminUserId,
+    );
+
+    final breakoutRoom = await liveMeetingTestUtils.getBreakoutRoom(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      roomName: '1',
+    );
+
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+      breakoutRoomId: breakoutRoom.roomId,
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+    );
+    final agendaItemId = event.agendaItems.first.id;
+
+    // Seed a scheduled advance that a majority already voted for, along with the
+    // three ready votes that triggered it. Seeded directly to avoid the real
+    // Cloud Tasks scheduling path, which is not available in tests.
+    await firestore.document(breakoutLiveMeetingPath).setData(
+          DocumentData.fromMap(
+            firestoreUtils.toFirestoreJson(
+              LiveMeeting(
+                events: [
+                  LiveMeetingEvent(
+                    agendaItem: agendaItemId,
+                    event: LiveMeetingEventType.agendaItemStarted,
+                    timestamp: DateTime.now().toUtc(),
+                    hostless: true,
+                  ),
+                ],
+                pendingAdvanceAgendaItemId: agendaItemId,
+                pendingAdvanceTime:
+                    DateTime.now().toUtc().add(meetingGuideAdvanceDelay),
+              ).toJson(),
+            ),
+          ),
+          SetOptions(merge: true),
+        );
+
+    for (final uid in ['333', '555', '777']) {
+      await firestore
+          .document(
+            '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/$uid',
+          )
+          .setData(
+            DocumentData.fromMap(
+              firestoreUtils.toFirestoreJson(
+                ParticipantAgendaItemDetails(
+                  userId: uid,
+                  agendaItemId: agendaItemId,
+                  meetingId: breakoutRoom.roomId,
+                  readyToAdvance: true,
+                ).toJson(),
+              ),
+            ),
+            SetOptions(merge: true),
+          );
+    }
+
+    final guideAdvancer = CheckAdvanceMeetingGuide();
+    final req = CheckAdvanceMeetingGuideRequest(
+      eventPath: event.fullPath,
+      presentIds: ['333', '555', '777', '999'],
+      userReadyAgendaId: agendaItemId,
+      breakoutRoomId: breakoutRoom.roomId,
+      breakoutSessionId: breakoutSessionId,
+      ready: false,
+    );
+
+    // One of the three ready participants changes their mind before the delay
+    // fires, dropping the ready count (2) below the threshold (3).
+    await guideAdvancer.action(
+      req,
+      CallableContext('333', null, 'fakeInstanceId'),
+    );
+
+    final meetingSnap = await firestore.document(breakoutLiveMeetingPath).get();
+    final updatedMeeting = LiveMeeting.fromJson(
+      firestoreUtils.fromFirestoreJson(meetingSnap.data.toMap()),
+    );
+
+    // The pending advance must be cancelled and the agenda must not advance.
+    expect(updatedMeeting.pendingAdvanceAgendaItemId, isNull);
+    expect(updatedMeeting.pendingAdvanceTime, isNull);
+    expect(updatedMeeting.events.length, equals(1));
+    expect(
+      updatedMeeting.events[0].event,
       equals(LiveMeetingEventType.agendaItemStarted),
     );
   });

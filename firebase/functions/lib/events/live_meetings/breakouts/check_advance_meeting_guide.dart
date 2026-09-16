@@ -239,14 +239,6 @@ class CheckAdvanceMeetingGuide
     final currentAgendaItemId = _getCurrentAgendaItemId(event, liveMeeting);
     print('current agenda item: $currentAgendaItemId');
 
-    if (liveMeeting.pendingAdvanceAgendaItemId == currentAgendaItemId) {
-      print('Advance is already pending for $currentAgendaItemId');
-      return AdvanceCheckResult(
-        isPendingOrAdvancing: true,
-        isLastAgendaItem: false,
-      );
-    }
-
     // Determine who is present
     DocumentQuery participantsQuery =
         firestore.collection('${request.eventPath}/event-participants');
@@ -305,7 +297,29 @@ class CheckAdvanceMeetingGuide
     print('present: $presentParticipantIds');
     print('registered: $registeredParticipantIds');
     final threshold = readyToAdvanceThreshold(presentParticipantIds.length);
-    if (readyToMoveOnIds.length < threshold) {
+    final belowThreshold = readyToMoveOnIds.length < threshold;
+
+    if (liveMeeting.pendingAdvanceAgendaItemId == currentAgendaItemId) {
+      // Advance is already scheduled for this item. New ready votes don't
+      // change the outcome, but an undo during the delay cancels the advance.
+      if (belowThreshold) {
+        print('Ready count dropped below threshold ($threshold). Cancelling '
+            'pending advance for $currentAgendaItemId.');
+        final cancelled =
+            await _clearPendingAdvance(liveMeetingPath, currentAgendaItemId);
+        return AdvanceCheckResult(
+          isPendingOrAdvancing: !cancelled,
+          isLastAgendaItem: false,
+        );
+      }
+      print('Advance is already pending for $currentAgendaItemId');
+      return AdvanceCheckResult(
+        isPendingOrAdvancing: true,
+        isLastAgendaItem: false,
+      );
+    }
+
+    if (belowThreshold) {
       print(
           'Not enough participants ready to advance. Threshold: $threshold, ready: ${readyToMoveOnIds.length}');
       return AdvanceCheckResult(
@@ -365,6 +379,54 @@ class CheckAdvanceMeetingGuide
       newlyPendingAgendaItemId: currentAgendaItemId,
       pendingAdvanceTime: pendingAdvanceTime,
     );
+  }
+
+  /// Cancels the scheduled advance for [currentAgendaItemId] by first assuring
+  /// match with `pendingAdvanceAgendaItemId` and then clearing both
+  /// `pendingAdvanceAgendaItemId` / `pendingAdvanceTime`.
+  ///
+  /// Returns true if it cleared the advance, false if the pending state had
+  /// already moved on (either fired or was scheduled for a newer item / vote trigger),
+  /// in which case it defers to the newer pending advance. If
+  /// `pendingAdvanceAgendaItemId` doesn't match [currentAgendaItemId], the advance
+  /// function no-ops, so clearing the id is sufficient to cancel the advance.
+  Future<bool> _clearPendingAdvance(
+    String liveMeetingPath,
+    String currentAgendaItemId,
+  ) async {
+    return firestore.runTransaction((transaction) async {
+      final latestLiveMeeting = await firestoreUtils.getFirestoreObject(
+        path: liveMeetingPath,
+        constructor: (map) => LiveMeeting.fromJson(map),
+        transaction: transaction,
+      );
+
+      // If the pending advance has already changed, don't clear it.
+      if (latestLiveMeeting.pendingAdvanceAgendaItemId != currentAgendaItemId) {
+        return false;
+      }
+
+      transaction.set(
+        firestore.document(liveMeetingPath),
+        DocumentData.fromMap(
+          jsonSubset(
+            [
+              LiveMeeting.kFieldPendingAdvanceAgendaItemId,
+              LiveMeeting.kFieldPendingAdvanceTime,
+            ],
+            firestoreUtils.toFirestoreJson(
+              LiveMeeting(
+                pendingAdvanceAgendaItemId: null,
+                pendingAdvanceTime: null,
+              ).toJson(),
+            ),
+          ),
+        ),
+        merge: true,
+      );
+
+      return true;
+    });
   }
 
   String _getCurrentAgendaItemId(
