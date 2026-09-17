@@ -386,6 +386,14 @@ class CheckAdvanceMeetingGuide {
         transaction: transaction,
       );
 
+      // Ensure the advance is still pending for this item. A cancel due to a
+      // decrement clears pendingAdvanceAgendaItemId atomically.
+      if (liveMeeting.pendingAdvanceAgendaItemId != currentAgendaItemId) {
+        print('Advance for $currentAgendaItemId is no longer pending '
+            '(cancelled). Not advancing.');
+        return;
+      }
+
       // Ensure current agenda item is still current
       final newCurrentAgendaItemId =
           _getCurrentAgendaItemId(event, liveMeeting);
