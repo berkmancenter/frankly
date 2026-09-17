@@ -201,21 +201,10 @@ class CheckAdvanceMeetingGuide {
     final agendaItemParticipantDetailsDocs =
         await firestore.collection(agendaItemParticipantDetailsPath).get();
 
-    // Count ready voters by the document ID (the {userId} path segment), which
-    // is the canonical identity for these per-user docs, rather than the userId
-    // field in the payload. The field is redundant with the key, so counting by
-    // the key avoids a miscount if the two ever diverge (e.g. a client writing
-    // the wrong userId into an otherwise correctly-keyed doc).
-    final readyToMoveOnIds = agendaItemParticipantDetailsDocs.documents
-        .where((doc) {
-          final details = ParticipantAgendaItemDetails.fromJson(
-            firestoreUtils.fromFirestoreJson(doc.data.toMap()),
-          );
-          return (details.readyToAdvance ?? false) &&
-              presentParticipantIds.contains(doc.documentID);
-        })
-        .map((doc) => doc.documentID)
-        .toSet();
+    final readyToMoveOnIds = _readyPresentParticipantIds(
+      agendaItemParticipantDetailsDocs,
+      presentParticipantIds,
+    );
 
     print('ready to move on: $readyToMoveOnIds');
     print('present: $presentParticipantIds');
@@ -226,10 +215,14 @@ class CheckAdvanceMeetingGuide {
       // Advance is already scheduled for this item. New ready votes don't
       // change the outcome, but an undo during the delay cancels the advance.
       if (belowThreshold) {
-        print('Ready count dropped below threshold ($threshold). Cancelling '
+        print('Ready count is below threshold ($threshold). Cancelling '
             'pending advance for $currentAgendaItemId.');
-        final cancelled =
-            await _clearPendingAdvance(liveMeetingPath, currentAgendaItemId);
+        final cancelled = await _clearPendingAdvance(
+          liveMeetingPath,
+          currentAgendaItemId,
+          presentParticipantIds: presentParticipantIds,
+          threshold: threshold,
+        );
         return AdvanceCheckResult(
           isPendingOrAdvancing: !cancelled,
           isLastAgendaItem: false,
@@ -309,19 +302,42 @@ class CheckAdvanceMeetingGuide {
     );
   }
 
-  /// Cancels the scheduled advance for [currentAgendaItemId] by first assuring
-  /// match with `pendingAdvanceAgendaItemId` and then clearing both
-  /// `pendingAdvanceAgendaItemId` / `pendingAdvanceTime`.
+  /// The present participants (by document id, i.e. the `{userId}` path segment)
+  /// who marked themselves ready for this item. Counts by document id rather
+  /// than the payload `userId` field so a divergent field can't cause a miscount.
+  Set<String> _readyPresentParticipantIds(
+    QuerySnapshot detailsDocs,
+    Set<String> presentParticipantIds,
+  ) {
+    return detailsDocs.documents
+        .where((doc) {
+          final details = ParticipantAgendaItemDetails.fromJson(
+            firestoreUtils.fromFirestoreJson(doc.data.toMap()),
+          );
+          return (details.readyToAdvance ?? false) &&
+              presentParticipantIds.contains(doc.documentID);
+        })
+        .map((doc) => doc.documentID)
+        .toSet();
+  }
+
+  /// Cancels the scheduled advance for [currentAgendaItemId], returning true if
+  /// it cleared the pending state and false if it left it in place.
   ///
-  /// Returns true if it cleared the advance, false if the pending state had
-  /// already moved on (either fired or was scheduled for a newer item / vote trigger),
-  /// in which case it defers to the newer pending advance. If
-  /// `pendingAdvanceAgendaItemId` doesn't match [currentAgendaItemId], the advance
-  /// function no-ops, so clearing the id is sufficient to cancel the advance.
+  /// Re-reads the votes transactionally against [presentParticipantIds] /
+  /// [threshold] and only clears when still below threshold, so a re-ready that
+  /// landed after the caller's non-transactional read isn't lost: we either
+  /// observe it and keep the advance, or it commits after this clear and its
+  /// own trigger reschedules against the cleared state.
   Future<bool> _clearPendingAdvance(
     String liveMeetingPath,
-    String currentAgendaItemId,
-  ) async {
+    String currentAgendaItemId, {
+    required Set<String> presentParticipantIds,
+    required int threshold,
+  }) async {
+    final agendaItemParticipantDetailsPath =
+        '$liveMeetingPath/participant-agenda-item-details/'
+        '$currentAgendaItemId/participant-details';
     return firestore.runTransaction((transaction) async {
       final latestLiveMeeting = await firestoreUtils.getFirestoreObject(
         path: liveMeetingPath,
@@ -331,6 +347,18 @@ class CheckAdvanceMeetingGuide {
 
       // If the pending advance has already changed, don't clear it.
       if (latestLiveMeeting.pendingAdvanceAgendaItemId != currentAgendaItemId) {
+        return false;
+      }
+
+      // Re-check the votes transactionally so a concurrent re-ready isn't lost.
+      final detailsDocs = await transaction
+          .getQuery(firestore.collection(agendaItemParticipantDetailsPath));
+      final readyIds =
+          _readyPresentParticipantIds(detailsDocs, presentParticipantIds);
+      if (readyIds.length >= threshold) {
+        print('Ready count recovered to ${readyIds.length} (threshold '
+            '$threshold) before the cancel committed. Keeping pending advance '
+            'for $currentAgendaItemId.');
         return false;
       }
 
