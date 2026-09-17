@@ -363,8 +363,6 @@ class FirestoreMeetingGuideService {
   static ParticipantAgendaItemDetails _convertSuggestedAgendaItem(
     Map<String, dynamic> data,
   ) {
-    print('item details');
-    print(data);
     return ParticipantAgendaItemDetails.fromJson(fromFirestoreJson(data));
   }
 }
