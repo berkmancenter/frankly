@@ -61,7 +61,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       ..style.width = '100%'
       ..style.height = '100%'
       ..style.objectFit = 'cover'
-      ..style.transform = widget.isMirrorCheck ? 'scaleX(-1)' : 'none';
+      ..style.transform = 'none';
 
     ui_web.platformViewRegistry.registerViewFactory(
       _viewType,
