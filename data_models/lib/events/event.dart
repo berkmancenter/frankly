@@ -198,6 +198,15 @@ class Event with _$Event implements SerializeableRequest {
     }
     return startTime;
   }
+
+  /// Whether the event has started and not yet ended, as of [now].
+  bool isActive(DateTime now) {
+    final start = scheduledTime;
+    if (start == null || start.isAfter(now)) return false;
+
+    final end = start.add(Duration(minutes: durationInMinutes));
+    return end.isAfter(now);
+  }
 }
 
 @Freezed(makeCollectionsUnmodifiable: false)
