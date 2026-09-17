@@ -3,6 +3,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:get_it/get_it.dart';
 import 'package:functions/events/live_meetings/breakouts/check_advance_meeting_guide.dart';
+import 'package:functions/events/live_meetings/breakouts/on_participant_agenda_item_details.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
@@ -614,6 +615,108 @@ void main() {
       firestoreUtils.fromFirestoreJson(meetingPathSnap.data.toMap()),
     );
     // Two of three present participants voted (majority) -> advances to finished.
+    expect(createdMeeting.events.length, equals(2));
+    expect(
+      createdMeeting.events[1].event,
+      equals(LiveMeetingEventType.finishMeeting),
+    );
+  });
+
+  test('onWrite trigger evaluates advance from a participant-details path',
+      () async {
+    var event = Event(
+      id: '12341trig0001',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType.hosted,
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(
+          id: '55005',
+          title: "Role call",
+          content: "Shout out if you're here",
+        ),
+      ],
+    );
+    event = await eventTestUtils.createEvent(event: event, userId: adminUserId);
+
+    await eventTestUtils.joinEventMultiple(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: event.id,
+      participantIds: ['333', '444', '555', '666', '777', '888', '999', '000'],
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.initiateBreakoutSession(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      userId: adminUserId,
+    );
+
+    final breakoutRoom = await liveMeetingTestUtils.getBreakoutRoom(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      roomName: '1',
+    );
+
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777', '999'],
+    );
+
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+      breakoutRoomId: breakoutRoom.roomId,
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+    );
+    final agendaItemId = event.agendaItems.first.id;
+
+    // Majority (3 of 4 present) recorded ready votes directly in the details
+    // collection (as the client will once it writes directly).
+    for (final uid in ['333', '555', '777']) {
+      await firestore
+          .document(
+            '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/$uid',
+          )
+          .setData(
+            DocumentData.fromMap(
+              firestoreUtils.toFirestoreJson(
+                ParticipantAgendaItemDetails(
+                  userId: uid,
+                  agendaItemId: agendaItemId,
+                  meetingId: breakoutRoom.roomId,
+                  readyToAdvance: true,
+                ).toJson(),
+              ),
+            ),
+            SetOptions(merge: true),
+          );
+    }
+
+    // Simulate the trigger firing for the last vote's participant-details doc.
+    await OnParticipantAgendaItemDetails()
+        .evaluateAdvanceForParticipantDetailsPath(
+      '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/777',
+    );
+
+    final meetingPathSnap =
+        await firestore.document(breakoutLiveMeetingPath).get();
+    final createdMeeting = LiveMeeting.fromJson(
+      firestoreUtils.fromFirestoreJson(meetingPathSnap.data.toMap()),
+    );
+    // Majority reached; the single agenda item advances immediately to finished.
     expect(createdMeeting.events.length, equals(2));
     expect(
       createdMeeting.events[1].event,

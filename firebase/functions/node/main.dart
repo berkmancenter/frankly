@@ -34,6 +34,7 @@ import 'package:functions/admin/payments/get_stripe_subscription_plan_info.dart'
 import 'package:functions/community/get_user_admin_details.dart';
 import 'package:functions/events/live_meetings/get_user_id_from_agora_id.dart';
 import 'package:functions/events/live_meetings/breakouts/initiate_breakouts.dart';
+import 'package:functions/events/live_meetings/breakouts/on_participant_agenda_item_details.dart';
 import 'package:functions/events/join_event.dart';
 import 'package:functions/events/live_meetings/breakouts/reassign_breakout_room.dart';
 import 'package:functions/events/live_meetings/reset_participant_agenda_items.dart';
@@ -150,6 +151,7 @@ final _cloudFunctions = <CloudFunction>[
 final _eventFunctions = <FirestoreEventFunction>[
   OnEvent(),
   OnEventParticipant(),
+  OnParticipantAgendaItemDetails(),
   OnDiscussionThread(),
   OnDiscussionThreadComment(),
   OnCommunity(),

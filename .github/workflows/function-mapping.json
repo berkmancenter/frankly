@@ -228,6 +228,9 @@
     "firebase/functions/lib/events/live_meetings/breakouts/initiate_breakouts.dart": [
       "InitiateBreakouts"
     ],
+    "firebase/functions/lib/events/live_meetings/breakouts/on_participant_agenda_item_details.dart": [
+      "ParticipantAgendaItemDetailsOnWrite"
+    ],
     "firebase/functions/lib/events/live_meetings/breakouts/reassign_breakout_room.dart": [
       "ReassignBreakoutRoom"
     ],

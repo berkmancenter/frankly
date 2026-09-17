@@ -109,11 +109,8 @@ class CheckAdvanceMeetingGuide
     final activeLiveMeetingPath =
         isBreakout ? breakoutLiveMeetingPath : liveMeetingPath;
 
-    // Record this participant's vote first, then evaluate. Writing before the
-    // check means the evaluation reads the vote from the details collection, so
-    // no optimistic caller-inclusion is needed. This mirrors what the
-    // participant-details onWrite trigger will do once the client writes
-    // readyToAdvance directly.
+    // Record this vote first, then evaluate, reading from the details collection;
+    // no optimistic caller-inclusion needed.
     await _markReady(
       userId: context.authUid!,
       agendaItemId: request.userReadyAgendaId,
@@ -204,9 +201,8 @@ class CheckAdvanceMeetingGuide
       }
 
       if (checkResult.isPendingOrAdvancing) {
-        // A countdown to advance is already running (or was just started) for the
-        // current agenda item. Once that starts, further ready votes can no
-        // longer change the outcome.
+        // A countdown to advance is already running (or was just started) for the current agenda
+        // item. Once that starts, further ready votes can no longer change the outcome.
         print('Advance is pending.');
         return;
       }
@@ -300,8 +296,7 @@ class CheckAdvanceMeetingGuide
             .toList();
 
     // The vote has already been written to the details collection, so the ready
-    // set is derived purely from what's persisted (no optimistic
-    // caller-inclusion needed).
+    // set is read directly from the collection without including the caller optimistically.
     final readyToMoveOnIds = agendaItemParticipantDetails
         .where(
           (a) =>
