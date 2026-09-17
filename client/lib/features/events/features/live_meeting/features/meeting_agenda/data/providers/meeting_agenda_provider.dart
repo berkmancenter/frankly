@@ -556,29 +556,23 @@ class AgendaProvider with ChangeNotifier {
     String? agendaItemId,
     bool ready = true,
   }) async {
-    final eventPath = event?.fullPath;
-    if (eventPath == null) {
+    final userId = userService.currentUserId;
+    if (agendaItemId == null || userId == null || liveMeetingPath.isEmpty) {
       loggingService.log(
-        'AgendaProvider.checkReadyToAdvance: eventPath is null',
+        'AgendaProvider.checkReadyToAdvance: missing agendaItemId, userId, or '
+        'liveMeetingPath',
         logType: LogType.error,
       );
       return;
     }
 
-    await cloudFunctionsLiveMeetingService.checkAdvanceMeetingGuide(
-      CheckAdvanceMeetingGuideRequest(
-        eventPath: eventPath,
-        breakoutSessionId: (liveMeetingProvider?.isInBreakout ?? false)
-            ? liveMeetingProvider
-                ?.liveMeeting?.currentBreakoutSession?.breakoutRoomSessionId
-            : null,
-        breakoutRoomId: (liveMeetingProvider?.isInBreakout ?? false)
-            ? liveMeetingProvider?.currentBreakoutRoomId
-            : null,
-        userReadyAgendaId: agendaItemId,
-        ready: ready,
-        presentIds: liveMeetingProvider?.presentParticipantIds ?? [],
-      ),
+    // Write vote to the participant-details doc. ParticipantAgendaItemDetailsOnWrite
+    // trigger fires on this write to eval advance or not.
+    await firestoreMeetingGuideService.setReadyToAdvance(
+      agendaItemId: agendaItemId,
+      userId: userId,
+      liveMeetingPath: liveMeetingPath,
+      ready: ready,
     );
   }
 
