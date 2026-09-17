@@ -2154,6 +2154,24 @@ class MockAgendaProvider extends _i1.Mock implements _i9.AgendaProvider {
       ) as _i40.Future<void>);
 
   @override
+  _i40.Future<bool> confirmReadyToMoveOn({
+    required String? currentAgendaItemId,
+    bool? userIsReady = true,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #confirmReadyToMoveOn,
+          [],
+          {
+            #currentAgendaItemId: currentAgendaItemId,
+            #userIsReady: userIsReady,
+          },
+        ),
+        returnValue: _i40.Future<bool>.value(false),
+        returnValueForMissingStub: _i40.Future<bool>.value(false),
+      ) as _i40.Future<bool>);
+
+  @override
   _i40.Future<void> toggleMoveForward({
     required String? currentAgendaItemId,
     bool? userIsReady = true,

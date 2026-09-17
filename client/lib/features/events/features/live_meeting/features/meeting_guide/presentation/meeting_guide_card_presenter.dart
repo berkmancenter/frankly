@@ -203,6 +203,23 @@ class MeetingGuideCardPresenter {
         _meetingGuideCardStore.isHoldingPendingAdvanceTransition;
   }
 
+  /// Whether the advance countdown should display for the current user, accounting
+  /// for the user's optimistic ready vote and all fully-written ready votes.
+  bool isPendingAdvanceOptimistic({
+    required String? currentAgendaItemId,
+    required List<ParticipantAgendaItemDetails>? itemDetails,
+    required Set<String> presentParticipantIds,
+  }) {
+    if (isPendingAdvance(currentAgendaItemId)) return true;
+    final optimisticCount = _meetingGuideCardStore.optimisticReadyCount(
+      agendaItemId: currentAgendaItemId,
+      currentUserId: getUserId(),
+      details: itemDetails,
+      presentParticipantIds: presentParticipantIds,
+    );
+    return optimisticCount >= getReadyThreshold(presentParticipantIds);
+  }
+
   /// The server-computed time at which the pending advance will actually occur.
   DateTime? getPendingAdvanceTime(String? currentAgendaItemId) {
     // If the pending agenda item ID doesn't match the current agenda item ID, return null.
