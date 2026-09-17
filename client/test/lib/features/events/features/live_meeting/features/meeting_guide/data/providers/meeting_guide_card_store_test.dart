@@ -104,5 +104,28 @@ void main() {
         ),
       );
     });
+
+    test('reverts the optimistic flip when the backend write throws', () async {
+      final agendaProvider = MockAgendaProvider();
+      when(
+        agendaProvider.confirmReadyToMoveOn(
+          currentAgendaItemId: anyNamed('currentAgendaItemId'),
+          userIsReady: anyNamed('userIsReady'),
+        ),
+      ).thenAnswer((_) async => true);
+      when(
+        agendaProvider.checkReadyToAdvance(
+          agendaItemId: anyNamed('agendaItemId'),
+          ready: anyNamed('ready'),
+        ),
+      ).thenThrow(Exception('write failed'));
+      final store = buildStore(agendaProvider);
+
+      final future = store.setDesiredReady(agendaItemId: 'A', ready: true);
+      expect(store.desiredReadyFor('A'), isTrue); // optimistic
+
+      await expectLater(future, throwsException);
+      expect(store.desiredReadyFor('A'), isNull); // reverted
+    });
   });
 }

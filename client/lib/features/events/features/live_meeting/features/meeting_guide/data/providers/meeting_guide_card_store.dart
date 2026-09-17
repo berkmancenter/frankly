@@ -289,7 +289,8 @@ class MeetingGuideCardStore with ChangeNotifier {
 
   /// Sets current user's ready state for current agenda item & writes to backend.
   /// UI flips immediately, then backend confirms (or cancels) the change. Returns
-  /// true unless canceled at "just started" prompt or backend write fails.
+  /// true on success, false if canceled at the "just started" prompt; reverts the
+  /// optimistic flip and rethrows if the backend write fails.
   Future<bool> setDesiredReady({
     required String agendaItemId,
     required bool ready,
@@ -303,20 +304,29 @@ class MeetingGuideCardStore with ChangeNotifier {
       userIsReady: ready,
     );
     if (!proceed) {
-      if (previous == null) {
-        _desiredReady.remove(agendaItemId);
-      } else {
-        _desiredReady[agendaItemId] = previous;
-      }
-      notifyListeners();
+      _revertDesiredReady(agendaItemId, previous);
       return false;
     }
 
-    await agendaProvider.checkReadyToAdvance(
-      agendaItemId: agendaItemId,
-      ready: ready,
-    );
+    try {
+      await agendaProvider.checkReadyToAdvance(
+        agendaItemId: agendaItemId,
+        ready: ready,
+      );
+    } catch (_) {
+      _revertDesiredReady(agendaItemId, previous);
+      rethrow;
+    }
     return true;
+  }
+
+  void _revertDesiredReady(String agendaItemId, bool? previous) {
+    if (previous == null) {
+      _desiredReady.remove(agendaItemId);
+    } else {
+      _desiredReady[agendaItemId] = previous;
+    }
+    notifyListeners();
   }
 
   bool isReadyToAdvance(
