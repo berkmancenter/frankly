@@ -108,12 +108,13 @@ Dart functions compiled to Node.js via `build_node_compilers` (dart2js), plus a 
 
 ## The "Check" Pattern
 
-Three functions use an idempotent convergent pattern for hostless meetings where no single client is the authority:
+Two client-callable functions use an idempotent convergent pattern for hostless meetings where no single client is the authority:
 
 - `CheckAssignToBreakouts`
 - `CheckHostlessGoToBreakouts`
-- `CheckAdvanceMeetingGuide`
 
 **How it works:** Multiple clients call simultaneously (via `HostlessActionFallbackController` with probabilistic timer). Server inspects current state -- if already done, returns success (no-op). If not, performs action atomically. `processingId` prevents duplicate breakout assignment processing.
 
 Safe to call redundantly. Client doesn't need to know if it "won".
+
+Agenda-item advance uses the same idempotent convergent logic but is now driven server-side by the `ParticipantAgendaItemDetailsOnWrite` trigger (see Firestore Triggers) rather than client calls: it reacts to each ready-vote write, and its transactions make concurrent evaluations converge on a single advance. The `CheckAdvanceMeetingGuide` helper is no longer client-callable.
