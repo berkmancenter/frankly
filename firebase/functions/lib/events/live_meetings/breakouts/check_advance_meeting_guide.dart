@@ -83,6 +83,11 @@ class CheckAdvanceMeetingGuide
     CheckAdvanceMeetingGuideRequest request,
     CallableContext context,
   ) async {
+    if (isNullOrEmpty(request.userReadyAgendaId)) {
+      print('No agenda ID passed in so not marking user ready.');
+      return;
+    }
+
     // Look up event
     final Event event;
     try {
@@ -96,28 +101,59 @@ class CheckAdvanceMeetingGuide
 
     final isBreakout = !isNullOrEmpty(request.breakoutRoomId);
 
-    // Determine the current agenda item
     final liveMeetingPath = '${request.eventPath}/live-meetings/${event.id}';
-    final breakoutRoomPath =
-        '$liveMeetingPath/breakout-room-sessions/${request.breakoutSessionId}'
-        '/breakout-rooms/${request.breakoutRoomId}';
     final breakoutLiveMeetingPath =
-        '$breakoutRoomPath/live-meetings/${request.breakoutRoomId}';
-
+        '$liveMeetingPath/breakout-room-sessions/${request.breakoutSessionId}'
+        '/breakout-rooms/${request.breakoutRoomId}'
+        '/live-meetings/${request.breakoutRoomId}';
     final activeLiveMeetingPath =
         isBreakout ? breakoutLiveMeetingPath : liveMeetingPath;
 
-    if (!isNullOrEmpty(request.userReadyAgendaId) && !request.ready) {
-      // User is undoing their ready vote for this agenda item. Undoing a
-      // vote can never trigger an advance, so there's nothing to check.
-      await _markReady(
-        userId: context.authUid!,
-        agendaItemId: request.userReadyAgendaId,
-        liveMeetingPath: activeLiveMeetingPath,
-        meetingId: activeLiveMeetingPath.split('/').last,
-        ready: false,
-      );
-    }
+    // Record this participant's vote first, then evaluate. Writing before the
+    // check means the evaluation reads the vote from the details collection, so
+    // no optimistic caller-inclusion is needed. This mirrors what the
+    // participant-details onWrite trigger will do once the client writes
+    // readyToAdvance directly.
+    await _markReady(
+      userId: context.authUid!,
+      agendaItemId: request.userReadyAgendaId,
+      liveMeetingPath: activeLiveMeetingPath,
+      meetingId: activeLiveMeetingPath.split('/').last,
+      ready: request.ready,
+    );
+
+    await evaluateAndScheduleAdvance(
+      event: event,
+      eventPath: request.eventPath,
+      breakoutSessionId: request.breakoutSessionId,
+      breakoutRoomId: request.breakoutRoomId,
+    );
+  }
+
+  /// Evaluates whether the current agenda item should advance now that a ready
+  /// vote has been recorded, and schedules or cancels the advance accordingly.
+  ///
+  /// Reusable by the callable (transitional) and the participant-details onWrite
+  /// trigger. Assumes the vote has already been written to the details
+  /// collection.
+  Future<void> evaluateAndScheduleAdvance({
+    required Event event,
+    required String eventPath,
+    required String? breakoutSessionId,
+    required String? breakoutRoomId,
+  }) async {
+    final isBreakout = !isNullOrEmpty(breakoutRoomId);
+
+    final liveMeetingPath = '$eventPath/live-meetings/${event.id}';
+    final breakoutRoomPath =
+        '$liveMeetingPath/breakout-room-sessions/$breakoutSessionId'
+        '/breakout-rooms/$breakoutRoomId';
+    final breakoutLiveMeetingPath =
+        '$breakoutRoomPath/live-meetings/$breakoutRoomId';
+    final activeLiveMeetingPath =
+        isBreakout ? breakoutLiveMeetingPath : liveMeetingPath;
+    final parentLiveMeetingPath = isBreakout ? liveMeetingPath : null;
+
     String? diffusionStatement;
     if (isBreakout) {
       final breakoutRoom = await firestoreUtils.getFirestoreObject(
@@ -127,33 +163,15 @@ class CheckAdvanceMeetingGuide
       diffusionStatement = breakoutRoom.diffusionStatement;
     }
 
-    if (isNullOrEmpty(request.userReadyAgendaId)) {
-      print('No agenda ID passed in so not marking user ready.');
-      return;
-    }
-
     try {
       final checkResult = await _checkAdvanceMeetingGuide(
         liveMeetingPath: activeLiveMeetingPath,
-        parentLiveMeetingPath: isBreakout ? liveMeetingPath : null,
+        parentLiveMeetingPath: parentLiveMeetingPath,
         isBreakout: isBreakout,
-        request: request,
-        userId: context.authUid!,
+        eventPath: eventPath,
+        breakoutRoomId: breakoutRoomId,
         event: event,
       );
-
-      if (!isNullOrEmpty(request.userReadyAgendaId) && request.ready) {
-        // Persist this participant's ready vote regardless of whether it was the one that
-        // crossed the threshold. Otherwise, the participant whose vote tips the advance never
-        // gets recorded as ready. Also don't overwrite an unready vote back to ready.
-        await _markReady(
-          userId: context.authUid!,
-          agendaItemId: request.userReadyAgendaId,
-          liveMeetingPath: activeLiveMeetingPath,
-          meetingId: activeLiveMeetingPath.split('/').last,
-          ready: true,
-        );
-      }
 
       // If this is the last item, we can move on immediately
       if (checkResult.isLastAgendaItem) {
@@ -163,19 +181,19 @@ class CheckAdvanceMeetingGuide
           liveMeetingPath: activeLiveMeetingPath,
           diffusionStatement: diffusionStatement,
           currentAgendaItemId: checkResult.newlyPendingAgendaItemId!,
-          parentLiveMeetingPath: isBreakout ? liveMeetingPath : null,
+          parentLiveMeetingPath: parentLiveMeetingPath,
         );
         return;
       }
 
       final newlyPendingAgendaItemId = checkResult.newlyPendingAgendaItemId;
       if (newlyPendingAgendaItemId != null) {
-        // We're the caller that just crossed the ready threshold, so we're responsible for
-        // actually triggering the advance once the delay elapses.
+        // We just crossed the ready threshold, so we're responsible for actually
+        // triggering the advance once the delay elapses.
         final advanceRequest = AdvanceMeetingGuideAfterDelayRequest(
-          eventPath: request.eventPath,
-          breakoutSessionId: request.breakoutSessionId,
-          breakoutRoomId: request.breakoutRoomId,
+          eventPath: eventPath,
+          breakoutSessionId: breakoutSessionId,
+          breakoutRoomId: breakoutRoomId,
           agendaItemId: newlyPendingAgendaItemId,
         );
 
@@ -186,8 +204,9 @@ class CheckAdvanceMeetingGuide
       }
 
       if (checkResult.isPendingOrAdvancing) {
-        // A countdown to advance is already running (or was just started) for the current agenda
-        // item. Once that starts, further ready votes can no longer change the outcome.
+        // A countdown to advance is already running (or was just started) for the
+        // current agenda item. Once that starts, further ready votes can no
+        // longer change the outcome.
         print('Advance is pending.');
         return;
       }
@@ -207,10 +226,10 @@ class CheckAdvanceMeetingGuide
   /// if this is the last agenda item that was voted to advance, in which case the scheduled countdown will be skipped.
   Future<AdvanceCheckResult> _checkAdvanceMeetingGuide({
     required bool isBreakout,
-    required String userId,
     required String liveMeetingPath,
     required String? parentLiveMeetingPath,
-    required CheckAdvanceMeetingGuideRequest request,
+    required String eventPath,
+    required String? breakoutRoomId,
     required Event event,
   }) async {
     final liveMeeting = await firestoreUtils.getFirestoreObject(
@@ -233,7 +252,7 @@ class CheckAdvanceMeetingGuide
         isLastAgendaItem: false,
       );
     }
-    print('Checking advance for event: ${request.eventPath}, '
+    print('Checking advance for event: $eventPath, '
         'live meeting: $liveMeetingPath');
 
     final currentAgendaItemId = _getCurrentAgendaItemId(event, liveMeeting);
@@ -241,11 +260,11 @@ class CheckAdvanceMeetingGuide
 
     // Read server-side Participant.isPresent (our authoritative presence state)
     DocumentQuery participantsQuery =
-        firestore.collection('${request.eventPath}/event-participants');
+        firestore.collection('$eventPath/event-participants');
     if (isBreakout) {
       participantsQuery = participantsQuery.where(
         Participant.kFieldCurrentBreakoutRoomId,
-        isEqualTo: request.breakoutRoomId,
+        isEqualTo: breakoutRoomId,
       );
     }
     final participantsSnapshot = await participantsQuery.get();
@@ -280,20 +299,17 @@ class CheckAdvanceMeetingGuide
             )
             .toList();
 
-    final readyToMoveOnIds = <String>{
-      ...agendaItemParticipantDetails
-          .where(
-            (a) =>
-                (a.readyToAdvance ?? false) &&
-                presentParticipantIds.contains(a.userId),
-          )
-          .map((p) => p.userId ?? ''),
-      // Only optimistically include the caller when marking ready = true
-      if (request.ready &&
-          request.userReadyAgendaId == currentAgendaItemId &&
-          !isNullOrEmpty(userId))
-        userId,
-    };
+    // The vote has already been written to the details collection, so the ready
+    // set is derived purely from what's persisted (no optimistic
+    // caller-inclusion needed).
+    final readyToMoveOnIds = agendaItemParticipantDetails
+        .where(
+          (a) =>
+              (a.readyToAdvance ?? false) &&
+              presentParticipantIds.contains(a.userId),
+        )
+        .map((p) => p.userId ?? '')
+        .toSet();
 
     print('ready to move on: $readyToMoveOnIds');
     print('present: $presentParticipantIds');
