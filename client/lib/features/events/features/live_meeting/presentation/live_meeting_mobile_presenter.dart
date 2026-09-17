@@ -207,6 +207,23 @@ class LiveMeetingMobilePresenter {
         _meetingGuideCardStore.isHoldingPendingAdvanceTransition;
   }
 
+  /// Whether the advance countdown should display, counting the current user's vote
+  /// immediately and transitioning the UI optimistically if they're the critical vote.
+  bool isPendingAdvanceOptimistic({
+    required String? currentAgendaItemId,
+    required List<ParticipantAgendaItemDetails>? itemDetails,
+    required Set<String> presentParticipantIds,
+  }) {
+    if (isPendingAdvance(currentAgendaItemId)) return true;
+    final optimisticCount = _meetingGuideCardStore.optimisticReadyCount(
+      agendaItemId: currentAgendaItemId,
+      currentUserId: userService.currentUserId,
+      details: itemDetails,
+      presentParticipantIds: presentParticipantIds,
+    );
+    return optimisticCount >= getReadyThreshold(presentParticipantIds);
+  }
+
   /// The number of ready votes required to advance, kept in sync with the backend's real trigger
   /// threshold via the shared [readyToAdvanceThreshold] helper.
   int getReadyThreshold(Set<String> presentParticipantIds) {

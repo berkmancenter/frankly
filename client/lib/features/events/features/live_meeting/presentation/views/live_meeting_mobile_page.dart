@@ -669,7 +669,17 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isBackButtonShown = _presenter.isBackButtonShown();
 
         final isRaisedHandVisible = _presenter.isRaisedHandVisible;
-        final isCardPending = _presenter.isPendingAdvance(currentItem?.id);
+        final presentParticipantIds =
+            _presenter.getPresentParticipantIds().toSet();
+        final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
+          participantAgendaItemDetailsList,
+          currentItem?.id,
+        );
+        final isCardPending = _presenter.isPendingAdvanceOptimistic(
+          currentAgendaItemId: currentItem?.id,
+          itemDetails: itemDetails,
+          presentParticipantIds: presentParticipantIds,
+        );
 
         return Container(
           color: context.theme.colorScheme.onPrimaryFixed,
@@ -879,16 +889,22 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isHosted = _presenter.isHosted();
         final currentAgendaItemId = _presenter.getCurrentAgendaItemId();
 
-        if (isHosted || _presenter.isPendingAdvance(currentAgendaItemId)) {
-          return SizedBox.shrink();
-        }
-
         final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
           participantAgendaItemDetailsList,
           currentAgendaItemId,
         );
         final presentParticipantIds =
             _presenter.getPresentParticipantIds().toSet();
+
+        if (isHosted ||
+            _presenter.isPendingAdvanceOptimistic(
+              currentAgendaItemId: currentAgendaItemId,
+              itemDetails: itemDetails,
+              presentParticipantIds: presentParticipantIds,
+            )) {
+          return SizedBox.shrink();
+        }
+
         final readyThreshold =
             _presenter.getReadyThreshold(presentParticipantIds);
         final readyToMoveOnCount = _presenter.readyToMoveOnCount(

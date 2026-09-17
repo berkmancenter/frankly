@@ -481,8 +481,11 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               );
               final isMeetingStarted = _presenter.isMeetingStarted();
               final isCardPending = _presenter.isCardPending();
-              final isPendingAdvance =
-                  _presenter.isPendingAdvance(currentAgendaItemId);
+              final isPendingAdvance = _presenter.isPendingAdvanceOptimistic(
+                currentAgendaItemId: currentAgendaItemId,
+                itemDetails: itemDetails,
+                presentParticipantIds: presentParticipantIds,
+              );
               final meetingFinished =
                   currentItem == null && isMeetingStarted && !isCardPending;
               final isHosted = _presenter.isHosted();

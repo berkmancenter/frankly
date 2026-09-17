@@ -128,4 +128,85 @@ void main() {
       expect(store.desiredReadyFor('A'), isNull); // reverted
     });
   });
+
+  group('MeetingGuideCardStore.optimisticReadyCount', () {
+    MeetingGuideCardStore buildStore(MockAgendaProvider agendaProvider) {
+      return MeetingGuideCardStore(
+        communityProvider: MockCommunityProvider(),
+        liveMeetingProvider: MockLiveMeetingProvider(),
+        agendaProvider: agendaProvider,
+        showToast: (_) {},
+      );
+    }
+
+    ParticipantAgendaItemDetails ready(String userId) =>
+        ParticipantAgendaItemDetails(
+          userId: userId,
+          agendaItemId: 'A',
+          readyToAdvance: true,
+        );
+
+    Future<MeetingGuideCardStore> buildStoreWithDesiredReady({
+      required bool ready,
+    }) async {
+      final agendaProvider = MockAgendaProvider();
+      when(
+        agendaProvider.confirmReadyToMoveOn(
+          currentAgendaItemId: anyNamed('currentAgendaItemId'),
+          userIsReady: anyNamed('userIsReady'),
+        ),
+      ).thenAnswer((_) async => true);
+      final store = buildStore(agendaProvider);
+      await store.setDesiredReady(agendaItemId: 'A', ready: ready);
+      return store;
+    }
+
+    test('counts present ready participants from the stream', () {
+      final store = buildStore(MockAgendaProvider());
+      final count = store.optimisticReadyCount(
+        agendaItemId: 'A',
+        currentUserId: 'u1',
+        details: [ready('u2'), ready('u3')],
+        presentParticipantIds: {'u1', 'u2', 'u3'},
+      );
+      expect(count, 2);
+    });
+
+    test('excludes ready participants who are not present', () {
+      final store = buildStore(MockAgendaProvider());
+      final count = store.optimisticReadyCount(
+        agendaItemId: 'A',
+        currentUserId: 'u1',
+        details: [ready('u2'), ready('u3')],
+        presentParticipantIds: {'u1', 'u2'},
+      );
+      expect(count, 1);
+    });
+
+    test(
+        'adds the current user optimistic ready vote before the stream '
+        'catches up', () async {
+      final store = await buildStoreWithDesiredReady(ready: true);
+
+      final count = store.optimisticReadyCount(
+        agendaItemId: 'A',
+        currentUserId: 'u1',
+        details: [ready('u2')],
+        presentParticipantIds: {'u1', 'u2'},
+      );
+      expect(count, 2);
+    });
+
+    test('removes the current user when they optimistically unready', () async {
+      final store = await buildStoreWithDesiredReady(ready: false);
+
+      final count = store.optimisticReadyCount(
+        agendaItemId: 'A',
+        currentUserId: 'u1',
+        details: [ready('u1'), ready('u2')],
+        presentParticipantIds: {'u1', 'u2'},
+      );
+      expect(count, 1);
+    });
+  });
 }

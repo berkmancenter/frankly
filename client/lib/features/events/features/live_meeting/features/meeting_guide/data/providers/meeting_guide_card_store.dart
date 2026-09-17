@@ -339,6 +339,39 @@ class MeetingGuideCardStore with ChangeNotifier {
         false;
   }
 
+  /// The number of present participants marked ready for [agendaItemId],
+  /// counting the current user's optimistic (not-yet-confirmed) vote from
+  /// [_desiredReady]. Lets the critical voter's own client cross the threshold
+  /// and show the timer immediately instead of waiting for the backend.
+  int optimisticReadyCount({
+    required String? agendaItemId,
+    required String? currentUserId,
+    required List<ParticipantAgendaItemDetails>? details,
+    required Set<String> presentParticipantIds,
+  }) {
+    final readyIds = detailsForAgendaItem(details, agendaItemId)
+        .where(
+          (p) =>
+              (p.readyToAdvance ?? false) &&
+              p.userId != null &&
+              presentParticipantIds.contains(p.userId),
+        )
+        .map((p) => p.userId!)
+        .toSet();
+
+    final desired = desiredReadyFor(agendaItemId);
+    if (desired != null &&
+        currentUserId != null &&
+        presentParticipantIds.contains(currentUserId)) {
+      if (desired) {
+        readyIds.add(currentUserId);
+      } else {
+        readyIds.remove(currentUserId);
+      }
+    }
+    return readyIds.length;
+  }
+
   Future<void> goToPreviousAgendaItem() async {
     final currentAgendaItemId = meetingGuideCardAgendaItem?.id;
     final currentAgendaItemIndex = agendaProvider.resolvedAgendaItems
