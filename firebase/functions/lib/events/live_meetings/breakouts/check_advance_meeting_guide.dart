@@ -239,7 +239,7 @@ class CheckAdvanceMeetingGuide
     final currentAgendaItemId = _getCurrentAgendaItemId(event, liveMeeting);
     print('current agenda item: $currentAgendaItemId');
 
-    // Determine who is present
+    // Read server-side Participant.isPresent (our authoritative presence state)
     DocumentQuery participantsQuery =
         firestore.collection('${request.eventPath}/event-participants');
     if (isBreakout) {
@@ -250,17 +250,19 @@ class CheckAdvanceMeetingGuide
     }
     final participantsSnapshot = await participantsQuery.get();
 
-    final registeredParticipants = participantsSnapshot.documents
+    final presentParticipants = participantsSnapshot.documents
         .map(
           (doc) => Participant.fromJson(
             firestoreUtils.fromFirestoreJson(doc.data.toMap()),
           ),
         )
-        .where((participant) => participant.status == ParticipantStatus.active)
+        .where(
+          (participant) =>
+              participant.status == ParticipantStatus.active &&
+              participant.isPresent,
+        )
         .toList();
-    final registeredParticipantIds =
-        registeredParticipants.map((p) => p.id).toSet();
-    final presentParticipantIds = request.presentIds.toSet();
+    final presentParticipantIds = presentParticipants.map((p) => p.id).toSet();
 
     // Determine who has said they are ready for this agenda item to be over
     final agendaItemParticipantDetailsPath =
@@ -295,7 +297,6 @@ class CheckAdvanceMeetingGuide
 
     print('ready to move on: $readyToMoveOnIds');
     print('present: $presentParticipantIds');
-    print('registered: $registeredParticipantIds');
     final threshold = readyToAdvanceThreshold(presentParticipantIds.length);
     final belowThreshold = readyToMoveOnIds.length < threshold;
 

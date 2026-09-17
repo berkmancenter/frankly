@@ -16,6 +16,26 @@ import '../../../util/event_test_utils.dart';
 import '../../../util/function_test_fixture.dart';
 import '../../../util/live_meeting_test_utils.dart';
 
+// Mark users present in room same way we do for general presence tracking.
+Future<void> setBreakoutPresence(
+  Event event,
+  String roomId,
+  List<String> userIds, {
+  bool isPresent = true,
+}) async {
+  for (final uid in userIds) {
+    await firestore
+        .document('${event.fullPath}/event-participants/$uid')
+        .setData(
+          DocumentData.fromMap({
+            Participant.kFieldCurrentBreakoutRoomId: roomId,
+            Participant.kFieldIsPresent: isPresent,
+          }),
+          SetOptions(merge: true),
+        );
+  }
+}
+
 void main() {
   late String communityId;
   const templateId = '9654';
@@ -81,6 +101,12 @@ void main() {
       event: event,
       breakoutSessionId: breakoutSessionId,
       roomName: '1',
+    );
+
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777', '999'],
     );
 
     final guideAdvancer = CheckAdvanceMeetingGuide();
@@ -195,6 +221,12 @@ void main() {
       roomName: '1',
     );
 
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777', '999'],
+    );
+
     final guideAdvancer = CheckAdvanceMeetingGuide();
     final req = CheckAdvanceMeetingGuideRequest(
       eventPath: event.fullPath,
@@ -293,6 +325,12 @@ void main() {
       event: event,
       breakoutSessionId: breakoutSessionId,
       roomName: '1',
+    );
+
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777', '999'],
     );
 
     final guideAdvancer = CheckAdvanceMeetingGuide();
@@ -396,6 +434,12 @@ void main() {
       roomName: '1',
     );
 
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777', '999'],
+    );
+
     final breakoutLiveMeetingPath =
         liveMeetingTestUtils.getBreakoutLiveMeetingPath(
       breakoutRoomId: breakoutRoom.roomId,
@@ -477,6 +521,103 @@ void main() {
     expect(
       updatedMeeting.events[0].event,
       equals(LiveMeetingEventType.agendaItemStarted),
+    );
+  });
+
+  test('Ghost participants (isPresent false) are excluded from the denominator',
+      () async {
+    var event = Event(
+      id: '12341ghost001',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType.hosted,
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(
+          id: '55005',
+          title: "Role call",
+          content: "Shout out if you're here",
+        ),
+      ],
+    );
+    event = await eventTestUtils.createEvent(event: event, userId: adminUserId);
+
+    await eventTestUtils.joinEventMultiple(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: event.id,
+      participantIds: ['333', '444', '555', '666', '777', '888', '999', '000'],
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.initiateBreakoutSession(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      userId: adminUserId,
+    );
+
+    final breakoutRoom = await liveMeetingTestUtils.getBreakoutRoom(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      roomName: '1',
+    );
+
+    // Three genuinely present participants (threshold = 2) plus one ghost that
+    // is in the room but not present. If the ghost were counted the threshold
+    // would be 3 and two votes would not advance.
+    await setBreakoutPresence(
+        event, breakoutRoom.roomId, ['333', '555', '777']);
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['999'],
+      isPresent: false,
+    );
+
+    final guideAdvancer = CheckAdvanceMeetingGuide();
+    final req = CheckAdvanceMeetingGuideRequest(
+      eventPath: event.fullPath,
+      presentIds: ['333', '555', '777', '999'],
+      userReadyAgendaId: event.agendaItems.first.id,
+      breakoutRoomId: breakoutRoom.roomId,
+      breakoutSessionId: breakoutSessionId,
+    );
+
+    await guideAdvancer.action(
+      req,
+      CallableContext('333', null, 'fakeInstanceId'),
+    );
+    await guideAdvancer.action(
+      req,
+      CallableContext('555', null, 'fakeInstanceId'),
+    );
+
+    final meetingPathSnap = await firestore
+        .document(
+          liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+            breakoutRoomId: breakoutRoom.roomId,
+            event: event,
+            breakoutSessionId: breakoutSessionId,
+          ),
+        )
+        .get();
+    final createdMeeting = LiveMeeting.fromJson(
+      firestoreUtils.fromFirestoreJson(meetingPathSnap.data.toMap()),
+    );
+    // Two of three present participants voted (majority) -> advances to finished.
+    expect(createdMeeting.events.length, equals(2));
+    expect(
+      createdMeeting.events[1].event,
+      equals(LiveMeetingEventType.finishMeeting),
     );
   });
 }
