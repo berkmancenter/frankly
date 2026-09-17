@@ -1,14 +1,11 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     show DocumentData, SetOptions;
-import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:get_it/get_it.dart';
-import 'package:functions/events/live_meetings/breakouts/check_advance_meeting_guide.dart';
 import 'package:functions/events/live_meetings/breakouts/on_participant_agenda_item_details.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:test/test.dart';
-import 'package:data_models/cloud_functions/requests.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,6 +32,34 @@ Future<void> setBreakoutPresence(
           SetOptions(merge: true),
         );
   }
+}
+
+// Simulate a participant setting or clearing a ready vote via participant-details doc,
+// then fire the participant-details onWrite trigger for that doc.
+Future<void> voteReadyViaTrigger({
+  required String breakoutLiveMeetingPath,
+  required String agendaItemId,
+  required String roomId,
+  required String userId,
+  bool ready = true,
+}) async {
+  final docPath =
+      '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/$userId';
+  await firestore.document(docPath).setData(
+        DocumentData.fromMap(
+          firestoreUtils.toFirestoreJson(
+            ParticipantAgendaItemDetails(
+              userId: userId,
+              agendaItemId: agendaItemId,
+              meetingId: roomId,
+              readyToAdvance: ready,
+            ).toJson(),
+          ),
+        ),
+        SetOptions(merge: true),
+      );
+  await OnParticipantAgendaItemDetails()
+      .evaluateAdvanceForParticipantDetailsPath(docPath);
 }
 
 void main() {
@@ -110,22 +135,23 @@ void main() {
       ['333', '555', '777', '999'],
     );
 
-    final guideAdvancer = CheckAdvanceMeetingGuide();
-    final req = CheckAdvanceMeetingGuideRequest(
-      eventPath: event.fullPath,
-      presentIds: ['333', '555', '777', '999'],
-      userReadyAgendaId: event.agendaItems.first.id,
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
       breakoutRoomId: breakoutRoom.roomId,
+      event: event,
       breakoutSessionId: breakoutSessionId,
     );
+    final agendaItemId = event.agendaItems.first.id;
 
-    await guideAdvancer.action(
-      req,
-      CallableContext('333', null, 'fakeInstanceId'),
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
     );
     // check participant marked as ready
     final documentId =
-        '${liveMeetingTestUtils.getBreakoutLiveMeetingPath(breakoutRoomId: breakoutRoom.roomId, event: event, breakoutSessionId: breakoutSessionId)}/participant-agenda-item-details/${event.agendaItems.first.id}/participant-details/333';
+        '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/333';
     final participantDetailsDoc = await firestore.document(documentId).get();
     final createdDetails = ParticipantAgendaItemDetails.fromJson(
       firestoreUtils.fromFirestoreJson(participantDetailsDoc.data.toMap()),
@@ -139,15 +165,19 @@ void main() {
     expect(createdDetails, equals(expectedDetails));
 
     // call again with another participant
-    await guideAdvancer.action(
-      req,
-      CallableContext('555', null, 'fakeInstanceId'),
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '555',
     );
 
     // call one more time with another participant to reach majority
-    await guideAdvancer.action(
-      req,
-      CallableContext('777', null, 'fakeInstanceId'),
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '777',
     );
 
     final meetingPathSnap = await firestore
@@ -228,22 +258,23 @@ void main() {
       ['333', '555', '777', '999'],
     );
 
-    final guideAdvancer = CheckAdvanceMeetingGuide();
-    final req = CheckAdvanceMeetingGuideRequest(
-      eventPath: event.fullPath,
-      presentIds: ['333', '555', '777', '999'],
-      userReadyAgendaId: event.agendaItems.first.id,
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
       breakoutRoomId: breakoutRoom.roomId,
+      event: event,
       breakoutSessionId: breakoutSessionId,
     );
+    final agendaItemId = event.agendaItems.first.id;
 
-    await guideAdvancer.action(
-      req,
-      CallableContext('333', null, 'fakeInstanceId'),
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
     );
     // check participant marked as ready
     final documentId =
-        '${liveMeetingTestUtils.getBreakoutLiveMeetingPath(breakoutRoomId: breakoutRoom.roomId, event: event, breakoutSessionId: breakoutSessionId)}/participant-agenda-item-details/${event.agendaItems.first.id}/participant-details/333';
+        '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/333';
     final participantDetailsDoc = await firestore.document(documentId).get();
     final createdDetails = ParticipantAgendaItemDetails.fromJson(
       firestoreUtils.fromFirestoreJson(participantDetailsDoc.data.toMap()),
@@ -334,29 +365,33 @@ void main() {
       ['333', '555', '777', '999'],
     );
 
-    final guideAdvancer = CheckAdvanceMeetingGuide();
-    final req = CheckAdvanceMeetingGuideRequest(
-      eventPath: event.fullPath,
-      presentIds: ['333', '555', '777', '999'],
-      userReadyAgendaId: event.agendaItems.first.id,
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
       breakoutRoomId: breakoutRoom.roomId,
+      event: event,
       breakoutSessionId: breakoutSessionId,
     );
+    final agendaItemId = event.agendaItems.first.id;
 
     // Mark ready, then undo.
-    await guideAdvancer.action(
-      req,
-      CallableContext('333', null, 'fakeInstanceId'),
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
     );
-    await guideAdvancer.action(
-      req.copyWith(ready: false),
-      CallableContext('333', null, 'fakeInstanceId'),
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
+      ready: false,
     );
 
     // The undo must persist readyToAdvance == false and not be overwritten
     // back to true.
     final documentId =
-        '${liveMeetingTestUtils.getBreakoutLiveMeetingPath(breakoutRoomId: breakoutRoom.roomId, event: event, breakoutSessionId: breakoutSessionId)}/participant-agenda-item-details/${event.agendaItems.first.id}/participant-details/333';
+        '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/333';
     final participantDetailsDoc = await firestore.document(documentId).get();
     final createdDetails = ParticipantAgendaItemDetails.fromJson(
       firestoreUtils.fromFirestoreJson(participantDetailsDoc.data.toMap()),
@@ -493,21 +528,14 @@ void main() {
           );
     }
 
-    final guideAdvancer = CheckAdvanceMeetingGuide();
-    final req = CheckAdvanceMeetingGuideRequest(
-      eventPath: event.fullPath,
-      presentIds: ['333', '555', '777', '999'],
-      userReadyAgendaId: agendaItemId,
-      breakoutRoomId: breakoutRoom.roomId,
-      breakoutSessionId: breakoutSessionId,
-      ready: false,
-    );
-
     // One of the three ready participants changes their mind before the delay
     // fires, dropping the ready count (2) below the threshold (3).
-    await guideAdvancer.action(
-      req,
-      CallableContext('333', null, 'fakeInstanceId'),
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
+      ready: false,
     );
 
     final meetingSnap = await firestore.document(breakoutLiveMeetingPath).get();
@@ -584,22 +612,25 @@ void main() {
       isPresent: false,
     );
 
-    final guideAdvancer = CheckAdvanceMeetingGuide();
-    final req = CheckAdvanceMeetingGuideRequest(
-      eventPath: event.fullPath,
-      presentIds: ['333', '555', '777', '999'],
-      userReadyAgendaId: event.agendaItems.first.id,
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
       breakoutRoomId: breakoutRoom.roomId,
+      event: event,
       breakoutSessionId: breakoutSessionId,
     );
+    final agendaItemId = event.agendaItems.first.id;
 
-    await guideAdvancer.action(
-      req,
-      CallableContext('333', null, 'fakeInstanceId'),
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
     );
-    await guideAdvancer.action(
-      req,
-      CallableContext('555', null, 'fakeInstanceId'),
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '555',
     );
 
     final meetingPathSnap = await firestore

@@ -210,9 +210,6 @@
       "CheckAssignToBreakouts",
       "InitiateBreakouts"
     ],
-    "firebase/functions/lib/events/live_meetings/breakouts/check_advance_meeting_guide.dart": [
-      "CheckAdvanceMeetingGuide"
-    ],
     "firebase/functions/lib/events/live_meetings/breakouts/check_assign_to_breakouts.dart": [
       "CheckAssignToBreakouts"
     ],

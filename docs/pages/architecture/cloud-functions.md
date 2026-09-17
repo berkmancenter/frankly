@@ -39,7 +39,6 @@ Dart functions compiled to Node.js via `build_node_compilers` (dart2js), plus a 
 | InitiateBreakouts                        | Starts breakout session (sets status=pending) |
 | CheckAssignToBreakouts                   | Idempotent: assigns participants if ready     |
 | CheckHostlessGoToBreakouts               | Idempotent: transitions hostless waiting room |
-| CheckAdvanceMeetingGuide                 | Idempotent: advances agenda item if all ready |
 | ReassignBreakoutRoom                     | Moves user to different breakout              |
 | UpdateBreakoutRoomFlagStatus             | Flags room as needing help                    |
 | KickParticipant                          | Removes participant (admin)                   |
@@ -77,6 +76,7 @@ Dart functions compiled to Node.js via `build_node_compilers` (dart2js), plus a 
 | -------------------------- | ---------------------------------- | ------------------------------------------------------------ |
 | EventOnCreate/Update       | `.../events/{eId}`                 | Schedules email reminders via Cloud Tasks                    |
 | EventParticipantOnWrite    | `.../event-participants/{pId}`     | Updates participant count estimates                          |
+| ParticipantAgendaItemDetailsOnWrite | `.../participant-details/{uid}` | Advances agenda item when a majority of present participants are ready |
 | OnDiscussionThread/Comment | Discussion thread paths            | Sends notifications                                          |
 | CommunityOnCreate          | `community/{cId}`                  | Initial community setup                                      |
 | OnCommunityMembership      | Membership paths                   | Membership side effects                                      |

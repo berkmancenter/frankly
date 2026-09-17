@@ -7,7 +7,6 @@ import 'package:functions/utils/infra/firestore_event_function.dart';
 import 'package:functions/cloud_function.dart';
 import 'package:functions/admin/payments/cancel_stripe_subscription_plan.dart';
 import 'package:functions/events/live_meetings/breakouts/advance_meeting_guide_after_delay_server.dart';
-import 'package:functions/events/live_meetings/breakouts/check_advance_meeting_guide.dart';
 import 'package:functions/events/live_meetings/breakouts/check_assign_to_breakouts.dart';
 import 'package:functions/events/live_meetings/breakouts/check_hostless_go_to_breakouts.dart';
 import 'package:functions/community/create_announcement.dart';
@@ -77,7 +76,6 @@ import 'package:uuid/uuid.dart';
 
 final _onCallFunctions = <CloudFunction>[
   CancelStripeSubscriptionPlan(),
-  CheckAdvanceMeetingGuide(),
   CheckAssignToBreakouts(),
   CheckHostlessGoToBreakouts(),
   CreateAnnouncement(),

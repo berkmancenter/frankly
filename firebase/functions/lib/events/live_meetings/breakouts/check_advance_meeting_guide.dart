@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
-import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import '../../../on_call_function.dart';
 import '../../../utils/infra/firestore_utils.dart';
 import '../../../utils/utils.dart';
 import 'advance_meeting_guide_after_delay_server.dart';
@@ -37,102 +35,19 @@ class AdvanceCheckResult {
   });
 }
 
-class CheckAdvanceMeetingGuide
-    extends OnCallMethod<CheckAdvanceMeetingGuideRequest> {
+/// Evaluates whether a breakout should advance past its current agenda item
+/// once a ready vote has been recorded, and schedules or cancels the advance.
+///
+/// Clients write ready votes directly to their participant-details doc, and
+/// [OnParticipantAgendaItemDetails] reacts by calling [evaluateAndScheduleAdvance].
+class CheckAdvanceMeetingGuide {
   static const _advanceDelay = Duration(seconds: 8);
-
-  CheckAdvanceMeetingGuide()
-      : super(
-          'CheckAdvanceMeetingGuide',
-          (jsonMap) => CheckAdvanceMeetingGuideRequest.fromJson(jsonMap),
-        );
-
-  Future<void> _markReady({
-    required String userId,
-    required String liveMeetingPath,
-    required String? agendaItemId,
-    required String meetingId,
-    required bool ready,
-  }) async {
-    final documentId =
-        '$liveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/$userId';
-    final document = firestore.document(documentId);
-    final docData = DocumentData.fromMap(
-      jsonSubset(
-        [
-          ParticipantAgendaItemDetails.kFieldUserId,
-          ParticipantAgendaItemDetails.kFieldAgendaItemId,
-          ParticipantAgendaItemDetails.kFieldMeetingId,
-          ParticipantAgendaItemDetails.kFieldReadyToAdvance,
-        ],
-        firestoreUtils.toFirestoreJson(
-          ParticipantAgendaItemDetails(
-            agendaItemId: agendaItemId,
-            meetingId: meetingId,
-            readyToAdvance: ready,
-            userId: userId,
-          ).toJson(),
-        ),
-      ),
-    );
-    await document.setData(docData, SetOptions(merge: true));
-  }
-
-  @override
-  Future<void> action(
-    CheckAdvanceMeetingGuideRequest request,
-    CallableContext context,
-  ) async {
-    if (isNullOrEmpty(request.userReadyAgendaId)) {
-      print('No agenda ID passed in so not marking user ready.');
-      return;
-    }
-
-    // Look up event
-    final Event event;
-    try {
-      event = await firestoreUtils.getFirestoreObject(
-        path: request.eventPath,
-        constructor: (map) => Event.fromJson(map),
-      );
-    } catch (e) {
-      throw StateError('Failed to load event at ${request.eventPath}: $e');
-    }
-
-    final isBreakout = !isNullOrEmpty(request.breakoutRoomId);
-
-    final liveMeetingPath = '${request.eventPath}/live-meetings/${event.id}';
-    final breakoutLiveMeetingPath =
-        '$liveMeetingPath/breakout-room-sessions/${request.breakoutSessionId}'
-        '/breakout-rooms/${request.breakoutRoomId}'
-        '/live-meetings/${request.breakoutRoomId}';
-    final activeLiveMeetingPath =
-        isBreakout ? breakoutLiveMeetingPath : liveMeetingPath;
-
-    // Record this vote first, then evaluate, reading from the details collection;
-    // no optimistic caller-inclusion needed.
-    await _markReady(
-      userId: context.authUid!,
-      agendaItemId: request.userReadyAgendaId,
-      liveMeetingPath: activeLiveMeetingPath,
-      meetingId: activeLiveMeetingPath.split('/').last,
-      ready: request.ready,
-    );
-
-    await evaluateAndScheduleAdvance(
-      event: event,
-      eventPath: request.eventPath,
-      breakoutSessionId: request.breakoutSessionId,
-      breakoutRoomId: request.breakoutRoomId,
-    );
-  }
 
   /// Evaluates whether the current agenda item should advance now that a ready
   /// vote has been recorded, and schedules or cancels the advance accordingly.
   ///
-  /// Reusable by the callable (transitional) and the participant-details onWrite
-  /// trigger. Assumes the vote has already been written to the details
-  /// collection.
+  /// Invoked by the participant-details onWrite trigger. Assumes the vote has
+  /// already been written to the details collection.
   Future<void> evaluateAndScheduleAdvance({
     required Event event,
     required String eventPath,
