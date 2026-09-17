@@ -110,4 +110,114 @@ void main() {
       expect(result, isTrue);
     });
   });
+
+  group('isPendingAdvanceOptimistic (countdown display gate)', () {
+    const presentIds = {'a', 'b', 'c'}; // threshold = 3 ~/ 2 + 1 = 2
+
+    setUp(() {
+      when(mockUserService.currentUserId).thenReturn('a');
+      when(mockMeetingGuideCardStore.isHoldingPendingAdvanceTransition)
+          .thenReturn(false);
+    });
+
+    test('shows when the server pending id matches the current poll item', () {
+      when(mockAgendaProvider.pendingAdvanceAgendaItemId).thenReturn('poll1');
+
+      final result = presenter.isPendingAdvanceOptimistic(
+        currentAgendaItemId: 'poll1',
+        itemDetails: const [],
+        presentParticipantIds: presentIds,
+      );
+
+      expect(result, isTrue);
+    });
+
+    test('shows once the optimistic ready count reaches the threshold', () {
+      when(mockAgendaProvider.pendingAdvanceAgendaItemId).thenReturn(null);
+      when(
+        mockMeetingGuideCardStore.optimisticReadyCount(
+          agendaItemId: 'poll1',
+          currentUserId: 'a',
+          details: const [],
+          presentParticipantIds: presentIds,
+        ),
+      ).thenReturn(2);
+
+      final result = presenter.isPendingAdvanceOptimistic(
+        currentAgendaItemId: 'poll1',
+        itemDetails: const [],
+        presentParticipantIds: presentIds,
+      );
+
+      expect(result, isTrue);
+    });
+
+    test('hidden while below threshold and no server pending', () {
+      when(mockAgendaProvider.pendingAdvanceAgendaItemId).thenReturn(null);
+      when(
+        mockMeetingGuideCardStore.optimisticReadyCount(
+          agendaItemId: 'poll1',
+          currentUserId: 'a',
+          details: const [],
+          presentParticipantIds: presentIds,
+        ),
+      ).thenReturn(1);
+
+      final result = presenter.isPendingAdvanceOptimistic(
+        currentAgendaItemId: 'poll1',
+        itemDetails: const [],
+        presentParticipantIds: presentIds,
+      );
+
+      expect(result, isFalse);
+    });
+
+    // Root cause of the mobile "countdown never appears" case: the bottom nav
+    // passes getCurrentAgendaItem()?.id, which is null whenever the displayed
+    // item object hasn't resolved, so a genuinely-active server advance for the
+    // current item is not recognized and the ring is suppressed.
+    test(
+        'suppressed when the current id is null even though the server advance '
+        'is active for that item', () {
+      when(mockAgendaProvider.pendingAdvanceAgendaItemId).thenReturn('poll1');
+
+      final withNullId = presenter.isPendingAdvanceOptimistic(
+        currentAgendaItemId: null,
+        itemDetails: const [],
+        presentParticipantIds: presentIds,
+      );
+      final withResolvedId = presenter.isPendingAdvanceOptimistic(
+        currentAgendaItemId: 'poll1',
+        itemDetails: const [],
+        presentParticipantIds: presentIds,
+      );
+
+      expect(
+        withNullId,
+        isFalse,
+        reason: 'passing a null id drops the active advance',
+      );
+      expect(
+        withResolvedId,
+        isTrue,
+        reason: 'the fallback-safe id recognizes the same active advance',
+      );
+    });
+  });
+
+  group('current agenda item id resolution', () {
+    test(
+        'getCurrentAgendaItem()?.id is null while getCurrentAgendaItemId() '
+        'still resolves the pending item', () {
+      when(mockMeetingGuideCardStore.meetingGuideCardAgendaItem)
+          .thenReturn(null);
+      when(mockMeetingGuideCardStore.currentAgendaModelItemId)
+          .thenReturn('poll1');
+
+      // The mobile bottom nav uses the former; the desktop bottom section uses
+      // the latter. Only the latter is safe to gate the countdown on.
+      expect(presenter.getCurrentAgendaItem()?.id, isNull);
+      expect(presenter.getCurrentAgendaItemId(), 'poll1');
+    });
+  });
 }
