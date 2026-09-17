@@ -604,7 +604,10 @@ void main() {
     // is in the room but not present. If the ghost were counted the threshold
     // would be 3 and two votes would not advance.
     await setBreakoutPresence(
-        event, breakoutRoom.roomId, ['333', '555', '777']);
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777'],
+    );
     await setBreakoutPresence(
       event,
       breakoutRoom.roomId,

@@ -248,9 +248,12 @@ class CheckAdvanceMeetingGuide {
 
     if (belowThreshold) {
       print(
-          'Not enough participants ready to advance. Threshold: $threshold, ready: ${readyToMoveOnIds.length}');
+        'Not enough participants ready to advance. Threshold: $threshold, ready: ${readyToMoveOnIds.length}',
+      );
       return AdvanceCheckResult(
-          isPendingOrAdvancing: false, isLastAgendaItem: false);
+        isPendingOrAdvancing: false,
+        isLastAgendaItem: false,
+      );
     }
 
     print('$threshold required to advance. Scheduling advance in '
@@ -295,7 +298,9 @@ class CheckAdvanceMeetingGuide {
 
     if (alreadyPending) {
       return AdvanceCheckResult(
-          isPendingOrAdvancing: true, isLastAgendaItem: false);
+        isPendingOrAdvancing: true,
+        isLastAgendaItem: false,
+      );
     }
 
     // We're the one who just wrote the pending state, so the caller is responsible for
