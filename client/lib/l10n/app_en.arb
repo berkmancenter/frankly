@@ -1136,5 +1136,7 @@
   "youtubeUrl": "YouTube URL",
   "youtubeVideoLookupFailed": "Sorry, youtube video lookup failed.",
   "youWereRemovedFromThisEventAndCannotRejoin": "You were removed from this event and cannot rejoin.",
-  "zoom": "Zoom"
+  "zoom": "Zoom",
+  "agendaItemJustStartedConfirm": "This agenda item just started! Are you sure you want to move on?",
+  "youreReadyToMoveOn": "You're ready to move on"
 }

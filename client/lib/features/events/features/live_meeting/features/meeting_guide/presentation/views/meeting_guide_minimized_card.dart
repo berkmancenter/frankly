@@ -190,7 +190,7 @@ class _ForwardButton extends HookWidget {
               if (proceeded && context.mounted) {
                 showRegularToast(
                   context,
-                  "You're ready to move on",
+                  context.l10n.youreReadyToMoveOn,
                   toastType: ToastType.success,
                 );
               }

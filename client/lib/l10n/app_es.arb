@@ -1203,6 +1203,8 @@
   "yourName": "Tu nombre",
   "youtubeUrl": "URL de YouTube",
   "youtubeVideoLookupFailed": "Lo sentimos, la búsqueda del video de YouTube falló.",
-  "youWereRemovedFromThisEventAndCannotRejoin": "<MISSING: youWereRemovedFromThisEventAndCannotRejoin>",
-  "zoom": "Zoom"
+  "youWereRemovedFromThisEventAndCannotRejoin": "Has sido eliminado de este evento y no puedes volver a unirte.",
+  "zoom": "Zoom",
+  "agendaItemJustStartedConfirm": "¡Este punto de la agenda acaba de comenzar! ¿Seguro que quieres continuar?",
+  "youreReadyToMoveOn": "Estás listo para continuar"
 }

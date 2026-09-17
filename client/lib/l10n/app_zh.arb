@@ -1187,5 +1187,7 @@
   "youtubeUrl": "YouTube链接",
   "youtubeVideoLookupFailed": "抱歉，YouTube 视频查找失败。",
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被从此活动中移除，无法重新加入。",
-  "zoom": "放大"
+  "zoom": "放大",
+  "agendaItemJustStartedConfirm": "本议程项目刚刚开始！您确定要继续吗？",
+  "youreReadyToMoveOn": "您已准备好继续"
 }

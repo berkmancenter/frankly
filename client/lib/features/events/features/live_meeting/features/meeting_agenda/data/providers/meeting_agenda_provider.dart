@@ -648,8 +648,9 @@ class AgendaProvider with ChangeNotifier {
         !suppressWarning &&
         !canUserControlMeeting) {
       return ConfirmDialog(
-        mainText:
-            'This agenda item just started! Are you sure you want to move on?',
+        mainText: appLocalizationService
+            .getLocalization()
+            .agendaItemJustStartedConfirm,
         cancelText: appLocalizationService.getLocalization().cancel,
       ).show();
     }

@@ -1181,5 +1181,7 @@
   "youtubeUrl": "YouTube連結",
   "youtubeVideoLookupFailed": "抱歉，YouTube影片查詢失敗。",
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被從此活動中移除，無法重新加入。",
-  "zoom": "縮放"
+  "zoom": "縮放",
+  "agendaItemJustStartedConfirm": "本議程項目剛剛開始！您確定要繼續嗎？",
+  "youreReadyToMoveOn": "您已準備好繼續"
 }
