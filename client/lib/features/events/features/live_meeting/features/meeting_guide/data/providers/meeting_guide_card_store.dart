@@ -338,9 +338,15 @@ class MeetingGuideCardStore with ChangeNotifier {
     if (currentAgendaItemIndex < 0 && agendaProvider.isMeetingFinished) {
       prevAgendaItem = agendaProvider.resolvedAgendaItems.last;
     } else if (currentAgendaItemIndex < 0) {
-      throw VisibleException('Meeting Guide entry not found.');
+      throw VisibleException(
+        appLocalizationService.getLocalization().meetingGuideEntryNotFound,
+      );
     } else if (currentAgendaItemIndex == 0) {
-      throw VisibleException('Already at the first Meeting Guide entry.');
+      throw VisibleException(
+        appLocalizationService
+            .getLocalization()
+            .alreadyAtFirstMeetingGuideEntry,
+      );
     } else {
       prevAgendaItem = agendaProvider.resolvedAgendaItems
           .skip(currentAgendaItemIndex - 1)

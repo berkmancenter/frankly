@@ -1189,5 +1189,16 @@
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被从此活动中移除，无法重新加入。",
   "zoom": "放大",
   "agendaItemJustStartedConfirm": "本议程项目刚刚开始！您确定要继续吗？",
-  "youreReadyToMoveOn": "您已准备好继续"
+  "youreReadyToMoveOn": "您已准备好继续",
+  "noMeetingGuideForThisMeeting": "本次会议没有会议指南",
+  "meetingGuideEntryNotFound": "未找到会议指南条目。",
+  "alreadyAtFirstMeetingGuideEntry": "已经是第一个会议指南条目。",
+  "youAreInTheWaitingRoom": "您在等候室中。",
+  "loadingRoomPleaseWait": "正在加载房间，请稍候……",
+  "somethingWentWrongLoadingRoom": "加载房间时出错，请刷新！",
+  "connectingToRoom": "正在连接房间……",
+  "allParticipantsMutedDuringVideo": "视频播放期间所有参与者均已静音！",
+  "audioVideoSettings": "音频/视频设置",
+  "saySomething": "说点什么",
+  "loadingBreakoutRoomPleaseWait": "正在加载分组讨论室，请稍候……"
 }

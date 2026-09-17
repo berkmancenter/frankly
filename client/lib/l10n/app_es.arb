@@ -1206,5 +1206,16 @@
   "youWereRemovedFromThisEventAndCannotRejoin": "Has sido eliminado de este evento y no puedes volver a unirte.",
   "zoom": "Zoom",
   "agendaItemJustStartedConfirm": "¡Este punto de la agenda acaba de comenzar! ¿Seguro que quieres continuar?",
-  "youreReadyToMoveOn": "Estás listo para continuar"
+  "youreReadyToMoveOn": "Estás listo para continuar",
+  "noMeetingGuideForThisMeeting": "No hay guía de reunión para esta reunión",
+  "meetingGuideEntryNotFound": "No se encontró la entrada de la guía de reunión.",
+  "alreadyAtFirstMeetingGuideEntry": "Ya estás en la primera entrada de la guía de reunión.",
+  "youAreInTheWaitingRoom": "Estás en la sala de espera.",
+  "loadingRoomPleaseWait": "Cargando sala. Por favor, espera...",
+  "somethingWentWrongLoadingRoom": "Algo salió mal al cargar la sala. ¡Actualiza la página!",
+  "connectingToRoom": "Conectando a la sala...",
+  "allParticipantsMutedDuringVideo": "¡Todos los participantes están silenciados durante el video!",
+  "audioVideoSettings": "Configuración de audio/video",
+  "saySomething": "Escribe algo",
+  "loadingBreakoutRoomPleaseWait": "Cargando sala de grupo. Por favor, espera..."
 }

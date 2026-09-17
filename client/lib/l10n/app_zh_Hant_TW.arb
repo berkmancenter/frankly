@@ -1183,5 +1183,16 @@
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被從此活動中移除，無法重新加入。",
   "zoom": "縮放",
   "agendaItemJustStartedConfirm": "本議程項目剛剛開始！您確定要繼續嗎？",
-  "youreReadyToMoveOn": "您已準備好繼續"
+  "youreReadyToMoveOn": "您已準備好繼續",
+  "noMeetingGuideForThisMeeting": "本次會議沒有會議指南",
+  "meetingGuideEntryNotFound": "找不到會議指南項目。",
+  "alreadyAtFirstMeetingGuideEntry": "已經是第一個會議指南項目。",
+  "youAreInTheWaitingRoom": "您在等候室中。",
+  "loadingRoomPleaseWait": "正在載入房間，請稍候……",
+  "somethingWentWrongLoadingRoom": "載入房間時發生錯誤，請刷新！",
+  "connectingToRoom": "正在連接房間……",
+  "allParticipantsMutedDuringVideo": "影片播放期間所有參與者皆已靜音！",
+  "audioVideoSettings": "音訊/影片設定",
+  "saySomething": "說點什麼",
+  "loadingBreakoutRoomPleaseWait": "正在載入分組討論室，請稍候……"
 }

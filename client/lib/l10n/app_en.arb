@@ -1138,5 +1138,16 @@
   "youWereRemovedFromThisEventAndCannotRejoin": "You were removed from this event and cannot rejoin.",
   "zoom": "Zoom",
   "agendaItemJustStartedConfirm": "This agenda item just started! Are you sure you want to move on?",
-  "youreReadyToMoveOn": "You're ready to move on"
+  "youreReadyToMoveOn": "You're ready to move on",
+  "noMeetingGuideForThisMeeting": "There is no meeting guide for this meeting",
+  "meetingGuideEntryNotFound": "Meeting Guide entry not found.",
+  "alreadyAtFirstMeetingGuideEntry": "Already at the first Meeting Guide entry.",
+  "youAreInTheWaitingRoom": "You are in the waiting room.",
+  "loadingRoomPleaseWait": "Loading room. Please wait...",
+  "somethingWentWrongLoadingRoom": "Something went wrong loading room. Please refresh!",
+  "connectingToRoom": "Connecting to room...",
+  "allParticipantsMutedDuringVideo": "All participants are muted during video!",
+  "audioVideoSettings": "Audio/Video Settings",
+  "saySomething": "Say something",
+  "loadingBreakoutRoomPleaseWait": "Loading breakout room. Please wait..."
 }

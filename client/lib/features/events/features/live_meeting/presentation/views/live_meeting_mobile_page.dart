@@ -395,7 +395,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
   Widget _buildWaitingRoomTextWidget() {
     return HeightConstrainedText(
-      'You are in the waiting room.',
+      context.l10n.youAreInTheWaitingRoom,
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Theme.of(context).primaryColor,
@@ -464,7 +464,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return CustomStreamBuilder<GetMeetingJoinInfoResponse>(
       entryFrom: '_buildConferenceRoomWrapper.build',
       stream: liveMeetingProvider.getCurrentMeetingJoinInfo()!.asStream(),
-      loadingMessage: 'Loading room. Please wait...',
+      loadingMessage: context.l10n.loadingRoomPleaseWait,
       builder: (_, response) {
         final conferenceRoom = ConferenceRoom.watch(context);
         final error = conferenceRoom.connectError;
@@ -479,8 +479,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         return CustomStreamBuilder(
           entryFrom: 'LiveMeetingMobilePage._buildMeetingLoading',
           stream: Stream.fromFuture(conferenceRoom.connectionFuture),
-          errorMessage: 'Something went wrong loading room. Please refresh!',
-          loadingMessage: 'Connecting to room...',
+          errorMessage: context.l10n.somethingWentWrongLoadingRoom,
+          loadingMessage: context.l10n.connectingToRoom,
           textStyle: TextStyle(color: context.theme.colorScheme.onSurface),
           builder: (_, __) => Stack(
             children: [
@@ -509,7 +509,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Recording',
+                          context.l10n.record,
                           style: TextStyle(
                             color: context.theme.colorScheme.onPrimary,
                           ),
@@ -749,7 +749,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       onTap: isAudioTemporarilyDisabled
                           ? () => showRegularToast(
                                 context,
-                                'All participants are muted during video!',
+                                context.l10n.allParticipantsMutedDuringVideo,
                                 toastType: ToastType.success,
                               )
                           : () => AudioVideoErrorDialog.showOnError(
@@ -786,7 +786,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                               },
                             ),
                             child: HeightConstrainedText(
-                              'Audio/Video Settings',
+                              context.l10n.audioVideoSettings,
                             ),
                           ),
                         ];
@@ -1065,7 +1065,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     if (selectedTab == TabType.chat) {
       return ChatWidget(
         parentPath: context.watch<ChatModel>().parentPath,
-        messageInputHint: 'Say something',
+        messageInputHint: context.l10n.saySomething,
         allowBroadcast: context.watch<LiveMeetingProvider>().isInBreakout &&
             context.watch<EventPermissionsProvider>().canBroadcastChat,
       );
@@ -1128,7 +1128,7 @@ class BreakoutRoomLoader extends StatelessWidget {
       entryFrom: '_RefreshableBreakoutRoomState.build',
       stream: Provider.of<LiveMeetingProvider>(context)
           .breakoutRoomLiveMeetingStream,
-      loadingMessage: 'Loading breakout room. Please wait...',
+      loadingMessage: context.l10n.loadingBreakoutRoomPleaseWait,
       builder: (context, __) {
         return liveMeetingBuilder(context);
       },
