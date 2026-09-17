@@ -953,10 +953,6 @@
 <td>Idempotent: transitions hostless waiting room</td>
 </tr>
 <tr>
-<td>CheckAdvanceMeetingGuide</td>
-<td>Idempotent: advances agenda item if all ready</td>
-</tr>
-<tr>
 <td>ReassignBreakoutRoom</td>
 <td>Moves user to different breakout</td>
 </tr>
@@ -1081,6 +1077,11 @@
 <td>Updates participant count estimates</td>
 </tr>
 <tr>
+<td>ParticipantAgendaItemDetailsOnWrite</td>
+<td><code>.../participant-details/{uid}</code></td>
+<td>Advances agenda item when a majority of present participants are ready</td>
+</tr>
+<tr>
 <td>OnDiscussionThread/Comment</td>
 <td>Discussion thread paths</td>
 <td>Sends notifications</td>
@@ -1197,14 +1198,14 @@
 </tbody>
 </table>
 <h2 id="the-check-pattern">The "Check" Pattern</h2>
-<p>Three functions use an idempotent convergent pattern for hostless meetings where no single client is the authority:</p>
+<p>Two client-callable functions use an idempotent convergent pattern for hostless meetings where no single client is the authority:</p>
 <ul>
 <li><code>CheckAssignToBreakouts</code></li>
 <li><code>CheckHostlessGoToBreakouts</code></li>
-<li><code>CheckAdvanceMeetingGuide</code></li>
 </ul>
 <p><strong>How it works:</strong> Multiple clients call simultaneously (via <code>HostlessActionFallbackController</code> with probabilistic timer). Server inspects current state -- if already done, returns success (no-op). If not, performs action atomically. <code>processingId</code> prevents duplicate breakout assignment processing.</p>
 <p>Safe to call redundantly. Client doesn't need to know if it "won".</p>
+<p>Agenda-item advance uses the same idempotent convergent logic but is now driven server-side by the <code>ParticipantAgendaItemDetailsOnWrite</code> trigger (see Firestore Triggers) rather than client calls: it reacts to each ready-vote write, and its transactions make concurrent evaluations converge on a single advance. The <code>CheckAdvanceMeetingGuide</code> helper is no longer client-callable.</p>
 
 
 
