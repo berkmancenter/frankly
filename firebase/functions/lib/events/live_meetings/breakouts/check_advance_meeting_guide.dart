@@ -201,24 +201,20 @@ class CheckAdvanceMeetingGuide {
     final agendaItemParticipantDetailsDocs =
         await firestore.collection(agendaItemParticipantDetailsPath).get();
 
-    final agendaItemParticipantDetails =
-        agendaItemParticipantDetailsDocs.documents
-            .map(
-              (doc) => ParticipantAgendaItemDetails.fromJson(
-                firestoreUtils.fromFirestoreJson(doc.data.toMap()),
-              ),
-            )
-            .toList();
-
-    // The vote has already been written to the details collection, so the ready
-    // set is read directly from the collection without including the caller optimistically.
-    final readyToMoveOnIds = agendaItemParticipantDetails
-        .where(
-          (a) =>
-              (a.readyToAdvance ?? false) &&
-              presentParticipantIds.contains(a.userId),
-        )
-        .map((p) => p.userId ?? '')
+    // Count ready voters by the document ID (the {userId} path segment), which
+    // is the canonical identity for these per-user docs, rather than the userId
+    // field in the payload. The field is redundant with the key, so counting by
+    // the key avoids a miscount if the two ever diverge (e.g. a client writing
+    // the wrong userId into an otherwise correctly-keyed doc).
+    final readyToMoveOnIds = agendaItemParticipantDetailsDocs.documents
+        .where((doc) {
+          final details = ParticipantAgendaItemDetails.fromJson(
+            firestoreUtils.fromFirestoreJson(doc.data.toMap()),
+          );
+          return (details.readyToAdvance ?? false) &&
+              presentParticipantIds.contains(doc.documentID);
+        })
+        .map((doc) => doc.documentID)
         .toSet();
 
     print('ready to move on: $readyToMoveOnIds');
