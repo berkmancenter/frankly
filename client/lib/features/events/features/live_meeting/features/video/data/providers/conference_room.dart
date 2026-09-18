@@ -146,7 +146,7 @@ class ConferenceRoom with ChangeNotifier {
 
   List<AgoraParticipant> _orderedParticipants = [];
 
-  late StreamSubscription _unraiseHandSubscription;
+  StreamSubscription? _unraiseHandSubscription;
 
   /// List of users who have been muted by the host. All participants mute their audio streams until
   /// they unmute themselves.
@@ -364,6 +364,10 @@ class ConferenceRoom with ChangeNotifier {
         enableAudio: liveMeetingProvider.shouldStartLocalAudioOn,
         enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
       );
+      // The room can be disposed while the join above is in flight (e.g. a
+      // breakout transition rebuilds the provider). Adding a listener to a
+      // disposed notifier throws, so bail out; dispose already tore _room down.
+      if (_isDisposed) return;
       _room!.addListener(notifyListeners);
     } catch (err, stacktrace) {
       loggingService.log('error');
@@ -406,7 +410,7 @@ class ConferenceRoom with ChangeNotifier {
     _avDeviceChangeSubscription?.cancel();
 
     _debouncedDominantSpeakerSubscription?.cancel();
-    _unraiseHandSubscription.cancel();
+    _unraiseHandSubscription?.cancel();
     _debouncedDominantSpeakerStream?.dispose();
 
     _onExceptionStreamController.close();
@@ -538,6 +542,11 @@ class ConferenceRoom with ChangeNotifier {
   Future<void> onConnected({
     required AgoraRoom room,
   }) async {
+    // A superseded or disposed room can still deliver a late join-success
+    // callback. Ignore it so we don't wire up subscriptions, write presence, or
+    // complete the connection future twice ("Bad state: Future already
+    // completed").
+    if (_isDisposed || _completer.isCompleted) return;
     Debug.log('ConferenceRoom._onConnected => state: ${room.state}');
 
     _debouncedDominantSpeakerStream = BehaviorSubjectWrapper(
