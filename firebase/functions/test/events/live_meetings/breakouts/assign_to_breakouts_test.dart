@@ -121,55 +121,152 @@ void main() {
       );
     });
 
-    test('includes freeTextResponse for participants with a free-text answer',
+    test(
+        'uses binaryGroupMatch when there is no free-text data at all but binary answers exist',
         () {
       final payload = buildFranklyMatchApiPayload(
-        participantSurveyResponsesLookup: {},
-        participantFreeTextResponsesLookup: {'p1': 'I like hiking'},
+        participantSurveyResponsesLookup: {'p1': '010'},
+        participantFreeTextResponsesLookup: {},
         targetParticipantsPerRoom: 2,
       );
 
+      expect(payload['algorithm'], 'binaryGroupMatch');
+      expect(payload['targetGroupSize'], 2);
+      expect(payload['participants'], {
+        'p1': {'binaryAnswerMask': '010'},
+      });
+    });
+
+    test(
+        'uses textGroupMatch and includes freeTextResponse if at least three participants have free-text responses',
+        () {
+      final payload = buildFranklyMatchApiPayload(
+        participantSurveyResponsesLookup: {},
+        participantFreeTextResponsesLookup: {
+          'p1': 'I like hiking',
+          'p2': 'I enjoy reading',
+          'p3': 'I love cooking'
+        },
+        targetParticipantsPerRoom: 2,
+      );
+
+      expect(payload['algorithm'], 'textGroupMatch');
       expect(
         payload['participants'],
         {
           'p1': {'freeTextResponse': 'I like hiking'},
-        },
-      );
-    });
-
-    test('merges both keys for a participant who answered both', () {
-      final payload = buildFranklyMatchApiPayload(
-        participantSurveyResponsesLookup: {'p1': '010'},
-        participantFreeTextResponsesLookup: {'p1': 'I like hiking'},
-        targetParticipantsPerRoom: 2,
-      );
-
-      expect(
-        payload['participants'],
-        {
-          'p1': {
-            'binaryAnswerMask': '010',
-            'freeTextResponse': 'I like hiking'
-          },
+          'p2': {'freeTextResponse': 'I enjoy reading'},
+          'p3': {'freeTextResponse': 'I love cooking'},
         },
       );
     });
 
     test(
-        'includes a participant present only in the free-text lookup with no '
-        'survey answer', () {
+        'omits binaryAnswerMask and uses textGroupMatch when a participant '
+        'has both a survey answer and a free-text answer, given at least '
+        'three participants have free-text responses', () {
       final payload = buildFranklyMatchApiPayload(
         participantSurveyResponsesLookup: {'p1': '010'},
-        participantFreeTextResponsesLookup: {'p2': 'I like hiking'},
+        participantFreeTextResponsesLookup: {
+          'p1': 'I like hiking',
+          'p2': 'I enjoy reading',
+          'p3': 'I love cooking',
+        },
         targetParticipantsPerRoom: 2,
       );
 
+      expect(payload['algorithm'], 'textGroupMatch');
       expect(
         payload['participants'],
         {
-          'p1': {'binaryAnswerMask': '010'},
-          'p2': {'freeTextResponse': 'I like hiking'},
+          'p1': {'freeTextResponse': 'I like hiking'},
+          'p2': {'freeTextResponse': 'I enjoy reading'},
+          'p3': {'freeTextResponse': 'I love cooking'},
         },
+      );
+    });
+
+    test(
+        'throws an error if there are fewer than three participants with free-text responses and no binary answers',
+        () {
+      expect(
+        () => buildFranklyMatchApiPayload(
+          participantSurveyResponsesLookup: {},
+          participantFreeTextResponsesLookup: {
+            'p1': 'I like hiking',
+            'p2': 'I enjoy reading'
+          },
+          targetParticipantsPerRoom: 2,
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test(
+        'throws an error when there are no survey responses and no free-text responses at all',
+        () {
+      expect(
+        () => buildFranklyMatchApiPayload(
+          participantSurveyResponsesLookup: {},
+          participantFreeTextResponsesLookup: {},
+          targetParticipantsPerRoom: 2,
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test(
+        'falls back to binaryGroupMatch when there are fewer than three free-text responses but binary answers exist, still including the free-text-only participant without a binaryAnswerMask',
+        () {
+      final payload = buildFranklyMatchApiPayload(
+        participantSurveyResponsesLookup: {'p1': '010', 'p2': '101'},
+        participantFreeTextResponsesLookup: {'p3': 'I like hiking'},
+        targetParticipantsPerRoom: 2,
+      );
+
+      expect(payload['algorithm'], 'binaryGroupMatch');
+      expect(payload['participants'], {
+        'p1': {'binaryAnswerMask': '010'},
+        'p2': {'binaryAnswerMask': '101'},
+        'p3': {'freeTextResponse': 'I like hiking'},
+      });
+    });
+
+    test(
+        'falls back to binaryGroupMatch when at least three participants have free-text responses but one is empty, given binary answers exist',
+        () {
+      final payload = buildFranklyMatchApiPayload(
+        participantSurveyResponsesLookup: {'p1': '010'},
+        participantFreeTextResponsesLookup: {
+          'p1': 'I like hiking',
+          'p2': 'I enjoy reading',
+          'p3': '',
+        },
+        targetParticipantsPerRoom: 2,
+      );
+
+      expect(payload['algorithm'], 'binaryGroupMatch');
+      expect(payload['participants'], {
+        'p1': {'binaryAnswerMask': '010', 'freeTextResponse': 'I like hiking'},
+        'p2': {'freeTextResponse': 'I enjoy reading'},
+        'p3': {'freeTextResponse': ''},
+      });
+    });
+
+    test(
+        'throws an error when at least three free-text responses exist but one is empty and there are no binary answers',
+        () {
+      expect(
+        () => buildFranklyMatchApiPayload(
+          participantSurveyResponsesLookup: {},
+          participantFreeTextResponsesLookup: {
+            'p1': 'I like hiking',
+            'p2': 'I enjoy reading',
+            'p3': '',
+          },
+          targetParticipantsPerRoom: 2,
+        ),
+        throwsA(isA<Exception>()),
       );
     });
   });
