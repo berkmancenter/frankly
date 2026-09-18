@@ -425,12 +425,6 @@ class _EventInfoState extends State<EventInfo> {
                 .setMirrorCheckCompleteForEvent(widget.event.id);
           }
 
-          // If the user cancels the mirror check, do not join the event and bail
-          if (hasCompletedMirrorCheck == null ||
-              hasCompletedMirrorCheck == false) {
-            return;
-          }
-
           final successfullyJoined =
               await widget.onJoinEvent(enterMeeting: isEventOpen || kDebugMode);
           if (!mounted) return;
