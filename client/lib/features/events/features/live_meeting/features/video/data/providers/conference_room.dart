@@ -111,6 +111,11 @@ class ConferenceRoom with ChangeNotifier {
   // to avoid all remaining participants hitting Firestore simultaneously.
   static const int _disconnectCheckReadyMaxJitterMs = 5000;
 
+  // A transient join failure (e.g. an empty gateway body from a backgrounded
+  // tab) is retried this many times before surfacing the error screen.
+  static const int _maxConnectAttempts = 3;
+  static const Duration _connectRetryBackoff = Duration(seconds: 2);
+
   final LiveMeetingProvider liveMeetingProvider;
   final AgendaProvider agendaProvider;
   final CommunityProvider communityProvider;
@@ -349,36 +354,74 @@ class ConferenceRoom with ChangeNotifier {
   Future<void> connect() async {
     Debug.log('ConferenceRoom.connect()');
 
-    try {
-      hasStartedConnecting = true;
+    hasStartedConnecting = true;
 
-      _room = AgoraRoom(
-        channelName: roomName,
-        token: token,
-        liveMeetingProvider: liveMeetingProvider,
-        eventProvider: liveMeetingProvider.eventProvider,
-        conferenceRoom: this,
-      );
-
-      await _room!.connect(
-        enableAudio: liveMeetingProvider.shouldStartLocalAudioOn,
-        enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
-      );
-      // The room can be disposed while the join above is in flight (e.g. a
-      // breakout transition rebuilds the provider). Adding a listener to a
-      // disposed notifier throws, so bail out; dispose already tore _room down.
+    for (var attempt = 1; attempt <= _maxConnectAttempts; attempt++) {
       if (_isDisposed) return;
-      _room!.addListener(notifyListeners);
-    } catch (err, stacktrace) {
-      loggingService.log('error');
-      loggingService.log(stacktrace);
-      loggingService.log(err.runtimeType);
+      try {
+        _room = AgoraRoom(
+          channelName: roomName,
+          token: token,
+          liveMeetingProvider: liveMeetingProvider,
+          eventProvider: liveMeetingProvider.eventProvider,
+          conferenceRoom: this,
+        );
 
-      _connectError = js_util.callMethod(err, 'toString', []);
-      notifyListeners();
+        await _room!.connect(
+          enableAudio: liveMeetingProvider.shouldStartLocalAudioOn,
+          enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
+        );
+        // The room can be disposed while the join above is in flight (e.g. a
+        // breakout transition rebuilds the provider). Adding a listener to a
+        // disposed notifier throws, so bail out; dispose already tore _room down.
+        if (_isDisposed) return;
+        _room!.addListener(notifyListeners);
+        return;
+      } catch (err, stacktrace) {
+        loggingService.log('error');
+        loggingService.log(stacktrace);
+        loggingService.log(err.runtimeType);
+        Debug.log(err);
 
-      Debug.log(err);
+        // The failed attempt owns an engine that must be released before we
+        // create a fresh room to retry with.
+        _room?.dispose();
+        _room = null;
+
+        final message = _connectErrorMessage(err);
+        final shouldRetry = attempt < _maxConnectAttempts &&
+            !_isDisposed &&
+            _isTransientConnectError(message);
+        if (shouldRetry) {
+          await Future.delayed(_connectRetryBackoff);
+          continue;
+        }
+
+        if (_isDisposed) return;
+        _connectError = message;
+        notifyListeners();
+        return;
+      }
     }
+  }
+
+  String _connectErrorMessage(Object err) {
+    try {
+      return js_util.callMethod(err, 'toString', []) as String;
+    } catch (_) {
+      return err.toString();
+    }
+  }
+
+  /// A throttled/backgrounded tab gets an empty gateway body from the Agora SDK,
+  /// which surfaces as a JSON.parse FormatException. These are transient network
+  /// conditions worth retrying rather than dead-ending on the error screen.
+  bool _isTransientConnectError(String message) {
+    final lower = message.toLowerCase();
+    return lower.contains('formatexception') ||
+        lower.contains('json.parse') ||
+        lower.contains('unexpected end of data') ||
+        lower.contains('timeout');
   }
 
   void setConnectError(String error) {
