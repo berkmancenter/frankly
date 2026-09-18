@@ -42,6 +42,13 @@ class AgoraRoom with ChangeNotifier {
     required this.conferenceRoom,
   });
 
+  /// Set once [dispose] begins. Agora can keep firing SDK callbacks (and the
+  /// underlying engine can keep emitting events) after we have torn the room
+  /// down, e.g. when a breakout transition disposes this room while a join is
+  /// still in flight. Every callback checks this before touching state so we
+  /// never call [notifyListeners] (or drive the conference room) on a dead room.
+  bool _isDisposed = false;
+
   AgoraRoomState _state = AgoraRoomState.CONNECTING;
   AgoraRoomState get state => _state;
 
@@ -141,6 +148,7 @@ class AgoraRoom with ChangeNotifier {
         }
       },
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) async {
+        if (_isDisposed) return;
         _state = AgoraRoomState.CONNECTED;
 
         unawaited(conferenceRoom.onConnected(room: this));
@@ -168,6 +176,7 @@ class AgoraRoom with ChangeNotifier {
         );
       },
       onUserJoined: (RtcConnection connection, int rUid, int elapsed) async {
+        if (_isDisposed) return;
         print(
           '[onUserJoined] connection: ${connection.toJson()} remoteUid: $rUid elapsed: $elapsed',
         );
@@ -355,7 +364,13 @@ class AgoraRoom with ChangeNotifier {
   }
 
   @override
+  void notifyListeners() {
+    if (!_isDisposed) super.notifyListeners();
+  }
+
+  @override
   dispose() {
+    _isDisposed = true;
     try {
       engine.unregisterEventHandler(_rtcEngineEventHandler);
       // Ensure local video preview was started before disposing
