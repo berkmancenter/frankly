@@ -757,4 +757,109 @@ void main() {
       equals(LiveMeetingEventType.finishMeeting),
     );
   });
+
+  test('Advance is scheduled ~meetingGuideAdvanceDelay (8s) out, not sooner',
+      () async {
+    // Two agenda items so the first is NOT the last: crossing the threshold on a
+    // non-last item takes the DELAYED path (writes pendingAdvanceTime = now + 8s
+    // and schedules a Cloud Task) instead of advancing immediately. This is the
+    // value the client anchors its countdown to, so a regression to ~4s here
+    // would directly explain a too-short countdown.
+    var event = Event(
+      id: '12341timing001',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType.hosted,
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(id: '55005', title: 'First', content: 'a'),
+        AgendaItem(id: '55006', title: 'Second', content: 'b'),
+      ],
+    );
+    event = await eventTestUtils.createEvent(event: event, userId: adminUserId);
+
+    await eventTestUtils.joinEventMultiple(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: event.id,
+      participantIds: ['333', '444', '555', '666', '777', '888', '999', '000'],
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.initiateBreakoutSession(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      userId: adminUserId,
+    );
+
+    final breakoutRoom = await liveMeetingTestUtils.getBreakoutRoom(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      roomName: '1',
+    );
+
+    // Exactly one present participant => readyToAdvanceThreshold(1) == 1, so a
+    // single ready vote crosses the threshold and schedules the advance.
+    await setBreakoutPresence(event, breakoutRoom.roomId, ['333']);
+
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+      breakoutRoomId: breakoutRoom.roomId,
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+    );
+    final agendaItemId = event.agendaItems.first.id;
+
+    final before = DateTime.now().toUtc();
+    // The delayed path calls schedule() -> real Cloud Tasks, which is not
+    // available in tests and throws. pendingAdvanceTime is written to the doc
+    // (in a transaction) BEFORE that call, so swallow the scheduling error and
+    // assert on the persisted value.
+    try {
+      await voteReadyViaTrigger(
+        breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+        agendaItemId: agendaItemId,
+        roomId: breakoutRoom.roomId,
+        userId: '333',
+      );
+    } catch (_) {
+      // Expected: Cloud Tasks scheduling is unavailable in the test emulator.
+    }
+    final after = DateTime.now().toUtc();
+
+    final meetingSnap = await firestore.document(breakoutLiveMeetingPath).get();
+    final meeting = LiveMeeting.fromJson(
+      firestoreUtils.fromFirestoreJson(meetingSnap.data.toMap()),
+    );
+
+    // A pending advance for the current (first) item must be scheduled, and the
+    // agenda must not have advanced yet.
+    expect(meeting.pendingAdvanceAgendaItemId, equals(agendaItemId));
+    expect(meeting.pendingAdvanceTime, isNotNull);
+    expect(meeting.events.length, equals(1));
+
+    // pendingAdvanceTime is computed as (trigger now + 8s), and the trigger runs
+    // after `before`, so the gap from `before` must be >= ~8s (a ~4s regression
+    // fails), and it can't be meaningfully more than 8s past `after`.
+    final pendingAdvanceTime = meeting.pendingAdvanceTime!.toUtc();
+    expect(
+      pendingAdvanceTime.difference(before).inMilliseconds,
+      greaterThanOrEqualTo(meetingGuideAdvanceDelay.inMilliseconds - 500),
+      reason: 'pendingAdvanceTime should be >= ~8s from the ready vote',
+    );
+    expect(
+      pendingAdvanceTime.difference(after).inMilliseconds,
+      lessThanOrEqualTo(meetingGuideAdvanceDelay.inMilliseconds + 2000),
+      reason: 'pendingAdvanceTime should be ~8s out, not far beyond',
+    );
+  });
 }
