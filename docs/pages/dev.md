@@ -172,6 +172,8 @@ Documentation for the emulator suite is available here:
 
 The emulators run against the Firebase project ID specified by `FIREBASE_PROJECT_ID` in `client/.env`. This must match your actual Firebase project. If you see CORS errors when trying to load pages in your local version, double check that this has been set correctly.
 
+> **Scheduled functions in the emulator:** Cloud Tasks can't dispatch callbacks to a local `127.0.0.1` emulator, so scheduled work (e.g. the delayed agenda advance) is invoked by a direct HTTP callback instead. The callback URL is rewritten to the project the emulator is actually running as (`GCLOUD_PROJECT`), so a configured `app.functions_url_prefix` that points at a different project id won't silently 404 and drop the call.
+
 ---
 
 ### Emulator Initial Setup & Configuration
