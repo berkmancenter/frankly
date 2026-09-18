@@ -266,6 +266,69 @@ class MeetingGuideCardStore with ChangeNotifier {
     return remaining;
   }
 
+  /// Filters [details] to the entries for current [agendaItemId] only;
+  /// don't briefly render a stale previous-item snapshot.
+  static List<ParticipantAgendaItemDetails> detailsForAgendaItem(
+    List<ParticipantAgendaItemDetails>? details,
+    String? agendaItemId,
+  ) {
+    if (details == null || agendaItemId == null) return const [];
+    return details
+        .where((detail) => detail.agendaItemId == agendaItemId)
+        .toList();
+  }
+
+  /// Optimistic "ready to move on" state for current user & agenda item, keyed
+  /// to agenda item id. Checkbox renders this (if present) immediately, before
+  /// the backend write/confirm; else falls back to the item-scoped stream value.
+  final Map<String, bool> _desiredReady = {};
+
+  /// The optimistic ready value for [agendaItemId], or null if untouched.
+  bool? desiredReadyFor(String? agendaItemId) =>
+      agendaItemId == null ? null : _desiredReady[agendaItemId];
+
+  /// Sets current user's ready state for current agenda item & writes to backend.
+  /// UI flips immediately, then backend confirms (or cancels) the change. Returns
+  /// true on success, false if canceled at the "just started" prompt; reverts the
+  /// optimistic flip and rethrows if the backend write fails.
+  Future<bool> setDesiredReady({
+    required String agendaItemId,
+    required bool ready,
+  }) async {
+    final previous = _desiredReady[agendaItemId];
+    _desiredReady[agendaItemId] = ready;
+    notifyListeners();
+
+    final proceed = await agendaProvider.confirmReadyToMoveOn(
+      currentAgendaItemId: agendaItemId,
+      userIsReady: ready,
+    );
+    if (!proceed) {
+      _revertDesiredReady(agendaItemId, previous);
+      return false;
+    }
+
+    try {
+      await agendaProvider.checkReadyToAdvance(
+        agendaItemId: agendaItemId,
+        ready: ready,
+      );
+    } catch (_) {
+      _revertDesiredReady(agendaItemId, previous);
+      rethrow;
+    }
+    return true;
+  }
+
+  void _revertDesiredReady(String agendaItemId, bool? previous) {
+    if (previous == null) {
+      _desiredReady.remove(agendaItemId);
+    } else {
+      _desiredReady[agendaItemId] = previous;
+    }
+    notifyListeners();
+  }
+
   bool isReadyToAdvance(
     List<ParticipantAgendaItemDetails>? participantAgendaItemDetailsList,
     String? userId,
@@ -274,6 +337,39 @@ class MeetingGuideCardStore with ChangeNotifier {
             ?.firstWhereOrNull((p) => p.userId == userId)
             ?.readyToAdvance ??
         false;
+  }
+
+  /// The number of present participants marked ready for [agendaItemId],
+  /// counting the current user's optimistic (not-yet-confirmed) vote from
+  /// [_desiredReady]. Lets the critical voter's own client cross the threshold
+  /// and show the timer immediately instead of waiting for the backend.
+  int optimisticReadyCount({
+    required String? agendaItemId,
+    required String? currentUserId,
+    required List<ParticipantAgendaItemDetails>? details,
+    required Set<String> presentParticipantIds,
+  }) {
+    final readyIds = detailsForAgendaItem(details, agendaItemId)
+        .where(
+          (p) =>
+              (p.readyToAdvance ?? false) &&
+              p.userId != null &&
+              presentParticipantIds.contains(p.userId),
+        )
+        .map((p) => p.userId!)
+        .toSet();
+
+    final desired = desiredReadyFor(agendaItemId);
+    if (desired != null &&
+        currentUserId != null &&
+        presentParticipantIds.contains(currentUserId)) {
+      if (desired) {
+        readyIds.add(currentUserId);
+      } else {
+        readyIds.remove(currentUserId);
+      }
+    }
+    return readyIds.length;
   }
 
   Future<void> goToPreviousAgendaItem() async {
@@ -285,9 +381,15 @@ class MeetingGuideCardStore with ChangeNotifier {
     if (currentAgendaItemIndex < 0 && agendaProvider.isMeetingFinished) {
       prevAgendaItem = agendaProvider.resolvedAgendaItems.last;
     } else if (currentAgendaItemIndex < 0) {
-      throw VisibleException('Meeting Guide entry not found.');
+      throw VisibleException(
+        appLocalizationService.getLocalization().meetingGuideEntryNotFound,
+      );
     } else if (currentAgendaItemIndex == 0) {
-      throw VisibleException('Already at the first Meeting Guide entry.');
+      throw VisibleException(
+        appLocalizationService
+            .getLocalization()
+            .alreadyAtFirstMeetingGuideEntry,
+      );
     } else {
       prevAgendaItem = agendaProvider.resolvedAgendaItems
           .skip(currentAgendaItemIndex - 1)

@@ -19,6 +19,9 @@ import 'views/edit_event_contract.dart';
 import '../data/models/edit_event_model.dart';
 
 class EditEventPresenter {
+  static const int hostedMinParticipants = 2;
+  static const int hostedMaxParticipants = 50;
+
   final EditEventView _view;
   final EditEventModel _model;
   final EditEventPresenterHelper _helper;
@@ -68,9 +71,25 @@ class EditEventPresenter {
   }
 
   void updateEventType(EventType value) {
-    _model.event = _model.event.copyWith(nullableEventType: value);
+    var updatedMaxParticipants = _model.event.maxParticipants;
+    if (value == EventType.hosted && updatedMaxParticipants != null) {
+      updatedMaxParticipants = updatedMaxParticipants
+          .clamp(hostedMinParticipants, hostedMaxParticipants)
+          .toInt();
+    }
+
+    _model.event = _model.event.copyWith(
+      nullableEventType: value,
+      maxParticipants: updatedMaxParticipants,
+    );
     _appDrawerProvider.setUnsavedChanges(_helper.wereChangesMade(_model));
     _view.updateView();
+  }
+
+  int getHostedMaxParticipantsForUi() {
+    return _model.event.effectiveMaxParticipants
+        .clamp(hostedMinParticipants, hostedMaxParticipants)
+        .toInt();
   }
 
   String getEventTypeTitle(EventType eventType) {

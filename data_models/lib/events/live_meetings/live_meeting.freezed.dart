@@ -1007,7 +1007,7 @@ mixin _$BreakoutRoom {
   String? get recordingSessionId => throw _privateConstructorUsedError;
 
   /// A per-group statement/prompt generated for this specific breakout
-  /// room, shown as the room's first agenda item when present.
+  /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
   String? get diffusionStatement => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1267,7 +1267,7 @@ class _$_BreakoutRoom implements _BreakoutRoom {
   final String? recordingSessionId;
 
   /// A per-group statement/prompt generated for this specific breakout
-  /// room, shown as the room's first agenda item when present.
+  /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
   @override
   final String? diffusionStatement;
 
@@ -1385,7 +1385,7 @@ abstract class _BreakoutRoom implements BreakoutRoom {
   @override
 
   /// A per-group statement/prompt generated for this specific breakout
-  /// room, shown as the room's first agenda item when present.
+  /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
   String? get diffusionStatement;
   @override
   @JsonKey(ignore: true)

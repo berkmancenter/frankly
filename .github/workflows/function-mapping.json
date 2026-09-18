@@ -204,14 +204,12 @@
       "AdvanceMeetingGuideAfterDelay"
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/advance_meeting_guide_after_delay_server.dart": [
-      "AdvanceMeetingGuideAfterDelayServer"
+      "AdvanceMeetingGuideAfterDelayServer",
+      "ParticipantAgendaItemDetailsOnWrite"
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/assign_to_breakouts.dart": [
       "CheckAssignToBreakouts",
       "InitiateBreakouts"
-    ],
-    "firebase/functions/lib/events/live_meetings/breakouts/check_advance_meeting_guide.dart": [
-      "CheckAdvanceMeetingGuide"
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/check_assign_to_breakouts.dart": [
       "CheckAssignToBreakouts"
@@ -228,6 +226,12 @@
     "firebase/functions/lib/events/live_meetings/breakouts/initiate_breakouts.dart": [
       "InitiateBreakouts"
     ],
+    "firebase/functions/lib/events/live_meetings/breakouts/on_participant_agenda_item_details.dart": [
+      "ParticipantAgendaItemDetailsOnWrite"
+    ],
+    "firebase/functions/lib/events/live_meetings/breakouts/check_advance_meeting_guide.dart": [
+      "ParticipantAgendaItemDetailsOnWrite"
+    ],
     "firebase/functions/lib/events/live_meetings/breakouts/reassign_breakout_room.dart": [
       "ReassignBreakoutRoom"
     ],
@@ -242,6 +246,7 @@
       "EventOnUpdate",
       "EventOnCreate",
       "EventParticipantOnWrite",
+      "ParticipantAgendaItemDetailsOnWrite",
       "DiscussionThreadOnDelete",
       "DiscussionThreadCommentOnCreate",
       "DiscussionThreadCommentOnDelete",
@@ -262,6 +267,7 @@
       "EventOnUpdate",
       "EventOnCreate",
       "EventParticipantOnWrite",
+      "ParticipantAgendaItemDetailsOnWrite",
       "DiscussionThreadOnDelete",
       "CommunityMembershipOnCreate",
       "PartnerAgreementOnCreate",
@@ -410,7 +416,6 @@
       "UpdateLiveStreamParticipantCount"
     ],
     "oncall1": [
-      "CheckAdvanceMeetingGuide",
       "CheckAssignToBreakouts",
       "CheckHostlessGoToBreakouts",
       "sendAnnouncement",
@@ -461,6 +466,21 @@
       "createStripeConnectedAccount",
       "createDonationCheckoutSession",
       "CreateSubscriptionCheckoutSession"
+    ],
+    "onfirestore": [
+      "EventOnCreate",
+      "EventOnUpdate",
+      "EventParticipantOnWrite",
+      "ParticipantAgendaItemDetailsOnWrite",
+      "DiscussionThreadOnDelete",
+      "DiscussionThreadCommentOnCreate",
+      "DiscussionThreadCommentOnUpdate",
+      "DiscussionThreadCommentOnDelete",
+      "CommunityOnCreate",
+      "CommunityMembershipOnCreate",
+      "PartnerAgreementOnCreate",
+      "PartnerAgreementOnUpdate",
+      "TemplateOnCreate"
     ]
   }
 }
