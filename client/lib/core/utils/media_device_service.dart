@@ -157,12 +157,14 @@ class MediaDeviceService {
 
   /// Forgets remembered devices, both here and in storage, so the next
   /// request asks for whatever the browser is willing to provide.
-  Future<void> _forgetSelectedDevices() async {
-    if (selectedAudioInputId != null) {
+  /// [audioInput] Whether to forget the selected audio input device.
+  /// [videoInput] Whether to forget the selected video input device.
+  Future<void> _forgetSelectedDevices(bool audioInput, bool videoInput) async {
+    if (audioInput && selectedAudioInputId != null) {
       await sharedPreferencesService.clearDefaultMicrophoneId();
       selectedAudioInputId = null;
     }
-    if (selectedVideoInputId != null) {
+    if (videoInput && selectedVideoInputId != null) {
       await sharedPreferencesService.clearDefaultCameraId();
       selectedVideoInputId = null;
     }
@@ -227,14 +229,26 @@ class MediaDeviceService {
       // In either case, we attempt to recover by clearing the relevant state
       // and retrying once.
       Object error = e;
+      bool isVideoError = constraints.containsKey('video');
+      bool isAudioError = constraints.containsKey('audio');
+
       if (_isPermissionError(error) || _isDeviceError(error)) {
         loggingService.log('getUserMedia failed, retrying once: $error');
         if (_isPermissionError(error)) {
-          micPermissionStatus = PermissionStatus.denied;
-          cameraPermissionStatus = PermissionStatus.denied;
+          // Only deny the permissions that were actually requested
+          if (isAudioError) {
+            micPermissionStatus = PermissionStatus.denied;
+          }
+          if (isVideoError) {
+            cameraPermissionStatus = PermissionStatus.denied;
+          }
         }
         if (_isDeviceError(error)) {
-          await _forgetSelectedDevices();
+          // Only forget devices that were actually requested
+          await _forgetSelectedDevices(
+            isAudioError,
+            isVideoError,
+          );
         }
         try {
           final retryConstraints = await _resolveConstraints();
