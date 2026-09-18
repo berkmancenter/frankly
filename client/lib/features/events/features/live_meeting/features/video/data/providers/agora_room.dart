@@ -25,8 +25,13 @@ enum AgoraRoomState {
 }
 
 class AgoraRoom with ChangeNotifier {
-  late final RtcEngine engine;
-  late final RtcEngineEventHandler _rtcEngineEventHandler;
+  /// Nullable because a room can be disposed before [connect] has created the
+  /// engine (a breakout transition can tear the room down mid-init). [dispose]
+  /// null-checks it directly; all other callers reach it after connect via the
+  /// [engine] getter, by which point it is non-null.
+  RtcEngine? _engine;
+  RtcEngine get engine => _engine!;
+  RtcEngineEventHandler? _rtcEngineEventHandler;
 
   final String channelName;
   final String token;
@@ -116,7 +121,7 @@ class AgoraRoom with ChangeNotifier {
   }) async {
     await mediaDeviceService.init();
 
-    engine = createAgoraRtcEngine();
+    _engine = createAgoraRtcEngine();
 
     await engine.initialize(
       RtcEngineContext(
@@ -339,7 +344,7 @@ class AgoraRoom with ChangeNotifier {
       },
     );
 
-    engine.registerEventHandler(_rtcEngineEventHandler);
+    engine.registerEventHandler(_rtcEngineEventHandler!);
 
     // Enable audio and video modules so receiving works.
     await engine.enableAudio();
@@ -371,20 +376,26 @@ class AgoraRoom with ChangeNotifier {
   @override
   dispose() {
     _isDisposed = true;
-    try {
-      engine.unregisterEventHandler(_rtcEngineEventHandler);
-      // Ensure local video preview was started before disposing
-      if (_localParticipant?.videoLocalPreviewStarted == true) {
-        engine.stopPreview();
-      }
+    final localEngine = _engine;
+    final localHandler = _rtcEngineEventHandler;
+    if (localEngine != null) {
+      try {
+        if (localHandler != null) {
+          localEngine.unregisterEventHandler(localHandler);
+        }
+        // Ensure local video preview was started before disposing
+        if (_localParticipant?.videoLocalPreviewStarted == true) {
+          localEngine.stopPreview();
+        }
 
-      engine.enableLocalVideo(false);
-      engine.enableLocalAudio(false);
-      engine.leaveChannel();
-      engine.release();
-    } catch (e, stackTrace) {
-      print('Error disposing Agora engine: $e');
-      reportError(e, stackTrace);
+        localEngine.enableLocalVideo(false);
+        localEngine.enableLocalAudio(false);
+        localEngine.leaveChannel();
+        localEngine.release();
+      } catch (e, stackTrace) {
+        print('Error disposing Agora engine: $e');
+        reportError(e, stackTrace);
+      }
     }
     super.dispose();
   }
