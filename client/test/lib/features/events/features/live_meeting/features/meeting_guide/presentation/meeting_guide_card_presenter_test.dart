@@ -118,6 +118,8 @@ void main() {
       when(mockUserService.currentUserId).thenReturn('a');
       when(mockMeetingGuideCardStore.isHoldingPendingAdvanceTransition)
           .thenReturn(false);
+      // Empty agenda -> isLastAgendaItem is always false
+      when(mockAgendaProvider.resolvedAgendaItems).thenReturn(const []);
     });
 
     test('shows when the server pending id matches the current poll item', () {
