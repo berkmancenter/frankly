@@ -265,7 +265,12 @@ class MediaDeviceService {
 
       loggingService.log('Error getting user media: $error');
       _previewMediaStream = null;
-      // Clear stored device preferences if getUserMedia fails.
+
+      // Clear stored device preferences and forget selected devices if getUserMedia fails
+      await _forgetSelectedDevices(
+        isAudioError,
+        isVideoError,
+      );
       if (selectedAudioInputId != null) {
         await sharedPreferencesService.clearDefaultMicrophoneId();
       }
