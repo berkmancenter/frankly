@@ -62,6 +62,7 @@ class _ControlBarState extends State<ControlBar> {
                 shouldShowVideoPreview:
                     !(defaultTargetPlatform == TargetPlatform.iOS ||
                         defaultTargetPlatform == TargetPlatform.android),
+                isMirrorCheck: true,
               );
             },
           );
