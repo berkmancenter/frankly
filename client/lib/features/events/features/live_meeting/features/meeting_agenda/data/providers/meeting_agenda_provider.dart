@@ -371,7 +371,9 @@ class AgendaProvider with ChangeNotifier {
     }
 
     if (firstAgendaItem == null) {
-      throw VisibleException('There is no meeting guide for this meeting');
+      throw VisibleException(
+        appLocalizationService.getLocalization().noMeetingGuideForThisMeeting,
+      );
     }
 
     final serverTime = clockService.now();
@@ -389,7 +391,9 @@ class AgendaProvider with ChangeNotifier {
     final currentAgendaItemIndex =
         resolvedAgendaItems.indexWhere((a) => a.id == agendaItemId);
     if (currentAgendaItemIndex < 0) {
-      throw VisibleException('Meeting Guide entry not found.');
+      throw VisibleException(
+        appLocalizationService.getLocalization().meetingGuideEntryNotFound,
+      );
     }
 
     final nextAgendaItem =
@@ -473,7 +477,8 @@ class AgendaProvider with ChangeNotifier {
         )
         ?.agendaItem;
 
-    return resolvedAgendaItems.firstWhereOrNull((a) => a.id == currentAgendaItem);
+    return resolvedAgendaItems
+        .firstWhereOrNull((a) => a.id == currentAgendaItem);
   }
 
   bool isCurrentAgendaItem(String agendaItemId) {
@@ -555,29 +560,23 @@ class AgendaProvider with ChangeNotifier {
     String? agendaItemId,
     bool ready = true,
   }) async {
-    final eventPath = event?.fullPath;
-    if (eventPath == null) {
+    final userId = userService.currentUserId;
+    if (agendaItemId == null || userId == null || liveMeetingPath.isEmpty) {
       loggingService.log(
-        'AgendaProvider.checkReadyToAdvance: eventPath is null',
+        'AgendaProvider.checkReadyToAdvance: missing agendaItemId, userId, or '
+        'liveMeetingPath',
         logType: LogType.error,
       );
       return;
     }
 
-    await cloudFunctionsLiveMeetingService.checkAdvanceMeetingGuide(
-      CheckAdvanceMeetingGuideRequest(
-        eventPath: eventPath,
-        breakoutSessionId: (liveMeetingProvider?.isInBreakout ?? false)
-            ? liveMeetingProvider
-                ?.liveMeeting?.currentBreakoutSession?.breakoutRoomSessionId
-            : null,
-        breakoutRoomId: (liveMeetingProvider?.isInBreakout ?? false)
-            ? liveMeetingProvider?.currentBreakoutRoomId
-            : null,
-        userReadyAgendaId: agendaItemId,
-        ready: ready,
-        presentIds: liveMeetingProvider?.presentParticipantIds ?? [],
-      ),
+    // Write vote to the participant-details doc. ParticipantAgendaItemDetailsOnWrite
+    // trigger fires on this write to eval advance or not.
+    await firestoreMeetingGuideService.setReadyToAdvance(
+      agendaItemId: agendaItemId,
+      userId: userId,
+      liveMeetingPath: liveMeetingPath,
+      ready: ready,
     );
   }
 
@@ -630,32 +629,49 @@ class AgendaProvider with ChangeNotifier {
     );
   }
 
-  Future<void> toggleMoveForward({
+  /// Gate ready/advance actions for [currentAgendaItemId]. Show "just started"
+  /// confirmation when marking ready early on, and return false if canceled.
+  /// Return true if un-readying, host-manual advanced, or for polls/videos.
+  Future<bool> confirmReadyToMoveOn({
     required String currentAgendaItemId,
     bool userIsReady = true,
   }) async {
     // Undoing a ready-to-move-on vote never advances the meeting, so it
     // never needs the "just started" double-check.
-    if (userIsReady) {
-      final timeInState = timeInSection(currentAgendaItemId);
-      final doubleCheckDuration =
-          currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId
-              ? _startItemAdvanceConfirmationThreshold
-              : _agendaItemAdvanceConfirmationThreshold;
-      final suppressWarning = currentAgendaItem?.type == AgendaItemType.poll ||
-          currentAgendaItem?.type == AgendaItemType.video;
+    if (!userIsReady) return true;
 
-      if (timeInState < doubleCheckDuration &&
-          !suppressWarning &&
-          !canUserControlMeeting) {
-        final confirmed = await ConfirmDialog(
-          mainText:
-              'This agenda item just started! Are you sure you want to move on?',
-          cancelText: appLocalizationService.getLocalization().cancel,
-        ).show();
-        if (!confirmed) return;
-      }
+    final timeInState = timeInSection(currentAgendaItemId);
+    final doubleCheckDuration =
+        currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId
+            ? _startItemAdvanceConfirmationThreshold
+            : _agendaItemAdvanceConfirmationThreshold;
+    final suppressWarning = currentAgendaItem?.type == AgendaItemType.poll ||
+        currentAgendaItem?.type == AgendaItemType.video;
+
+    if (timeInState < doubleCheckDuration &&
+        !suppressWarning &&
+        !canUserControlMeeting) {
+      return ConfirmDialog(
+        mainText: appLocalizationService
+            .getLocalization()
+            .agendaItemJustStartedConfirm,
+        cancelText: appLocalizationService.getLocalization().cancel,
+      ).show();
     }
+    return true;
+  }
+
+  Future<void> toggleMoveForward({
+    required String currentAgendaItemId,
+    bool userIsReady = true,
+  }) async {
+    if (!await confirmReadyToMoveOn(
+      currentAgendaItemId: currentAgendaItemId,
+      userIsReady: userIsReady,
+    )) {
+      return;
+    }
+
     if (canUserControlMeeting) {
       if (currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId) {
         await startMeeting();

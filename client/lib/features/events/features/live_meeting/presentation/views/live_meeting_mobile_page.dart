@@ -395,7 +395,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
   Widget _buildWaitingRoomTextWidget() {
     return HeightConstrainedText(
-      'You are in the waiting room.',
+      context.l10n.youAreInTheWaitingRoom,
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Theme.of(context).primaryColor,
@@ -464,7 +464,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return CustomStreamBuilder<GetMeetingJoinInfoResponse>(
       entryFrom: '_buildConferenceRoomWrapper.build',
       stream: liveMeetingProvider.getCurrentMeetingJoinInfo()!.asStream(),
-      loadingMessage: 'Loading room. Please wait...',
+      loadingMessage: context.l10n.loadingRoomPleaseWait,
       builder: (_, response) {
         final conferenceRoom = ConferenceRoom.watch(context);
         final error = conferenceRoom.connectError;
@@ -479,8 +479,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         return CustomStreamBuilder(
           entryFrom: 'LiveMeetingMobilePage._buildMeetingLoading',
           stream: Stream.fromFuture(conferenceRoom.connectionFuture),
-          errorMessage: 'Something went wrong loading room. Please refresh!',
-          loadingMessage: 'Connecting to room...',
+          errorMessage: context.l10n.somethingWentWrongLoadingRoom,
+          loadingMessage: context.l10n.connectingToRoom,
           textStyle: TextStyle(color: context.theme.colorScheme.onSurface),
           builder: (_, __) => Stack(
             children: [
@@ -509,7 +509,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Recording',
+                          context.l10n.record,
                           style: TextStyle(
                             color: context.theme.colorScheme.onPrimary,
                           ),
@@ -640,24 +640,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     }
   }
 
-  Widget _buildReadyText(
-    List<ParticipantAgendaItemDetails> participantAgendaItemDetailsList,
-  ) {
-    final presentParticipantIds = _presenter.getPresentParticipantIds().toSet();
-    final readyToMoveOnCount = _presenter.readyToMoveOnCount(
-      participantAgendaItemDetailsList,
-      presentParticipantIds,
-    );
-    // Still using the format directly as it's just displaying numbers with a divider
-    // No specific localization string needed as this is a counter format
-    return Text(
-      '$readyToMoveOnCount/${presentParticipantIds.length}',
-      style: context.theme.textTheme.bodyMedium?.copyWith(
-        color: context.theme.colorScheme.onPrimary,
-      ),
-    );
-  }
-
   Widget _buildBottomNavBar(bool isBottomSheetPresent) {
     context.watch<LiveMeetingProvider>();
 
@@ -687,7 +669,17 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isBackButtonShown = _presenter.isBackButtonShown();
 
         final isRaisedHandVisible = _presenter.isRaisedHandVisible;
-        final isCardPending = _presenter.isPendingAdvance(currentItem?.id);
+        final presentParticipantIds =
+            _presenter.getPresentParticipantIds().toSet();
+        final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
+          participantAgendaItemDetailsList,
+          currentItem?.id,
+        );
+        final isCardPending = _presenter.isPendingAdvanceOptimistic(
+          currentAgendaItemId: currentItem?.id,
+          itemDetails: itemDetails,
+          presentParticipantIds: presentParticipantIds,
+        );
 
         return Container(
           color: context.theme.colorScheme.onPrimaryFixed,
@@ -767,7 +759,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       onTap: isAudioTemporarilyDisabled
                           ? () => showRegularToast(
                                 context,
-                                'All participants are muted during video!',
+                                context.l10n.allParticipantsMutedDuringVideo,
                                 toastType: ToastType.success,
                               )
                           : () => AudioVideoErrorDialog.showOnError(
@@ -803,7 +795,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                               },
                             ),
                             child: HeightConstrainedText(
-                              'Audio/Video Settings',
+                              context.l10n.audioVideoSettings,
                             ),
                           ),
                         ];
@@ -881,7 +873,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
   /// Bottom section shown below the agenda item card body.
   Widget _buildReadyInfo() {
     context.watch<AgendaProvider>();
-    context.watch<MeetingGuideCardStore>();
+    final meetingGuideCardStore = context.watch<MeetingGuideCardStore>();
     context.watch<LiveMeetingProvider>();
     context.watch<UserService>();
 
@@ -896,16 +888,26 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isHosted = _presenter.isHosted();
         final currentAgendaItemId = _presenter.getCurrentAgendaItemId();
 
-        if (isHosted || _presenter.isPendingAdvance(currentAgendaItemId)) {
+        final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
+          participantAgendaItemDetailsList,
+          currentAgendaItemId,
+        );
+        final presentParticipantIds =
+            _presenter.getPresentParticipantIds().toSet();
+
+        if (isHosted ||
+            _presenter.isPendingAdvanceOptimistic(
+              currentAgendaItemId: currentAgendaItemId,
+              itemDetails: itemDetails,
+              presentParticipantIds: presentParticipantIds,
+            )) {
           return SizedBox.shrink();
         }
 
-        final presentParticipantIds =
-            _presenter.getPresentParticipantIds().toSet();
         final readyThreshold =
             _presenter.getReadyThreshold(presentParticipantIds);
         final readyToMoveOnCount = _presenter.readyToMoveOnCount(
-          participantAgendaItemDetailsList,
+          itemDetails,
           presentParticipantIds,
         );
 
@@ -915,15 +917,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           tooltipKey: tooltipKey,
           readyThreshold: readyThreshold,
           presentParticipantIds: presentParticipantIds,
-          userIsReady: participantAgendaItemDetailsList
-                  ?.firstWhere(
-                    (p) => p.userId == _presenter.getUserId(),
-                    orElse: () => ParticipantAgendaItemDetails(
-                      readyToAdvance: false,
-                    ),
-                  )
-                  .readyToAdvance ??
-              false,
+          userIsReady:
+              meetingGuideCardStore.desiredReadyFor(currentAgendaItemId) ??
+                  _presenter.isReadyToAdvance(itemDetails),
           currentAgendaItemId: currentAgendaItemId,
         );
       },
@@ -1084,7 +1080,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     if (selectedTab == TabType.chat) {
       return ChatWidget(
         parentPath: context.watch<ChatModel>().parentPath,
-        messageInputHint: 'Say something',
+        messageInputHint: context.l10n.saySomething,
         allowBroadcast: context.watch<LiveMeetingProvider>().isInBreakout &&
             context.watch<EventPermissionsProvider>().canBroadcastChat,
       );
@@ -1147,7 +1143,7 @@ class BreakoutRoomLoader extends StatelessWidget {
       entryFrom: '_RefreshableBreakoutRoomState.build',
       stream: Provider.of<LiveMeetingProvider>(context)
           .breakoutRoomLiveMeetingStream,
-      loadingMessage: 'Loading breakout room. Please wait...',
+      loadingMessage: context.l10n.loadingBreakoutRoomPleaseWait,
       builder: (context, __) {
         return liveMeetingBuilder(context);
       },
