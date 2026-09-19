@@ -12,7 +12,8 @@ class WordCloudData with _$WordCloudData {
     required String prompt,
     required String message,
     DateTime? createdDate,
-    // Word clouds currently have no voting mechanism.
+
+    /// Word clouds currently have no voting mechanism.
     @Default(0) int upvotes,
   }) = _WordCloudData;
 

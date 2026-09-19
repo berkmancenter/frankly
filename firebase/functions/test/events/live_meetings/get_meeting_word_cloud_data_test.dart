@@ -146,6 +146,9 @@ void main() {
       () async {
     expect((await get('creator')).entries, hasLength(4));
   });
+  test('accepts a slash-prefixed event path', () async {
+    expect((await get('admin', '/$path')).entries, hasLength(4));
+  });
   for (final user in ['member', 'outsider', null]) {
     test('denies export to $user', () async {
       await expectLater(get(user), throwsA(isA<HttpsError>()));

@@ -23,14 +23,17 @@ class GetMeetingWordCloudData
     if (context.authUid == null) {
       throw HttpsError(HttpsError.unauthenticated, 'Sign in required.', null);
     }
+    final eventPath = request.eventPath.startsWith('/')
+        ? request.eventPath.substring(1)
+        : request.eventPath;
     final match =
         RegExp(r'^community/([^/]+)/templates/([^/]+)/events/([^/]+)$')
-            .firstMatch(request.eventPath);
+            .firstMatch(eventPath);
     if (match == null) {
       throw HttpsError(HttpsError.invalidArgument, 'Path malformed.', null);
     }
     final event = await firestoreUtils.getFirestoreObject(
-      path: request.eventPath,
+      path: eventPath,
       constructor: Event.fromJson,
     );
     final membershipDoc = await firestore
@@ -51,20 +54,22 @@ class GetMeetingWordCloudData
         null,
       );
     }
-    final mainPath = '${request.eventPath}/live-meetings/${match.group(3)}';
+    final mainPath = '$eventPath/live-meetings/${match.group(3)}';
     final paths = <String>[mainPath];
     final sessions =
         await firestore.collection('$mainPath/breakout-room-sessions').get();
-    for (final session in sessions.documents) {
-      final rooms = await firestore
-          .collection('${session.reference.path}/breakout-rooms')
-          .get();
-      paths.addAll(
-        rooms.documents.map(
-          (room) => '${room.reference.path}/live-meetings/${room.documentID}',
-        ),
-      );
-    }
+    final roomQueries = await Future.wait(
+      sessions.documents.map(
+        (session) => firestore
+            .collection('${session.reference.path}/breakout-rooms')
+            .get(),
+      ),
+    );
+    paths.addAll(
+      roomQueries.expand((query) => query.documents).map(
+            (room) => '${room.reference.path}/live-meetings/${room.documentID}',
+          ),
+    );
     final entries = <WordCloudData>[];
     for (final path in paths) {
       final participants = await firestore

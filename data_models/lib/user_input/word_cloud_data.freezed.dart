@@ -25,8 +25,9 @@ mixin _$WordCloudData {
   String get roomId => throw _privateConstructorUsedError;
   String get prompt => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
-  DateTime? get createdDate =>
-      throw _privateConstructorUsedError; // Word clouds currently have no voting mechanism.
+  DateTime? get createdDate => throw _privateConstructorUsedError;
+
+  /// Word clouds currently have no voting mechanism.
   int get upvotes => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -202,7 +203,8 @@ class _$_WordCloudData implements _WordCloudData {
   final String message;
   @override
   final DateTime? createdDate;
-// Word clouds currently have no voting mechanism.
+
+  /// Word clouds currently have no voting mechanism.
   @override
   @JsonKey()
   final int upvotes;
@@ -272,7 +274,9 @@ abstract class _WordCloudData implements WordCloudData {
   String get message;
   @override
   DateTime? get createdDate;
-  @override // Word clouds currently have no voting mechanism.
+  @override
+
+  /// Word clouds currently have no voting mechanism.
   int get upvotes;
   @override
   @JsonKey(ignore: true)
