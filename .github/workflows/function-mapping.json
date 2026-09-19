@@ -160,6 +160,7 @@
     "firebase/functions/lib/events/live_meetings/get_meeting_chat_suggestion_data.dart": [
       "GetMeetingChatSuggestionData"
     ],
+    "firebase/functions/lib/events/live_meetings/get_meeting_word_cloud_data.dart": ["GetMeetingWordCloudData"],
     "firebase/functions/lib/events/live_meetings/get_meeting_poll_data.dart": [
       "GetMeetingPollData"
     ],

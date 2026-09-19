@@ -12697,3 +12697,304 @@ abstract class _GetUserIdFromAgoraIdResponse
   _$$_GetUserIdFromAgoraIdResponseCopyWith<_$_GetUserIdFromAgoraIdResponse>
       get copyWith => throw _privateConstructorUsedError;
 }
+
+GetMeetingWordCloudDataRequest _$GetMeetingWordCloudDataRequestFromJson(
+    Map<String, dynamic> json) {
+  return _GetMeetingWordCloudDataRequest.fromJson(json);
+}
+
+/// @nodoc
+mixin _$GetMeetingWordCloudDataRequest {
+  String get eventPath => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $GetMeetingWordCloudDataRequestCopyWith<GetMeetingWordCloudDataRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $GetMeetingWordCloudDataRequestCopyWith<$Res> {
+  factory $GetMeetingWordCloudDataRequestCopyWith(
+          GetMeetingWordCloudDataRequest value,
+          $Res Function(GetMeetingWordCloudDataRequest) then) =
+      _$GetMeetingWordCloudDataRequestCopyWithImpl<$Res,
+          GetMeetingWordCloudDataRequest>;
+  @useResult
+  $Res call({String eventPath});
+}
+
+/// @nodoc
+class _$GetMeetingWordCloudDataRequestCopyWithImpl<$Res,
+        $Val extends GetMeetingWordCloudDataRequest>
+    implements $GetMeetingWordCloudDataRequestCopyWith<$Res> {
+  _$GetMeetingWordCloudDataRequestCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventPath = null,
+  }) {
+    return _then(_value.copyWith(
+      eventPath: null == eventPath
+          ? _value.eventPath
+          : eventPath // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_GetMeetingWordCloudDataRequestCopyWith<$Res>
+    implements $GetMeetingWordCloudDataRequestCopyWith<$Res> {
+  factory _$$_GetMeetingWordCloudDataRequestCopyWith(
+          _$_GetMeetingWordCloudDataRequest value,
+          $Res Function(_$_GetMeetingWordCloudDataRequest) then) =
+      __$$_GetMeetingWordCloudDataRequestCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String eventPath});
+}
+
+/// @nodoc
+class __$$_GetMeetingWordCloudDataRequestCopyWithImpl<$Res>
+    extends _$GetMeetingWordCloudDataRequestCopyWithImpl<$Res,
+        _$_GetMeetingWordCloudDataRequest>
+    implements _$$_GetMeetingWordCloudDataRequestCopyWith<$Res> {
+  __$$_GetMeetingWordCloudDataRequestCopyWithImpl(
+      _$_GetMeetingWordCloudDataRequest _value,
+      $Res Function(_$_GetMeetingWordCloudDataRequest) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventPath = null,
+  }) {
+    return _then(_$_GetMeetingWordCloudDataRequest(
+      eventPath: null == eventPath
+          ? _value.eventPath
+          : eventPath // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_GetMeetingWordCloudDataRequest
+    implements _GetMeetingWordCloudDataRequest {
+  _$_GetMeetingWordCloudDataRequest({required this.eventPath});
+
+  factory _$_GetMeetingWordCloudDataRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_GetMeetingWordCloudDataRequestFromJson(json);
+
+  @override
+  final String eventPath;
+
+  @override
+  String toString() {
+    return 'GetMeetingWordCloudDataRequest(eventPath: $eventPath)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_GetMeetingWordCloudDataRequest &&
+            (identical(other.eventPath, eventPath) ||
+                other.eventPath == eventPath));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, eventPath);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_GetMeetingWordCloudDataRequestCopyWith<_$_GetMeetingWordCloudDataRequest>
+      get copyWith => __$$_GetMeetingWordCloudDataRequestCopyWithImpl<
+          _$_GetMeetingWordCloudDataRequest>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_GetMeetingWordCloudDataRequestToJson(
+      this,
+    );
+  }
+}
+
+abstract class _GetMeetingWordCloudDataRequest
+    implements GetMeetingWordCloudDataRequest {
+  factory _GetMeetingWordCloudDataRequest({required final String eventPath}) =
+      _$_GetMeetingWordCloudDataRequest;
+
+  factory _GetMeetingWordCloudDataRequest.fromJson(Map<String, dynamic> json) =
+      _$_GetMeetingWordCloudDataRequest.fromJson;
+
+  @override
+  String get eventPath;
+  @override
+  @JsonKey(ignore: true)
+  _$$_GetMeetingWordCloudDataRequestCopyWith<_$_GetMeetingWordCloudDataRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+GetMeetingWordCloudDataResponse _$GetMeetingWordCloudDataResponseFromJson(
+    Map<String, dynamic> json) {
+  return _GetMeetingWordCloudDataResponse.fromJson(json);
+}
+
+/// @nodoc
+mixin _$GetMeetingWordCloudDataResponse {
+  List<WordCloudData> get entries => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $GetMeetingWordCloudDataResponseCopyWith<GetMeetingWordCloudDataResponse>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $GetMeetingWordCloudDataResponseCopyWith<$Res> {
+  factory $GetMeetingWordCloudDataResponseCopyWith(
+          GetMeetingWordCloudDataResponse value,
+          $Res Function(GetMeetingWordCloudDataResponse) then) =
+      _$GetMeetingWordCloudDataResponseCopyWithImpl<$Res,
+          GetMeetingWordCloudDataResponse>;
+  @useResult
+  $Res call({List<WordCloudData> entries});
+}
+
+/// @nodoc
+class _$GetMeetingWordCloudDataResponseCopyWithImpl<$Res,
+        $Val extends GetMeetingWordCloudDataResponse>
+    implements $GetMeetingWordCloudDataResponseCopyWith<$Res> {
+  _$GetMeetingWordCloudDataResponseCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? entries = null,
+  }) {
+    return _then(_value.copyWith(
+      entries: null == entries
+          ? _value.entries
+          : entries // ignore: cast_nullable_to_non_nullable
+              as List<WordCloudData>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_GetMeetingWordCloudDataResponseCopyWith<$Res>
+    implements $GetMeetingWordCloudDataResponseCopyWith<$Res> {
+  factory _$$_GetMeetingWordCloudDataResponseCopyWith(
+          _$_GetMeetingWordCloudDataResponse value,
+          $Res Function(_$_GetMeetingWordCloudDataResponse) then) =
+      __$$_GetMeetingWordCloudDataResponseCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<WordCloudData> entries});
+}
+
+/// @nodoc
+class __$$_GetMeetingWordCloudDataResponseCopyWithImpl<$Res>
+    extends _$GetMeetingWordCloudDataResponseCopyWithImpl<$Res,
+        _$_GetMeetingWordCloudDataResponse>
+    implements _$$_GetMeetingWordCloudDataResponseCopyWith<$Res> {
+  __$$_GetMeetingWordCloudDataResponseCopyWithImpl(
+      _$_GetMeetingWordCloudDataResponse _value,
+      $Res Function(_$_GetMeetingWordCloudDataResponse) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? entries = null,
+  }) {
+    return _then(_$_GetMeetingWordCloudDataResponse(
+      entries: null == entries
+          ? _value.entries
+          : entries // ignore: cast_nullable_to_non_nullable
+              as List<WordCloudData>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_GetMeetingWordCloudDataResponse
+    implements _GetMeetingWordCloudDataResponse {
+  _$_GetMeetingWordCloudDataResponse({this.entries = const []});
+
+  factory _$_GetMeetingWordCloudDataResponse.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_GetMeetingWordCloudDataResponseFromJson(json);
+
+  @override
+  @JsonKey()
+  final List<WordCloudData> entries;
+
+  @override
+  String toString() {
+    return 'GetMeetingWordCloudDataResponse(entries: $entries)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_GetMeetingWordCloudDataResponse &&
+            const DeepCollectionEquality().equals(other.entries, entries));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(entries));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_GetMeetingWordCloudDataResponseCopyWith<
+          _$_GetMeetingWordCloudDataResponse>
+      get copyWith => __$$_GetMeetingWordCloudDataResponseCopyWithImpl<
+          _$_GetMeetingWordCloudDataResponse>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_GetMeetingWordCloudDataResponseToJson(
+      this,
+    );
+  }
+}
+
+abstract class _GetMeetingWordCloudDataResponse
+    implements GetMeetingWordCloudDataResponse {
+  factory _GetMeetingWordCloudDataResponse(
+      {final List<WordCloudData> entries}) = _$_GetMeetingWordCloudDataResponse;
+
+  factory _GetMeetingWordCloudDataResponse.fromJson(Map<String, dynamic> json) =
+      _$_GetMeetingWordCloudDataResponse.fromJson;
+
+  @override
+  List<WordCloudData> get entries;
+  @override
+  @JsonKey(ignore: true)
+  _$$_GetMeetingWordCloudDataResponseCopyWith<
+          _$_GetMeetingWordCloudDataResponse>
+      get copyWith => throw _privateConstructorUsedError;
+}

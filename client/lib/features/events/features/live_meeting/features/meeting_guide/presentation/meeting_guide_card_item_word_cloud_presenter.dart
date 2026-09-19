@@ -67,6 +67,7 @@ class MeetingGuideCardItemWordCloudPresenter {
       userId: _userService.currentUserId ?? '',
       liveMeetingPath: _agendaProvider.liveMeetingPath,
       response: response,
+      prompt: getCurrentAgendaItem()?.content ?? '',
     );
   }
 
