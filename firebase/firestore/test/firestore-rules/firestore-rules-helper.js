@@ -17,6 +17,7 @@ var Membership;
     Membership["member"] = "member";
     Membership["facilitator"] = "facilitator";
     Membership["mod"] = "mod";
+    Membership["moderator"] = "moderator";
     Membership["admin"] = "admin";
     Membership["owner"] = "owner";
 })(Membership || (exports.Membership = Membership = {}));

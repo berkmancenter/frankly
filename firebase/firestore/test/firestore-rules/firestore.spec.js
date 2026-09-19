@@ -296,12 +296,13 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                 yield communityRulesHelper
                     .getDocumentRef(dbAdmin)
                     .set({ someKey: "value" });
-                for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                     yield communityRulesHelper.createMembership("alice", membership);
                     switch (membership) {
                         case firestore_rules_helper_1.Membership.owner:
                         case firestore_rules_helper_1.Membership.admin:
                         case firestore_rules_helper_1.Membership.mod:
+                        case firestore_rules_helper_1.Membership.moderator:
                         case firestore_rules_helper_1.Membership.facilitator:
                         case firestore_rules_helper_1.Membership.member:
                         case firestore_rules_helper_1.Membership.nonmember:
@@ -346,6 +347,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                 case firestore_rules_helper_1.Membership.owner:
                                 case firestore_rules_helper_1.Membership.admin:
                                 case firestore_rules_helper_1.Membership.mod:
+                                case firestore_rules_helper_1.Membership.moderator:
                                 case firestore_rules_helper_1.Membership.facilitator:
                                 case firestore_rules_helper_1.Membership.member:
                                 case firestore_rules_helper_1.Membership.nonmember:
@@ -362,7 +364,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             }
                         });
                     }
-                    for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                    for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                         yield testDifferentMembership(membership);
                     }
                 }));
@@ -375,6 +377,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                 case firestore_rules_helper_1.Membership.owner:
                                 case firestore_rules_helper_1.Membership.admin:
                                 case firestore_rules_helper_1.Membership.mod:
+                                case firestore_rules_helper_1.Membership.moderator:
                                     yield firebase.assertSucceeds(userDocRef.set({
                                         [fieldCreatorId]: "bob",
                                         someKey: "someValue",
@@ -400,7 +403,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             }
                         });
                     }
-                    for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                    for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                         yield testDifferentMembership(membership);
                     }
                 }));
@@ -419,6 +422,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             case firestore_rules_helper_1.Membership.owner:
                             case firestore_rules_helper_1.Membership.admin:
                             case firestore_rules_helper_1.Membership.mod:
+                            case firestore_rules_helper_1.Membership.moderator:
                             case firestore_rules_helper_1.Membership.facilitator:
                             case firestore_rules_helper_1.Membership.member:
                             case firestore_rules_helper_1.Membership.nonmember:
@@ -435,7 +439,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                         }
                     });
                 }
-                for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                     yield testDifferentMembership(membership);
                 }
             }));
@@ -469,6 +473,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                     yield firebase.assertSucceeds(userDocRef.delete());
                                     break;
                                 case firestore_rules_helper_1.Membership.mod:
+                                case firestore_rules_helper_1.Membership.moderator:
                                 case firestore_rules_helper_1.Membership.facilitator:
                                 case firestore_rules_helper_1.Membership.member:
                                 case firestore_rules_helper_1.Membership.nonmember:
@@ -482,7 +487,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             }
                         });
                     }
-                    for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                    for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                         yield testDifferentMembership(membership);
                     }
                 }));
@@ -501,6 +506,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             case firestore_rules_helper_1.Membership.owner:
                             case firestore_rules_helper_1.Membership.admin:
                             case firestore_rules_helper_1.Membership.mod:
+                            case firestore_rules_helper_1.Membership.moderator:
                             case firestore_rules_helper_1.Membership.facilitator:
                             case firestore_rules_helper_1.Membership.member:
                             case firestore_rules_helper_1.Membership.nonmember:
@@ -514,7 +520,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                         }
                     });
                 }
-                for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                     yield testDifferentMembership(membership);
                 }
             }));
@@ -552,6 +558,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                     yield firebase.assertFails(userDocRef.delete());
                                     break;
                                 case firestore_rules_helper_1.Membership.mod:
+                                case firestore_rules_helper_1.Membership.moderator:
                                 case firestore_rules_helper_1.Membership.facilitator:
                                 case firestore_rules_helper_1.Membership.member:
                                 case firestore_rules_helper_1.Membership.nonmember:
@@ -569,7 +576,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             }
                         });
                     }
-                    for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                    for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                         yield testDifferentMembership(membership);
                     }
                 }));
@@ -587,6 +594,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             case firestore_rules_helper_1.Membership.owner:
                             case firestore_rules_helper_1.Membership.admin:
                             case firestore_rules_helper_1.Membership.mod:
+                            case firestore_rules_helper_1.Membership.moderator:
                             case firestore_rules_helper_1.Membership.facilitator:
                             case firestore_rules_helper_1.Membership.member:
                             case firestore_rules_helper_1.Membership.nonmember:
@@ -604,7 +612,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                         }
                     });
                 }
-                for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                     yield testDifferentMembership(membership);
                 }
             }));
@@ -627,6 +635,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             case firestore_rules_helper_1.Membership.owner:
                             case firestore_rules_helper_1.Membership.admin:
                             case firestore_rules_helper_1.Membership.mod:
+                            case firestore_rules_helper_1.Membership.moderator:
                                 yield firebase.assertFails(userColRef.add(originalDataMap));
                                 yield firebase.assertSucceeds(userColRef.add({
                                     [fieldCreatorId]: "alice",
@@ -664,7 +673,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                         }
                     });
                 }
-                for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                     yield testDifferentMembership(membership);
                 }
             }));
@@ -679,6 +688,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             case firestore_rules_helper_1.Membership.owner:
                             case firestore_rules_helper_1.Membership.admin:
                             case firestore_rules_helper_1.Membership.mod:
+                            case firestore_rules_helper_1.Membership.moderator:
                             case firestore_rules_helper_1.Membership.facilitator:
                             case firestore_rules_helper_1.Membership.member:
                             case firestore_rules_helper_1.Membership.nonmember:
@@ -696,7 +706,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                         }
                     });
                 }
-                for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                     yield testDifferentMembership(membership);
                 }
             }));
@@ -728,6 +738,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                     case firestore_rules_helper_1.Membership.owner:
                                     case firestore_rules_helper_1.Membership.admin:
                                     case firestore_rules_helper_1.Membership.mod:
+                                    case firestore_rules_helper_1.Membership.moderator:
                                     case firestore_rules_helper_1.Membership.facilitator:
                                     case firestore_rules_helper_1.Membership.member:
                                     case firestore_rules_helper_1.Membership.nonmember:
@@ -745,7 +756,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                 }
                             });
                         }
-                        for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                        for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                             yield testDifferentMembership(membership);
                         }
                     }));
@@ -764,6 +775,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                     case firestore_rules_helper_1.Membership.owner:
                                     case firestore_rules_helper_1.Membership.admin:
                                     case firestore_rules_helper_1.Membership.mod:
+                                    case firestore_rules_helper_1.Membership.moderator:
                                         yield firebase.assertFails(userColRef.add(originalDataMap));
                                         yield firebase.assertSucceeds(userColRef.add({
                                             [fieldCreatorId]: "bob",
@@ -791,7 +803,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                 }
                             });
                         }
-                        for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                        for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                             yield testDifferentMembership(membership);
                         }
                     }));
@@ -810,6 +822,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                         case firestore_rules_helper_1.Membership.owner:
                                         case firestore_rules_helper_1.Membership.admin:
                                         case firestore_rules_helper_1.Membership.mod:
+                                        case firestore_rules_helper_1.Membership.moderator:
                                         case firestore_rules_helper_1.Membership.facilitator:
                                         case firestore_rules_helper_1.Membership.member:
                                         case firestore_rules_helper_1.Membership.nonmember:
@@ -820,7 +833,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                     }
                                 });
                             }
-                            for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                            for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                                 yield testDifferentMembership(membership);
                             }
                         }));
@@ -837,6 +850,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                         case firestore_rules_helper_1.Membership.owner:
                                         case firestore_rules_helper_1.Membership.admin:
                                         case firestore_rules_helper_1.Membership.mod:
+                                        case firestore_rules_helper_1.Membership.moderator:
                                             yield firebase.assertSucceeds(userDocRef.set(originalDataMap, { merge: true }));
                                             yield firebase.assertSucceeds(userDocRef.update(updateDataMap));
                                             break;
@@ -850,7 +864,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                     }
                                 });
                             }
-                            for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                            for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                                 yield testDifferentMembership(membership);
                             }
                         }));
@@ -870,6 +884,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                 case firestore_rules_helper_1.Membership.owner:
                                 case firestore_rules_helper_1.Membership.admin:
                                 case firestore_rules_helper_1.Membership.mod:
+                                case firestore_rules_helper_1.Membership.moderator:
                                 case firestore_rules_helper_1.Membership.facilitator:
                                 case firestore_rules_helper_1.Membership.member:
                                 case firestore_rules_helper_1.Membership.nonmember:
@@ -887,7 +902,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             }
                         });
                     }
-                    for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                    for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                         yield testDifferentMembership(membership);
                     }
                 }));
@@ -918,6 +933,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                     case firestore_rules_helper_1.Membership.owner:
                                     case firestore_rules_helper_1.Membership.admin:
                                     case firestore_rules_helper_1.Membership.mod:
+                                    case firestore_rules_helper_1.Membership.moderator:
                                         yield firebase.assertSucceeds(userColRef.add(originalDataMap));
                                         yield firebase.assertSucceeds(userDocRef.get());
                                         yield firebase.assertSucceeds(userDocRef.set(originalDataMap));
@@ -937,7 +953,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                 }
                             });
                         }
-                        for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                        for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                             yield testDifferentMembership(membership);
                         }
                     }));
@@ -1096,6 +1112,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                         case firestore_rules_helper_1.Membership.owner:
                                         case firestore_rules_helper_1.Membership.admin:
                                         case firestore_rules_helper_1.Membership.mod:
+                                        case firestore_rules_helper_1.Membership.moderator:
                                             yield firebase.assertSucceeds(userColRef.add(originalDataMap));
                                             yield firebase.assertSucceeds(userDocRef.get());
                                             yield firebase.assertSucceeds(userDocRef.set(originalDataMap));
@@ -1119,7 +1136,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                     }
                                 });
                             }
-                            for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                            for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                                 yield testDifferentMembership(membership);
                             }
                         }));
@@ -1264,6 +1281,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                         case firestore_rules_helper_1.Membership.owner:
                                         case firestore_rules_helper_1.Membership.admin:
                                         case firestore_rules_helper_1.Membership.mod:
+                                        case firestore_rules_helper_1.Membership.moderator:
                                             yield firebase.assertSucceeds(userColRef.add({ creatorId: "alice" }));
                                             yield firebase.assertFails(userColRef.add({ creatorId: "bob" }));
                                             yield firebase.assertSucceeds(userDocRef.get());
@@ -1289,7 +1307,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                     }
                                 });
                             }
-                            for (const membership of Object.keys(firestore_rules_helper_1.Membership)) {
+                            for (const membership of Object.values(firestore_rules_helper_1.Membership)) {
                                 yield testDifferentMembership(membership);
                             }
                         }));
