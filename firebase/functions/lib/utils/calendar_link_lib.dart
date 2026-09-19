@@ -19,6 +19,10 @@ class Event {
 
   external String get description;
 
+  external set location(String v);
+
+  external String get location;
+
   external set start(String v);
 
   external String get start;

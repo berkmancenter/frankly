@@ -23,13 +23,15 @@ class CalendarLinkUtil {
     final eventTitle = event.title ?? template.title;
     final time = (event.scheduledTime ?? DateTime.now()).toUtc();
     final duration = Duration(minutes: event.durationInMinutes);
+    final eventUrl =
+        'https://$domain/space/${event.communityId}/discuss/${event.templateId}/${event.id}';
     final calendarEvent = cl.Event()
       ..title = '$eventTitle - ${community.name}'
       ..start = time.toIso8601String()
       ..end = time.add(duration).toIso8601String()
       ..organizer = 'mailto:${organizer?.email ?? ''}'
-      ..description =
-          'https://$domain/space/${event.communityId}/discuss/${event.templateId}/${event.id}';
+      ..description = eventUrl
+      ..location = eventUrl;
     return calendarEvent;
   }
 
@@ -70,7 +72,7 @@ class CalendarLinkUtil {
     // outlook() method does has a bug where it does not translate the
     // time to the string that Outlook expects when it is converting to a user's local time zone
     // See: https://github.com/AnandChowdhary/calendar-link/issues/523
-    
+
     var eventDetails = _getEvent(
       community: community,
       template: template,
@@ -83,13 +85,15 @@ class CalendarLinkUtil {
       'enddt': eventDetails.end,
       'subject': eventDetails.title,
       'body': eventDetails.description,
-      'location': eventDetails.description,
+      'location': eventDetails.location,
       'allday': 'false',
     };
 
     final queryString = details.entries
-        .map((e) =>
-            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',)
+        .map(
+          (e) =>
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
+        )
         .join('&');
     return 'https://outlook.live.com/calendar/0/action/compose?$queryString';
   }
