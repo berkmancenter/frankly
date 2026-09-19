@@ -16,6 +16,7 @@ void main() {
   setupTestFixture();
 
   setUp(() async {
+    clearInteractions(muxApi);
     // Set up mock MUX response
     when(() => muxApi.createLiveStream()).thenAnswer(
       (_) async => {

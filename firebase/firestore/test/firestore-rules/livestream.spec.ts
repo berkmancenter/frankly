@@ -9,7 +9,7 @@ const eventPath = `community/${communityId}/templates/template/events/event`;
 const privatePath = `${eventPath}/private-live-stream-info/event`;
 const streamInfo = { streamKey: "synthetic-key", streamServerUrl: "rtmp://example.test" };
 
-// Use the real deployed rules and a separate emulator project.
+// Use the local Firestore rules and a separate emulator project.
 describe("Livestream creation permissions", () => {
   let admin: any;
   const apps: any[] = [];

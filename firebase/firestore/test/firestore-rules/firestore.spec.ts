@@ -329,12 +329,13 @@ describe("Firestore security rules", async () => {
           .getDocumentRef(dbAdmin)
           .set({ someKey: "value" });
 
-        for (const membership of Object.keys(Membership)) {
+        for (const membership of Object.values(Membership)) {
           await communityRulesHelper.createMembership("alice", membership);
           switch (membership) {
             case Membership.owner:
             case Membership.admin:
             case Membership.mod:
+            case Membership.moderator:
             case Membership.facilitator:
             case Membership.member:
             case Membership.nonmember:
@@ -387,6 +388,7 @@ describe("Firestore security rules", async () => {
               case Membership.owner:
               case Membership.admin:
               case Membership.mod:
+              case Membership.moderator:
               case Membership.facilitator:
               case Membership.member:
               case Membership.nonmember:
@@ -407,7 +409,7 @@ describe("Firestore security rules", async () => {
             }
           }
 
-          for (const membership of Object.keys(Membership)) {
+          for (const membership of Object.values(Membership)) {
             await testDifferentMembership(membership);
           }
         });
@@ -422,6 +424,7 @@ describe("Firestore security rules", async () => {
               case Membership.owner:
               case Membership.admin:
               case Membership.mod:
+              case Membership.moderator:
                 await firebase.assertSucceeds(
                   userDocRef.set({
                     [fieldCreatorId]: "bob",
@@ -455,7 +458,7 @@ describe("Firestore security rules", async () => {
             }
           }
 
-          for (const membership of Object.keys(Membership)) {
+          for (const membership of Object.values(Membership)) {
             await testDifferentMembership(membership);
           }
         });
@@ -477,6 +480,7 @@ describe("Firestore security rules", async () => {
             case Membership.owner:
             case Membership.admin:
             case Membership.mod:
+            case Membership.moderator:
             case Membership.facilitator:
             case Membership.member:
             case Membership.nonmember:
@@ -497,7 +501,7 @@ describe("Firestore security rules", async () => {
           }
         }
 
-        for (const membership of Object.keys(Membership)) {
+        for (const membership of Object.values(Membership)) {
           await testDifferentMembership(membership);
         }
       });
@@ -535,6 +539,7 @@ describe("Firestore security rules", async () => {
                 await firebase.assertSucceeds(userDocRef.delete());
                 break;
               case Membership.mod:
+              case Membership.moderator:
               case Membership.facilitator:
               case Membership.member:
               case Membership.nonmember:
@@ -548,7 +553,7 @@ describe("Firestore security rules", async () => {
             }
           }
 
-          for (const membership of Object.keys(Membership)) {
+          for (const membership of Object.values(Membership)) {
             await testDifferentMembership(membership);
           }
         });
@@ -570,6 +575,7 @@ describe("Firestore security rules", async () => {
             case Membership.owner:
             case Membership.admin:
             case Membership.mod:
+            case Membership.moderator:
             case Membership.facilitator:
             case Membership.member:
             case Membership.nonmember:
@@ -583,7 +589,7 @@ describe("Firestore security rules", async () => {
           }
         }
 
-        for (const membership of Object.keys(Membership)) {
+        for (const membership of Object.values(Membership)) {
           await testDifferentMembership(membership);
         }
       });
@@ -627,6 +633,7 @@ describe("Firestore security rules", async () => {
                 await firebase.assertFails(userDocRef.delete());
                 break;
               case Membership.mod:
+              case Membership.moderator:
               case Membership.facilitator:
               case Membership.member:
               case Membership.nonmember:
@@ -646,7 +653,7 @@ describe("Firestore security rules", async () => {
             }
           }
 
-          for (const membership of Object.keys(Membership)) {
+          for (const membership of Object.values(Membership)) {
             await testDifferentMembership(membership);
           }
         });
@@ -666,6 +673,7 @@ describe("Firestore security rules", async () => {
             case Membership.owner:
             case Membership.admin:
             case Membership.mod:
+            case Membership.moderator:
             case Membership.facilitator:
             case Membership.member:
             case Membership.nonmember:
@@ -685,7 +693,7 @@ describe("Firestore security rules", async () => {
           }
         }
 
-        for (const membership of Object.keys(Membership)) {
+        for (const membership of Object.values(Membership)) {
           await testDifferentMembership(membership);
         }
       });
@@ -711,6 +719,7 @@ describe("Firestore security rules", async () => {
             case Membership.owner:
             case Membership.admin:
             case Membership.mod:
+            case Membership.moderator:
               await firebase.assertFails(userColRef.add(originalDataMap));
               await firebase.assertSucceeds(
                 userColRef.add({
@@ -760,7 +769,7 @@ describe("Firestore security rules", async () => {
           }
         }
 
-        for (const membership of Object.keys(Membership)) {
+        for (const membership of Object.values(Membership)) {
           await testDifferentMembership(membership);
         }
       });
@@ -777,6 +786,7 @@ describe("Firestore security rules", async () => {
             case Membership.owner:
             case Membership.admin:
             case Membership.mod:
+            case Membership.moderator:
             case Membership.facilitator:
             case Membership.member:
             case Membership.nonmember:
@@ -798,7 +808,7 @@ describe("Firestore security rules", async () => {
           }
         }
 
-        for (const membership of Object.keys(Membership)) {
+        for (const membership of Object.values(Membership)) {
           await testDifferentMembership(membership);
         }
       });
@@ -835,6 +845,7 @@ describe("Firestore security rules", async () => {
                 case Membership.owner:
                 case Membership.admin:
                 case Membership.mod:
+                case Membership.moderator:
                 case Membership.facilitator:
                 case Membership.member:
                 case Membership.nonmember:
@@ -858,7 +869,7 @@ describe("Firestore security rules", async () => {
               }
             }
 
-            for (const membership of Object.keys(Membership)) {
+            for (const membership of Object.values(Membership)) {
               await testDifferentMembership(membership);
             }
           });
@@ -879,6 +890,7 @@ describe("Firestore security rules", async () => {
                 case Membership.owner:
                 case Membership.admin:
                 case Membership.mod:
+                case Membership.moderator:
                   await firebase.assertFails(userColRef.add(originalDataMap));
                   await firebase.assertSucceeds(
                     userColRef.add({
@@ -916,7 +928,7 @@ describe("Firestore security rules", async () => {
               }
             }
 
-            for (const membership of Object.keys(Membership)) {
+            for (const membership of Object.values(Membership)) {
               await testDifferentMembership(membership);
             }
           });
@@ -940,6 +952,7 @@ describe("Firestore security rules", async () => {
                   case Membership.owner:
                   case Membership.admin:
                   case Membership.mod:
+                  case Membership.moderator:
                   case Membership.facilitator:
                   case Membership.member:
                   case Membership.nonmember:
@@ -954,7 +967,7 @@ describe("Firestore security rules", async () => {
                 }
               }
 
-              for (const membership of Object.keys(Membership)) {
+              for (const membership of Object.values(Membership)) {
                 await testDifferentMembership(membership);
               }
             });
@@ -976,6 +989,7 @@ describe("Firestore security rules", async () => {
                   case Membership.owner:
                   case Membership.admin:
                   case Membership.mod:
+                  case Membership.moderator:
                     await firebase.assertSucceeds(
                       userDocRef.set(originalDataMap, { merge: true })
                     );
@@ -997,7 +1011,7 @@ describe("Firestore security rules", async () => {
                 }
               }
 
-              for (const membership of Object.keys(Membership)) {
+              for (const membership of Object.values(Membership)) {
                 await testDifferentMembership(membership);
               }
             });
@@ -1019,6 +1033,7 @@ describe("Firestore security rules", async () => {
               case Membership.owner:
               case Membership.admin:
               case Membership.mod:
+              case Membership.moderator:
               case Membership.facilitator:
               case Membership.member:
               case Membership.nonmember:
@@ -1040,7 +1055,7 @@ describe("Firestore security rules", async () => {
             }
           }
 
-          for (const membership of Object.keys(Membership)) {
+          for (const membership of Object.values(Membership)) {
             await testDifferentMembership(membership);
           }
         });
@@ -1075,6 +1090,7 @@ describe("Firestore security rules", async () => {
                 case Membership.owner:
                 case Membership.admin:
                 case Membership.mod:
+                case Membership.moderator:
                   await firebase.assertSucceeds(
                     userColRef.add(originalDataMap)
                   );
@@ -1102,7 +1118,7 @@ describe("Firestore security rules", async () => {
               }
             }
 
-            for (const membership of Object.keys(Membership)) {
+            for (const membership of Object.values(Membership)) {
               await testDifferentMembership(membership);
             }
           });
@@ -1304,6 +1320,7 @@ describe("Firestore security rules", async () => {
                   case Membership.owner:
                   case Membership.admin:
                   case Membership.mod:
+                  case Membership.moderator:
                     await firebase.assertSucceeds(
                       userColRef.add(originalDataMap)
                     );
@@ -1343,7 +1360,7 @@ describe("Firestore security rules", async () => {
                 }
               }
 
-              for (const membership of Object.keys(Membership)) {
+              for (const membership of Object.values(Membership)) {
                 await testDifferentMembership(membership);
               }
             });
@@ -1547,6 +1564,7 @@ describe("Firestore security rules", async () => {
                   case Membership.owner:
                   case Membership.admin:
                   case Membership.mod:
+                  case Membership.moderator:
                     await firebase.assertSucceeds(
                       userColRef.add({ creatorId: "alice" })
                     );
@@ -1594,7 +1612,7 @@ describe("Firestore security rules", async () => {
                 }
               }
 
-              for (const membership of Object.keys(Membership)) {
+              for (const membership of Object.values(Membership)) {
                 await testDifferentMembership(membership);
               }
             });
