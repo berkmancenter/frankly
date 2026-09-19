@@ -177,7 +177,7 @@ class UserService with ChangeNotifier {
 
   Future<void> initialize() async {
     if (usingEmulator) {
-      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+      await _firebaseAuth.useAuthEmulator('localhost', 9099);
       // Set persistence to session for emulator to avoid logout across hard reloads
       await _firebaseAuth.setPersistence(Persistence.SESSION);
     }
