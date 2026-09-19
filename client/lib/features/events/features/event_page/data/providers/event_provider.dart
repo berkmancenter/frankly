@@ -551,7 +551,8 @@ class EventProvider with ChangeNotifier {
     String csv = const ListToCsvConverter().convert(sanitizedRows);
 
     final stringToBase64 = utf8.fuse(base64);
-    final content = stringToBase64.encode(csv);
+    // Excel uses the UTF-8 BOM to detect encoding when opening a CSV directly.
+    final content = stringToBase64.encode('\uFEFF$csv');
     final fileName = 'chat-data-$eventId.csv';
 
     AnchorElement(
