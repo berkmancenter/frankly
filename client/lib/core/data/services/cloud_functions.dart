@@ -1,6 +1,56 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:client/core/utils/platform_utils.dart';
 
+/// Callables with a same-origin `/api/<name>` rewrite in firebase.json. On web
+/// these are called on the app origin, avoiding the cross-origin functions host
+/// (which DNS filters / privacy relays / ad-blockers can block). Names NOT in
+/// this set fall back to the cross-origin host, so a missing rewrite degrades
+/// safely instead of breaking. Must stay in sync with firebase.json (see test).
+const sameOriginCallables = {
+  'CancelStripeSubscriptionPlan',
+  'CheckAdvanceMeetingGuide',
+  'CheckAssignToBreakouts',
+  'CheckHostlessGoToBreakouts',
+  'CreateLiveStream',
+  'CreateSubscriptionCheckoutSession',
+  'GetBreakoutRoomAssignment',
+  'GetBreakoutRoomJoinInfo',
+  'GetCommunityDonationsEnabled',
+  'GetCommunityPrePostEnabled',
+  'GetMeetingChatSuggestionData',
+  'GetMeetingJoinInfo',
+  'GetMeetingPollData',
+  'GetMembersData',
+  'GetServerTimestamp',
+  'GetStripeSubscriptionPlanInfo',
+  'GetUserAdminDetails',
+  'GetUserIdFromAgoraId',
+  'InitiateBreakouts',
+  'KickParticipant',
+  'ReassignBreakoutRoom',
+  'ResetParticipantAgendaItems',
+  'UpdateBreakoutRoomFlagStatus',
+  'UpdateCommunity',
+  'UpdateStripeSubscriptionPlan',
+  'VoteToKick',
+  'createCommunity',
+  'createDonationCheckoutSession',
+  'createEvent',
+  'createStripeConnectedAccount',
+  'eventEnded',
+  'getCommunityCalendarLink',
+  'getCommunityCapabilities',
+  'getStripeBillingPortalLink',
+  'getStripeConnectedAccountLink',
+  'joinEvent',
+  'resolveJoinRequest',
+  'sendAnnouncement',
+  'sendEventMessage',
+  'toggleLikeDislikeOnMeetingUserSuggestion',
+  'unsubscribeFromCommunityNotifications',
+  'updateMembership',
+};
+
 class CloudFunctions {
   static bool usingEmulator = false;
 
@@ -18,8 +68,8 @@ class CloudFunctions {
     }
   }
 
-  /// If running on web without emulators, this directs all function calls through the redirects in
-  /// firebase.json to improve loading times by avoiding preflight CORS requests
+  /// On web (no emulator), [sameOriginCallables] are called via the app origin's
+  /// `/api` rewrite to skip the cross-origin functions host and CORS preflight.
   Future<Map<String, dynamic>> callFunction(
     String function,
     Map<String, dynamic> data, {
@@ -30,7 +80,10 @@ class CloudFunctions {
 
     Future<Map<String, dynamic>> attempt() async {
       if (useRedirects) {
-        final callable = getHttpsCallableWeb(function)!;
+        final sameOriginBase = sameOriginCallables.contains(function)
+            ? '${Uri.base.origin}/api'
+            : null;
+        final callable = getHttpsCallableWeb(function, sameOriginBase)!;
         final result = await callable.call(data);
         return result ?? {};
       } else {
