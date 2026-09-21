@@ -1,55 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:client/core/data/services/same_origin_callables.dart';
 import 'package:client/core/utils/platform_utils.dart';
-
-/// Callables with a same-origin `/api/<name>` rewrite in firebase.json. On web
-/// these are called on the app origin, avoiding the cross-origin functions host
-/// (which DNS filters / privacy relays / ad-blockers can block). Names NOT in
-/// this set fall back to the cross-origin host, so a missing rewrite degrades
-/// safely instead of breaking. Must stay in sync with firebase.json (see test).
-const sameOriginCallables = {
-  'CancelStripeSubscriptionPlan',
-  'CheckAdvanceMeetingGuide',
-  'CheckAssignToBreakouts',
-  'CheckHostlessGoToBreakouts',
-  'CreateLiveStream',
-  'CreateSubscriptionCheckoutSession',
-  'GetBreakoutRoomAssignment',
-  'GetBreakoutRoomJoinInfo',
-  'GetCommunityDonationsEnabled',
-  'GetCommunityPrePostEnabled',
-  'GetMeetingChatSuggestionData',
-  'GetMeetingJoinInfo',
-  'GetMeetingPollData',
-  'GetMembersData',
-  'GetServerTimestamp',
-  'GetStripeSubscriptionPlanInfo',
-  'GetUserAdminDetails',
-  'GetUserIdFromAgoraId',
-  'InitiateBreakouts',
-  'KickParticipant',
-  'ReassignBreakoutRoom',
-  'ResetParticipantAgendaItems',
-  'UpdateBreakoutRoomFlagStatus',
-  'UpdateCommunity',
-  'UpdateStripeSubscriptionPlan',
-  'VoteToKick',
-  'createCommunity',
-  'createDonationCheckoutSession',
-  'createEvent',
-  'createStripeConnectedAccount',
-  'eventEnded',
-  'getCommunityCalendarLink',
-  'getCommunityCapabilities',
-  'getStripeBillingPortalLink',
-  'getStripeConnectedAccountLink',
-  'joinEvent',
-  'resolveJoinRequest',
-  'sendAnnouncement',
-  'sendEventMessage',
-  'toggleLikeDislikeOnMeetingUserSuggestion',
-  'unsubscribeFromCommunityNotifications',
-  'updateMembership',
-};
+import 'package:flutter/foundation.dart';
 
 class CloudFunctions {
   static bool usingEmulator = false;
@@ -103,7 +55,7 @@ class CloudFunctions {
       try {
         return await attempt();
       } catch (e) {
-        if (attemptNum >= _maxRetries || !_isRetryable(e)) {
+        if (attemptNum >= _maxRetries || !isRetryableError(e)) {
           rethrow;
         }
         await Future<void>.delayed(
@@ -113,7 +65,8 @@ class CloudFunctions {
     }
   }
 
-  bool _isRetryable(Object e) {
+  @visibleForTesting
+  static bool isRetryableError(Object e) {
     if (e is FirebaseFunctionsException) {
       return _retryableCodes.contains(e.code);
     }
