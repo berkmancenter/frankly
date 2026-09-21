@@ -19,7 +19,33 @@ String? _firebaseAuthCodeMessage(String code) {
   }
 }
 
+/// True for errors that never reached the server (DNS/VPN/relay/ad-block).
+/// Web callables also collapse these into code `internal`, handled below.
+bool _looksLikeNetworkFailure(String error) {
+  final lower = error.toLowerCase();
+  const needles = [
+    'failed to fetch',
+    'networkerror',
+    'network error',
+    'network request failed',
+    'hostname could not be found',
+    'err_name_not_resolved',
+    'err_internet_disconnected',
+    'err_network',
+    'err_connection',
+    'unavailable',
+    'deadline exceeded',
+    'deadline-exceeded',
+  ];
+  return needles.any(lower.contains);
+}
+
 String sanitizeError(String error) {
+  // Check raw error first; bracket-stripping below drops the `[.../<code>]` code.
+  if (_looksLikeNetworkFailure(error)) {
+    return appLocalizationService.getLocalization().networkRequestBlocked;
+  }
+
   error = error
       .replaceAll('FirebaseError: ', '')
       .replaceAll(RegExp(r'\(.*\)'), '')
@@ -43,7 +69,7 @@ String sanitizeError(String error) {
     return appLocalizationService.getLocalization().notAuthorized;
   }
   if (error.trim().toLowerCase() == 'INTERNAL'.toLowerCase()) {
-    return appLocalizationService.getLocalization().somethingWentWrong;
+    return appLocalizationService.getLocalization().networkRequestBlocked;
   }
 
   return error;

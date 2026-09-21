@@ -21,8 +21,6 @@ class CloudFunctions {
     final useRedirects = !usingEmulator && isWeb && !isLocalhost;
     if (useRedirects) {
       final callable = getHttpsCallableWeb(function)!;
-      print('Callable origin: ${callable.origin}');
-      print('Callable: ${callable.uri.toString()}');
       final result = await callable.call(data);
       return result ?? {};
     } else {
