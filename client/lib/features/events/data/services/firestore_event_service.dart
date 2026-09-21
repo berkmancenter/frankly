@@ -481,6 +481,7 @@ class FirestoreEventService {
       joinParameters: queryParametersService.mostRecentQueryParameters,
       breakoutRoomSurveyQuestions: breakoutRoomSurveyResults?.questions ?? [],
       zipCode: breakoutRoomSurveyResults?.zipCode,
+      email: userService.firebaseAuth.currentUser?.email,
     );
     print('Participant $participant');
     final participantRef = reference.collection('event-participants').doc(uid);
@@ -692,6 +693,7 @@ class FirestoreEventService {
       id: userId,
       breakoutRoomSurveyQuestions: surveyDialogResult.questions,
       zipCode: surveyDialogResult.zipCode,
+      email: userService.firebaseAuth.currentUser?.email,
     );
     final participantRef = eventReference(
       communityId: event.communityId,
@@ -705,6 +707,7 @@ class FirestoreEventService {
         [
           Participant.kFieldBreakoutRoomSurveyQuestions,
           Participant.kFieldZipCode,
+          Participant.kFieldEmail,
         ],
         toFirestoreJson(participant.toJson()),
       ),
