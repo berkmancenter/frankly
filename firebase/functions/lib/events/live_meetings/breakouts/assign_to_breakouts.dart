@@ -251,6 +251,20 @@ class AssignToBreakouts {
             participant.id: question.freeTextAnswer!,
     };
 
+    // Attach the participant's email alongside their free-text response, for
+    // participants who answered the free-text question and have an email on
+    // file.
+    final participantEmailLookup = <String, String>{
+      for (final participant in unmatchedParticipants)
+        for (final question in participant.breakoutRoomSurveyQuestions)
+          if (question.type == BreakoutQuestionType.freeText &&
+              question.freeTextAnswer != null &&
+              question.freeTextAnswer!.isNotEmpty &&
+              participant.email != null &&
+              participant.email!.isNotEmpty)
+            participant.id: participant.email!,
+    };
+
     final nonNullSurveyResponsesLength = participantSurveyResponsesLookup
         .entries
         .where((e) => e.value.isNotEmpty)
@@ -274,6 +288,7 @@ class AssignToBreakouts {
           participantSurveyResponsesLookup: participantSurveyResponsesLookup,
           participantFreeTextResponsesLookup:
               participantFreeTextResponsesLookup,
+          participantEmailLookup: participantEmailLookup,
           targetParticipantsPerRoom: targetParticipantsPerRoom,
         );
         smartMatches = smartMatchApiResult.groups;
@@ -499,6 +514,7 @@ class AssignToBreakouts {
           Participant.kFieldIsPresent,
           Participant.kAvailableForBreakoutSessionId,
           Participant.kFieldBreakoutRoomSurveyQuestions,
+          Participant.kFieldEmail,
           'joinParameters.participant_id',
           'joinParameters.match_id',
           'joinParameters.eventId',
@@ -945,6 +961,7 @@ class SmartMatchApiResult {
 Map<String, dynamic> buildFranklyMatchApiPayload({
   required Map<String, String> participantSurveyResponsesLookup,
   required Map<String, String> participantFreeTextResponsesLookup,
+  required Map<String, String> participantEmailLookup,
   required int targetParticipantsPerRoom,
 }) {
   // Sanity check: also ensure no empty free-text responses when using text group match
@@ -978,6 +995,8 @@ Map<String, dynamic> buildFranklyMatchApiPayload({
             'binaryAnswerMask': participantSurveyResponsesLookup[id],
           if (participantFreeTextResponsesLookup.containsKey(id))
             'freeTextResponse': participantFreeTextResponsesLookup[id],
+          if (participantEmailLookup.containsKey(id))
+            'email': participantEmailLookup[id],
         },
     },
   };
@@ -987,6 +1006,7 @@ Map<String, dynamic> buildFranklyMatchApiPayload({
 Future<SmartMatchApiResult> createFranklyMatchApiGroups({
   required Map<String, String> participantSurveyResponsesLookup,
   required Map<String, String> participantFreeTextResponsesLookup,
+  required Map<String, String> participantEmailLookup,
   required int targetParticipantsPerRoom,
 }) async {
   final apiKey = functions.config.get('frankly_match.api_key') as String;
@@ -996,6 +1016,7 @@ Future<SmartMatchApiResult> createFranklyMatchApiGroups({
   final payload = buildFranklyMatchApiPayload(
     participantSurveyResponsesLookup: participantSurveyResponsesLookup,
     participantFreeTextResponsesLookup: participantFreeTextResponsesLookup,
+    participantEmailLookup: participantEmailLookup,
     targetParticipantsPerRoom: targetParticipantsPerRoom,
   );
   print(

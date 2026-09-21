@@ -107,6 +107,7 @@ void main() {
       final payload = buildFranklyMatchApiPayload(
         participantSurveyResponsesLookup: {'p1': '010', 'p2': '101'},
         participantFreeTextResponsesLookup: {},
+        participantEmailLookup: {},
         targetParticipantsPerRoom: 2,
       );
 
@@ -267,6 +268,25 @@ void main() {
           targetParticipantsPerRoom: 2,
         ),
         throwsA(isA<Exception>()),
+      );
+    });
+
+    test('includes email alongside freeTextResponse when present', () {
+      final payload = buildFranklyMatchApiPayload(
+        participantSurveyResponsesLookup: {},
+        participantFreeTextResponsesLookup: {'p1': 'I like hiking'},
+        participantEmailLookup: {'p1': 'p1@example.com'},
+        targetParticipantsPerRoom: 2,
+      );
+
+      expect(
+        payload['participants'],
+        {
+          'p1': {
+            'freeTextResponse': 'I like hiking',
+            'email': 'p1@example.com',
+          },
+        },
       );
     });
   });
