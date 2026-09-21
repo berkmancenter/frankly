@@ -285,6 +285,7 @@ class Participant with _$Participant implements SerializeableRequest {
   static const String kFieldBreakoutRoomSurveyQuestions =
       'breakoutRoomSurveyQuestions';
   static const String kFieldZipCode = 'zipCode';
+  static const String kFieldEmail = 'email';
   static const String kAvailableForBreakoutSessionId =
       'availableForBreakoutSessionId';
   static const String kFieldMuteOverride = 'muteOverride';
@@ -318,6 +319,7 @@ class Participant with _$Participant implements SerializeableRequest {
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
     DateTime? mostRecentPresentTime,
     String? zipCode,
+    String? email,
   }) = _Participant;
 
   factory Participant.fromJson(Map<String, dynamic> json) =>
