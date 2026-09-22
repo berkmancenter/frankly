@@ -9,12 +9,14 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late String networkMessage;
+  late String genericMessage;
 
   setUpAll(() async {
     GetIt.instance.registerSingleton(AppLocalizationService());
     final l10n = await AppLocalizations.delegate.load(const Locale('en'));
     GetIt.instance<AppLocalizationService>().setLocalization(l10n);
     networkMessage = l10n.networkRequestBlocked;
+    genericMessage = l10n.somethingWentWrong;
   });
 
   tearDownAll(() async {
@@ -23,12 +25,10 @@ void main() {
 
   void expectNetwork(String error) =>
       expect(sanitizeError(error), networkMessage);
+  void expectGeneric(String error) =>
+      expect(sanitizeError(error), genericMessage);
 
   group('sanitizeError network failures', () {
-    test('bare INTERNAL callable error', () {
-      expectNetwork('[firebase_functions/internal] INTERNAL');
-    });
-
     test('unavailable callable error', () {
       expectNetwork('[firebase_functions/unavailable] UNAVAILABLE');
     });
@@ -39,6 +39,12 @@ void main() {
 
     test('DNS hostname error', () {
       expectNetwork('A server with the specified hostname could not be found');
+    });
+  });
+
+  group('sanitizeError generic failures', () {
+    test('bare INTERNAL stays generic, not a network message', () {
+      expectGeneric('[firebase_functions/internal] INTERNAL');
     });
   });
 

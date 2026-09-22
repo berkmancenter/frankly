@@ -20,7 +20,6 @@ String? _firebaseAuthCodeMessage(String code) {
 }
 
 /// True for errors that never reached the server (DNS/VPN/relay/ad-block).
-/// Web callables also collapse these into code `internal`, handled below.
 bool _looksLikeNetworkFailure(String error) {
   final lower = error.toLowerCase();
   const needles = [
@@ -69,7 +68,7 @@ String sanitizeError(String error) {
     return appLocalizationService.getLocalization().notAuthorized;
   }
   if (error.trim().toLowerCase() == 'INTERNAL'.toLowerCase()) {
-    return appLocalizationService.getLocalization().networkRequestBlocked;
+    return appLocalizationService.getLocalization().somethingWentWrong;
   }
 
   return error;
