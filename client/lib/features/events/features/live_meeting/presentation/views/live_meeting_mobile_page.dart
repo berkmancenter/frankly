@@ -794,7 +794,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                                               TargetPlatform.iOS ||
                                           defaultTargetPlatform ==
                                               TargetPlatform.android),
-                                  isMirrorCheck: true,
                                 );
                               },
                             ),
