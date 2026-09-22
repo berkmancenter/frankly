@@ -16,6 +16,7 @@ import 'package:client/features/templates/data/providers/template_page_provider.
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
@@ -290,6 +291,37 @@ class AgendaItemPresenter {
   void updateAgendaItemTextData(AgendaItemTextData data) {
     _model.agendaItemTextData = data;
     _view.updateView();
+  }
+
+  /// The [AgendaItemTextData] to display for this card: the raw, editable
+  /// content (token included) while the current user is actively editing it
+  /// with edit access, otherwise the content with any `{diffusionStatement}`
+  /// token substituted for the current breakout room's actual diffusion
+  /// statement, or a placeholder when none is available.
+  AgendaItemTextData getDisplayAgendaItemTextData() {
+    if (_model.isEditMode && doesAllowEdit()) {
+      return _model.agendaItemTextData;
+    }
+
+    final content = _model.agendaItemTextData.content;
+    if (!content.contains(diffusionStatementToken)) {
+      return _model.agendaItemTextData;
+    }
+
+    final resolvedContent = _agendaProvider.resolvedAgendaItems
+        .firstWhereOrNull((item) => item.id == _model.agendaItem.id)
+        ?.content;
+
+    return AgendaItemTextData(
+      _model.agendaItemTextData.title,
+      resolvedContent ??
+          content.replaceAll(
+            diffusionStatementToken,
+            appLocalizationService
+                .getLocalization()
+                .diffusionStatementNotYetAvailable,
+          ),
+    );
   }
 
   void updateAgendaItemImageData(AgendaItemImageData data) {

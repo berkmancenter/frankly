@@ -300,7 +300,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
       case AgendaItemType.text:
         return AgendaItemText(
           isEditMode: isEditMode,
-          agendaItemTextData: _model.agendaItemTextData,
+          agendaItemTextData: _presenter.getDisplayAgendaItemTextData(),
           onChanged: (data) => _presenter.updateAgendaItemTextData(data),
         );
       case AgendaItemType.video:
