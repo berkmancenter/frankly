@@ -221,8 +221,7 @@ class EventPageProvider with ChangeNotifier {
     /// survey questions or if the participant hasn't answered all questions,
     /// and if the event is not a livestream.
     final showSurveyDialog = (!questionsMatch || !answeredAllQuestions) &&
-        currentSurveyQuestions.isNotEmpty &&
-        !eventProvider.event.isLiveStream;
+        currentSurveyQuestions.isNotEmpty;
     if (showSurveyDialog) {
       final surveyDialogResult = await SurveyDialog.show(
         communityProvider: communityProvider,
