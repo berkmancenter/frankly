@@ -65,7 +65,7 @@ List<AgendaItem> resolveAgendaItemsForDiffusionStatement(
         ),
       );
     }
-    // else: skip -- token present, no statement available, production.
+    // else: skip -- token present, no statement available.
   }
   return result;
 }
