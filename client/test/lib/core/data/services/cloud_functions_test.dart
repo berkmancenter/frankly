@@ -14,10 +14,13 @@ void main() {
       CloudFunctions.isRetryableError(Exception(message));
 
   group('CloudFunctions.isRetryableError', () {
-    test('retries transient callable codes', () {
-      expect(retryableCode('internal'), isTrue);
+    test('retries only never-reached transport codes', () {
       expect(retryableCode('unavailable'), isTrue);
-      expect(retryableCode('deadline-exceeded'), isTrue);
+    });
+
+    test('does not retry codes that may have committed server-side', () {
+      expect(retryableCode('internal'), isFalse);
+      expect(retryableCode('deadline-exceeded'), isFalse);
     });
 
     test('does not retry client-side error codes', () {

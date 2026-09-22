@@ -6,12 +6,9 @@ import 'package:flutter/foundation.dart';
 class CloudFunctions {
   static bool usingEmulator = false;
 
-  // Retry transient/never-reached failures only; never retry client-side errors.
-  static const _retryableCodes = {
-    'internal',
-    'unavailable',
-    'deadline-exceeded',
-  };
+  // Retry only when responses show the call never reached the server, so a
+  // retry won't duplicate an already-committed mutation.
+  static const _retryableCodes = {'unavailable'};
   static const _maxRetries = 2;
 
   Future<void> initialize() async {
