@@ -4,6 +4,13 @@ Dart functions compiled to Node.js via `build_node_compilers` (dart2js), plus a 
 
 ## On-Call Functions (Client-Callable)
 
+On web these are invoked same-origin via `https://<host>/api/<FunctionName>`
+(rewritten to the function in `firebase.json`) to avoid the cross-origin
+functions host that some networks block; see
+[Same-origin callable routing](../hosting.md#same-origin-callable-routing-api)
+in the hosting guide. Functions not in the client `sameOriginCallables`
+allowlist fall back to the default cross-origin host.
+
 ### Community
 
 | Function                              | Purpose                                    |
