@@ -110,8 +110,7 @@ class EventPageProvider with ChangeNotifier {
             return JoinEventResults(isJoined: false);
           }
 
-          // This is a new user.
-          // Show RSVP dialog on hosted events.
+          // Show RSVP dialog on hosted events, if applicable
           if (eventProvider.event.eventType == EventType.hosted &&
               showConfirm) {
             final confirmed = await verifyAvailableForEvent(
