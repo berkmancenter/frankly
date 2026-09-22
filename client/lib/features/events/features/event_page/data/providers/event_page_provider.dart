@@ -124,10 +124,8 @@ class EventPageProvider with ChangeNotifier {
           final hasSurveyQuestions = eventProvider
                   .event.breakoutRoomDefinition?.breakoutQuestions.isNotEmpty ??
               false;
-          final showSurveyDialog =
-              hasSurveyQuestions && !eventProvider.event.isLiveStream;
           SurveyDialogResult? surveyDialogResult;
-          if (showSurveyDialog) {
+          if (hasSurveyQuestions) {
             surveyDialogResult = await SurveyDialog.show(
               communityProvider: communityProvider,
               eventProvider: eventProvider,
@@ -222,8 +220,7 @@ class EventPageProvider with ChangeNotifier {
     /// survey questions or if the participant hasn't answered all questions,
     /// and if the event is not a livestream.
     final showSurveyDialog = (!questionsMatch || !answeredAllQuestions) &&
-        currentSurveyQuestions.isNotEmpty &&
-        !eventProvider.event.isLiveStream;
+        currentSurveyQuestions.isNotEmpty;
     if (showSurveyDialog) {
       final surveyDialogResult = await SurveyDialog.show(
         communityProvider: communityProvider,
