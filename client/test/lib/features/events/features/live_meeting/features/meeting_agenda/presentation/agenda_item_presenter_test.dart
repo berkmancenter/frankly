@@ -490,6 +490,61 @@ void main() {
     verify(mockView.updateView()).called(1);
   });
 
+  group('getDisplayAgendaItemTextData', () {
+    test('content without token is returned unchanged', () {
+      model.agendaItemTextData = AgendaItemTextData('title', 'plain content');
+
+      final result = presenter.getDisplayAgendaItemTextData();
+
+      expect(result.content, 'plain content');
+    });
+
+    test('editing with edit access returns raw token unchanged', () {
+      model.isEditMode = true;
+      model.agendaItemTextData =
+          AgendaItemTextData('title', 'Discuss: {diffusionStatement}');
+
+      when(mockAgendaProvider.params).thenReturn(mockAgendaProviderParams);
+      when(mockAgendaProviderParams.isNotOnEventPage).thenReturn(false);
+      when(mockEventPermissionsProvider.canEditEvent).thenReturn(true);
+      when(mockLiveMeetingProvider.isInBreakout).thenReturn(false);
+
+      final result = presenter.getDisplayAgendaItemTextData();
+
+      expect(result.content, 'Discuss: {diffusionStatement}');
+    });
+
+    test('not editing, resolved item found: substitutes actual statement',
+        () {
+      model.agendaItemTextData =
+          AgendaItemTextData('title', 'Discuss: {diffusionStatement}');
+
+      when(mockAgendaProvider.resolvedAgendaItems).thenReturn([
+        agendaItem.copyWith(content: 'Discuss: What matters most to you?'),
+      ]);
+
+      final result = presenter.getDisplayAgendaItemTextData();
+
+      expect(result.content, 'Discuss: What matters most to you?');
+      expect(result.title, 'title');
+    });
+
+    test('not editing, no resolved item available: substitutes placeholder',
+        () {
+      model.agendaItemTextData =
+          AgendaItemTextData('title', 'Discuss: {diffusionStatement}');
+
+      when(mockAgendaProvider.resolvedAgendaItems).thenReturn([]);
+
+      final result = presenter.getDisplayAgendaItemTextData();
+
+      expect(
+        result.content,
+        'Discuss: Diffusion statement not yet available',
+      );
+    });
+  });
+
   group('getTitle', () {
     group('title is set', () {
       void executeTest(AgendaItemType agendaItemType) {
