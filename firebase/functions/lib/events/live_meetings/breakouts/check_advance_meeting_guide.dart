@@ -298,10 +298,11 @@ class CheckAdvanceMeetingGuide {
     // actually triggering the advance after the delay.
     return AdvanceCheckResult(
       isPendingOrAdvancing: true,
-      // Use the resolved agenda (same as advanceMeetingGuide's navigation) so we
-      // don't use timers for last-items even when they are `{diffusionStatement}`
-      // and skipped and in prod. Last resolved item should finish immediately
-      // on ready.
+      // Use the resolved agenda (the list advanceMeetingGuide navigates), not
+      // raw: a trailing {diffusionStatement} item with no statement is dropped
+      // in prod, so raw would see the last visible item as not-final and run a
+      // pointless countdown instead of finishing immediately per the spec.
+      // The client gates on resolved too, so raw here would desync the two.
       isLastAgendaItem: currentAgendaItemId ==
           resolveAgendaItemsForDiffusionStatement(
             event.agendaItems,
