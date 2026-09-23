@@ -837,6 +837,12 @@
 <h1 id="cloud-functions">Cloud Functions</h1>
 <p>Dart functions compiled to Node.js via <code>build_node_compilers</code> (dart2js), plus a few native JS functions for recording and SSR. All share the <code>data_models</code> package for type definitions.</p>
 <h2 id="on-call-functions-client-callable">On-Call Functions (Client-Callable)</h2>
+<p>On web these are invoked same-origin via <code>https://&lt;host&gt;/api/&lt;FunctionName&gt;</code>
+(rewritten to the function in <code>firebase.json</code>) to avoid the cross-origin
+functions host that some networks block; see
+<a href="../../hosting/#same-origin-callable-routing-api">Same-origin callable routing</a>
+in the hosting guide. Functions not in the client <code>sameOriginCallables</code>
+allowlist fall back to the default cross-origin host.</p>
 <h3 id="community">Community</h3>
 <table>
 <thead>

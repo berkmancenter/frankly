@@ -499,6 +499,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#same-origin-callable-routing-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Same-origin callable routing (/api/*)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#content-security-policy-csp" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1302,6 +1313,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#same-origin-callable-routing-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Same-origin callable routing (/api/*)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#content-security-policy-csp" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1941,6 +1963,31 @@
 <span class="w">  </span><span class="nt">"function"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ServeIndex"</span>
 <span class="p">}</span>
 </code></pre></div>
+<h3 id="same-origin-callable-routing-api">Same-origin callable routing (<code>/api/*</code>)</h3>
+<p>On web, client-callable Cloud Functions are invoked over a same-origin path,
+<code>https://&lt;your-host&gt;/api/&lt;FunctionName&gt;</code>, which <code>firebase.json</code> rewrites to the
+matching function. These <code>/api/*</code> rewrites are listed <strong>above</strong> the <code>ServeIndex</code>
+catch-all so they take precedence (Firebase Hosting uses first-match-wins):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"> </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/api/GetMeetingJoinInfo"</span><span class="p">,</span><span class="w"> </span><span class="nt">"function"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GetMeetingJoinInfo"</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>Routing callables through the app's own origin avoids the separate
+<code>us-central1-&lt;project&gt;.cloudfunctions.net</code> host, which some clients cannot reach
+(DNS filters, VPNs, iCloud Private Relay, or privacy/ad-blocking extensions). A
+blocked callable would otherwise surface to the user as a generic error. It also
+skips the CORS preflight a cross-origin callable requires.</p>
+<p>The client keeps an allowlist, <code>sameOriginCallables</code> in
+<code>client/lib/core/data/services/same_origin_callables.dart</code>, of the functions
+that have an <code>/api/*</code> rewrite. A callable <strong>not</strong> in the allowlist falls back to
+the default cross-origin host, so a missing rewrite degrades gracefully instead
+of breaking. The allowlist and the <code>/api/*</code> rewrites must stay in sync; the test
+<code>same_origin_callables_test.dart</code> fails if they diverge. When you add a new
+client-callable function, add it to <strong>both</strong> the allowlist and the <code>/api/*</code>
+rewrites.</p>
+<p>The <code>/api/</code> prefix keeps these paths from colliding with client-side app routes.
+Because the calls are same-origin they are already covered by <code>connect-src
+'self'</code> in the CSP (below), so no CSP change is needed unless you move callables
+to a custom domain or a Cloud Run <code>*.run.app</code> host, in which case add that host
+to <code>connect-src</code> in <code>serve-index.js</code>.</p>
 <h3 id="content-security-policy-csp">Content Security Policy (CSP)</h3>
 <p>The CSP is set as an HTTP response header by <code>ServeIndex</code> (in <code>firebase/functions/js/serve-index.js</code>). It uses <code>'strict-dynamic'</code> with a per-request nonce, which means:</p>
 <ul>
