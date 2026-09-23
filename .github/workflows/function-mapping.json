@@ -204,7 +204,7 @@
       "AdvanceMeetingGuideAfterDelay"
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/advance_meeting_guide_after_delay_server.dart": [
-      "AdvanceMeetingGuideAfterDelayServer",
+      "AdvanceMeetingGuideAfterDelay",
       "ParticipantAgendaItemDetailsOnWrite"
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/assign_to_breakouts.dart": [
@@ -399,6 +399,7 @@
       "TemplateOnCreate"
     ],
     "request": [
+      "AdvanceMeetingGuideAfterDelay",
       "CalendarFeedIcs",
       "CalendarFeedRss",
       "CheckAssignToBreakoutsServer",
