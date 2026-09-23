@@ -772,6 +772,7 @@
   "myUpcomingEvents": "Mis próximos eventos",
   "name": "Nombre",
   "needMoreHelp": "¿Necesitas más ayuda? ",
+  "networkRequestBlocked": "No pudimos conectarnos al servidor. Una VPN, un filtro DNS o una extensión de privacidad o de bloqueo de anuncios podría estar bloqueando las solicitudes. Prueba con otra red o navegador, o desactiva el bloqueador y vuelve a intentarlo.",
   "newAnnouncement": "Nuevo anuncio",
   "newRoomNumber": "Número de sala nueva:",
   "newSubscription": "Nueva Suscripción",

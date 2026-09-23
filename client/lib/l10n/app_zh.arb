@@ -761,6 +761,7 @@
   "myUpcomingEvents": "我的即将举行的活动",
   "name": "名称",
   "needMoreHelp": "需要更多帮助？ ",
+  "networkRequestBlocked": "无法连接到服务器。VPN、DNS 过滤器或隐私/广告拦截扩展程序可能正在阻止请求。请尝试其他网络或浏览器，或禁用拦截程序后重试。",
   "newAnnouncement": "新公告",
   "newRoomNumber": "新房间号码：",
   "newSubscription": "新订阅",
