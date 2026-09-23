@@ -22,7 +22,7 @@ String? _firebaseAuthCodeMessage(String code) {
 /// True for errors that never reached the server (DNS/VPN/relay/ad-block).
 bool _looksLikeNetworkFailure(String error) {
   final lower = error.toLowerCase();
-  const needles = [
+  const networkFailureIndicators = [
     'failed to fetch',
     'networkerror',
     'network error',
@@ -36,7 +36,7 @@ bool _looksLikeNetworkFailure(String error) {
     'deadline exceeded',
     'deadline-exceeded',
   ];
-  return needles.any(lower.contains);
+  return networkFailureIndicators.any(lower.contains);
 }
 
 String sanitizeError(String error) {
