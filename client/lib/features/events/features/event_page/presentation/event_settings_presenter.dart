@@ -103,15 +103,13 @@ class EventSettingsPresenter {
   ) {
     final defaultSettingsLocal = _model.defaultSettings;
     final defaultValue = getSetting(defaultSettingsLocal) ?? false;
-    return defaultValue != getSetting(_model.eventSettings);
+    return defaultValue != (getSetting(_model.eventSettings) ?? false);
   }
 
   void updateSetting(String setting, bool isSelected) async {
     final settings = EventSettings.fromJson(
       _model.eventSettings.toJson()
-        ..addEntries([
-          MapEntry(setting, isSelected),
-        ]),
+        ..addEntries([MapEntry(setting, isSelected)]),
     );
     _model.eventSettings = settings;
     _appDrawerProvider.setUnsavedChanges(_helper.wereChangesMade(_model));

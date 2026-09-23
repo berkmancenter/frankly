@@ -28,6 +28,18 @@ void main() {
         l10n.avErrorNotFound,
         equals('Audio/video devices not found. Please check permissions.'),
       );
+      expect(
+        l10n.avAudioErrorNotFound,
+        equals(
+          'Frankly can’t access your microphone(s). Modify your permissions/device settings and refresh the page to allow mic use.',
+        ),
+      );
+      expect(
+        l10n.avVideoErrorNotFound,
+        equals(
+          'Frankly can’t access your camera(s). Modify your permissions/device settings and refresh the page to allow camera use.',
+        ),
+      );
     });
 
     testWidgets('Spanish localization works', (WidgetTester tester) async {
@@ -54,8 +66,14 @@ void main() {
 
       // Error messages should be translated
       expect(
-        l10n.avErrorNotFound,
-        isNot('Audio/video devices not found. Please check permissions.'),
+        l10n.avAudioErrorNotFound,
+        isNot(
+            'Frankly can’t access your microphone(s). Modify your permissions/device settings and refresh the page to allow mic use.'),
+      );
+      expect(
+        l10n.avVideoErrorNotFound,
+        isNot(
+            'Frankly can’t access your camera(s). Modify your permissions/device settings and refresh the page to allow camera use.'),
       );
     });
 
@@ -87,6 +105,16 @@ void main() {
         l10n.avErrorNotFound,
         isNot('Audio/video devices not found. Please check permissions.'),
       );
+      expect(
+        l10n.avAudioErrorNotFound,
+        isNot(
+            'Frankly can’t access your microphone(s). Modify your permissions/device settings and refresh the page to allow mic use.'),
+      );
+      expect(
+        l10n.avVideoErrorNotFound,
+        isNot(
+            'Frankly can’t access your camera(s). Modify your permissions/device settings and refresh the page to allow camera use.'),
+      );
     });
 
     testWidgets('Traditional Chinese (Taiwan) localization works',
@@ -117,8 +145,20 @@ void main() {
       expect(l10n.selectLanguage, isNotEmpty);
 
       // Error messages should be translated
-      expect(l10n.avErrorNotFound,
-          isNot('Audio/video devices not found. Please check permissions.'),);
+      expect(
+        l10n.avErrorNotFound,
+        isNot('Audio/video devices not found. Please check permissions.'),
+      );
+      expect(
+        l10n.avAudioErrorNotFound,
+        isNot(
+            'Frankly can’t access your microphone(s). Modify your permissions/device settings and refresh the page to allow mic use.'),
+      );
+      expect(
+        l10n.avVideoErrorNotFound,
+        isNot(
+            'Frankly can’t access your camera(s). Modify your permissions/device settings and refresh the page to allow camera use.'),
+      );
     });
 
     testWidgets(

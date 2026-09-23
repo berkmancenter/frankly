@@ -19,7 +19,32 @@ String? _firebaseAuthCodeMessage(String code) {
   }
 }
 
+/// True for errors that never reached the server (DNS/VPN/relay/ad-block).
+bool _looksLikeNetworkFailure(String error) {
+  final lower = error.toLowerCase();
+  const networkFailureIndicators = [
+    'failed to fetch',
+    'networkerror',
+    'network error',
+    'network request failed',
+    'hostname could not be found',
+    'err_name_not_resolved',
+    'err_internet_disconnected',
+    'err_network',
+    'err_connection',
+    'unavailable',
+    'deadline exceeded',
+    'deadline-exceeded',
+  ];
+  return networkFailureIndicators.any(lower.contains);
+}
+
 String sanitizeError(String error) {
+  // Check raw error first; bracket-stripping below drops the `[.../<code>]` code.
+  if (_looksLikeNetworkFailure(error)) {
+    return appLocalizationService.getLocalization().networkRequestBlocked;
+  }
+
   error = error
       .replaceAll('FirebaseError: ', '')
       .replaceAll(RegExp(r'\(.*\)'), '')

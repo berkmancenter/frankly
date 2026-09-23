@@ -1,3 +1,4 @@
+import 'package:data_models/community/membership.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'membership_request.freezed.dart';
@@ -13,6 +14,8 @@ class MembershipRequest with _$MembershipRequest {
     @Default(MembershipRequestStatus.requested)
     @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
     MembershipRequestStatus? status,
+    @JsonKey(unknownEnumValue: MembershipStatus.member)
+    MembershipStatus? role,
   }) = _MembershipRequest;
 
   factory MembershipRequest.fromJson(Map<String, dynamic> json) =>

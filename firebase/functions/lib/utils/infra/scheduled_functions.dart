@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
+import 'package:node_http/node_http.dart' as http;
 import 'extend_cloud_task_scheduler.dart';
 import 'cloud_tasks_client.dart' as tasks;
+import 'emulator_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:node_interop/util.dart';
 
@@ -16,8 +19,16 @@ class ScheduledFunctions {
   tasks.CloudTasksClient get client =>
       _client ??= tasks.createCloudTasksClient();
 
+  String get _projectId {
+    final projectId = functions.config.get('app.project_id') as String?;
+    if (projectId == null || projectId.isEmpty) {
+      throw StateError('app.project_id must be set in the functions config');
+    }
+    return projectId;
+  }
+
   String get parentPath => client.queuePath(
-        functions.config.get('app.project_id') as String,
+        _projectId,
         'us-east4',
         'scheduled-functions',
       );
@@ -52,6 +63,39 @@ class ScheduledFunctions {
     final urlPrefix =
         functions.config.get('app.functions_url_prefix') as String;
 
+    if (isEmulator) {
+      // Cloud Tasks is a real GCP service and can't dispatch HTTP callbacks
+      // back to a local 127.0.0.1 emulator URL, so the queued task would
+      // just retry and fail forever. Call the function directly instead,
+      // waiting until the scheduled time to preserve the delay.
+      print(
+        'Emulator detected: calling $functionName directly instead of via Cloud Tasks',
+      );
+      // The emulator serves functions under the project id it was started with
+      // (`--project`, exposed as GCLOUD_PROJECT). The configured
+      // `app.functions_url_prefix` may reference a different project id, which
+      // would make the direct callback 404 and silently drop the scheduled
+      // call. Rewrite the project segment so the callback always targets the
+      // running emulator.
+      final effectiveUrlPrefix = _emulatorUrlPrefix(urlPrefix);
+      final delay = scheduledTime.difference(DateTime.now());
+      Timer(delay.isNegative ? Duration.zero : delay, () async {
+        try {
+          final result = await http.post(
+            Uri.parse('$effectiveUrlPrefix/$functionName'),
+            headers: {'Content-Type': 'application/json'},
+            body: encodedJson,
+          );
+          print(
+            'Emulator direct call to $functionName returned ${result.statusCode}',
+          );
+        } catch (e) {
+          print('Error calling $functionName directly in emulator: $e');
+        }
+      });
+      return;
+    }
+
     final createTaskRequest = jsify({
       'parent': parentPath,
       'task': {
@@ -70,6 +114,30 @@ class ScheduledFunctions {
 
     await promiseToFuture(client.createTask(createTaskRequest));
   }
+}
+
+/// Rewrites the configured functions URL prefix so its project-id path segment
+/// matches the project the emulator is actually running as. When the two
+/// disagree the direct callback 404s and the scheduled call is silently lost.
+/// Falls back to the original prefix when the emulator project id is unknown or
+/// the prefix has an unexpected shape.
+String _emulatorUrlPrefix(String urlPrefix) {
+  final projectId = emulatorProjectId;
+  if (projectId == null) return urlPrefix;
+  final uri = Uri.tryParse(urlPrefix);
+  if (uri == null || uri.scheme.isEmpty || uri.pathSegments.length < 2) {
+    return urlPrefix;
+  }
+  final segments = uri.pathSegments;
+  if (segments.first == projectId) return urlPrefix;
+  // Rebuild the string explicitly rather than via Uri.replace: when compiled to
+  // JS, Uri.replace(pathSegments:) can drop the scheme, producing a URL the
+  // node http client rejects ("Protocol ':' not supported").
+  final origin = uri.hasPort
+      ? '${uri.scheme}://${uri.host}:${uri.port}'
+      : '${uri.scheme}://${uri.host}';
+  final rewrittenSegments = [projectId, ...segments.skip(1)];
+  return '$origin/${rewrittenSegments.join('/')}';
 }
 
 T printAndReturn<T>(T value) {

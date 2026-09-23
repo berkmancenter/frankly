@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:functions/utils/infra/firestore_event_function.dart';
 import 'package:functions/cloud_function.dart';
 import 'package:functions/admin/payments/cancel_stripe_subscription_plan.dart';
-import 'package:functions/events/live_meetings/breakouts/check_advance_meeting_guide.dart';
+import 'package:functions/events/live_meetings/breakouts/advance_meeting_guide_after_delay_server.dart';
 import 'package:functions/events/live_meetings/breakouts/check_assign_to_breakouts.dart';
 import 'package:functions/events/live_meetings/breakouts/check_hostless_go_to_breakouts.dart';
 import 'package:functions/community/create_announcement.dart';
@@ -33,6 +33,7 @@ import 'package:functions/admin/payments/get_stripe_subscription_plan_info.dart'
 import 'package:functions/community/get_user_admin_details.dart';
 import 'package:functions/events/live_meetings/get_user_id_from_agora_id.dart';
 import 'package:functions/events/live_meetings/breakouts/initiate_breakouts.dart';
+import 'package:functions/events/live_meetings/breakouts/on_participant_agenda_item_details.dart';
 import 'package:functions/events/join_event.dart';
 import 'package:functions/events/live_meetings/breakouts/reassign_breakout_room.dart';
 import 'package:functions/events/live_meetings/reset_participant_agenda_items.dart';
@@ -48,6 +49,7 @@ import 'package:functions/community/update_membership.dart';
 import 'package:functions/admin/payments/update_stripe_subscription_plan.dart';
 import 'package:functions/events/live_meetings/vote_to_kick.dart';
 import 'package:functions/events/live_meetings/update_presence_status.dart';
+import 'package:functions/events/live_meetings/cleanup_stale_participants.dart';
 import 'package:functions/events/on_event.dart';
 import 'package:functions/events/on_event_participant.dart';
 import 'package:functions/discussion_threads/on_discussion_thread.dart';
@@ -74,7 +76,6 @@ import 'package:uuid/uuid.dart';
 
 final _onCallFunctions = <CloudFunction>[
   CancelStripeSubscriptionPlan(),
-  CheckAdvanceMeetingGuide(),
   CheckAssignToBreakouts(),
   CheckHostlessGoToBreakouts(),
   CreateAnnouncement(),
@@ -119,6 +120,7 @@ final _onCallFunctions = <CloudFunction>[
 ];
 
 final _onRequestFunctions = <CloudFunction>[
+  AdvanceMeetingGuideAfterDelayServer(),
   CalendarFeedIcs(),
   CalendarFeedRss(),
   CheckAssignToBreakoutsServer(),
@@ -141,11 +143,13 @@ final _cloudFunctions = <CloudFunction>[
   // On PubSub functions
   TriggerEmailDigests(),
   UpdateLiveStreamParticipantCount(),
+  CleanupStaleParticipants(),
 ];
 
 final _eventFunctions = <FirestoreEventFunction>[
   OnEvent(),
   OnEventParticipant(),
+  OnParticipantAgendaItemDetails(),
   OnDiscussionThread(),
   OnDiscussionThreadComment(),
   OnCommunity(),
@@ -164,12 +168,16 @@ void _registerServices() {
 
 void _registerJsFunctions() {
   functions['downloadRecording'] = require('../js/download-recordings.js');
+  functions['downloadTranscripts'] = require('../js/download-transcripts.js');
   functions['getSessionDownloadUrl'] =
       require('../js/get-session-download-url.js');
   functions['produceSessions'] = require('../js/produce-sessions.js');
+  functions['repairSessionArtifacts'] =
+      require('../js/repair-session-artifacts.js');
   functions['agoraRecordingWebhook'] =
       require('../js/agora-recording-webhook.js');
   functions['imageProxy'] = require('../js/image-proxy.js');
+  functions['ServeIndex'] = require('../js/serve-index.js');
 }
 
 void main() {

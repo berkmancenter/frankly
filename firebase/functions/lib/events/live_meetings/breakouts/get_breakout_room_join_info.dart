@@ -8,6 +8,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
+import 'package:data_models/utils/utils.dart';
 
 class GetBreakoutRoomJoinInfo
     extends OnCallMethod<GetBreakoutRoomJoinInfoRequest> {
@@ -96,6 +97,24 @@ class GetBreakoutRoomJoinInfo
       existingRecordingSessionId: breakoutRoom.recordingSessionId,
       participantIds: breakoutRoom.participantIds,
     );
+
+    // Re-read in case getBreakoutRoomJoinInfo was created (for the first joiner)
+    // before the recording session ID was written.
+    final updatedBreakoutSnap =
+        await firestore.document(breakoutRoomPath).get();
+    if (updatedBreakoutSnap.exists) {
+      final updatedRoom = BreakoutRoom.fromJson(
+        firestoreUtils.fromFirestoreJson(updatedBreakoutSnap.data.toMap()),
+      );
+      final sessionId = updatedRoom.recordingSessionId;
+      if (sessionId != null) {
+        await liveMeetingUtils.recordUidMapping(
+          sessionId: sessionId,
+          agoraUid: uidToInt(context.authUid!),
+          userId: context.authUid!,
+        );
+      }
+    }
 
     return joinInfo.toJson();
   }

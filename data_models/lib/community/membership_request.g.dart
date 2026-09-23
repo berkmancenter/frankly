@@ -14,6 +14,8 @@ _$_MembershipRequest _$$_MembershipRequestFromJson(Map<String, dynamic> json) =>
               _$MembershipRequestStatusEnumMap, json['status'],
               unknownValue: MembershipRequestStatus.requested) ??
           MembershipRequestStatus.requested,
+      role: $enumDecodeNullable(_$MembershipStatusEnumMap, json['role'],
+          unknownValue: MembershipStatus.member),
     );
 
 Map<String, dynamic> _$$_MembershipRequestToJson(
@@ -22,10 +24,22 @@ Map<String, dynamic> _$$_MembershipRequestToJson(
       'userId': instance.userId,
       'communityId': instance.communityId,
       'status': _$MembershipRequestStatusEnumMap[instance.status],
+      'role': _$MembershipStatusEnumMap[instance.role],
     };
 
 const _$MembershipRequestStatusEnumMap = {
   MembershipRequestStatus.requested: 'requested',
   MembershipRequestStatus.approved: 'approved',
   MembershipRequestStatus.denied: 'denied',
+};
+
+const _$MembershipStatusEnumMap = {
+  MembershipStatus.owner: 'owner',
+  MembershipStatus.admin: 'admin',
+  MembershipStatus.moderator: 'moderator',
+  MembershipStatus.facilitator: 'facilitator',
+  MembershipStatus.member: 'member',
+  MembershipStatus.banned: 'banned',
+  MembershipStatus.nonmember: 'nonmember',
+  MembershipStatus.attendee: 'attendee',
 };

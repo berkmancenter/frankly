@@ -36,12 +36,15 @@ mixin _$RecordingSession {
   String? get breakoutSessionId => throw _privateConstructorUsedError;
   String? get agoraResourceId => throw _privateConstructorUsedError;
   String? get agoraSid => throw _privateConstructorUsedError;
-  String? get agoraRttTaskId => throw _privateConstructorUsedError;
+  String? get agoraRttAgentId => throw _privateConstructorUsedError;
+  String? get rttLanguage => throw _privateConstructorUsedError;
   String? get gcsPrefix => throw _privateConstructorUsedError;
   String? get chatPath => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   Map<String, String> get artifactPaths => throw _privateConstructorUsedError;
   List<String> get participantIds => throw _privateConstructorUsedError;
+  Map<String, String> get uidToDisplayName =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -72,12 +75,14 @@ abstract class $RecordingSessionCopyWith<$Res> {
       String? breakoutSessionId,
       String? agoraResourceId,
       String? agoraSid,
-      String? agoraRttTaskId,
+      String? agoraRttAgentId,
+      String? rttLanguage,
       String? gcsPrefix,
       String? chatPath,
       String? errorMessage,
       Map<String, String> artifactPaths,
-      List<String> participantIds});
+      List<String> participantIds,
+      Map<String, String> uidToDisplayName});
 }
 
 /// @nodoc
@@ -105,12 +110,14 @@ class _$RecordingSessionCopyWithImpl<$Res, $Val extends RecordingSession>
     Object? breakoutSessionId = freezed,
     Object? agoraResourceId = freezed,
     Object? agoraSid = freezed,
-    Object? agoraRttTaskId = freezed,
+    Object? agoraRttAgentId = freezed,
+    Object? rttLanguage = freezed,
     Object? gcsPrefix = freezed,
     Object? chatPath = freezed,
     Object? errorMessage = freezed,
     Object? artifactPaths = null,
     Object? participantIds = null,
+    Object? uidToDisplayName = null,
   }) {
     return _then(_value.copyWith(
       sessionId: freezed == sessionId
@@ -161,9 +168,13 @@ class _$RecordingSessionCopyWithImpl<$Res, $Val extends RecordingSession>
           ? _value.agoraSid
           : agoraSid // ignore: cast_nullable_to_non_nullable
               as String?,
-      agoraRttTaskId: freezed == agoraRttTaskId
-          ? _value.agoraRttTaskId
-          : agoraRttTaskId // ignore: cast_nullable_to_non_nullable
+      agoraRttAgentId: freezed == agoraRttAgentId
+          ? _value.agoraRttAgentId
+          : agoraRttAgentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rttLanguage: freezed == rttLanguage
+          ? _value.rttLanguage
+          : rttLanguage // ignore: cast_nullable_to_non_nullable
               as String?,
       gcsPrefix: freezed == gcsPrefix
           ? _value.gcsPrefix
@@ -185,6 +196,10 @@ class _$RecordingSessionCopyWithImpl<$Res, $Val extends RecordingSession>
           ? _value.participantIds
           : participantIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      uidToDisplayName: null == uidToDisplayName
+          ? _value.uidToDisplayName
+          : uidToDisplayName // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>,
     ) as $Val);
   }
 }
@@ -214,12 +229,14 @@ abstract class _$$_RecordingSessionCopyWith<$Res>
       String? breakoutSessionId,
       String? agoraResourceId,
       String? agoraSid,
-      String? agoraRttTaskId,
+      String? agoraRttAgentId,
+      String? rttLanguage,
       String? gcsPrefix,
       String? chatPath,
       String? errorMessage,
       Map<String, String> artifactPaths,
-      List<String> participantIds});
+      List<String> participantIds,
+      Map<String, String> uidToDisplayName});
 }
 
 /// @nodoc
@@ -245,12 +262,14 @@ class __$$_RecordingSessionCopyWithImpl<$Res>
     Object? breakoutSessionId = freezed,
     Object? agoraResourceId = freezed,
     Object? agoraSid = freezed,
-    Object? agoraRttTaskId = freezed,
+    Object? agoraRttAgentId = freezed,
+    Object? rttLanguage = freezed,
     Object? gcsPrefix = freezed,
     Object? chatPath = freezed,
     Object? errorMessage = freezed,
     Object? artifactPaths = null,
     Object? participantIds = null,
+    Object? uidToDisplayName = null,
   }) {
     return _then(_$_RecordingSession(
       sessionId: freezed == sessionId
@@ -301,9 +320,13 @@ class __$$_RecordingSessionCopyWithImpl<$Res>
           ? _value.agoraSid
           : agoraSid // ignore: cast_nullable_to_non_nullable
               as String?,
-      agoraRttTaskId: freezed == agoraRttTaskId
-          ? _value.agoraRttTaskId
-          : agoraRttTaskId // ignore: cast_nullable_to_non_nullable
+      agoraRttAgentId: freezed == agoraRttAgentId
+          ? _value.agoraRttAgentId
+          : agoraRttAgentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rttLanguage: freezed == rttLanguage
+          ? _value.rttLanguage
+          : rttLanguage // ignore: cast_nullable_to_non_nullable
               as String?,
       gcsPrefix: freezed == gcsPrefix
           ? _value.gcsPrefix
@@ -325,6 +348,10 @@ class __$$_RecordingSessionCopyWithImpl<$Res>
           ? _value.participantIds
           : participantIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      uidToDisplayName: null == uidToDisplayName
+          ? _value.uidToDisplayName
+          : uidToDisplayName // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>,
     ));
   }
 }
@@ -348,12 +375,14 @@ class _$_RecordingSession implements _RecordingSession {
       this.breakoutSessionId,
       this.agoraResourceId,
       this.agoraSid,
-      this.agoraRttTaskId,
+      this.agoraRttAgentId,
+      this.rttLanguage,
       this.gcsPrefix,
       this.chatPath,
       this.errorMessage,
       this.artifactPaths = const {},
-      this.participantIds = const []});
+      this.participantIds = const [],
+      this.uidToDisplayName = const {}});
 
   factory _$_RecordingSession.fromJson(Map<String, dynamic> json) =>
       _$$_RecordingSessionFromJson(json);
@@ -388,7 +417,9 @@ class _$_RecordingSession implements _RecordingSession {
   @override
   final String? agoraSid;
   @override
-  final String? agoraRttTaskId;
+  final String? agoraRttAgentId;
+  @override
+  final String? rttLanguage;
   @override
   final String? gcsPrefix;
   @override
@@ -401,10 +432,13 @@ class _$_RecordingSession implements _RecordingSession {
   @override
   @JsonKey()
   final List<String> participantIds;
+  @override
+  @JsonKey()
+  final Map<String, String> uidToDisplayName;
 
   @override
   String toString() {
-    return 'RecordingSession(sessionId: $sessionId, communityId: $communityId, eventId: $eventId, roomId: $roomId, roomType: $roomType, status: $status, startedBy: $startedBy, startedAt: $startedAt, stoppedAt: $stoppedAt, breakoutSessionId: $breakoutSessionId, agoraResourceId: $agoraResourceId, agoraSid: $agoraSid, agoraRttTaskId: $agoraRttTaskId, gcsPrefix: $gcsPrefix, chatPath: $chatPath, errorMessage: $errorMessage, artifactPaths: $artifactPaths, participantIds: $participantIds)';
+    return 'RecordingSession(sessionId: $sessionId, communityId: $communityId, eventId: $eventId, roomId: $roomId, roomType: $roomType, status: $status, startedBy: $startedBy, startedAt: $startedAt, stoppedAt: $stoppedAt, breakoutSessionId: $breakoutSessionId, agoraResourceId: $agoraResourceId, agoraSid: $agoraSid, agoraRttAgentId: $agoraRttAgentId, rttLanguage: $rttLanguage, gcsPrefix: $gcsPrefix, chatPath: $chatPath, errorMessage: $errorMessage, artifactPaths: $artifactPaths, participantIds: $participantIds, uidToDisplayName: $uidToDisplayName)';
   }
 
   @override
@@ -433,8 +467,10 @@ class _$_RecordingSession implements _RecordingSession {
                 other.agoraResourceId == agoraResourceId) &&
             (identical(other.agoraSid, agoraSid) ||
                 other.agoraSid == agoraSid) &&
-            (identical(other.agoraRttTaskId, agoraRttTaskId) ||
-                other.agoraRttTaskId == agoraRttTaskId) &&
+            (identical(other.agoraRttAgentId, agoraRttAgentId) ||
+                other.agoraRttAgentId == agoraRttAgentId) &&
+            (identical(other.rttLanguage, rttLanguage) ||
+                other.rttLanguage == rttLanguage) &&
             (identical(other.gcsPrefix, gcsPrefix) ||
                 other.gcsPrefix == gcsPrefix) &&
             (identical(other.chatPath, chatPath) ||
@@ -444,31 +480,36 @@ class _$_RecordingSession implements _RecordingSession {
             const DeepCollectionEquality()
                 .equals(other.artifactPaths, artifactPaths) &&
             const DeepCollectionEquality()
-                .equals(other.participantIds, participantIds));
+                .equals(other.participantIds, participantIds) &&
+            const DeepCollectionEquality()
+                .equals(other.uidToDisplayName, uidToDisplayName));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      sessionId,
-      communityId,
-      eventId,
-      roomId,
-      roomType,
-      status,
-      startedBy,
-      startedAt,
-      stoppedAt,
-      breakoutSessionId,
-      agoraResourceId,
-      agoraSid,
-      agoraRttTaskId,
-      gcsPrefix,
-      chatPath,
-      errorMessage,
-      const DeepCollectionEquality().hash(artifactPaths),
-      const DeepCollectionEquality().hash(participantIds));
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        sessionId,
+        communityId,
+        eventId,
+        roomId,
+        roomType,
+        status,
+        startedBy,
+        startedAt,
+        stoppedAt,
+        breakoutSessionId,
+        agoraResourceId,
+        agoraSid,
+        agoraRttAgentId,
+        rttLanguage,
+        gcsPrefix,
+        chatPath,
+        errorMessage,
+        const DeepCollectionEquality().hash(artifactPaths),
+        const DeepCollectionEquality().hash(participantIds),
+        const DeepCollectionEquality().hash(uidToDisplayName)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -502,12 +543,14 @@ abstract class _RecordingSession implements RecordingSession {
       final String? breakoutSessionId,
       final String? agoraResourceId,
       final String? agoraSid,
-      final String? agoraRttTaskId,
+      final String? agoraRttAgentId,
+      final String? rttLanguage,
       final String? gcsPrefix,
       final String? chatPath,
       final String? errorMessage,
       final Map<String, String> artifactPaths,
-      final List<String> participantIds}) = _$_RecordingSession;
+      final List<String> participantIds,
+      final Map<String, String> uidToDisplayName}) = _$_RecordingSession;
 
   factory _RecordingSession.fromJson(Map<String, dynamic> json) =
       _$_RecordingSession.fromJson;
@@ -541,7 +584,9 @@ abstract class _RecordingSession implements RecordingSession {
   @override
   String? get agoraSid;
   @override
-  String? get agoraRttTaskId;
+  String? get agoraRttAgentId;
+  @override
+  String? get rttLanguage;
   @override
   String? get gcsPrefix;
   @override
@@ -552,6 +597,8 @@ abstract class _RecordingSession implements RecordingSession {
   Map<String, String> get artifactPaths;
   @override
   List<String> get participantIds;
+  @override
+  Map<String, String> get uidToDisplayName;
   @override
   @JsonKey(ignore: true)
   _$$_RecordingSessionCopyWith<_$_RecordingSession> get copyWith =>

@@ -2,6 +2,7 @@ import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:client/config/environment.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_tabs.dart';
 import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
@@ -15,6 +16,7 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
@@ -55,6 +57,14 @@ class AgendaProviderParams {
 }
 
 class AgendaProvider with ChangeNotifier {
+  // Minimum time a participant must have spent on an agenda item before they
+  // can advance without a confirmation prompt. A shorter threshold is used for
+  // the start card since it has no real content.
+  static const Duration _startItemAdvanceConfirmationThreshold =
+      Duration(seconds: 15);
+  static const Duration _agendaItemAdvanceConfirmationThreshold =
+      Duration(seconds: 30);
+
   final LiveMeetingProvider? liveMeetingProvider;
   AgendaProviderParams _params;
 
@@ -71,6 +81,22 @@ class AgendaProvider with ChangeNotifier {
   Event? get event => _params.event;
 
   List<AgendaItem> get agendaItems => _agendaItems;
+
+  /// [agendaItems] resolved for the current live-meeting context: a
+  /// `{diffusionStatement}` token in a text item's content is substituted
+  /// with this breakout room's diffusion statement when present, or the item
+  /// is skipped (or kept with an error, outside production) when absent.
+  ///
+  /// Used for live navigation/rendering only -- editing operations
+  /// (upsert/delete/reorder) always operate on the raw [agendaItems].
+  List<AgendaItem> get resolvedAgendaItems =>
+      resolveAgendaItemsForDiffusionStatement(
+        _agendaItems,
+        isInBreakouts
+            ? liveMeetingProvider?.assignedBreakoutRoom?.diffusionStatement
+            : null,
+        showUnresolvedAsError: Environment.enableDevEventSettings,
+      );
 
   List<AgendaItem> get unsavedItems => _unsavedItems;
 
@@ -108,6 +134,14 @@ class AgendaProvider with ChangeNotifier {
 
   AgendaItem? get currentAgendaItem =>
       _currentAgendaItemForLiveMeeting(currentLiveMeeting);
+
+  /// The agenda item that a majority of participants have voted to advance past, while the
+  /// synchronized countdown before actually advancing is running. Null if no countdown is active.
+  String? get pendingAdvanceAgendaItemId =>
+      currentLiveMeeting?.pendingAdvanceAgendaItemId;
+
+  /// The server-computed time at which [pendingAdvanceAgendaItemId] will actually be advanced.
+  DateTime? get pendingAdvanceTime => currentLiveMeeting?.pendingAdvanceTime;
 
   void initialize() {
     liveMeetingProvider?.addListener(onLiveMeetingUpdate);
@@ -327,7 +361,7 @@ class AgendaProvider with ChangeNotifier {
   }
 
   Future<void> startMeeting() async {
-    var firstAgendaItem = (agendaItems).firstOrNull;
+    var firstAgendaItem = resolvedAgendaItems.firstOrNull;
 
     final outerMeetingCurrentAgendaItem =
         _currentAgendaItemForLiveMeeting(liveMeetingProvider?.liveMeeting);
@@ -337,7 +371,9 @@ class AgendaProvider with ChangeNotifier {
     }
 
     if (firstAgendaItem == null) {
-      throw VisibleException('There is no meeting guide for this meeting');
+      throw VisibleException(
+        appLocalizationService.getLocalization().noMeetingGuideForThisMeeting,
+      );
     }
 
     final serverTime = clockService.now();
@@ -353,13 +389,15 @@ class AgendaProvider with ChangeNotifier {
 
   Future<void> finishAgendaItem(String agendaItemId) async {
     final currentAgendaItemIndex =
-        agendaItems.indexWhere((a) => a.id == agendaItemId);
+        resolvedAgendaItems.indexWhere((a) => a.id == agendaItemId);
     if (currentAgendaItemIndex < 0) {
-      throw VisibleException('Meeting Guide entry not found.');
+      throw VisibleException(
+        appLocalizationService.getLocalization().meetingGuideEntryNotFound,
+      );
     }
 
     final nextAgendaItem =
-        agendaItems.skip(currentAgendaItemIndex + 1).firstOrNull;
+        resolvedAgendaItems.skip(currentAgendaItemIndex + 1).firstOrNull;
 
     final serverTime = clockService.now();
     await firestoreLiveMeetingService.addMeetingEvent(
@@ -439,7 +477,8 @@ class AgendaProvider with ChangeNotifier {
         )
         ?.agendaItem;
 
-    return agendaItems.firstWhereOrNull((a) => a.id == currentAgendaItem);
+    return resolvedAgendaItems
+        .firstWhereOrNull((a) => a.id == currentAgendaItem);
   }
 
   bool isCurrentAgendaItem(String agendaItemId) {
@@ -517,29 +556,27 @@ class AgendaProvider with ChangeNotifier {
     }
   }
 
-  Future<void> checkReadyToAdvance({String? agendaItemId}) async {
-    final eventPath = event?.fullPath;
-    if (eventPath == null) {
+  Future<void> checkReadyToAdvance({
+    String? agendaItemId,
+    bool ready = true,
+  }) async {
+    final userId = userService.currentUserId;
+    if (agendaItemId == null || userId == null || liveMeetingPath.isEmpty) {
       loggingService.log(
-        'AgendaProvider.checkReadyToAdvance: eventPath is null',
+        'AgendaProvider.checkReadyToAdvance: missing agendaItemId, userId, or '
+        'liveMeetingPath',
         logType: LogType.error,
       );
       return;
     }
 
-    await cloudFunctionsLiveMeetingService.checkAdvanceMeetingGuide(
-      CheckAdvanceMeetingGuideRequest(
-        eventPath: eventPath,
-        breakoutSessionId: (liveMeetingProvider?.isInBreakout ?? false)
-            ? liveMeetingProvider
-                ?.liveMeeting?.currentBreakoutSession?.breakoutRoomSessionId
-            : null,
-        breakoutRoomId: (liveMeetingProvider?.isInBreakout ?? false)
-            ? liveMeetingProvider?.currentBreakoutRoomId
-            : null,
-        userReadyAgendaId: agendaItemId,
-        presentIds: liveMeetingProvider?.presentParticipantIds ?? [],
-      ),
+    // Write vote to the participant-details doc. ParticipantAgendaItemDetailsOnWrite
+    // trigger fires on this write to eval advance or not.
+    await firestoreMeetingGuideService.setReadyToAdvance(
+      agendaItemId: agendaItemId,
+      userId: userId,
+      liveMeetingPath: liveMeetingPath,
+      ready: ready,
     );
   }
 
@@ -555,8 +592,16 @@ class AgendaProvider with ChangeNotifier {
 
     final liveMeetingUpdate = firestoreLiveMeetingService.update(
       liveMeetingPath: liveMeetingPath,
-      liveMeeting: localCurrentLiveMeeting.copyWith(events: []),
-      keys: [LiveMeeting.kFieldEvents],
+      liveMeeting: localCurrentLiveMeeting.copyWith(
+        events: [],
+        pendingAdvanceAgendaItemId: null,
+        pendingAdvanceTime: null,
+      ),
+      keys: [
+        LiveMeeting.kFieldEvents,
+        LiveMeeting.kFieldPendingAdvanceAgendaItemId,
+        LiveMeeting.kFieldPendingAdvanceTime,
+      ],
     );
     final agendaItemsDelete =
         cloudFunctionsLiveMeetingService.resetParticipantAgendaItems(
@@ -584,25 +629,49 @@ class AgendaProvider with ChangeNotifier {
     );
   }
 
-  Future<void> moveForward({required String currentAgendaItemId}) async {
+  /// Gate ready/advance actions for [currentAgendaItemId]. Show "just started"
+  /// confirmation when marking ready early on, and return false if canceled.
+  /// Return true if un-readying, host-manual advanced, or for polls/videos.
+  Future<bool> confirmReadyToMoveOn({
+    required String currentAgendaItemId,
+    bool userIsReady = true,
+  }) async {
+    // Undoing a ready-to-move-on vote never advances the meeting, so it
+    // never needs the "just started" double-check.
+    if (!userIsReady) return true;
+
     final timeInState = timeInSection(currentAgendaItemId);
     final doubleCheckDuration =
         currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId
-            ? Duration(seconds: 15)
-            : Duration(seconds: 30);
+            ? _startItemAdvanceConfirmationThreshold
+            : _agendaItemAdvanceConfirmationThreshold;
     final suppressWarning = currentAgendaItem?.type == AgendaItemType.poll ||
         currentAgendaItem?.type == AgendaItemType.video;
 
     if (timeInState < doubleCheckDuration &&
         !suppressWarning &&
         !canUserControlMeeting) {
-      final confirmed = await ConfirmDialog(
-        mainText:
-            'This agenda item just started! Are you sure you want to move on?',
+      return ConfirmDialog(
+        mainText: appLocalizationService
+            .getLocalization()
+            .agendaItemJustStartedConfirm,
         cancelText: appLocalizationService.getLocalization().cancel,
       ).show();
-      if (!confirmed) return;
     }
+    return true;
+  }
+
+  Future<void> toggleMoveForward({
+    required String currentAgendaItemId,
+    bool userIsReady = true,
+  }) async {
+    if (!await confirmReadyToMoveOn(
+      currentAgendaItemId: currentAgendaItemId,
+      userIsReady: userIsReady,
+    )) {
+      return;
+    }
+
     if (canUserControlMeeting) {
       if (currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId) {
         await startMeeting();
@@ -612,6 +681,7 @@ class AgendaProvider with ChangeNotifier {
     } else {
       await checkReadyToAdvance(
         agendaItemId: currentAgendaItemId,
+        ready: userIsReady,
       );
     }
   }
@@ -631,6 +701,6 @@ class AgendaProvider with ChangeNotifier {
         outerMeetingCurrentAgendaItem != null) {
       return outerMeetingCurrentAgendaItem;
     }
-    return agendaItems.firstOrNull;
+    return resolvedAgendaItems.firstOrNull;
   }
 }

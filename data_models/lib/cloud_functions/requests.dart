@@ -538,6 +538,7 @@ class ResolveJoinRequestRequest
     required String communityId,
     required String userId,
     required bool approve,
+    MembershipStatus? role,
   }) = _ResolveJoinRequestRequest;
 
   factory ResolveJoinRequestRequest.fromJson(Map<String, dynamic> json) =>
@@ -556,6 +557,7 @@ class InitiateBreakoutsRequest
     required String breakoutSessionId,
     @JsonKey(unknownEnumValue: null) BreakoutAssignmentMethod? assignmentMethod,
     @Default(false) bool includeWaitingRoom,
+    @Default(false) bool useHostedApi,
   }) = _InitiateBreakoutsRequest;
 
   factory InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =>
@@ -737,6 +739,7 @@ class CheckAdvanceMeetingGuideRequest
     String? breakoutRoomId,
     required List<String> presentIds,
     String? userReadyAgendaId,
+    @Default(true) bool ready,
   }) = _CheckAdvanceMeetingGuideRequest;
 
   factory CheckAdvanceMeetingGuideRequest.fromJson(Map<String, dynamic> json) =>
@@ -756,6 +759,26 @@ class CheckHostlessGoToBreakoutsRequest
   factory CheckHostlessGoToBreakoutsRequest.fromJson(
           Map<String, dynamic> json) =>
       _$CheckHostlessGoToBreakoutsRequestFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class AdvanceMeetingGuideAfterDelayRequest
+    with _$AdvanceMeetingGuideAfterDelayRequest
+    implements SerializeableRequest {
+  static const functionName = 'AdvanceMeetingGuideAfterDelay';
+
+  factory AdvanceMeetingGuideAfterDelayRequest({
+    required String eventPath,
+    String? breakoutSessionId,
+    String? breakoutRoomId,
+    // The agenda item that was current when the countdown was scheduled, used to verify the
+    // pending advance is still valid by the time this call fires.
+    required String agendaItemId,
+  }) = _AdvanceMeetingGuideAfterDelayRequest;
+
+  factory AdvanceMeetingGuideAfterDelayRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$AdvanceMeetingGuideAfterDelayRequestFromJson(json);
 }
 
 @Freezed(makeCollectionsUnmodifiable: false)

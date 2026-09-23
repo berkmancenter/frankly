@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/media_settings_widget.dart';
+import 'package:client/features/user/data/services/user_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
   final chatTextEditingController = TextEditingController();
   late final LiveMeetingMobileModel _model;
   late final LiveMeetingMobilePresenter _presenter;
+
+  final GlobalKey<TooltipState> tooltipKey = GlobalKey<TooltipState>();
 
   StreamSubscription? _onConferenceRoomException;
   StreamSubscription? _onUnloadSubscription;
@@ -153,8 +156,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
       _connectToRoom();
 
       _onUnloadSubscription = html.window.onBeforeUnload.listen((event) {
-        final conferenceRoom = ConferenceRoom.read(context);
-        conferenceRoom?.room?.dispose();
+        conferenceRoom.room?.dispose();
       });
     }
   }
@@ -164,6 +166,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     _onConferenceRoomException =
         conferenceRoom?.onException.listen((err) async {
       loggingService.log('showing alert in listener');
+      if (!mounted) return;
       await showAlert(
         context,
         err is PlatformException ? err.details : err.toString(),
@@ -392,7 +395,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
   Widget _buildWaitingRoomTextWidget() {
     return HeightConstrainedText(
-      'You are in the waiting room.',
+      context.l10n.youAreInTheWaitingRoom,
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Theme.of(context).primaryColor,
@@ -461,7 +464,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return CustomStreamBuilder<GetMeetingJoinInfoResponse>(
       entryFrom: '_buildConferenceRoomWrapper.build',
       stream: liveMeetingProvider.getCurrentMeetingJoinInfo()!.asStream(),
-      loadingMessage: 'Loading room. Please wait...',
+      loadingMessage: context.l10n.loadingRoomPleaseWait,
       builder: (_, response) {
         final conferenceRoom = ConferenceRoom.watch(context);
         final error = conferenceRoom.connectError;
@@ -476,8 +479,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         return CustomStreamBuilder(
           entryFrom: 'LiveMeetingMobilePage._buildMeetingLoading',
           stream: Stream.fromFuture(conferenceRoom.connectionFuture),
-          errorMessage: 'Something went wrong loading room. Please refresh!',
-          loadingMessage: 'Connecting to room...',
+          errorMessage: context.l10n.somethingWentWrongLoadingRoom,
+          loadingMessage: context.l10n.connectingToRoom,
           textStyle: TextStyle(color: context.theme.colorScheme.onSurface),
           builder: (_, __) => Stack(
             children: [
@@ -506,7 +509,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Recording',
+                          context.l10n.record,
                           style: TextStyle(
                             color: context.theme.colorScheme.onPrimary,
                           ),
@@ -637,24 +640,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     }
   }
 
-  Widget _buildReadyText(
-    List<ParticipantAgendaItemDetails> participantAgendaItemDetailsList,
-  ) {
-    final presentParticipantIds = _presenter.getPresentParticipantIds().toSet();
-    final readyToMoveOnCount = _presenter.readyToMoveOnCount(
-      participantAgendaItemDetailsList,
-      presentParticipantIds,
-    );
-    // Still using the format directly as it's just displaying numbers with a divider
-    // No specific localization string needed as this is a counter format
-    return Text(
-      '$readyToMoveOnCount/${presentParticipantIds.length}',
-      style: context.theme.textTheme.bodyMedium?.copyWith(
-        color: context.theme.colorScheme.onPrimary,
-      ),
-    );
-  }
-
   Widget _buildBottomNavBar(bool isBottomSheetPresent) {
     context.watch<LiveMeetingProvider>();
 
@@ -675,26 +660,81 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
       stream: participantAgendaItemDetailsStream,
       height: 100,
       builder: (context, participantAgendaItemDetailsList) {
-        final readyToAdvance =
-            _presenter.isReadyToAdvance(participantAgendaItemDetailsList);
         final canUserControlMeeting = _presenter.canUserControlMeeting;
 
         final currentItem = _presenter.getCurrentAgendaItem();
         final isMeetingStarted = _presenter.isMeetingStarted();
-        final meetingFinished = currentItem == null && isMeetingStarted;
+        final isMeetingFinished = currentItem == null && isMeetingStarted;
         final isHosted = _presenter.isHosted();
         final isBackButtonShown = _presenter.isBackButtonShown();
 
         final isRaisedHandVisible = _presenter.isRaisedHandVisible;
-
-        final showReadyToMoveOn = !isHosted;
-        final isCardPending = _presenter.isCardPending();
+        final presentParticipantIds =
+            _presenter.getPresentParticipantIds().toSet();
+        // A null id here would break the timer widget for the whole delay, so
+        // fall back to a safe id value.
+        final currentAgendaItemId = _presenter.getCurrentAgendaItemId();
+        final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
+          participantAgendaItemDetailsList,
+          currentAgendaItemId,
+        );
+        final isCardPending = _presenter.isPendingAdvanceOptimistic(
+          currentAgendaItemId: currentAgendaItemId,
+          itemDetails: itemDetails,
+          presentParticipantIds: presentParticipantIds,
+        );
 
         return Container(
           color: context.theme.colorScheme.onPrimaryFixed,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              if (isCardPending)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        context.l10n.movingOntoNextAgendaItem,
+                        style: AppTextStyle.body.copyWith(
+                          color: context.theme.colorScheme.onPrimary,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      ConstrainedBox(
+                        constraints:
+                            BoxConstraints(maxWidth: 36, maxHeight: 36),
+                        child: Countdown(
+                          startingPendingAdvanceTime: () {
+                            final pendingAdvanceTime =
+                                agendaProvider.pendingAdvanceTime?.toUtc();
+                            if (pendingAdvanceTime == null) {
+                              return Duration(
+                                seconds: meetingGuideAdvanceDelay.inSeconds +
+                                    meetingGuideAdvanceCountdownBuffer
+                                        .inSeconds,
+                              );
+                            }
+                            final remaining = pendingAdvanceTime
+                                    .difference(DateTime.now().toUtc()) +
+                                meetingGuideAdvanceCountdownBuffer;
+                            return remaining.isNegative
+                                ? Duration.zero
+                                : remaining;
+                          }(),
+                          isMobile: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              // Bottom section shown below the agenda item card body.
+              if (!isCardPending &&
+                  !isMeetingFinished &&
+                  isBottomSheetPresent &&
+                  agendaProvider.agendaItems.isNotEmpty)
+                _buildReadyInfo(),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 10,
@@ -722,7 +762,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       onTap: isAudioTemporarilyDisabled
                           ? () => showRegularToast(
                                 context,
-                                'All participants are muted during video!',
+                                context.l10n.allParticipantsMutedDuringVideo,
                                 toastType: ToastType.success,
                               )
                           : () => AudioVideoErrorDialog.showOnError(
@@ -740,14 +780,12 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                     SizedBox(width: 10),
                     PopupMenuButton<FutureOr<void> Function()>(
                       itemBuilder: (context) {
-                        final conferenceRoom = context.read<ConferenceRoom>();
                         return [
                           PopupMenuItem(
                             value: () => showDialog(
                               context: context,
                               builder: (context) {
                                 return MediaSettingsWidget(
-                                  conferenceRoom: conferenceRoom,
                                   // Do not show video preview on mobile due to
                                   // limitations with number of sources
                                   // that can access the camera at once on mobile.
@@ -760,7 +798,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                               },
                             ),
                             child: HeightConstrainedText(
-                              'Audio/Video Settings',
+                              context.l10n.audioVideoSettings,
                             ),
                           ),
                         ];
@@ -794,9 +832,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       )
                     else
                       Spacer(),
-                    if (isCardPending)
-                      CountdownWidget()
-                    else ...[
+                    ...[
                       if (!isHosted || canUserControlMeeting) ...[
                         if (isBackButtonShown)
                           AppClickableWidget(
@@ -809,36 +845,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                               context,
                               () => meetingGuideCardStore
                                   .goToPreviousAgendaItem(),
-                            ),
-                          ),
-                        SizedBox(width: 10),
-                        if (showReadyToMoveOn)
-                          _buildReadyText(
-                            participantAgendaItemDetailsList ?? [],
-                          ),
-                        SizedBox(width: 10),
-                        if (!meetingFinished &&
-                            agendaProvider.agendaItems.isNotEmpty)
-                          SizedBox(
-                            width: 40,
-                            height: 40,
-                            child: FloatingActionButton(
-                              backgroundColor:
-                                  context.theme.colorScheme.primary,
-                              child: Icon(
-                                readyToAdvance
-                                    ? Icons.check
-                                    : Icons.arrow_forward,
-                                size: kIconSize,
-                                color: context.theme.colorScheme.onPrimary,
-                              ),
-                              onPressed: () => alertOnError(
-                                context,
-                                () => agendaProvider.moveForward(
-                                  currentAgendaItemId:
-                                      _presenter.getCurrentAgendaItemId()!,
-                                ),
-                              ),
                             ),
                           ),
                       ],
@@ -862,6 +868,62 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  /// Bottom section shown below the agenda item card body.
+  Widget _buildReadyInfo() {
+    context.watch<AgendaProvider>();
+    final meetingGuideCardStore = context.watch<MeetingGuideCardStore>();
+    context.watch<LiveMeetingProvider>();
+    context.watch<UserService>();
+
+    final participantAgendaItemDetailsStream =
+        _presenter.getParticipantAgendaItemDetailsStream();
+
+    return CustomStreamBuilder<List<ParticipantAgendaItemDetails>>(
+      entryFrom: '_MeetingGuideCard._buildBottomSectionMobile',
+      stream: participantAgendaItemDetailsStream,
+      height: 100,
+      builder: (context, participantAgendaItemDetailsList) {
+        final isHosted = _presenter.isHosted();
+        final currentAgendaItemId = _presenter.getCurrentAgendaItemId();
+
+        final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
+          participantAgendaItemDetailsList,
+          currentAgendaItemId,
+        );
+        final presentParticipantIds =
+            _presenter.getPresentParticipantIds().toSet();
+
+        if (isHosted ||
+            _presenter.isPendingAdvanceOptimistic(
+              currentAgendaItemId: currentAgendaItemId,
+              itemDetails: itemDetails,
+              presentParticipantIds: presentParticipantIds,
+            )) {
+          return SizedBox.shrink();
+        }
+
+        final readyThreshold =
+            _presenter.getReadyThreshold(presentParticipantIds);
+        final readyToMoveOnCount = _presenter.readyToMoveOnCount(
+          itemDetails,
+          presentParticipantIds,
+        );
+
+        return ReadyToMoveOnBuilder(
+          isMobile: true,
+          readyToMoveOnCount: readyToMoveOnCount,
+          tooltipKey: tooltipKey,
+          readyThreshold: readyThreshold,
+          presentParticipantIds: presentParticipantIds,
+          userIsReady:
+              meetingGuideCardStore.desiredReadyFor(currentAgendaItemId) ??
+                  _presenter.isReadyToAdvance(itemDetails),
+          currentAgendaItemId: currentAgendaItemId,
         );
       },
     );
@@ -1021,7 +1083,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     if (selectedTab == TabType.chat) {
       return ChatWidget(
         parentPath: context.watch<ChatModel>().parentPath,
-        messageInputHint: 'Say something',
+        messageInputHint: context.l10n.saySomething,
         allowBroadcast: context.watch<LiveMeetingProvider>().isInBreakout &&
             context.watch<EventPermissionsProvider>().canBroadcastChat,
       );
@@ -1084,7 +1146,7 @@ class BreakoutRoomLoader extends StatelessWidget {
       entryFrom: '_RefreshableBreakoutRoomState.build',
       stream: Provider.of<LiveMeetingProvider>(context)
           .breakoutRoomLiveMeetingStream,
-      loadingMessage: 'Loading breakout room. Please wait...',
+      loadingMessage: context.l10n.loadingBreakoutRoomPleaseWait,
       builder: (context, __) {
         return liveMeetingBuilder(context);
       },

@@ -3,6 +3,27 @@
     "public": "client/build/web",
     "headers": [
       {
+        "source": "**",
+        "headers": [
+          {
+            "key": "X-Frame-Options",
+            "value": "SAMEORIGIN"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          },
+          {
+            "key": "Permissions-Policy",
+            "value": "camera=(self), microphone=(self), geolocation=()"
+          }
+        ]
+      },
+      {
         "source": "**/*.html",
         "headers": [
           {
@@ -44,8 +65,125 @@
         "function": "CalendarFeedRss"
       },
       {
+        "source": "/api/CancelStripeSubscriptionPlan",
+        "function": "CancelStripeSubscriptionPlan"
+      },
+      {
+        "source": "/api/CheckAdvanceMeetingGuide",
+        "function": "CheckAdvanceMeetingGuide"
+      },
+      {
+        "source": "/api/CheckAssignToBreakouts",
+        "function": "CheckAssignToBreakouts"
+      },
+      {
+        "source": "/api/CheckHostlessGoToBreakouts",
+        "function": "CheckHostlessGoToBreakouts"
+      },
+      { "source": "/api/CreateLiveStream", "function": "CreateLiveStream" },
+      {
+        "source": "/api/CreateSubscriptionCheckoutSession",
+        "function": "CreateSubscriptionCheckoutSession"
+      },
+      {
+        "source": "/api/GetBreakoutRoomAssignment",
+        "function": "GetBreakoutRoomAssignment"
+      },
+      {
+        "source": "/api/GetBreakoutRoomJoinInfo",
+        "function": "GetBreakoutRoomJoinInfo"
+      },
+      {
+        "source": "/api/GetCommunityDonationsEnabled",
+        "function": "GetCommunityDonationsEnabled"
+      },
+      {
+        "source": "/api/GetCommunityPrePostEnabled",
+        "function": "GetCommunityPrePostEnabled"
+      },
+      {
+        "source": "/api/GetMeetingChatSuggestionData",
+        "function": "GetMeetingChatSuggestionData"
+      },
+      { "source": "/api/GetMeetingJoinInfo", "function": "GetMeetingJoinInfo" },
+      { "source": "/api/GetMeetingPollData", "function": "GetMeetingPollData" },
+      { "source": "/api/GetMembersData", "function": "GetMembersData" },
+      { "source": "/api/GetServerTimestamp", "function": "GetServerTimestamp" },
+      {
+        "source": "/api/GetStripeSubscriptionPlanInfo",
+        "function": "GetStripeSubscriptionPlanInfo"
+      },
+      {
+        "source": "/api/GetUserAdminDetails",
+        "function": "GetUserAdminDetails"
+      },
+      {
+        "source": "/api/GetUserIdFromAgoraId",
+        "function": "GetUserIdFromAgoraId"
+      },
+      { "source": "/api/InitiateBreakouts", "function": "InitiateBreakouts" },
+      { "source": "/api/KickParticipant", "function": "KickParticipant" },
+      {
+        "source": "/api/ReassignBreakoutRoom",
+        "function": "ReassignBreakoutRoom"
+      },
+      {
+        "source": "/api/ResetParticipantAgendaItems",
+        "function": "ResetParticipantAgendaItems"
+      },
+      {
+        "source": "/api/UpdateBreakoutRoomFlagStatus",
+        "function": "UpdateBreakoutRoomFlagStatus"
+      },
+      { "source": "/api/UpdateCommunity", "function": "UpdateCommunity" },
+      {
+        "source": "/api/UpdateStripeSubscriptionPlan",
+        "function": "UpdateStripeSubscriptionPlan"
+      },
+      { "source": "/api/VoteToKick", "function": "VoteToKick" },
+      { "source": "/api/createCommunity", "function": "createCommunity" },
+      {
+        "source": "/api/createDonationCheckoutSession",
+        "function": "createDonationCheckoutSession"
+      },
+      { "source": "/api/createEvent", "function": "createEvent" },
+      {
+        "source": "/api/createStripeConnectedAccount",
+        "function": "createStripeConnectedAccount"
+      },
+      { "source": "/api/eventEnded", "function": "eventEnded" },
+      {
+        "source": "/api/getCommunityCalendarLink",
+        "function": "getCommunityCalendarLink"
+      },
+      {
+        "source": "/api/getCommunityCapabilities",
+        "function": "getCommunityCapabilities"
+      },
+      {
+        "source": "/api/getStripeBillingPortalLink",
+        "function": "getStripeBillingPortalLink"
+      },
+      {
+        "source": "/api/getStripeConnectedAccountLink",
+        "function": "getStripeConnectedAccountLink"
+      },
+      { "source": "/api/joinEvent", "function": "joinEvent" },
+      { "source": "/api/resolveJoinRequest", "function": "resolveJoinRequest" },
+      { "source": "/api/sendAnnouncement", "function": "sendAnnouncement" },
+      { "source": "/api/sendEventMessage", "function": "sendEventMessage" },
+      {
+        "source": "/api/toggleLikeDislikeOnMeetingUserSuggestion",
+        "function": "toggleLikeDislikeOnMeetingUserSuggestion"
+      },
+      {
+        "source": "/api/unsubscribeFromCommunityNotifications",
+        "function": "unsubscribeFromCommunityNotifications"
+      },
+      { "source": "/api/updateMembership", "function": "updateMembership" },
+      {
         "source": "**",
-        "destination": "/index.html"
+        "function": "ServeIndex"
       }
     ]
   },

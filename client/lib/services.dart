@@ -1,4 +1,5 @@
 import 'package:client/core/data/services/cloud_functions.dart';
+import 'package:client/core/data/services/event_bus.dart';
 import 'package:client/features/admin/data/services/cloud_functions_payments_service.dart';
 import 'package:client/features/announcements/data/services/cloud_functions_announcements_service.dart';
 import 'package:client/features/community/data/services/cloud_functions_community_service.dart';
@@ -118,6 +119,8 @@ PaymentUtils get paymentUtils => services.get<PaymentUtils>();
 AppLocalizationService get appLocalizationService =>
     services.get<AppLocalizationService>();
 
+EventBus get appEventBus => services.get<EventBus>();
+
 /// This file initializes all of our "services" inside of GetIt. This is basically
 /// just a rudimentary way of doing dependency injection. If we write tests for
 /// individual widgets we can mock our services by injecting them into the [services]
@@ -164,6 +167,7 @@ void createServices() {
   services.registerSingleton(StripeClientService());
   services.registerSingleton(PaymentUtils());
   services.registerSingleton(AppLocalizationService());
+  services.registerSingleton(EventBus());
 }
 
 Future<void> initializeServices() async {

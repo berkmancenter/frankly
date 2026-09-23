@@ -6622,6 +6622,7 @@ mixin _$ResolveJoinRequestRequest {
   String get communityId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   bool get approve => throw _privateConstructorUsedError;
+  MembershipStatus? get role => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -6635,7 +6636,11 @@ abstract class $ResolveJoinRequestRequestCopyWith<$Res> {
           $Res Function(ResolveJoinRequestRequest) then) =
       _$ResolveJoinRequestRequestCopyWithImpl<$Res, ResolveJoinRequestRequest>;
   @useResult
-  $Res call({String communityId, String userId, bool approve});
+  $Res call(
+      {String communityId,
+      String userId,
+      bool approve,
+      MembershipStatus? role});
 }
 
 /// @nodoc
@@ -6655,6 +6660,7 @@ class _$ResolveJoinRequestRequestCopyWithImpl<$Res,
     Object? communityId = null,
     Object? userId = null,
     Object? approve = null,
+    Object? role = freezed,
   }) {
     return _then(_value.copyWith(
       communityId: null == communityId
@@ -6669,6 +6675,10 @@ class _$ResolveJoinRequestRequestCopyWithImpl<$Res,
           ? _value.approve
           : approve // ignore: cast_nullable_to_non_nullable
               as bool,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as MembershipStatus?,
     ) as $Val);
   }
 }
@@ -6682,7 +6692,11 @@ abstract class _$$_ResolveJoinRequestRequestCopyWith<$Res>
       __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String communityId, String userId, bool approve});
+  $Res call(
+      {String communityId,
+      String userId,
+      bool approve,
+      MembershipStatus? role});
 }
 
 /// @nodoc
@@ -6701,6 +6715,7 @@ class __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>
     Object? communityId = null,
     Object? userId = null,
     Object? approve = null,
+    Object? role = freezed,
   }) {
     return _then(_$_ResolveJoinRequestRequest(
       communityId: null == communityId
@@ -6715,6 +6730,10 @@ class __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>
           ? _value.approve
           : approve // ignore: cast_nullable_to_non_nullable
               as bool,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as MembershipStatus?,
     ));
   }
 }
@@ -6723,7 +6742,10 @@ class __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ResolveJoinRequestRequest implements _ResolveJoinRequestRequest {
   _$_ResolveJoinRequestRequest(
-      {required this.communityId, required this.userId, required this.approve});
+      {required this.communityId,
+      required this.userId,
+      required this.approve,
+      this.role});
 
   factory _$_ResolveJoinRequestRequest.fromJson(Map<String, dynamic> json) =>
       _$$_ResolveJoinRequestRequestFromJson(json);
@@ -6734,10 +6756,12 @@ class _$_ResolveJoinRequestRequest implements _ResolveJoinRequestRequest {
   final String userId;
   @override
   final bool approve;
+  @override
+  final MembershipStatus? role;
 
   @override
   String toString() {
-    return 'ResolveJoinRequestRequest(communityId: $communityId, userId: $userId, approve: $approve)';
+    return 'ResolveJoinRequestRequest(communityId: $communityId, userId: $userId, approve: $approve, role: $role)';
   }
 
   @override
@@ -6748,12 +6772,14 @@ class _$_ResolveJoinRequestRequest implements _ResolveJoinRequestRequest {
             (identical(other.communityId, communityId) ||
                 other.communityId == communityId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.approve, approve) || other.approve == approve));
+            (identical(other.approve, approve) || other.approve == approve) &&
+            (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, communityId, userId, approve);
+  int get hashCode =>
+      Object.hash(runtimeType, communityId, userId, approve, role);
 
   @JsonKey(ignore: true)
   @override
@@ -6774,7 +6800,8 @@ abstract class _ResolveJoinRequestRequest implements ResolveJoinRequestRequest {
   factory _ResolveJoinRequestRequest(
       {required final String communityId,
       required final String userId,
-      required final bool approve}) = _$_ResolveJoinRequestRequest;
+      required final bool approve,
+      final MembershipStatus? role}) = _$_ResolveJoinRequestRequest;
 
   factory _ResolveJoinRequestRequest.fromJson(Map<String, dynamic> json) =
       _$_ResolveJoinRequestRequest.fromJson;
@@ -6785,6 +6812,8 @@ abstract class _ResolveJoinRequestRequest implements ResolveJoinRequestRequest {
   String get userId;
   @override
   bool get approve;
+  @override
+  MembershipStatus? get role;
   @override
   @JsonKey(ignore: true)
   _$$_ResolveJoinRequestRequestCopyWith<_$_ResolveJoinRequestRequest>
@@ -6805,6 +6834,7 @@ mixin _$InitiateBreakoutsRequest {
   BreakoutAssignmentMethod? get assignmentMethod =>
       throw _privateConstructorUsedError;
   bool get includeWaitingRoom => throw _privateConstructorUsedError;
+  bool get useHostedApi => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -6824,7 +6854,8 @@ abstract class $InitiateBreakoutsRequestCopyWith<$Res> {
       String breakoutSessionId,
       @JsonKey(unknownEnumValue: null)
       BreakoutAssignmentMethod? assignmentMethod,
-      bool includeWaitingRoom});
+      bool includeWaitingRoom,
+      bool useHostedApi});
 }
 
 /// @nodoc
@@ -6846,6 +6877,7 @@ class _$InitiateBreakoutsRequestCopyWithImpl<$Res,
     Object? breakoutSessionId = null,
     Object? assignmentMethod = freezed,
     Object? includeWaitingRoom = null,
+    Object? useHostedApi = null,
   }) {
     return _then(_value.copyWith(
       eventPath: null == eventPath
@@ -6868,6 +6900,10 @@ class _$InitiateBreakoutsRequestCopyWithImpl<$Res,
           ? _value.includeWaitingRoom
           : includeWaitingRoom // ignore: cast_nullable_to_non_nullable
               as bool,
+      useHostedApi: null == useHostedApi
+          ? _value.useHostedApi
+          : useHostedApi // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -6887,7 +6923,8 @@ abstract class _$$_InitiateBreakoutsRequestCopyWith<$Res>
       String breakoutSessionId,
       @JsonKey(unknownEnumValue: null)
       BreakoutAssignmentMethod? assignmentMethod,
-      bool includeWaitingRoom});
+      bool includeWaitingRoom,
+      bool useHostedApi});
 }
 
 /// @nodoc
@@ -6907,6 +6944,7 @@ class __$$_InitiateBreakoutsRequestCopyWithImpl<$Res>
     Object? breakoutSessionId = null,
     Object? assignmentMethod = freezed,
     Object? includeWaitingRoom = null,
+    Object? useHostedApi = null,
   }) {
     return _then(_$_InitiateBreakoutsRequest(
       eventPath: null == eventPath
@@ -6929,6 +6967,10 @@ class __$$_InitiateBreakoutsRequestCopyWithImpl<$Res>
           ? _value.includeWaitingRoom
           : includeWaitingRoom // ignore: cast_nullable_to_non_nullable
               as bool,
+      useHostedApi: null == useHostedApi
+          ? _value.useHostedApi
+          : useHostedApi // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -6941,7 +6983,8 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
       required this.targetParticipantsPerRoom,
       required this.breakoutSessionId,
       @JsonKey(unknownEnumValue: null) this.assignmentMethod,
-      this.includeWaitingRoom = false});
+      this.includeWaitingRoom = false,
+      this.useHostedApi = false});
 
   factory _$_InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =>
       _$$_InitiateBreakoutsRequestFromJson(json);
@@ -6958,10 +7001,13 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
   @override
   @JsonKey()
   final bool includeWaitingRoom;
+  @override
+  @JsonKey()
+  final bool useHostedApi;
 
   @override
   String toString() {
-    return 'InitiateBreakoutsRequest(eventPath: $eventPath, targetParticipantsPerRoom: $targetParticipantsPerRoom, breakoutSessionId: $breakoutSessionId, assignmentMethod: $assignmentMethod, includeWaitingRoom: $includeWaitingRoom)';
+    return 'InitiateBreakoutsRequest(eventPath: $eventPath, targetParticipantsPerRoom: $targetParticipantsPerRoom, breakoutSessionId: $breakoutSessionId, assignmentMethod: $assignmentMethod, includeWaitingRoom: $includeWaitingRoom, useHostedApi: $useHostedApi)';
   }
 
   @override
@@ -6979,7 +7025,9 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
             (identical(other.assignmentMethod, assignmentMethod) ||
                 other.assignmentMethod == assignmentMethod) &&
             (identical(other.includeWaitingRoom, includeWaitingRoom) ||
-                other.includeWaitingRoom == includeWaitingRoom));
+                other.includeWaitingRoom == includeWaitingRoom) &&
+            (identical(other.useHostedApi, useHostedApi) ||
+                other.useHostedApi == useHostedApi));
   }
 
   @JsonKey(ignore: true)
@@ -6990,7 +7038,8 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
       targetParticipantsPerRoom,
       breakoutSessionId,
       assignmentMethod,
-      includeWaitingRoom);
+      includeWaitingRoom,
+      useHostedApi);
 
   @JsonKey(ignore: true)
   @override
@@ -7014,7 +7063,8 @@ abstract class _InitiateBreakoutsRequest implements InitiateBreakoutsRequest {
       required final String breakoutSessionId,
       @JsonKey(unknownEnumValue: null)
       final BreakoutAssignmentMethod? assignmentMethod,
-      final bool includeWaitingRoom}) = _$_InitiateBreakoutsRequest;
+      final bool includeWaitingRoom,
+      final bool useHostedApi}) = _$_InitiateBreakoutsRequest;
 
   factory _InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =
       _$_InitiateBreakoutsRequest.fromJson;
@@ -7030,6 +7080,8 @@ abstract class _InitiateBreakoutsRequest implements InitiateBreakoutsRequest {
   BreakoutAssignmentMethod? get assignmentMethod;
   @override
   bool get includeWaitingRoom;
+  @override
+  bool get useHostedApi;
   @override
   @JsonKey(ignore: true)
   _$$_InitiateBreakoutsRequestCopyWith<_$_InitiateBreakoutsRequest>
@@ -9113,6 +9165,7 @@ mixin _$CheckAdvanceMeetingGuideRequest {
   String? get breakoutRoomId => throw _privateConstructorUsedError;
   List<String> get presentIds => throw _privateConstructorUsedError;
   String? get userReadyAgendaId => throw _privateConstructorUsedError;
+  bool get ready => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -9133,7 +9186,8 @@ abstract class $CheckAdvanceMeetingGuideRequestCopyWith<$Res> {
       String? breakoutSessionId,
       String? breakoutRoomId,
       List<String> presentIds,
-      String? userReadyAgendaId});
+      String? userReadyAgendaId,
+      bool ready});
 }
 
 /// @nodoc
@@ -9155,6 +9209,7 @@ class _$CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res,
     Object? breakoutRoomId = freezed,
     Object? presentIds = null,
     Object? userReadyAgendaId = freezed,
+    Object? ready = null,
   }) {
     return _then(_value.copyWith(
       eventPath: null == eventPath
@@ -9177,6 +9232,10 @@ class _$CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res,
           ? _value.userReadyAgendaId
           : userReadyAgendaId // ignore: cast_nullable_to_non_nullable
               as String?,
+      ready: null == ready
+          ? _value.ready
+          : ready // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -9195,7 +9254,8 @@ abstract class _$$_CheckAdvanceMeetingGuideRequestCopyWith<$Res>
       String? breakoutSessionId,
       String? breakoutRoomId,
       List<String> presentIds,
-      String? userReadyAgendaId});
+      String? userReadyAgendaId,
+      bool ready});
 }
 
 /// @nodoc
@@ -9216,6 +9276,7 @@ class __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res>
     Object? breakoutRoomId = freezed,
     Object? presentIds = null,
     Object? userReadyAgendaId = freezed,
+    Object? ready = null,
   }) {
     return _then(_$_CheckAdvanceMeetingGuideRequest(
       eventPath: null == eventPath
@@ -9238,6 +9299,10 @@ class __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res>
           ? _value.userReadyAgendaId
           : userReadyAgendaId // ignore: cast_nullable_to_non_nullable
               as String?,
+      ready: null == ready
+          ? _value.ready
+          : ready // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -9251,7 +9316,8 @@ class _$_CheckAdvanceMeetingGuideRequest
       this.breakoutSessionId,
       this.breakoutRoomId,
       required this.presentIds,
-      this.userReadyAgendaId});
+      this.userReadyAgendaId,
+      this.ready = true});
 
   factory _$_CheckAdvanceMeetingGuideRequest.fromJson(
           Map<String, dynamic> json) =>
@@ -9267,10 +9333,13 @@ class _$_CheckAdvanceMeetingGuideRequest
   final List<String> presentIds;
   @override
   final String? userReadyAgendaId;
+  @override
+  @JsonKey()
+  final bool ready;
 
   @override
   String toString() {
-    return 'CheckAdvanceMeetingGuideRequest(eventPath: $eventPath, breakoutSessionId: $breakoutSessionId, breakoutRoomId: $breakoutRoomId, presentIds: $presentIds, userReadyAgendaId: $userReadyAgendaId)';
+    return 'CheckAdvanceMeetingGuideRequest(eventPath: $eventPath, breakoutSessionId: $breakoutSessionId, breakoutRoomId: $breakoutRoomId, presentIds: $presentIds, userReadyAgendaId: $userReadyAgendaId, ready: $ready)';
   }
 
   @override
@@ -9287,7 +9356,8 @@ class _$_CheckAdvanceMeetingGuideRequest
             const DeepCollectionEquality()
                 .equals(other.presentIds, presentIds) &&
             (identical(other.userReadyAgendaId, userReadyAgendaId) ||
-                other.userReadyAgendaId == userReadyAgendaId));
+                other.userReadyAgendaId == userReadyAgendaId) &&
+            (identical(other.ready, ready) || other.ready == ready));
   }
 
   @JsonKey(ignore: true)
@@ -9298,7 +9368,8 @@ class _$_CheckAdvanceMeetingGuideRequest
       breakoutSessionId,
       breakoutRoomId,
       const DeepCollectionEquality().hash(presentIds),
-      userReadyAgendaId);
+      userReadyAgendaId,
+      ready);
 
   @JsonKey(ignore: true)
   @override
@@ -9323,7 +9394,8 @@ abstract class _CheckAdvanceMeetingGuideRequest
       final String? breakoutSessionId,
       final String? breakoutRoomId,
       required final List<String> presentIds,
-      final String? userReadyAgendaId}) = _$_CheckAdvanceMeetingGuideRequest;
+      final String? userReadyAgendaId,
+      final bool ready}) = _$_CheckAdvanceMeetingGuideRequest;
 
   factory _CheckAdvanceMeetingGuideRequest.fromJson(Map<String, dynamic> json) =
       _$_CheckAdvanceMeetingGuideRequest.fromJson;
@@ -9338,6 +9410,8 @@ abstract class _CheckAdvanceMeetingGuideRequest
   List<String> get presentIds;
   @override
   String? get userReadyAgendaId;
+  @override
+  bool get ready;
   @override
   @JsonKey(ignore: true)
   _$$_CheckAdvanceMeetingGuideRequestCopyWith<
@@ -9494,6 +9568,232 @@ abstract class _CheckHostlessGoToBreakoutsRequest
   @JsonKey(ignore: true)
   _$$_CheckHostlessGoToBreakoutsRequestCopyWith<
           _$_CheckHostlessGoToBreakoutsRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+AdvanceMeetingGuideAfterDelayRequest
+    _$AdvanceMeetingGuideAfterDelayRequestFromJson(Map<String, dynamic> json) {
+  return _AdvanceMeetingGuideAfterDelayRequest.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AdvanceMeetingGuideAfterDelayRequest {
+  String get eventPath => throw _privateConstructorUsedError;
+  String? get breakoutSessionId => throw _privateConstructorUsedError;
+  String? get breakoutRoomId =>
+      throw _privateConstructorUsedError; // The agenda item that was current when the countdown was scheduled, used to verify the
+// pending advance is still valid by the time this call fires.
+  String get agendaItemId => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $AdvanceMeetingGuideAfterDelayRequestCopyWith<
+          AdvanceMeetingGuideAfterDelayRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AdvanceMeetingGuideAfterDelayRequestCopyWith<$Res> {
+  factory $AdvanceMeetingGuideAfterDelayRequestCopyWith(
+          AdvanceMeetingGuideAfterDelayRequest value,
+          $Res Function(AdvanceMeetingGuideAfterDelayRequest) then) =
+      _$AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<$Res,
+          AdvanceMeetingGuideAfterDelayRequest>;
+  @useResult
+  $Res call(
+      {String eventPath,
+      String? breakoutSessionId,
+      String? breakoutRoomId,
+      String agendaItemId});
+}
+
+/// @nodoc
+class _$AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<$Res,
+        $Val extends AdvanceMeetingGuideAfterDelayRequest>
+    implements $AdvanceMeetingGuideAfterDelayRequestCopyWith<$Res> {
+  _$AdvanceMeetingGuideAfterDelayRequestCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventPath = null,
+    Object? breakoutSessionId = freezed,
+    Object? breakoutRoomId = freezed,
+    Object? agendaItemId = null,
+  }) {
+    return _then(_value.copyWith(
+      eventPath: null == eventPath
+          ? _value.eventPath
+          : eventPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      breakoutSessionId: freezed == breakoutSessionId
+          ? _value.breakoutSessionId
+          : breakoutSessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      breakoutRoomId: freezed == breakoutRoomId
+          ? _value.breakoutRoomId
+          : breakoutRoomId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      agendaItemId: null == agendaItemId
+          ? _value.agendaItemId
+          : agendaItemId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_AdvanceMeetingGuideAfterDelayRequestCopyWith<$Res>
+    implements $AdvanceMeetingGuideAfterDelayRequestCopyWith<$Res> {
+  factory _$$_AdvanceMeetingGuideAfterDelayRequestCopyWith(
+          _$_AdvanceMeetingGuideAfterDelayRequest value,
+          $Res Function(_$_AdvanceMeetingGuideAfterDelayRequest) then) =
+      __$$_AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String eventPath,
+      String? breakoutSessionId,
+      String? breakoutRoomId,
+      String agendaItemId});
+}
+
+/// @nodoc
+class __$$_AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<$Res>
+    extends _$AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<$Res,
+        _$_AdvanceMeetingGuideAfterDelayRequest>
+    implements _$$_AdvanceMeetingGuideAfterDelayRequestCopyWith<$Res> {
+  __$$_AdvanceMeetingGuideAfterDelayRequestCopyWithImpl(
+      _$_AdvanceMeetingGuideAfterDelayRequest _value,
+      $Res Function(_$_AdvanceMeetingGuideAfterDelayRequest) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventPath = null,
+    Object? breakoutSessionId = freezed,
+    Object? breakoutRoomId = freezed,
+    Object? agendaItemId = null,
+  }) {
+    return _then(_$_AdvanceMeetingGuideAfterDelayRequest(
+      eventPath: null == eventPath
+          ? _value.eventPath
+          : eventPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      breakoutSessionId: freezed == breakoutSessionId
+          ? _value.breakoutSessionId
+          : breakoutSessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      breakoutRoomId: freezed == breakoutRoomId
+          ? _value.breakoutRoomId
+          : breakoutRoomId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      agendaItemId: null == agendaItemId
+          ? _value.agendaItemId
+          : agendaItemId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_AdvanceMeetingGuideAfterDelayRequest
+    implements _AdvanceMeetingGuideAfterDelayRequest {
+  _$_AdvanceMeetingGuideAfterDelayRequest(
+      {required this.eventPath,
+      this.breakoutSessionId,
+      this.breakoutRoomId,
+      required this.agendaItemId});
+
+  factory _$_AdvanceMeetingGuideAfterDelayRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_AdvanceMeetingGuideAfterDelayRequestFromJson(json);
+
+  @override
+  final String eventPath;
+  @override
+  final String? breakoutSessionId;
+  @override
+  final String? breakoutRoomId;
+// The agenda item that was current when the countdown was scheduled, used to verify the
+// pending advance is still valid by the time this call fires.
+  @override
+  final String agendaItemId;
+
+  @override
+  String toString() {
+    return 'AdvanceMeetingGuideAfterDelayRequest(eventPath: $eventPath, breakoutSessionId: $breakoutSessionId, breakoutRoomId: $breakoutRoomId, agendaItemId: $agendaItemId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_AdvanceMeetingGuideAfterDelayRequest &&
+            (identical(other.eventPath, eventPath) ||
+                other.eventPath == eventPath) &&
+            (identical(other.breakoutSessionId, breakoutSessionId) ||
+                other.breakoutSessionId == breakoutSessionId) &&
+            (identical(other.breakoutRoomId, breakoutRoomId) ||
+                other.breakoutRoomId == breakoutRoomId) &&
+            (identical(other.agendaItemId, agendaItemId) ||
+                other.agendaItemId == agendaItemId));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, eventPath, breakoutSessionId, breakoutRoomId, agendaItemId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_AdvanceMeetingGuideAfterDelayRequestCopyWith<
+          _$_AdvanceMeetingGuideAfterDelayRequest>
+      get copyWith => __$$_AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<
+          _$_AdvanceMeetingGuideAfterDelayRequest>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_AdvanceMeetingGuideAfterDelayRequestToJson(
+      this,
+    );
+  }
+}
+
+abstract class _AdvanceMeetingGuideAfterDelayRequest
+    implements AdvanceMeetingGuideAfterDelayRequest {
+  factory _AdvanceMeetingGuideAfterDelayRequest(
+          {required final String eventPath,
+          final String? breakoutSessionId,
+          final String? breakoutRoomId,
+          required final String agendaItemId}) =
+      _$_AdvanceMeetingGuideAfterDelayRequest;
+
+  factory _AdvanceMeetingGuideAfterDelayRequest.fromJson(
+          Map<String, dynamic> json) =
+      _$_AdvanceMeetingGuideAfterDelayRequest.fromJson;
+
+  @override
+  String get eventPath;
+  @override
+  String? get breakoutSessionId;
+  @override
+  String? get breakoutRoomId;
+  @override // The agenda item that was current when the countdown was scheduled, used to verify the
+// pending advance is still valid by the time this call fires.
+  String get agendaItemId;
+  @override
+  @JsonKey(ignore: true)
+  _$$_AdvanceMeetingGuideAfterDelayRequestCopyWith<
+          _$_AdvanceMeetingGuideAfterDelayRequest>
       get copyWith => throw _privateConstructorUsedError;
 }
 

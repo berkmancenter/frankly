@@ -1,10 +1,22 @@
 {
   "files": {
-    "firebase/functions/js/agora-recording-webhook.js": ["agoraRecordingWebhook"],
+    "firebase/functions/js/agora-recording-webhook.js": [
+      "agoraRecordingWebhook"
+    ],
     "firebase/functions/js/download-recordings.js": ["downloadRecording"],
-    "firebase/functions/js/get-session-download-url.js": ["getSessionDownloadUrl"],
+    "firebase/functions/js/download-transcripts.js": ["downloadTranscripts"],
+    "firebase/functions/js/get-session-download-url.js": [
+      "getSessionDownloadUrl"
+    ],
+    "firebase/functions/js/get-session-download-url.js": [
+      "getSessionDownloadUrl"
+    ],
     "firebase/functions/js/image-proxy.js": ["imageProxy"],
     "firebase/functions/js/produce-sessions.js": ["produceSessions"],
+    "firebase/functions/js/repair-session-artifacts.js": [
+      "repairSessionArtifacts"
+    ],
+    "firebase/functions/js/serve-index.js": ["ServeIndex"],
     "firebase/functions/lib/admin/partner_agreements/on_partner_agreements.dart": [
       "PartnerAgreementOnCreate",
       "PartnerAgreementOnUpdate"
@@ -188,12 +200,16 @@
     "firebase/functions/lib/events/live_meetings/breakouts/check_assign_to_breakouts_server.dart": [
       "CheckAssignToBreakoutsServer"
     ],
+    "firebase/functions/lib/events/live_meetings/breakouts/advance_meeting_guide_after_delay.dart": [
+      "AdvanceMeetingGuideAfterDelay"
+    ],
+    "firebase/functions/lib/events/live_meetings/breakouts/advance_meeting_guide_after_delay_server.dart": [
+      "AdvanceMeetingGuideAfterDelayServer",
+      "ParticipantAgendaItemDetailsOnWrite"
+    ],
     "firebase/functions/lib/events/live_meetings/breakouts/assign_to_breakouts.dart": [
       "CheckAssignToBreakouts",
       "InitiateBreakouts"
-    ],
-    "firebase/functions/lib/events/live_meetings/breakouts/check_advance_meeting_guide.dart": [
-      "CheckAdvanceMeetingGuide"
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/check_assign_to_breakouts.dart": [
       "CheckAssignToBreakouts"
@@ -210,6 +226,12 @@
     "firebase/functions/lib/events/live_meetings/breakouts/initiate_breakouts.dart": [
       "InitiateBreakouts"
     ],
+    "firebase/functions/lib/events/live_meetings/breakouts/on_participant_agenda_item_details.dart": [
+      "ParticipantAgendaItemDetailsOnWrite"
+    ],
+    "firebase/functions/lib/events/live_meetings/breakouts/check_advance_meeting_guide.dart": [
+      "ParticipantAgendaItemDetailsOnWrite"
+    ],
     "firebase/functions/lib/events/live_meetings/breakouts/reassign_breakout_room.dart": [
       "ReassignBreakoutRoom"
     ],
@@ -224,6 +246,7 @@
       "EventOnUpdate",
       "EventOnCreate",
       "EventParticipantOnWrite",
+      "ParticipantAgendaItemDetailsOnWrite",
       "DiscussionThreadOnDelete",
       "DiscussionThreadCommentOnCreate",
       "DiscussionThreadCommentOnDelete",
@@ -244,6 +267,7 @@
       "EventOnUpdate",
       "EventOnCreate",
       "EventParticipantOnWrite",
+      "ParticipantAgendaItemDetailsOnWrite",
       "DiscussionThreadOnDelete",
       "CommunityMembershipOnCreate",
       "PartnerAgreementOnCreate",
@@ -357,10 +381,6 @@
       "TemplateOnCreate",
       "ShareLink",
       "TriggerEmailDigests"
-    ],
-    "matching/lib/matching.dart": [
-      "CheckAssignToBreakouts",
-      "InitiateBreakouts"
     ]
   },
   "groups": {
@@ -396,7 +416,6 @@
       "UpdateLiveStreamParticipantCount"
     ],
     "oncall1": [
-      "CheckAdvanceMeetingGuide",
       "CheckAssignToBreakouts",
       "CheckHostlessGoToBreakouts",
       "sendAnnouncement",
@@ -447,6 +466,21 @@
       "createStripeConnectedAccount",
       "createDonationCheckoutSession",
       "CreateSubscriptionCheckoutSession"
+    ],
+    "onfirestore": [
+      "EventOnCreate",
+      "EventOnUpdate",
+      "EventParticipantOnWrite",
+      "ParticipantAgendaItemDetailsOnWrite",
+      "DiscussionThreadOnDelete",
+      "DiscussionThreadCommentOnCreate",
+      "DiscussionThreadCommentOnUpdate",
+      "DiscussionThreadCommentOnDelete",
+      "CommunityOnCreate",
+      "CommunityMembershipOnCreate",
+      "PartnerAgreementOnCreate",
+      "PartnerAgreementOnUpdate",
+      "TemplateOnCreate"
     ]
   }
 }

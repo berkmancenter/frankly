@@ -133,6 +133,10 @@ class BreakoutRoomPresenter extends ChangeNotifier {
 
   bool isQuestionAndAnswersCompleted(BreakoutQuestion question) {
     final questionEmpty = isNullOrEmpty(question.title);
+    if (question.type == BreakoutQuestionType.freeText) {
+      return !questionEmpty;
+    }
+
     final options = question.answers.map((e) => e.options).flattened.toList();
     final answersEntered = question.answers.length >= 2;
     final answersEmpty = options.any((option) => isNullOrEmpty(option.title));
@@ -271,6 +275,61 @@ class BreakoutRoomPresenter extends ChangeNotifier {
         ToastType.failed,
       );
     }
+  }
+
+  bool isFreeTextTypeAvailable(String questionId) {
+    return !_breakoutRoomDefinition.breakoutQuestions.any(
+      (q) => q.id != questionId && q.type == BreakoutQuestionType.freeText,
+    );
+  }
+
+  void updateQuestionType({
+    required String questionId,
+    required BreakoutQuestionType type,
+  }) {
+    final questionIndex = _breakoutRoomDefinition.breakoutQuestions
+        .indexWhere((element) => element.id == questionId);
+    if (questionIndex == -1) {
+      loggingService.log(
+        'BreakoutRoomPresenter.updateQuestionType: questionIndex is -1, ID: $questionId',
+        logType: LogType.error,
+      );
+      return;
+    }
+
+    final question = _breakoutRoomDefinition.breakoutQuestions[questionIndex];
+    if (type == BreakoutQuestionType.freeText) {
+      _breakoutRoomDefinition.breakoutQuestions[questionIndex] =
+          question.copyWith(type: type, answerOptionId: '', answers: []);
+    } else {
+      _breakoutRoomDefinition.breakoutQuestions[questionIndex] =
+          question.copyWith(
+        type: type,
+        answers: question.answers.isNotEmpty
+            ? question.answers
+            : [
+                BreakoutAnswer(
+                  id: uuid.v4(),
+                  options: [
+                    BreakoutAnswerOption(
+                      id: uuid.v4(),
+                      title: appLocalizationService.getLocalization().yes,
+                    ),
+                  ],
+                ),
+                BreakoutAnswer(
+                  id: uuid.v4(),
+                  options: [
+                    BreakoutAnswerOption(
+                      id: uuid.v4(),
+                      title: appLocalizationService.getLocalization().no,
+                    ),
+                  ],
+                ),
+              ],
+      );
+    }
+    notifyListeners();
   }
 
   void addCategory() {

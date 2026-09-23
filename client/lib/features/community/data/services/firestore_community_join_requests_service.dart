@@ -59,6 +59,22 @@ class FirestoreCommunityJoinRequestsService {
         .set(toFirestoreJson(request.toJson()), SetOptions(merge: true));
   }
 
+  /// Deletes a membership request for a given community and user.
+  /// [communityId] is the ID of the community.
+  /// [userId] is the ID of the user whose request is to be deleted.
+  /// Returns a Future that completes when the deletion is done.
+  Future<void> deleteRequest({
+    required String communityId,
+    required String userId,
+  }) async {
+    await firestoreDatabase.firestore
+        .collection('community')
+        .doc(communityId)
+        .collection('join-requests')
+        .doc(userId)
+        .delete();
+  }
+
   static Future<List<MembershipRequest>> _convertRequestsListAsync(
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
   ) async {

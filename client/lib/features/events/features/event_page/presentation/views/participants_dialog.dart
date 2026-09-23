@@ -139,11 +139,28 @@ class ParticipantsDialog extends StatelessWidget {
   }
 
   Widget _buildDialogTitle(BuildContext context) {
-    final l10n = appLocalizationService.getLocalization();
+    final String titleText;
+    if (eventProvider.useParticipantCountEstimate) {
+      final regCount = eventProvider.registrationCount;
+      final attendedCount = eventProvider.hasPresentParticipants
+          ? eventProvider.presentParticipantCount
+          : eventProvider.participantCount;
+      final endTime = event.scheduledTime
+          ?.add(Duration(minutes: event.durationInMinutes));
+      final hasEnded =
+          endTime != null && endTime.isBefore(clockService.now());
+      final suffix = hasEnded
+          ? context.l10n.registrationCountWithAttended(regCount, attendedCount)
+          : context.l10n.registrationCountWithActive(regCount, attendedCount);
+      titleText = suffix;
+    } else {
+      final l10n = appLocalizationService.getLocalization();
+      titleText = l10n.participantCount(eventProvider.participantCount);
+    }
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: HeightConstrainedText(
-        l10n.participantCount(eventProvider.participantCount),
+        titleText,
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
@@ -159,7 +176,7 @@ class ParticipantsDialog extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: (context, documentSnapshot) {
         final participant = Participant.fromJson(
-          fromFirestoreJson(documentSnapshot.data() as Map<String, dynamic>),
+          fromFirestoreJson(documentSnapshot.data()),
         );
         return _buildParticipant(participant, context);
       },
@@ -176,7 +193,15 @@ class ParticipantsDialog extends StatelessWidget {
   }
 
   List<Widget> _buildEventParticipants(BuildContext context) {
-    final participantsList = eventProvider.eventParticipants.toList();
+    // When the meeting is live, show only present participants to match
+    // the in-meeting counts. Otherwise show all registered participants.
+    final allParticipants = eventProvider.eventParticipants;
+    final isLive = eventProvider.hasPresentParticipants &&
+        !eventProvider.useParticipantCountEstimate;
+    final participantsList = isLive
+        ? allParticipants.where((p) => p.isPresent).toList()
+        : allParticipants.toList();
+
     final creator =
         participantsList.firstWhereOrNull((p) => p.id == event.creatorId);
     final self = participantsList.firstWhereOrNull(

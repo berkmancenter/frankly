@@ -44,6 +44,9 @@ mixin _$Community {
   @JsonKey(fromJson: communityFeatureFlagsFromJson)
   List<CommunityFeatureFlags> get enabledFeatureFlags =>
       throw _privateConstructorUsedError;
+  @JsonKey(fromJson: communityInternalFlagsFromJson)
+  List<CommunityInternalFlags> get internalFlags =>
+      throw _privateConstructorUsedError;
   CommunitySettings? get communitySettings =>
       throw _privateConstructorUsedError;
   EventSettings? get eventSettings => throw _privateConstructorUsedError;
@@ -88,6 +91,8 @@ abstract class $CommunityCopyWith<$Res> {
       String? tagLine,
       @JsonKey(fromJson: communityFeatureFlagsFromJson)
       List<CommunityFeatureFlags> enabledFeatureFlags,
+      @JsonKey(fromJson: communityInternalFlagsFromJson)
+      List<CommunityInternalFlags> internalFlags,
       CommunitySettings? communitySettings,
       EventSettings? eventSettings,
       String? donationDialogText,
@@ -133,6 +138,7 @@ class _$CommunityCopyWithImpl<$Res, $Val extends Community>
     Object? instagramUrl = freezed,
     Object? tagLine = freezed,
     Object? enabledFeatureFlags = null,
+    Object? internalFlags = null,
     Object? communitySettings = freezed,
     Object? eventSettings = freezed,
     Object? donationDialogText = freezed,
@@ -219,6 +225,10 @@ class _$CommunityCopyWithImpl<$Res, $Val extends Community>
           ? _value.enabledFeatureFlags
           : enabledFeatureFlags // ignore: cast_nullable_to_non_nullable
               as List<CommunityFeatureFlags>,
+      internalFlags: null == internalFlags
+          ? _value.internalFlags
+          : internalFlags // ignore: cast_nullable_to_non_nullable
+              as List<CommunityInternalFlags>,
       communitySettings: freezed == communitySettings
           ? _value.communitySettings
           : communitySettings // ignore: cast_nullable_to_non_nullable
@@ -308,6 +318,8 @@ abstract class _$$_CommunityCopyWith<$Res> implements $CommunityCopyWith<$Res> {
       String? tagLine,
       @JsonKey(fromJson: communityFeatureFlagsFromJson)
       List<CommunityFeatureFlags> enabledFeatureFlags,
+      @JsonKey(fromJson: communityInternalFlagsFromJson)
+      List<CommunityInternalFlags> internalFlags,
       CommunitySettings? communitySettings,
       EventSettings? eventSettings,
       String? donationDialogText,
@@ -353,6 +365,7 @@ class __$$_CommunityCopyWithImpl<$Res>
     Object? instagramUrl = freezed,
     Object? tagLine = freezed,
     Object? enabledFeatureFlags = null,
+    Object? internalFlags = null,
     Object? communitySettings = freezed,
     Object? eventSettings = freezed,
     Object? donationDialogText = freezed,
@@ -439,6 +452,10 @@ class __$$_CommunityCopyWithImpl<$Res>
           ? _value.enabledFeatureFlags
           : enabledFeatureFlags // ignore: cast_nullable_to_non_nullable
               as List<CommunityFeatureFlags>,
+      internalFlags: null == internalFlags
+          ? _value.internalFlags
+          : internalFlags // ignore: cast_nullable_to_non_nullable
+              as List<CommunityInternalFlags>,
       communitySettings: freezed == communitySettings
           ? _value.communitySettings
           : communitySettings // ignore: cast_nullable_to_non_nullable
@@ -500,6 +517,8 @@ class _$_Community extends _Community {
       this.tagLine,
       @JsonKey(fromJson: communityFeatureFlagsFromJson)
       this.enabledFeatureFlags = const [],
+      @JsonKey(fromJson: communityInternalFlagsFromJson)
+      this.internalFlags = const [],
       this.communitySettings,
       this.eventSettings,
       this.donationDialogText,
@@ -557,6 +576,9 @@ class _$_Community extends _Community {
   @JsonKey(fromJson: communityFeatureFlagsFromJson)
   final List<CommunityFeatureFlags> enabledFeatureFlags;
   @override
+  @JsonKey(fromJson: communityInternalFlagsFromJson)
+  final List<CommunityInternalFlags> internalFlags;
+  @override
   final CommunitySettings? communitySettings;
   @override
   final EventSettings? eventSettings;
@@ -577,7 +599,7 @@ class _$_Community extends _Community {
 
   @override
   String toString() {
-    return 'Community(id: $id, displayIds: $displayIds, name: $name, contactEmail: $contactEmail, creatorId: $creatorId, profileImageUrl: $profileImageUrl, bannerImageUrl: $bannerImageUrl, createdDate: $createdDate, isPublic: $isPublic, description: $description, websiteUrl: $websiteUrl, facebookUrl: $facebookUrl, linkedinUrl: $linkedinUrl, twitterUrl: $twitterUrl, blueskyUrl: $blueskyUrl, youtubeUrl: $youtubeUrl, instagramUrl: $instagramUrl, tagLine: $tagLine, enabledFeatureFlags: $enabledFeatureFlags, communitySettings: $communitySettings, eventSettings: $eventSettings, donationDialogText: $donationDialogText, ratingSurveyUrl: $ratingSurveyUrl, themeLightColor: $themeLightColor, themeDarkColor: $themeDarkColor, onboardingSteps: $onboardingSteps, isOnboardingOverviewEnabled: $isOnboardingOverviewEnabled)';
+    return 'Community(id: $id, displayIds: $displayIds, name: $name, contactEmail: $contactEmail, creatorId: $creatorId, profileImageUrl: $profileImageUrl, bannerImageUrl: $bannerImageUrl, createdDate: $createdDate, isPublic: $isPublic, description: $description, websiteUrl: $websiteUrl, facebookUrl: $facebookUrl, linkedinUrl: $linkedinUrl, twitterUrl: $twitterUrl, blueskyUrl: $blueskyUrl, youtubeUrl: $youtubeUrl, instagramUrl: $instagramUrl, tagLine: $tagLine, enabledFeatureFlags: $enabledFeatureFlags, internalFlags: $internalFlags, communitySettings: $communitySettings, eventSettings: $eventSettings, donationDialogText: $donationDialogText, ratingSurveyUrl: $ratingSurveyUrl, themeLightColor: $themeLightColor, themeDarkColor: $themeDarkColor, onboardingSteps: $onboardingSteps, isOnboardingOverviewEnabled: $isOnboardingOverviewEnabled)';
   }
 
   @override
@@ -620,6 +642,8 @@ class _$_Community extends _Community {
             (identical(other.tagLine, tagLine) || other.tagLine == tagLine) &&
             const DeepCollectionEquality()
                 .equals(other.enabledFeatureFlags, enabledFeatureFlags) &&
+            const DeepCollectionEquality()
+                .equals(other.internalFlags, internalFlags) &&
             (identical(other.communitySettings, communitySettings) ||
                 other.communitySettings == communitySettings) &&
             (identical(other.eventSettings, eventSettings) ||
@@ -663,6 +687,7 @@ class _$_Community extends _Community {
         instagramUrl,
         tagLine,
         const DeepCollectionEquality().hash(enabledFeatureFlags),
+        const DeepCollectionEquality().hash(internalFlags),
         communitySettings,
         eventSettings,
         donationDialogText,
@@ -710,6 +735,8 @@ abstract class _Community extends Community {
       final String? tagLine,
       @JsonKey(fromJson: communityFeatureFlagsFromJson)
       final List<CommunityFeatureFlags> enabledFeatureFlags,
+      @JsonKey(fromJson: communityInternalFlagsFromJson)
+      final List<CommunityInternalFlags> internalFlags,
       final CommunitySettings? communitySettings,
       final EventSettings? eventSettings,
       final String? donationDialogText,
@@ -765,6 +792,9 @@ abstract class _Community extends Community {
   @override
   @JsonKey(fromJson: communityFeatureFlagsFromJson)
   List<CommunityFeatureFlags> get enabledFeatureFlags;
+  @override
+  @JsonKey(fromJson: communityInternalFlagsFromJson)
+  List<CommunityInternalFlags> get internalFlags;
   @override
   CommunitySettings? get communitySettings;
   @override

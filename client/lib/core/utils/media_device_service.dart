@@ -44,47 +44,68 @@ class MediaDeviceService {
       micPermissionStatus = await requestPermissions(Permission.microphone);
       cameraPermissionStatus = await requestPermissions(Permission.camera);
 
-      final devices =
-          await html.window.navigator.mediaDevices?.enumerateDevices();
-
-      if (devices?.isNotEmpty ?? false) {
-        audioInputs = devices!
-            .whereType<html.MediaDeviceInfo>()
-            .where(
-              (d) =>
-                  d.kind == 'audioinput' &&
-                  d.label != null &&
-                  d.label!.isNotEmpty,
-            )
-            .toList();
-        videoInputs = devices
-            .whereType<html.MediaDeviceInfo>()
-            .where(
-              (d) =>
-                  d.kind == 'videoinput' &&
-                  d.label != null &&
-                  d.label!.isNotEmpty,
-            )
-            .toList();
-      }
-
-      // First, check for defaults from shared preferences.
-      selectedAudioInputId = sharedPreferencesService.getDefaultMicrophoneId();
-      selectedVideoInputId = sharedPreferencesService.getDefaultCameraId();
-
-      // If no defaults, use the first available device.
-      // Don't save this as a default preference as it wasn't explicitly chosen.
-      if (selectedAudioInputId == null && audioInputs.isNotEmpty) {
-        selectedAudioInputId = audioInputs.first.deviceId;
-      }
-
-      if (selectedVideoInputId == null && videoInputs.isNotEmpty) {
-        selectedVideoInputId = videoInputs.first.deviceId;
-      }
+      await _refreshDeviceList();
     } catch (e) {
       loggingService.log('Error listing available devices: $e');
       audioInputs = [];
       videoInputs = [];
+    }
+  }
+
+  /// Re-enumerates devices when we hold a live stream but have no labelled
+  /// The browser exposes device labels only once
+  /// permission has actually been granted, so whenever permission is granted
+  /// during [getUserMedia] itself, lists built by [init]
+  /// are still empty and the UI has nothing to render even though the camera was acquired.
+  Future<void> _refreshDeviceListIfStale() async {
+    if (_previewMediaStream == null) return;
+    if (audioInputs.isNotEmpty && videoInputs.isNotEmpty) return;
+    try {
+      await _refreshDeviceList();
+    } catch (e) {
+      loggingService.log('Error refreshing device list: $e');
+    }
+  }
+
+  /// Re-enumerates available devices and updates [audioInputs]/[videoInputs]
+  /// (and the selected device ids, if unset).
+  Future<void> _refreshDeviceList() async {
+    final devices =
+        await html.window.navigator.mediaDevices?.enumerateDevices();
+
+    if (devices?.isNotEmpty ?? false) {
+      audioInputs = devices!
+          .whereType<html.MediaDeviceInfo>()
+          .where(
+            (d) =>
+                d.kind == 'audioinput' &&
+                d.label != null &&
+                d.label!.isNotEmpty,
+          )
+          .toList();
+      videoInputs = devices
+          .whereType<html.MediaDeviceInfo>()
+          .where(
+            (d) =>
+                d.kind == 'videoinput' &&
+                d.label != null &&
+                d.label!.isNotEmpty,
+          )
+          .toList();
+    }
+
+    // First, check for defaults from shared preferences.
+    selectedAudioInputId ??= sharedPreferencesService.getDefaultMicrophoneId();
+    selectedVideoInputId ??= sharedPreferencesService.getDefaultCameraId();
+
+    // If no defaults, use the first available device.
+    // Don't save this as a default preference as it wasn't explicitly chosen.
+    if (selectedAudioInputId == null && audioInputs.isNotEmpty) {
+      selectedAudioInputId = audioInputs.first.deviceId;
+    }
+
+    if (selectedVideoInputId == null && videoInputs.isNotEmpty) {
+      selectedVideoInputId = videoInputs.first.deviceId;
     }
   }
 
@@ -111,65 +132,145 @@ class MediaDeviceService {
     await sharedPreferencesService.setDefaultCameraId(selectedVideoInputId!);
   }
 
-  /// HTML method for getting a MediaStream based on selected devices and permissions.
-  Future<void> getUserMedia() async {
-    Map<String, dynamic>? audioConstraint;
+  bool _isPermissionError(Object error) =>
+      error.toString().contains('NotAllowedError');
 
+  /// Whether the requested device itself is the problem - a deviceId stored
+  /// before a refresh can name something the browser will no longer admit to
+  /// having, which fails the 'exact' constraint.
+  bool _isDeviceError(Object error) {
+    final text = error.toString();
+    return text.contains('OverconstrainedError') ||
+        text.contains('NotFoundError');
+  }
+
+  /// A specific device when one is selected, otherwise any device of that
+  /// kind. This must never be omitted for a granted permission: getUserMedia
+  /// rejects a request with neither 'audio' nor 'video' as
+  /// "audio and/or video is required".
+  Object _deviceConstraint(String? deviceId) =>
+      deviceId != null && deviceId.isNotEmpty
+          ? {
+              'deviceId': {'exact': deviceId},
+            }
+          : true;
+
+  /// Forgets remembered devices, both here and in storage, so the next
+  /// request asks for whatever the browser is willing to provide.
+  /// [audioInput] Whether to forget the selected audio input device.
+  /// [videoInput] Whether to forget the selected video input device.
+  Future<void> _forgetSelectedDevices(bool audioInput, bool videoInput) async {
+    if (audioInput && selectedAudioInputId != null) {
+      await sharedPreferencesService.clearDefaultMicrophoneId();
+      selectedAudioInputId = null;
+    }
+    if (videoInput && selectedVideoInputId != null) {
+      await sharedPreferencesService.clearDefaultCameraId();
+      selectedVideoInputId = null;
+    }
+  }
+
+  Future<Map<String, dynamic>> _resolveConstraints() async {
     if (!micPermissionStatus.isGranted) {
       // Try requesting permission again in case it's not granted.
       try {
         micPermissionStatus = await requestPermissions(Permission.microphone);
       } catch (e) {
-        audioConstraint = null;
+        loggingService.log('Error requesting microphone permission: $e');
       }
     }
-
-    if (!micPermissionStatus.isGranted) {
-      audioConstraint = null;
-    } else {
-      // If a specific audio input was selected, pass it into 'exact'.
-      audioConstraint =
-          selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
-              ? {
-                  'deviceId': {'exact': selectedAudioInputId},
-                }
-              : null;
-    }
-
-    Map<String, dynamic>? videoConstraint;
 
     if (!cameraPermissionStatus.isGranted) {
       try {
         cameraPermissionStatus = await requestPermissions(Permission.camera);
       } catch (e) {
-        videoConstraint = null;
+        loggingService.log('Error requesting camera permission: $e');
       }
     }
 
-    if (!cameraPermissionStatus.isGranted) {
-      videoConstraint = null;
-    } else {
-      videoConstraint =
-          selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
-              ? {
-                  'deviceId': {'exact': selectedVideoInputId},
-                }
-              : null;
+    // Empty device lists mean labels are still hidden (permission isn't live
+    // yet), not that the device is absent - so only skip a kind once we have
+    // positively enumerated devices and this kind isn't among them. Asking
+    // for a device that genuinely isn't there fails the whole request.
+    final devicesKnown = audioInputs.isNotEmpty || videoInputs.isNotEmpty;
+
+    return {
+      if (micPermissionStatus.isGranted &&
+          (!devicesKnown || audioInputs.isNotEmpty))
+        'audio': _deviceConstraint(selectedAudioInputId),
+      if (cameraPermissionStatus.isGranted &&
+          (!devicesKnown || videoInputs.isNotEmpty))
+        'video': _deviceConstraint(selectedVideoInputId),
+    };
+  }
+
+  /// HTML method for getting a MediaStream based on selected devices and permissions.
+  Future<void> getUserMedia() async {
+    // Stop any existing preview stream first - otherwise its tracks
+    // are orphaned once we overwrite _previewMediaStream below.
+    stopPreviewMediaStream();
+
+    final constraints = await _resolveConstraints();
+
+    if (constraints.isEmpty) {
+      // Neither permission is available, so there is nothing to ask for
+      loggingService.log('Skipping getUserMedia: no audio or video permission');
+      _previewMediaStream = null;
+      return;
     }
 
-    final Map<String, dynamic> constraints = {
-      if (audioConstraint != null) 'audio': audioConstraint,
-      if (videoConstraint != null) 'video': videoConstraint,
-    };
-
     try {
-      final newMediaStream =
+      _previewMediaStream =
           await html.window.navigator.mediaDevices?.getUserMedia(constraints);
-      _previewMediaStream = newMediaStream;
+      await _refreshDeviceListIfStale();
     } catch (e) {
-      loggingService.log('Error getting user media: $e');
+      // If getUserMedia fails, it could be due to either a permission error
+      // (user denied access) or a device error (requested device not available).
+      // In either case, we attempt to recover by clearing the relevant state
+      // and retrying once.
+      Object error = e;
+      bool isVideoError = constraints.containsKey('video');
+      bool isAudioError = constraints.containsKey('audio');
+
+      if (_isPermissionError(error) || _isDeviceError(error)) {
+        loggingService.log('getUserMedia failed, retrying once: $error');
+        if (_isPermissionError(error)) {
+          // Only deny the permissions that were actually requested
+          if (isAudioError) {
+            micPermissionStatus = PermissionStatus.denied;
+          }
+          if (isVideoError) {
+            cameraPermissionStatus = PermissionStatus.denied;
+          }
+        }
+        if (_isDeviceError(error)) {
+          // Only forget devices that were actually requested
+          await _forgetSelectedDevices(
+            isAudioError,
+            isVideoError,
+          );
+        }
+        try {
+          final retryConstraints = await _resolveConstraints();
+          if (retryConstraints.isNotEmpty) {
+            _previewMediaStream = await html.window.navigator.mediaDevices
+                ?.getUserMedia(retryConstraints);
+            await _refreshDeviceListIfStale();
+            return;
+          }
+        } catch (retryError) {
+          error = retryError;
+        }
+      }
+
+      loggingService.log('Error getting user media: $error');
       _previewMediaStream = null;
-      // Clear stored device preferences if getUserMedia fails.
+
+      // Clear stored device preferences and forget selected devices if getUserMedia fails
+      await _forgetSelectedDevices(
+        isAudioError,
+        isVideoError,
+      );
       if (selectedAudioInputId != null) {
         await sharedPreferencesService.clearDefaultMicrophoneId();
       }

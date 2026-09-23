@@ -55,6 +55,10 @@ Future<bool> verifyAvailableForEvent(Event event) async {
 }
 
 class EventPageProvider with ChangeNotifier {
+  // Short delay to allow Firebase Auth state to propagate before attempting to
+  // register and enter the meeting with a newly created guest account.
+  static const Duration _guestAccountSetupDelay = Duration(seconds: 5);
+
   final EventProvider eventProvider;
   final CommunityProvider communityProvider;
   final NavBarProvider navBarProvider;
@@ -106,8 +110,7 @@ class EventPageProvider with ChangeNotifier {
             return JoinEventResults(isJoined: false);
           }
 
-          // This is a new user.
-          // Show RSVP dialog on hosted events.
+          // Show RSVP dialog on hosted events, if applicable
           if (eventProvider.event.eventType == EventType.hosted &&
               showConfirm) {
             final confirmed = await verifyAvailableForEvent(
@@ -121,11 +124,8 @@ class EventPageProvider with ChangeNotifier {
           final hasSurveyQuestions = eventProvider
                   .event.breakoutRoomDefinition?.breakoutQuestions.isNotEmpty ??
               false;
-          final showSurveyDialog = hasSurveyQuestions &&
-              (!eventProvider.event.isHosted ||
-                  eventProvider.allowPredefineBreakoutsOnHosted);
           SurveyDialogResult? surveyDialogResult;
-          if (showSurveyDialog) {
+          if (hasSurveyQuestions) {
             surveyDialogResult = await SurveyDialog.show(
               communityProvider: communityProvider,
               eventProvider: eventProvider,
@@ -191,6 +191,7 @@ class EventPageProvider with ChangeNotifier {
             (q) => BreakoutQuestion(
               id: q.id,
               title: q.title,
+              type: q.type,
               answerOptionId: '',
               answers: q.answers,
             ),
@@ -201,19 +202,25 @@ class EventPageProvider with ChangeNotifier {
             (q) => BreakoutQuestion(
               id: q.id,
               title: q.title,
+              type: q.type,
               answerOptionId: '',
               answers: q.answers,
             ),
           )
           .toList(),
     );
-    final answeredAllQuestions =
-        participantAnswers.every((q) => q.answerOptionId.isNotEmpty);
+    final answeredAllQuestions = participantAnswers.every((q) {
+      if (q.type == BreakoutQuestionType.freeText) {
+        return !isNullOrEmpty(q.freeTextAnswer);
+      }
+      return q.answerOptionId.isNotEmpty;
+    });
 
+    /// Show survey dialog if the participant's answers don't match the current
+    /// survey questions or if the participant hasn't answered all questions,
+    /// and if the event is not a livestream.
     final showSurveyDialog = (!questionsMatch || !answeredAllQuestions) &&
-        (currentSurveyQuestions.isNotEmpty) &&
-        (!eventProvider.event.isHosted ||
-            eventProvider.allowPredefineBreakoutsOnHosted);
+        currentSurveyQuestions.isNotEmpty;
     if (showSurveyDialog) {
       final surveyDialogResult = await SurveyDialog.show(
         communityProvider: communityProvider,
@@ -283,7 +290,7 @@ class EventPageProvider with ChangeNotifier {
       password: 'password',
     );
 
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(_guestAccountSetupDelay);
 
     // Register
     await joinEvent(showConfirm: false);
@@ -334,7 +341,8 @@ class EventPageProvider with ChangeNotifier {
       final context = navigatorState.context;
       final cancelParticipation = await ConfirmDialog(
         title: appLocalizationService.getLocalization().cancelParticipation,
-        mainText: appLocalizationService.getLocalization().confirmCancelQuestion,
+        mainText:
+            appLocalizationService.getLocalization().confirmCancelQuestion,
         confirmText: appLocalizationService.getLocalization().yes,
         cancelText: appLocalizationService.getLocalization().no,
       ).show();

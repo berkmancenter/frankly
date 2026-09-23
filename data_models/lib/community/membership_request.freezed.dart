@@ -24,6 +24,8 @@ mixin _$MembershipRequest {
   String get communityId => throw _privateConstructorUsedError;
   @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
   MembershipRequestStatus? get status => throw _privateConstructorUsedError;
+  @JsonKey(unknownEnumValue: MembershipStatus.member)
+  MembershipStatus? get role => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +43,9 @@ abstract class $MembershipRequestCopyWith<$Res> {
       {String userId,
       String communityId,
       @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
-      MembershipRequestStatus? status});
+      MembershipRequestStatus? status,
+      @JsonKey(unknownEnumValue: MembershipStatus.member)
+      MembershipStatus? role});
 }
 
 /// @nodoc
@@ -60,6 +64,7 @@ class _$MembershipRequestCopyWithImpl<$Res, $Val extends MembershipRequest>
     Object? userId = null,
     Object? communityId = null,
     Object? status = freezed,
+    Object? role = freezed,
   }) {
     return _then(_value.copyWith(
       userId: null == userId
@@ -74,6 +79,10 @@ class _$MembershipRequestCopyWithImpl<$Res, $Val extends MembershipRequest>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as MembershipRequestStatus?,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as MembershipStatus?,
     ) as $Val);
   }
 }
@@ -90,7 +99,9 @@ abstract class _$$_MembershipRequestCopyWith<$Res>
       {String userId,
       String communityId,
       @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
-      MembershipRequestStatus? status});
+      MembershipRequestStatus? status,
+      @JsonKey(unknownEnumValue: MembershipStatus.member)
+      MembershipStatus? role});
 }
 
 /// @nodoc
@@ -107,6 +118,7 @@ class __$$_MembershipRequestCopyWithImpl<$Res>
     Object? userId = null,
     Object? communityId = null,
     Object? status = freezed,
+    Object? role = freezed,
   }) {
     return _then(_$_MembershipRequest(
       userId: null == userId
@@ -121,6 +133,10 @@ class __$$_MembershipRequestCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as MembershipRequestStatus?,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as MembershipStatus?,
     ));
   }
 }
@@ -132,7 +148,8 @@ class _$_MembershipRequest implements _MembershipRequest {
       {required this.userId,
       required this.communityId,
       @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
-      this.status = MembershipRequestStatus.requested});
+      this.status = MembershipRequestStatus.requested,
+      @JsonKey(unknownEnumValue: MembershipStatus.member) this.role});
 
   factory _$_MembershipRequest.fromJson(Map<String, dynamic> json) =>
       _$$_MembershipRequestFromJson(json);
@@ -144,10 +161,13 @@ class _$_MembershipRequest implements _MembershipRequest {
   @override
   @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
   final MembershipRequestStatus? status;
+  @override
+  @JsonKey(unknownEnumValue: MembershipStatus.member)
+  final MembershipStatus? role;
 
   @override
   String toString() {
-    return 'MembershipRequest(userId: $userId, communityId: $communityId, status: $status)';
+    return 'MembershipRequest(userId: $userId, communityId: $communityId, status: $status, role: $role)';
   }
 
   @override
@@ -158,12 +178,14 @@ class _$_MembershipRequest implements _MembershipRequest {
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.communityId, communityId) ||
                 other.communityId == communityId) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, userId, communityId, status);
+  int get hashCode =>
+      Object.hash(runtimeType, userId, communityId, status, role);
 
   @JsonKey(ignore: true)
   @override
@@ -185,7 +207,9 @@ abstract class _MembershipRequest implements MembershipRequest {
       {required final String userId,
       required final String communityId,
       @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
-      final MembershipRequestStatus? status}) = _$_MembershipRequest;
+      final MembershipRequestStatus? status,
+      @JsonKey(unknownEnumValue: MembershipStatus.member)
+      final MembershipStatus? role}) = _$_MembershipRequest;
 
   factory _MembershipRequest.fromJson(Map<String, dynamic> json) =
       _$_MembershipRequest.fromJson;
@@ -197,6 +221,9 @@ abstract class _MembershipRequest implements MembershipRequest {
   @override
   @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
   MembershipRequestStatus? get status;
+  @override
+  @JsonKey(unknownEnumValue: MembershipStatus.member)
+  MembershipStatus? get role;
   @override
   @JsonKey(ignore: true)
   _$$_MembershipRequestCopyWith<_$_MembershipRequest> get copyWith =>

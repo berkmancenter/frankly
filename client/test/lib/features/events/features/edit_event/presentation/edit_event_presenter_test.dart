@@ -108,6 +108,25 @@ void main() {
     verify(mockView.updateView()).called(1);
   });
 
+  test('updateEventType clamps hostless max participants to hosted limit', () {
+    when(mockEditEventPresenterHelper.wereChangesMade(model)).thenReturn(true);
+    final event = getEvent().copyWith(
+      nullableEventType: EventType.hostless,
+      maxParticipants: Event.defaultMaxParticipantsInHostlessEvent,
+    );
+    model.event = event;
+
+    presenter.updateEventType(EventType.hosted);
+
+    expect(model.event.nullableEventType, EventType.hosted);
+    expect(
+      model.event.maxParticipants,
+      EditEventPresenter.hostedMaxParticipants,
+    );
+    verify(mockAppDrawerProvider.setUnsavedChanges(true)).called(1);
+    verify(mockView.updateView()).called(1);
+  });
+
   group('getEventTypeTitle', () {
     void executeTest(EventType eventType) {
       test('$eventType', () {

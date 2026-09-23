@@ -601,6 +601,7 @@ _$_ResolveJoinRequestRequest _$$_ResolveJoinRequestRequestFromJson(
       communityId: json['communityId'] as String,
       userId: json['userId'] as String,
       approve: json['approve'] as bool,
+      role: $enumDecodeNullable(_$MembershipStatusEnumMap, json['role']),
     );
 
 Map<String, dynamic> _$$_ResolveJoinRequestRequestToJson(
@@ -609,7 +610,19 @@ Map<String, dynamic> _$$_ResolveJoinRequestRequestToJson(
       'communityId': instance.communityId,
       'userId': instance.userId,
       'approve': instance.approve,
+      'role': _$MembershipStatusEnumMap[instance.role],
     };
+
+const _$MembershipStatusEnumMap = {
+  MembershipStatus.owner: 'owner',
+  MembershipStatus.admin: 'admin',
+  MembershipStatus.moderator: 'moderator',
+  MembershipStatus.facilitator: 'facilitator',
+  MembershipStatus.member: 'member',
+  MembershipStatus.banned: 'banned',
+  MembershipStatus.nonmember: 'nonmember',
+  MembershipStatus.attendee: 'attendee',
+};
 
 _$_InitiateBreakoutsRequest _$$_InitiateBreakoutsRequestFromJson(
         Map<String, dynamic> json) =>
@@ -620,6 +633,7 @@ _$_InitiateBreakoutsRequest _$$_InitiateBreakoutsRequestFromJson(
       assignmentMethod: $enumDecodeNullable(
           _$BreakoutAssignmentMethodEnumMap, json['assignmentMethod']),
       includeWaitingRoom: json['includeWaitingRoom'] as bool? ?? false,
+      useHostedApi: json['useHostedApi'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_InitiateBreakoutsRequestToJson(
@@ -631,12 +645,12 @@ Map<String, dynamic> _$$_InitiateBreakoutsRequestToJson(
       'assignmentMethod':
           _$BreakoutAssignmentMethodEnumMap[instance.assignmentMethod],
       'includeWaitingRoom': instance.includeWaitingRoom,
+      'useHostedApi': instance.useHostedApi,
     };
 
 const _$BreakoutAssignmentMethodEnumMap = {
   BreakoutAssignmentMethod.targetPerRoom: 'targetPerRoom',
   BreakoutAssignmentMethod.smartMatch: 'smartMatch',
-  BreakoutAssignmentMethod.category: 'category',
 };
 
 _$_InitiateBreakoutsResponse _$$_InitiateBreakoutsResponseFromJson(
@@ -825,6 +839,7 @@ _$_CheckAdvanceMeetingGuideRequest _$$_CheckAdvanceMeetingGuideRequestFromJson(
           .map((e) => e as String)
           .toList(),
       userReadyAgendaId: json['userReadyAgendaId'] as String?,
+      ready: json['ready'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$_CheckAdvanceMeetingGuideRequestToJson(
@@ -835,6 +850,7 @@ Map<String, dynamic> _$$_CheckAdvanceMeetingGuideRequestToJson(
       'breakoutRoomId': instance.breakoutRoomId,
       'presentIds': instance.presentIds,
       'userReadyAgendaId': instance.userReadyAgendaId,
+      'ready': instance.ready,
     };
 
 _$_CheckHostlessGoToBreakoutsRequest
@@ -847,6 +863,25 @@ Map<String, dynamic> _$$_CheckHostlessGoToBreakoutsRequestToJson(
         _$_CheckHostlessGoToBreakoutsRequest instance) =>
     <String, dynamic>{
       'eventPath': instance.eventPath,
+    };
+
+_$_AdvanceMeetingGuideAfterDelayRequest
+    _$$_AdvanceMeetingGuideAfterDelayRequestFromJson(
+            Map<String, dynamic> json) =>
+        _$_AdvanceMeetingGuideAfterDelayRequest(
+          eventPath: json['eventPath'] as String,
+          breakoutSessionId: json['breakoutSessionId'] as String?,
+          breakoutRoomId: json['breakoutRoomId'] as String?,
+          agendaItemId: json['agendaItemId'] as String,
+        );
+
+Map<String, dynamic> _$$_AdvanceMeetingGuideAfterDelayRequestToJson(
+        _$_AdvanceMeetingGuideAfterDelayRequest instance) =>
+    <String, dynamic>{
+      'eventPath': instance.eventPath,
+      'breakoutSessionId': instance.breakoutSessionId,
+      'breakoutRoomId': instance.breakoutRoomId,
+      'agendaItemId': instance.agendaItemId,
     };
 
 _$_CheckAssignToBreakoutsRequest _$$_CheckAssignToBreakoutsRequestFromJson(
@@ -892,17 +927,6 @@ Map<String, dynamic> _$$_UpdateMembershipRequestToJson(
       'status': _$MembershipStatusEnumMap[instance.status],
       'invisible': instance.invisible,
     };
-
-const _$MembershipStatusEnumMap = {
-  MembershipStatus.owner: 'owner',
-  MembershipStatus.admin: 'admin',
-  MembershipStatus.moderator: 'moderator',
-  MembershipStatus.facilitator: 'facilitator',
-  MembershipStatus.member: 'member',
-  MembershipStatus.banned: 'banned',
-  MembershipStatus.nonmember: 'nonmember',
-  MembershipStatus.attendee: 'attendee',
-};
 
 _$_VoteToKickRequest _$$_VoteToKickRequestFromJson(Map<String, dynamic> json) =>
     _$_VoteToKickRequest(

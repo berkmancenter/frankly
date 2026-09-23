@@ -39,6 +39,15 @@ mixin _$LiveMeeting {
   List<String> get pinnedUserIds => throw _privateConstructorUsedError;
   String? get recordingSessionId => throw _privateConstructorUsedError;
 
+  /// The agenda item that was current when a majority of participants marked themselves ready
+  /// to advance. While this is set, a countdown is shown to all participants and no further
+  /// ready/unready votes can change the outcome.
+  String? get pendingAdvanceAgendaItemId => throw _privateConstructorUsedError;
+
+  /// The server-computed time at which [pendingAdvanceAgendaItemId] will actually be advanced.
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  DateTime? get pendingAdvanceTime => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $LiveMeetingCopyWith<LiveMeeting> get copyWith =>
@@ -59,7 +68,10 @@ abstract class $LiveMeetingCopyWith<$Res> {
       bool record,
       bool isMeetingCardMinimized,
       List<String> pinnedUserIds,
-      String? recordingSessionId});
+      String? recordingSessionId,
+      String? pendingAdvanceAgendaItemId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      DateTime? pendingAdvanceTime});
 
   $BreakoutRoomSessionCopyWith<$Res>? get currentBreakoutSession;
 }
@@ -85,6 +97,8 @@ class _$LiveMeetingCopyWithImpl<$Res, $Val extends LiveMeeting>
     Object? isMeetingCardMinimized = null,
     Object? pinnedUserIds = null,
     Object? recordingSessionId = freezed,
+    Object? pendingAdvanceAgendaItemId = freezed,
+    Object? pendingAdvanceTime = freezed,
   }) {
     return _then(_value.copyWith(
       meetingId: freezed == meetingId
@@ -119,6 +133,14 @@ class _$LiveMeetingCopyWithImpl<$Res, $Val extends LiveMeeting>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      pendingAdvanceAgendaItemId: freezed == pendingAdvanceAgendaItemId
+          ? _value.pendingAdvanceAgendaItemId
+          : pendingAdvanceAgendaItemId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pendingAdvanceTime: freezed == pendingAdvanceTime
+          ? _value.pendingAdvanceTime
+          : pendingAdvanceTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 
@@ -152,7 +174,10 @@ abstract class _$$_LiveMeetingCopyWith<$Res>
       bool record,
       bool isMeetingCardMinimized,
       List<String> pinnedUserIds,
-      String? recordingSessionId});
+      String? recordingSessionId,
+      String? pendingAdvanceAgendaItemId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      DateTime? pendingAdvanceTime});
 
   @override
   $BreakoutRoomSessionCopyWith<$Res>? get currentBreakoutSession;
@@ -177,6 +202,8 @@ class __$$_LiveMeetingCopyWithImpl<$Res>
     Object? isMeetingCardMinimized = null,
     Object? pinnedUserIds = null,
     Object? recordingSessionId = freezed,
+    Object? pendingAdvanceAgendaItemId = freezed,
+    Object? pendingAdvanceTime = freezed,
   }) {
     return _then(_$_LiveMeeting(
       meetingId: freezed == meetingId
@@ -211,6 +238,14 @@ class __$$_LiveMeetingCopyWithImpl<$Res>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      pendingAdvanceAgendaItemId: freezed == pendingAdvanceAgendaItemId
+          ? _value.pendingAdvanceAgendaItemId
+          : pendingAdvanceAgendaItemId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pendingAdvanceTime: freezed == pendingAdvanceTime
+          ? _value.pendingAdvanceTime
+          : pendingAdvanceTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -226,7 +261,10 @@ class _$_LiveMeeting implements _LiveMeeting {
       this.record = false,
       this.isMeetingCardMinimized = false,
       this.pinnedUserIds = const [],
-      this.recordingSessionId});
+      this.recordingSessionId,
+      this.pendingAdvanceAgendaItemId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      this.pendingAdvanceTime});
 
   factory _$_LiveMeeting.fromJson(Map<String, dynamic> json) =>
       _$$_LiveMeetingFromJson(json);
@@ -261,9 +299,20 @@ class _$_LiveMeeting implements _LiveMeeting {
   @override
   final String? recordingSessionId;
 
+  /// The agenda item that was current when a majority of participants marked themselves ready
+  /// to advance. While this is set, a countdown is shown to all participants and no further
+  /// ready/unready votes can change the outcome.
+  @override
+  final String? pendingAdvanceAgendaItemId;
+
+  /// The server-computed time at which [pendingAdvanceAgendaItemId] will actually be advanced.
+  @override
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  final DateTime? pendingAdvanceTime;
+
   @override
   String toString() {
-    return 'LiveMeeting(meetingId: $meetingId, participants: $participants, events: $events, currentBreakoutSession: $currentBreakoutSession, record: $record, isMeetingCardMinimized: $isMeetingCardMinimized, pinnedUserIds: $pinnedUserIds, recordingSessionId: $recordingSessionId)';
+    return 'LiveMeeting(meetingId: $meetingId, participants: $participants, events: $events, currentBreakoutSession: $currentBreakoutSession, record: $record, isMeetingCardMinimized: $isMeetingCardMinimized, pinnedUserIds: $pinnedUserIds, recordingSessionId: $recordingSessionId, pendingAdvanceAgendaItemId: $pendingAdvanceAgendaItemId, pendingAdvanceTime: $pendingAdvanceTime)';
   }
 
   @override
@@ -284,7 +333,13 @@ class _$_LiveMeeting implements _LiveMeeting {
             const DeepCollectionEquality()
                 .equals(other.pinnedUserIds, pinnedUserIds) &&
             (identical(other.recordingSessionId, recordingSessionId) ||
-                other.recordingSessionId == recordingSessionId));
+                other.recordingSessionId == recordingSessionId) &&
+            (identical(other.pendingAdvanceAgendaItemId,
+                    pendingAdvanceAgendaItemId) ||
+                other.pendingAdvanceAgendaItemId ==
+                    pendingAdvanceAgendaItemId) &&
+            (identical(other.pendingAdvanceTime, pendingAdvanceTime) ||
+                other.pendingAdvanceTime == pendingAdvanceTime));
   }
 
   @JsonKey(ignore: true)
@@ -298,7 +353,9 @@ class _$_LiveMeeting implements _LiveMeeting {
       record,
       isMeetingCardMinimized,
       const DeepCollectionEquality().hash(pinnedUserIds),
-      recordingSessionId);
+      recordingSessionId,
+      pendingAdvanceAgendaItemId,
+      pendingAdvanceTime);
 
   @JsonKey(ignore: true)
   @override
@@ -323,7 +380,10 @@ abstract class _LiveMeeting implements LiveMeeting {
       final bool record,
       final bool isMeetingCardMinimized,
       final List<String> pinnedUserIds,
-      final String? recordingSessionId}) = _$_LiveMeeting;
+      final String? recordingSessionId,
+      final String? pendingAdvanceAgendaItemId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      final DateTime? pendingAdvanceTime}) = _$_LiveMeeting;
 
   factory _LiveMeeting.fromJson(Map<String, dynamic> json) =
       _$_LiveMeeting.fromJson;
@@ -351,6 +411,17 @@ abstract class _LiveMeeting implements LiveMeeting {
   List<String> get pinnedUserIds;
   @override
   String? get recordingSessionId;
+  @override
+
+  /// The agenda item that was current when a majority of participants marked themselves ready
+  /// to advance. While this is set, a countdown is shown to all participants and no further
+  /// ready/unready votes can change the outcome.
+  String? get pendingAdvanceAgendaItemId;
+  @override
+
+  /// The server-computed time at which [pendingAdvanceAgendaItemId] will actually be advanced.
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  DateTime? get pendingAdvanceTime;
   @override
   @JsonKey(ignore: true)
   _$$_LiveMeetingCopyWith<_$_LiveMeeting> get copyWith =>
@@ -552,6 +623,7 @@ LiveMeetingEvent _$LiveMeetingEventFromJson(Map<String, dynamic> json) {
 mixin _$LiveMeetingEvent {
   @JsonKey(unknownEnumValue: null)
   LiveMeetingEventType? get event => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: dateTimeFromTimestamp)
   DateTime? get timestamp => throw _privateConstructorUsedError;
   String? get agendaItem => throw _privateConstructorUsedError;
   bool? get hostless => throw _privateConstructorUsedError;
@@ -570,7 +642,7 @@ abstract class $LiveMeetingEventCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(unknownEnumValue: null) LiveMeetingEventType? event,
-      DateTime? timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) DateTime? timestamp,
       String? agendaItem,
       bool? hostless});
 }
@@ -624,7 +696,7 @@ abstract class _$$_LiveMeetingEventCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(unknownEnumValue: null) LiveMeetingEventType? event,
-      DateTime? timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) DateTime? timestamp,
       String? agendaItem,
       bool? hostless});
 }
@@ -671,7 +743,7 @@ class __$$_LiveMeetingEventCopyWithImpl<$Res>
 class _$_LiveMeetingEvent implements _LiveMeetingEvent {
   _$_LiveMeetingEvent(
       {@JsonKey(unknownEnumValue: null) this.event,
-      this.timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) this.timestamp,
       this.agendaItem,
       this.hostless = false});
 
@@ -682,6 +754,7 @@ class _$_LiveMeetingEvent implements _LiveMeetingEvent {
   @JsonKey(unknownEnumValue: null)
   final LiveMeetingEventType? event;
   @override
+  @JsonKey(fromJson: dateTimeFromTimestamp)
   final DateTime? timestamp;
   @override
   final String? agendaItem;
@@ -730,7 +803,7 @@ class _$_LiveMeetingEvent implements _LiveMeetingEvent {
 abstract class _LiveMeetingEvent implements LiveMeetingEvent {
   factory _LiveMeetingEvent(
       {@JsonKey(unknownEnumValue: null) final LiveMeetingEventType? event,
-      final DateTime? timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) final DateTime? timestamp,
       final String? agendaItem,
       final bool? hostless}) = _$_LiveMeetingEvent;
 
@@ -741,6 +814,7 @@ abstract class _LiveMeetingEvent implements LiveMeetingEvent {
   @JsonKey(unknownEnumValue: null)
   LiveMeetingEventType? get event;
   @override
+  @JsonKey(fromJson: dateTimeFromTimestamp)
   DateTime? get timestamp;
   @override
   String? get agendaItem;
@@ -932,6 +1006,10 @@ mixin _$BreakoutRoom {
   bool get record => throw _privateConstructorUsedError;
   String? get recordingSessionId => throw _privateConstructorUsedError;
 
+  /// A per-group statement/prompt generated for this specific breakout
+  /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
+  String? get diffusionStatement => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $BreakoutRoomCopyWith<BreakoutRoom> get copyWith =>
@@ -958,7 +1036,8 @@ abstract class $BreakoutRoomCopyWith<$Res> {
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       DateTime? createdDate,
       bool record,
-      String? recordingSessionId});
+      String? recordingSessionId,
+      String? diffusionStatement});
 }
 
 /// @nodoc
@@ -984,6 +1063,7 @@ class _$BreakoutRoomCopyWithImpl<$Res, $Val extends BreakoutRoom>
     Object? createdDate = freezed,
     Object? record = null,
     Object? recordingSessionId = freezed,
+    Object? diffusionStatement = freezed,
   }) {
     return _then(_value.copyWith(
       roomId: null == roomId
@@ -1026,6 +1106,10 @@ class _$BreakoutRoomCopyWithImpl<$Res, $Val extends BreakoutRoom>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      diffusionStatement: freezed == diffusionStatement
+          ? _value.diffusionStatement
+          : diffusionStatement // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -1052,7 +1136,8 @@ abstract class _$$_BreakoutRoomCopyWith<$Res>
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       DateTime? createdDate,
       bool record,
-      String? recordingSessionId});
+      String? recordingSessionId,
+      String? diffusionStatement});
 }
 
 /// @nodoc
@@ -1076,6 +1161,7 @@ class __$$_BreakoutRoomCopyWithImpl<$Res>
     Object? createdDate = freezed,
     Object? record = null,
     Object? recordingSessionId = freezed,
+    Object? diffusionStatement = freezed,
   }) {
     return _then(_$_BreakoutRoom(
       roomId: null == roomId
@@ -1118,6 +1204,10 @@ class __$$_BreakoutRoomCopyWithImpl<$Res>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      diffusionStatement: freezed == diffusionStatement
+          ? _value.diffusionStatement
+          : diffusionStatement // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -1139,7 +1229,8 @@ class _$_BreakoutRoom implements _BreakoutRoom {
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       this.createdDate,
       this.record = false,
-      this.recordingSessionId});
+      this.recordingSessionId,
+      this.diffusionStatement});
 
   factory _$_BreakoutRoom.fromJson(Map<String, dynamic> json) =>
       _$$_BreakoutRoomFromJson(json);
@@ -1175,9 +1266,14 @@ class _$_BreakoutRoom implements _BreakoutRoom {
   @override
   final String? recordingSessionId;
 
+  /// A per-group statement/prompt generated for this specific breakout
+  /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
+  @override
+  final String? diffusionStatement;
+
   @override
   String toString() {
-    return 'BreakoutRoom(roomId: $roomId, roomName: $roomName, orderingPriority: $orderingPriority, creatorId: $creatorId, participantIds: $participantIds, originalParticipantIdsAssignment: $originalParticipantIdsAssignment, flagStatus: $flagStatus, createdDate: $createdDate, record: $record, recordingSessionId: $recordingSessionId)';
+    return 'BreakoutRoom(roomId: $roomId, roomName: $roomName, orderingPriority: $orderingPriority, creatorId: $creatorId, participantIds: $participantIds, originalParticipantIdsAssignment: $originalParticipantIdsAssignment, flagStatus: $flagStatus, createdDate: $createdDate, record: $record, recordingSessionId: $recordingSessionId, diffusionStatement: $diffusionStatement)';
   }
 
   @override
@@ -1203,7 +1299,9 @@ class _$_BreakoutRoom implements _BreakoutRoom {
                 other.createdDate == createdDate) &&
             (identical(other.record, record) || other.record == record) &&
             (identical(other.recordingSessionId, recordingSessionId) ||
-                other.recordingSessionId == recordingSessionId));
+                other.recordingSessionId == recordingSessionId) &&
+            (identical(other.diffusionStatement, diffusionStatement) ||
+                other.diffusionStatement == diffusionStatement));
   }
 
   @JsonKey(ignore: true)
@@ -1219,7 +1317,8 @@ class _$_BreakoutRoom implements _BreakoutRoom {
       flagStatus,
       createdDate,
       record,
-      recordingSessionId);
+      recordingSessionId,
+      diffusionStatement);
 
   @JsonKey(ignore: true)
   @override
@@ -1250,7 +1349,8 @@ abstract class _BreakoutRoom implements BreakoutRoom {
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       final DateTime? createdDate,
       final bool record,
-      final String? recordingSessionId}) = _$_BreakoutRoom;
+      final String? recordingSessionId,
+      final String? diffusionStatement}) = _$_BreakoutRoom;
 
   factory _BreakoutRoom.fromJson(Map<String, dynamic> json) =
       _$_BreakoutRoom.fromJson;
@@ -1283,6 +1383,11 @@ abstract class _BreakoutRoom implements BreakoutRoom {
   @override
   String? get recordingSessionId;
   @override
+
+  /// A per-group statement/prompt generated for this specific breakout
+  /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
+  String? get diffusionStatement;
+  @override
   @JsonKey(ignore: true)
   _$$_BreakoutRoomCopyWith<_$_BreakoutRoom> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1304,6 +1409,7 @@ mixin _$BreakoutRoomSession {
       throw _privateConstructorUsedError;
   int get targetParticipantsPerRoom => throw _privateConstructorUsedError;
   bool get hasWaitingRoom => throw _privateConstructorUsedError;
+  bool get useHostedApi => throw _privateConstructorUsedError;
   int? get maxRoomNumber => throw _privateConstructorUsedError;
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
   DateTime? get createdDate => throw _privateConstructorUsedError;
@@ -1333,6 +1439,7 @@ abstract class $BreakoutRoomSessionCopyWith<$Res> {
       BreakoutAssignmentMethod assignmentMethod,
       int targetParticipantsPerRoom,
       bool hasWaitingRoom,
+      bool useHostedApi,
       int? maxRoomNumber,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       DateTime? createdDate,
@@ -1360,6 +1467,7 @@ class _$BreakoutRoomSessionCopyWithImpl<$Res, $Val extends BreakoutRoomSession>
     Object? assignmentMethod = null,
     Object? targetParticipantsPerRoom = null,
     Object? hasWaitingRoom = null,
+    Object? useHostedApi = null,
     Object? maxRoomNumber = freezed,
     Object? createdDate = freezed,
     Object? scheduledTime = freezed,
@@ -1389,6 +1497,10 @@ class _$BreakoutRoomSessionCopyWithImpl<$Res, $Val extends BreakoutRoomSession>
       hasWaitingRoom: null == hasWaitingRoom
           ? _value.hasWaitingRoom
           : hasWaitingRoom // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useHostedApi: null == useHostedApi
+          ? _value.useHostedApi
+          : useHostedApi // ignore: cast_nullable_to_non_nullable
               as bool,
       maxRoomNumber: freezed == maxRoomNumber
           ? _value.maxRoomNumber
@@ -1426,6 +1538,7 @@ abstract class _$$_BreakoutRoomSessionCopyWith<$Res>
       BreakoutAssignmentMethod assignmentMethod,
       int targetParticipantsPerRoom,
       bool hasWaitingRoom,
+      bool useHostedApi,
       int? maxRoomNumber,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       DateTime? createdDate,
@@ -1451,6 +1564,7 @@ class __$$_BreakoutRoomSessionCopyWithImpl<$Res>
     Object? assignmentMethod = null,
     Object? targetParticipantsPerRoom = null,
     Object? hasWaitingRoom = null,
+    Object? useHostedApi = null,
     Object? maxRoomNumber = freezed,
     Object? createdDate = freezed,
     Object? scheduledTime = freezed,
@@ -1480,6 +1594,10 @@ class __$$_BreakoutRoomSessionCopyWithImpl<$Res>
       hasWaitingRoom: null == hasWaitingRoom
           ? _value.hasWaitingRoom
           : hasWaitingRoom // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useHostedApi: null == useHostedApi
+          ? _value.useHostedApi
+          : useHostedApi // ignore: cast_nullable_to_non_nullable
               as bool,
       maxRoomNumber: freezed == maxRoomNumber
           ? _value.maxRoomNumber
@@ -1512,6 +1630,7 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
       required this.assignmentMethod,
       required this.targetParticipantsPerRoom,
       required this.hasWaitingRoom,
+      this.useHostedApi = false,
       this.maxRoomNumber,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       this.createdDate,
@@ -1537,6 +1656,9 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
   @override
   final bool hasWaitingRoom;
   @override
+  @JsonKey()
+  final bool useHostedApi;
+  @override
   final int? maxRoomNumber;
   @override
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
@@ -1551,7 +1673,7 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
 
   @override
   String toString() {
-    return 'BreakoutRoomSession(breakoutRoomSessionId: $breakoutRoomSessionId, breakoutRoomStatus: $breakoutRoomStatus, statusUpdatedTime: $statusUpdatedTime, assignmentMethod: $assignmentMethod, targetParticipantsPerRoom: $targetParticipantsPerRoom, hasWaitingRoom: $hasWaitingRoom, maxRoomNumber: $maxRoomNumber, createdDate: $createdDate, scheduledTime: $scheduledTime, processingId: $processingId)';
+    return 'BreakoutRoomSession(breakoutRoomSessionId: $breakoutRoomSessionId, breakoutRoomStatus: $breakoutRoomStatus, statusUpdatedTime: $statusUpdatedTime, assignmentMethod: $assignmentMethod, targetParticipantsPerRoom: $targetParticipantsPerRoom, hasWaitingRoom: $hasWaitingRoom, useHostedApi: $useHostedApi, maxRoomNumber: $maxRoomNumber, createdDate: $createdDate, scheduledTime: $scheduledTime, processingId: $processingId)';
   }
 
   @override
@@ -1572,6 +1694,8 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
                 other.targetParticipantsPerRoom == targetParticipantsPerRoom) &&
             (identical(other.hasWaitingRoom, hasWaitingRoom) ||
                 other.hasWaitingRoom == hasWaitingRoom) &&
+            (identical(other.useHostedApi, useHostedApi) ||
+                other.useHostedApi == useHostedApi) &&
             (identical(other.maxRoomNumber, maxRoomNumber) ||
                 other.maxRoomNumber == maxRoomNumber) &&
             (identical(other.createdDate, createdDate) ||
@@ -1592,6 +1716,7 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
       assignmentMethod,
       targetParticipantsPerRoom,
       hasWaitingRoom,
+      useHostedApi,
       maxRoomNumber,
       createdDate,
       scheduledTime,
@@ -1622,6 +1747,7 @@ abstract class _BreakoutRoomSession implements BreakoutRoomSession {
       required final BreakoutAssignmentMethod assignmentMethod,
       required final int targetParticipantsPerRoom,
       required final bool hasWaitingRoom,
+      final bool useHostedApi,
       final int? maxRoomNumber,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       final DateTime? createdDate,
@@ -1646,6 +1772,8 @@ abstract class _BreakoutRoomSession implements BreakoutRoomSession {
   int get targetParticipantsPerRoom;
   @override
   bool get hasWaitingRoom;
+  @override
+  bool get useHostedApi;
   @override
   int? get maxRoomNumber;
   @override

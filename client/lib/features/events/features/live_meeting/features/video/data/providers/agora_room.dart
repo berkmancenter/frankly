@@ -172,6 +172,9 @@ class AgoraRoom with ChangeNotifier {
           '[onUserJoined] connection: ${connection.toJson()} remoteUid: $rUid elapsed: $elapsed',
         );
 
+        // Agora STT bots (sub=457, pub=458) and Cloud Recording bot (uid=1)
+        // join the channel but are not real participants.
+        if (rUid == 457 || rUid == 458 || rUid == 1) return;
         String? userId;
         try {
           final user = await cloudFunctionsLiveMeetingService
@@ -203,6 +206,7 @@ class AgoraRoom with ChangeNotifier {
         print(
           '[onUserOffline] connection: ${connection.toJson()}  rUid: $rUid reason: $reason',
         );
+        if (rUid == 457 || rUid == 458 || rUid == 1) return;
         _remoteParticipants.removeWhere((a) => a.agoraUid == rUid);
         _videoMutedState.remove(rUid);
         _audioMutedState.remove(rUid);
@@ -409,10 +413,17 @@ class AgoraParticipant with ChangeNotifier {
 
   MediaDeviceService get mediaDeviceService => MediaDeviceService();
 
+  // Audio and video tracks have to be enabled immediately to support mirror check;
+  // this does not mean that AV is being streamed out though
   bool audioTrackEnabled = true;
+  bool videoTrackEnabled = true;
+
+  // These represent whether audio/video is actually being captured and sent out
+  bool audioIsStreaming = false;
+  bool videoIsStreaming = false;
+
   // This local preview is used for displaying user's video to self.
   bool videoLocalPreviewStarted = false;
-  bool videoTrackEnabled = true;
 
   html.MediaStreamTrack? get screenshareTrack => null;
 
@@ -461,6 +472,7 @@ class AgoraParticipant with ChangeNotifier {
       );
     }
     audioTrackEnabled = setEnabled;
+    audioIsStreaming = setEnabled;
   }
 
   Future<void> enableVideo({required bool setEnabled}) async {
@@ -483,9 +495,18 @@ class AgoraParticipant with ChangeNotifier {
           publishCameraTrack: false,
         ),
       );
+      // enableLocalVideo(false)/publishCameraTrack:false only stop
+      // publishing to the channel - startPreview() above keeps its own
+      // camera capture alive independently, so it must be stopped
+      // explicitly or the camera stays active until the whole room disposes.
+      if (videoLocalPreviewStarted) {
+        videoLocalPreviewStarted = false;
+        await _rtcEngine.stopPreview();
+      }
     }
 
     videoTrackEnabled = setEnabled;
+    videoIsStreaming = setEnabled;
   }
 
   startScreenShare() {

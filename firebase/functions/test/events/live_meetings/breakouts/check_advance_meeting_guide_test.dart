@@ -1,11 +1,11 @@
-import 'package:firebase_functions_interop/firebase_functions_interop.dart';
+import 'package:firebase_admin_interop/firebase_admin_interop.dart'
+    show DocumentData, SetOptions;
 import 'package:get_it/get_it.dart';
-import 'package:functions/events/live_meetings/breakouts/check_advance_meeting_guide.dart';
+import 'package:functions/events/live_meetings/breakouts/on_participant_agenda_item_details.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:test/test.dart';
-import 'package:data_models/cloud_functions/requests.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,6 +13,54 @@ import '../../../util/community_test_utils.dart';
 import '../../../util/event_test_utils.dart';
 import '../../../util/function_test_fixture.dart';
 import '../../../util/live_meeting_test_utils.dart';
+
+// Mark users present in room same way we do for general presence tracking.
+Future<void> setBreakoutPresence(
+  Event event,
+  String roomId,
+  List<String> userIds, {
+  bool isPresent = true,
+}) async {
+  for (final uid in userIds) {
+    await firestore
+        .document('${event.fullPath}/event-participants/$uid')
+        .setData(
+          DocumentData.fromMap({
+            Participant.kFieldCurrentBreakoutRoomId: roomId,
+            Participant.kFieldIsPresent: isPresent,
+          }),
+          SetOptions(merge: true),
+        );
+  }
+}
+
+// Simulate a participant setting or clearing a ready vote via participant-details doc,
+// then fire the participant-details onWrite trigger for that doc.
+Future<void> voteReadyViaTrigger({
+  required String breakoutLiveMeetingPath,
+  required String agendaItemId,
+  required String roomId,
+  required String userId,
+  bool ready = true,
+}) async {
+  final docPath =
+      '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/$userId';
+  await firestore.document(docPath).setData(
+        DocumentData.fromMap(
+          firestoreUtils.toFirestoreJson(
+            ParticipantAgendaItemDetails(
+              userId: userId,
+              agendaItemId: agendaItemId,
+              meetingId: roomId,
+              readyToAdvance: ready,
+            ).toJson(),
+          ),
+        ),
+        SetOptions(merge: true),
+      );
+  await OnParticipantAgendaItemDetails()
+      .evaluateAdvanceForParticipantDetailsPath(docPath);
+}
 
 void main() {
   late String communityId;
@@ -29,7 +77,8 @@ void main() {
     communityId = await communityTestUtils.createTestCommunity();
   });
 
-  test('Agenda is advanced when half the participants are ready', () async {
+  test('Agenda is advanced when majority of the participants are ready',
+      () async {
     var event = Event(
       id: '12341dff2837',
       status: EventStatus.active,
@@ -80,22 +129,29 @@ void main() {
       roomName: '1',
     );
 
-    final guideAdvancer = CheckAdvanceMeetingGuide();
-    final req = CheckAdvanceMeetingGuideRequest(
-      eventPath: event.fullPath,
-      presentIds: ['333', '555', '777', '999'],
-      userReadyAgendaId: event.agendaItems.first.id,
-      breakoutRoomId: breakoutRoom.roomId,
-      breakoutSessionId: breakoutSessionId,
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777', '999'],
     );
 
-    await guideAdvancer.action(
-      req,
-      CallableContext('333', null, 'fakeInstanceId'),
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+      breakoutRoomId: breakoutRoom.roomId,
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+    );
+    final agendaItemId = event.agendaItems.first.id;
+
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
     );
     // check participant marked as ready
     final documentId =
-        '${liveMeetingTestUtils.getBreakoutLiveMeetingPath(breakoutRoomId: breakoutRoom.roomId, event: event, breakoutSessionId: breakoutSessionId)}/participant-agenda-item-details/${event.agendaItems.first.id}/participant-details/333';
+        '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/333';
     final participantDetailsDoc = await firestore.document(documentId).get();
     final createdDetails = ParticipantAgendaItemDetails.fromJson(
       firestoreUtils.fromFirestoreJson(participantDetailsDoc.data.toMap()),
@@ -108,10 +164,20 @@ void main() {
     );
     expect(createdDetails, equals(expectedDetails));
 
-    // call again with another participant, which should be enough to advance (half of total participants)
-    await guideAdvancer.action(
-      req,
-      CallableContext('555', null, 'fakeInstanceId'),
+    // call again with another participant
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '555',
+    );
+
+    // call one more time with another participant to reach majority
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '777',
     );
 
     final meetingPathSnap = await firestore
@@ -186,22 +252,29 @@ void main() {
       roomName: '1',
     );
 
-    final guideAdvancer = CheckAdvanceMeetingGuide();
-    final req = CheckAdvanceMeetingGuideRequest(
-      eventPath: event.fullPath,
-      presentIds: ['333', '555', '777', '999'],
-      userReadyAgendaId: event.agendaItems.first.id,
-      breakoutRoomId: breakoutRoom.roomId,
-      breakoutSessionId: breakoutSessionId,
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777', '999'],
     );
 
-    await guideAdvancer.action(
-      req,
-      CallableContext('333', null, 'fakeInstanceId'),
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+      breakoutRoomId: breakoutRoom.roomId,
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+    );
+    final agendaItemId = event.agendaItems.first.id;
+
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
     );
     // check participant marked as ready
     final documentId =
-        '${liveMeetingTestUtils.getBreakoutLiveMeetingPath(breakoutRoomId: breakoutRoom.roomId, event: event, breakoutSessionId: breakoutSessionId)}/participant-agenda-item-details/${event.agendaItems.first.id}/participant-details/333';
+        '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/333';
     final participantDetailsDoc = await firestore.document(documentId).get();
     final createdDetails = ParticipantAgendaItemDetails.fromJson(
       firestoreUtils.fromFirestoreJson(participantDetailsDoc.data.toMap()),
@@ -231,6 +304,562 @@ void main() {
     expect(
       createdMeeting.events[0].event,
       equals(LiveMeetingEventType.agendaItemStarted),
+    );
+  });
+
+  test(
+      'Undoing a ready vote persists readyToAdvance false and does not advance',
+      () async {
+    var event = Event(
+      id: '12341undo0001',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType
+          .hosted, //intentionally set to hosted even though we are simulating a hostless event to avoid enqueueing the CheckAssignToBreakoutServer, which causes an error
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(
+          id: '55005',
+          title: "Role call",
+          content: "Shout out if you're here",
+        ),
+      ],
+    );
+    event = await eventTestUtils.createEvent(
+      event: event,
+      userId: adminUserId,
+    );
+
+    await eventTestUtils.joinEventMultiple(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: event.id,
+      participantIds: ['333', '444', '555', '666', '777', '888', '999', '000'],
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.initiateBreakoutSession(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      userId: adminUserId,
+    );
+
+    final breakoutRoom = await liveMeetingTestUtils.getBreakoutRoom(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      roomName: '1',
+    );
+
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777', '999'],
+    );
+
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+      breakoutRoomId: breakoutRoom.roomId,
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+    );
+    final agendaItemId = event.agendaItems.first.id;
+
+    // Mark ready, then undo.
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
+    );
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
+      ready: false,
+    );
+
+    // The undo must persist readyToAdvance == false and not be overwritten
+    // back to true.
+    final documentId =
+        '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/333';
+    final participantDetailsDoc = await firestore.document(documentId).get();
+    final createdDetails = ParticipantAgendaItemDetails.fromJson(
+      firestoreUtils.fromFirestoreJson(participantDetailsDoc.data.toMap()),
+    );
+    expect(createdDetails.readyToAdvance, isFalse);
+
+    // The undo must not schedule an advance or move the agenda forward.
+    final meetingPathSnap = await firestore
+        .document(
+          liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+            breakoutRoomId: breakoutRoom.roomId,
+            event: event,
+            breakoutSessionId: breakoutSessionId,
+          ),
+        )
+        .get();
+    final createdMeeting = LiveMeeting.fromJson(
+      firestoreUtils.fromFirestoreJson(meetingPathSnap.data.toMap()),
+    );
+    expect(createdMeeting.pendingAdvanceAgendaItemId, isNull);
+    expect(createdMeeting.events.length, equals(1));
+    expect(
+      createdMeeting.events[0].event,
+      equals(LiveMeetingEventType.agendaItemStarted),
+    );
+  });
+
+  test('Undoing a ready vote below threshold cancels a pending advance',
+      () async {
+    var event = Event(
+      id: '12341cancel001',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType
+          .hosted, //intentionally set to hosted even though we are simulating a hostless event to avoid enqueueing the CheckAssignToBreakoutServer, which causes an error
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(
+          id: '55005',
+          title: "Role call",
+          content: "Shout out if you're here",
+        ),
+      ],
+    );
+    event = await eventTestUtils.createEvent(
+      event: event,
+      userId: adminUserId,
+    );
+
+    await eventTestUtils.joinEventMultiple(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: event.id,
+      participantIds: ['333', '444', '555', '666', '777', '888', '999', '000'],
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.initiateBreakoutSession(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      userId: adminUserId,
+    );
+
+    final breakoutRoom = await liveMeetingTestUtils.getBreakoutRoom(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      roomName: '1',
+    );
+
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777', '999'],
+    );
+
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+      breakoutRoomId: breakoutRoom.roomId,
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+    );
+    final agendaItemId = event.agendaItems.first.id;
+
+    // Seed a scheduled advance that a majority already voted for, along with the
+    // three ready votes that triggered it. Seeded directly to avoid the real
+    // Cloud Tasks scheduling path, which is not available in tests.
+    await firestore.document(breakoutLiveMeetingPath).setData(
+          DocumentData.fromMap(
+            firestoreUtils.toFirestoreJson(
+              LiveMeeting(
+                events: [
+                  LiveMeetingEvent(
+                    agendaItem: agendaItemId,
+                    event: LiveMeetingEventType.agendaItemStarted,
+                    timestamp: DateTime.now().toUtc(),
+                    hostless: true,
+                  ),
+                ],
+                pendingAdvanceAgendaItemId: agendaItemId,
+                pendingAdvanceTime:
+                    DateTime.now().toUtc().add(meetingGuideAdvanceDelay),
+              ).toJson(),
+            ),
+          ),
+          SetOptions(merge: true),
+        );
+
+    for (final uid in ['333', '555', '777']) {
+      await firestore
+          .document(
+            '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/$uid',
+          )
+          .setData(
+            DocumentData.fromMap(
+              firestoreUtils.toFirestoreJson(
+                ParticipantAgendaItemDetails(
+                  userId: uid,
+                  agendaItemId: agendaItemId,
+                  meetingId: breakoutRoom.roomId,
+                  readyToAdvance: true,
+                ).toJson(),
+              ),
+            ),
+            SetOptions(merge: true),
+          );
+    }
+
+    // One of the three ready participants changes their mind before the delay
+    // fires, dropping the ready count (2) below the threshold (3).
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
+      ready: false,
+    );
+
+    final meetingSnap = await firestore.document(breakoutLiveMeetingPath).get();
+    final updatedMeeting = LiveMeeting.fromJson(
+      firestoreUtils.fromFirestoreJson(meetingSnap.data.toMap()),
+    );
+
+    // The pending advance must be cancelled and the agenda must not advance.
+    expect(updatedMeeting.pendingAdvanceAgendaItemId, isNull);
+    expect(updatedMeeting.pendingAdvanceTime, isNull);
+    expect(updatedMeeting.events.length, equals(1));
+    expect(
+      updatedMeeting.events[0].event,
+      equals(LiveMeetingEventType.agendaItemStarted),
+    );
+  });
+
+  test('Ghost participants (isPresent false) are excluded from the denominator',
+      () async {
+    var event = Event(
+      id: '12341ghost001',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType.hosted,
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(
+          id: '55005',
+          title: "Role call",
+          content: "Shout out if you're here",
+        ),
+      ],
+    );
+    event = await eventTestUtils.createEvent(event: event, userId: adminUserId);
+
+    await eventTestUtils.joinEventMultiple(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: event.id,
+      participantIds: ['333', '444', '555', '666', '777', '888', '999', '000'],
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.initiateBreakoutSession(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      userId: adminUserId,
+    );
+
+    final breakoutRoom = await liveMeetingTestUtils.getBreakoutRoom(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      roomName: '1',
+    );
+
+    // Three genuinely present participants (threshold = 2) plus one ghost that
+    // is in the room but not present. If the ghost were counted the threshold
+    // would be 3 and two votes would not advance.
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777'],
+    );
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['999'],
+      isPresent: false,
+    );
+
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+      breakoutRoomId: breakoutRoom.roomId,
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+    );
+    final agendaItemId = event.agendaItems.first.id;
+
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '333',
+    );
+    await voteReadyViaTrigger(
+      breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+      agendaItemId: agendaItemId,
+      roomId: breakoutRoom.roomId,
+      userId: '555',
+    );
+
+    final meetingPathSnap = await firestore
+        .document(
+          liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+            breakoutRoomId: breakoutRoom.roomId,
+            event: event,
+            breakoutSessionId: breakoutSessionId,
+          ),
+        )
+        .get();
+    final createdMeeting = LiveMeeting.fromJson(
+      firestoreUtils.fromFirestoreJson(meetingPathSnap.data.toMap()),
+    );
+    // Two of three present participants voted (majority) -> advances to finished.
+    expect(createdMeeting.events.length, equals(2));
+    expect(
+      createdMeeting.events[1].event,
+      equals(LiveMeetingEventType.finishMeeting),
+    );
+  });
+
+  test('onWrite trigger evaluates advance from a participant-details path',
+      () async {
+    var event = Event(
+      id: '12341trig0001',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType.hosted,
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(
+          id: '55005',
+          title: "Role call",
+          content: "Shout out if you're here",
+        ),
+      ],
+    );
+    event = await eventTestUtils.createEvent(event: event, userId: adminUserId);
+
+    await eventTestUtils.joinEventMultiple(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: event.id,
+      participantIds: ['333', '444', '555', '666', '777', '888', '999', '000'],
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.initiateBreakoutSession(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      userId: adminUserId,
+    );
+
+    final breakoutRoom = await liveMeetingTestUtils.getBreakoutRoom(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      roomName: '1',
+    );
+
+    await setBreakoutPresence(
+      event,
+      breakoutRoom.roomId,
+      ['333', '555', '777', '999'],
+    );
+
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+      breakoutRoomId: breakoutRoom.roomId,
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+    );
+    final agendaItemId = event.agendaItems.first.id;
+
+    // Majority (3 of 4 present) recorded ready votes directly in the details
+    // collection (as the client will once it writes directly).
+    for (final uid in ['333', '555', '777']) {
+      await firestore
+          .document(
+            '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/$uid',
+          )
+          .setData(
+            DocumentData.fromMap(
+              firestoreUtils.toFirestoreJson(
+                ParticipantAgendaItemDetails(
+                  userId: uid,
+                  agendaItemId: agendaItemId,
+                  meetingId: breakoutRoom.roomId,
+                  readyToAdvance: true,
+                ).toJson(),
+              ),
+            ),
+            SetOptions(merge: true),
+          );
+    }
+
+    // Simulate the trigger firing for the last vote's participant-details doc.
+    await OnParticipantAgendaItemDetails()
+        .evaluateAdvanceForParticipantDetailsPath(
+      '$breakoutLiveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/777',
+    );
+
+    final meetingPathSnap =
+        await firestore.document(breakoutLiveMeetingPath).get();
+    final createdMeeting = LiveMeeting.fromJson(
+      firestoreUtils.fromFirestoreJson(meetingPathSnap.data.toMap()),
+    );
+    // Majority reached; the single agenda item advances immediately to finished.
+    expect(createdMeeting.events.length, equals(2));
+    expect(
+      createdMeeting.events[1].event,
+      equals(LiveMeetingEventType.finishMeeting),
+    );
+  });
+
+  test('Advance is scheduled ~meetingGuideAdvanceDelay (8s) out, not sooner',
+      () async {
+    // Two agenda items so the first is NOT the last: crossing the threshold on a
+    // non-last item takes the DELAYED path (writes pendingAdvanceTime = now + 8s
+    // and schedules a Cloud Task) instead of advancing immediately. This is the
+    // value the client anchors its countdown to, so a regression to ~4s here
+    // would directly explain a too-short countdown.
+    var event = Event(
+      id: '12341timing001',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType.hosted,
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(id: '55005', title: 'First', content: 'a'),
+        AgendaItem(id: '55006', title: 'Second', content: 'b'),
+      ],
+    );
+    event = await eventTestUtils.createEvent(event: event, userId: adminUserId);
+
+    await eventTestUtils.joinEventMultiple(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: event.id,
+      participantIds: ['333', '444', '555', '666', '777', '888', '999', '000'],
+    );
+
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    await liveMeetingTestUtils.initiateBreakoutSession(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      userId: adminUserId,
+    );
+
+    final breakoutRoom = await liveMeetingTestUtils.getBreakoutRoom(
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+      roomName: '1',
+    );
+
+    // Exactly one present participant => readyToAdvanceThreshold(1) == 1, so a
+    // single ready vote crosses the threshold and schedules the advance.
+    await setBreakoutPresence(event, breakoutRoom.roomId, ['333']);
+
+    final breakoutLiveMeetingPath =
+        liveMeetingTestUtils.getBreakoutLiveMeetingPath(
+      breakoutRoomId: breakoutRoom.roomId,
+      event: event,
+      breakoutSessionId: breakoutSessionId,
+    );
+    final agendaItemId = event.agendaItems.first.id;
+
+    final before = DateTime.now().toUtc();
+    // The delayed path calls schedule() -> real Cloud Tasks, which is not
+    // available in tests and throws. pendingAdvanceTime is written to the doc
+    // (in a transaction) BEFORE that call, so swallow the scheduling error and
+    // assert on the persisted value.
+    try {
+      await voteReadyViaTrigger(
+        breakoutLiveMeetingPath: breakoutLiveMeetingPath,
+        agendaItemId: agendaItemId,
+        roomId: breakoutRoom.roomId,
+        userId: '333',
+      );
+    } catch (_) {
+      // Expected: Cloud Tasks scheduling is unavailable in the test emulator.
+    }
+    final after = DateTime.now().toUtc();
+
+    final meetingSnap = await firestore.document(breakoutLiveMeetingPath).get();
+    final meeting = LiveMeeting.fromJson(
+      firestoreUtils.fromFirestoreJson(meetingSnap.data.toMap()),
+    );
+
+    // A pending advance for the current (first) item must be scheduled, and the
+    // agenda must not have advanced yet.
+    expect(meeting.pendingAdvanceAgendaItemId, equals(agendaItemId));
+    expect(meeting.pendingAdvanceTime, isNotNull);
+    expect(meeting.events.length, equals(1));
+
+    // pendingAdvanceTime is computed as (trigger now + 8s), and the trigger runs
+    // after `before`, so the gap from `before` must be >= ~8s (a ~4s regression
+    // fails), and it can't be meaningfully more than 8s past `after`.
+    final pendingAdvanceTime = meeting.pendingAdvanceTime!.toUtc();
+    expect(
+      pendingAdvanceTime.difference(before).inMilliseconds,
+      greaterThanOrEqualTo(meetingGuideAdvanceDelay.inMilliseconds - 500),
+      reason: 'pendingAdvanceTime should be >= ~8s from the ready vote',
+    );
+    expect(
+      pendingAdvanceTime.difference(after).inMilliseconds,
+      lessThanOrEqualTo(meetingGuideAdvanceDelay.inMilliseconds + 2000),
+      reason: 'pendingAdvanceTime should be ~8s out, not far beyond',
     );
   });
 }

@@ -1,12 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:client/config/environment.dart';
+import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/admin/presentation/widgets/event_data_download_dialog.dart';
+import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:data_models/recording/recording_session.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -38,6 +43,10 @@ class _DataTabState extends State<DataTab> {
   final Map<String, int?> _recordingParts = {};
   final Map<String, ValueNotifier<int?>> _recordingNotifiers = {};
   final Map<String, StreamSubscription?> _sessionSubscriptions = {};
+
+  // Tracks sessions where we've already attempted VTT artifact repair
+  // to avoid repeated calls to repairSessionArtifacts.
+  final Set<String> _repairedSessionIds = {};
 
   late StreamSubscription<List<Event>> _eventsSubscription;
 
@@ -121,6 +130,12 @@ class _DataTabState extends State<DataTab> {
 
         setState(() => _recordingParts[event.id] = status);
         _recordingNotifiers[event.id]?.value = status;
+
+        // Check for sessions where STT was enabled (they will exist in storage) but
+        // VTT artifacts were never registered to the session doc. This happens when
+        // Agora's STT agent takes longer than the produceSessions flush window to
+        // write files to GCS.
+        _maybeRepairMissingVtts(sessions);
       },
       onError: (_) {
         if (!mounted) return;
@@ -128,6 +143,55 @@ class _DataTabState extends State<DataTab> {
         _recordingNotifiers[event.id]?.value = -1;
       },
     );
+  }
+
+  /// Call repairSessionArtifacts for any stopped session that has STT enabled
+  /// (agoraRttAgentId set) but no transcript_vtt_* artifacts registered.
+  /// Only attempt each session once to avoid repeated calls on every
+  /// Firestore snapshot.
+  void _maybeRepairMissingVtts(List<RecordingSession> sessions) {
+    for (final session in sessions) {
+      final id = session.sessionId;
+      if (id == null) continue;
+      if (_repairedSessionIds.contains(id)) continue;
+      if (session.status != RecordingSessionStatus.stopped) continue;
+      if (session.agoraRttAgentId == null) continue;
+
+      final hasVtt = session.artifactPaths.keys
+          .any((k) => k.startsWith('transcript_vtt_'));
+      if (hasVtt) continue;
+
+      _repairedSessionIds.add(id);
+      _callRepairSessionArtifacts(id);
+    }
+  }
+
+  Future<void> _callRepairSessionArtifacts(String sessionId) async {
+    try {
+      final idToken =
+          await UserService().firebaseAuth.currentUser?.getIdToken();
+      if (idToken == null) return;
+      await http.post(
+        Uri.parse(
+          '${Environment.functionsUrlPrefix}/repairSessionArtifacts',
+        ),
+        headers: {
+          'Authorization': 'Bearer $idToken',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'sessionId': sessionId}),
+      );
+      // The Firestore listener will pick up the updated artifactPaths
+      // automatically -- no need to handle the response.
+    } catch (e) {
+      // Non-critical: if repair fails, the user can still download
+      // whatever artifacts were originally registered.
+      // Maybe add some kind of warning here in the future, but for now just log it.
+      loggingService.log(
+        'Error calling repairSessionArtifacts for session $sessionId: $e',
+        logType: LogType.error,
+      );
+    }
   }
 
   // --- Event list building ---
@@ -164,6 +228,7 @@ class _DataTabState extends State<DataTab> {
 
     final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
     final hasRecording = event.eventSettings?.alwaysRecord ?? false;
+    final hasTranscript = event.eventSettings?.alwaysTranscribe ?? false;
 
     if (!context.mounted) return SizedBox.shrink();
 
@@ -301,6 +366,7 @@ class _DataTabState extends State<DataTab> {
                         participants: participants,
                         eventInPast: eventInPast,
                         hasRecording: hasRecording,
+                        hasTranscript: hasTranscript,
                         recordingParts: _recordingParts,
                         recordingNotifiers: _recordingNotifiers,
                       ),
@@ -317,6 +383,7 @@ class _DataTabState extends State<DataTab> {
                       participants: participants,
                       eventInPast: eventInPast,
                       hasRecording: hasRecording,
+                      hasTranscript: hasTranscript,
                       recordingParts: _recordingParts,
                       recordingNotifiers: _recordingNotifiers,
                     ),
@@ -455,6 +522,7 @@ class _DownloadDataButton extends StatelessWidget {
     required this.event,
     required this.participants,
     required this.hasRecording,
+    required this.hasTranscript,
     required this.recordingParts,
     required this.recordingNotifiers,
     required this.eventInPast,
@@ -463,6 +531,7 @@ class _DownloadDataButton extends StatelessWidget {
   final Event event;
   final Iterable<Participant> participants;
   final bool hasRecording;
+  final bool hasTranscript;
   final Map<String, int?> recordingParts;
   final Map<String, ValueNotifier<int?>> recordingNotifiers;
   final bool eventInPast;
@@ -489,6 +558,7 @@ class _DownloadDataButton extends StatelessWidget {
             event: event,
             participants: participants,
             hasRecording: hasRecording,
+            hasTranscript: hasTranscript,
             recordingParts: recordingParts,
             recordingNotifier: recordingNotifiers[event.id],
             eventInPast: eventInPast,

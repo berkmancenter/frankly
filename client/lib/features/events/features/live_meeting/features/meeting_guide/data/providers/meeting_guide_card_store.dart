@@ -40,6 +40,19 @@ class MeetingGuideCardStore with ChangeNotifier {
   /// This should not be set directly but should be set using [_setCurrentMeetingGuideAgendaItemId].
   String? _currentMeetingGuideAgendaItemId;
 
+  /// The buffered deadline (server `pendingAdvanceTime` + [advanceCountdownBuffer])
+  /// for the ready-vote countdown currently running against
+  /// [_currentMeetingGuideAgendaItemId], captured while it's still available so it
+  /// can still be honored after the server clears `pendingAdvanceTime` upon
+  /// actually advancing.
+  DateTime? _pendingAdvanceHoldUntil;
+
+  /// Whether we're currently holding the displayed agenda item past a server-side
+  /// advance because the buffered ready-vote countdown hasn't finished yet.
+  bool get isHoldingPendingAdvanceTransition =>
+      _pendingAdvanceHoldUntil != null &&
+      (_pendingMeetingGuideAgendaItemTimer?.isActive ?? false);
+
   /// The current agenda item that we have loaded participant item details for.
   String? _participantAgendaItemDetailsId;
 
@@ -67,7 +80,7 @@ class MeetingGuideCardStore with ChangeNotifier {
     }
 
     return meetingGuideCardAgendaItem?.id ??
-        agendaProvider.agendaItems.firstOrNull?.id;
+        agendaProvider.resolvedAgendaItems.firstOrNull?.id;
   }
 
   String? get _agendaProviderCurrentItemId {
@@ -78,12 +91,13 @@ class MeetingGuideCardStore with ChangeNotifier {
     }
 
     return agendaProvider.currentAgendaItem?.id ??
-        agendaProvider.agendaItems.firstOrNull?.id;
+        agendaProvider.resolvedAgendaItems.firstOrNull?.id;
   }
 
-  AgendaItem? get meetingGuideCardAgendaItem => agendaProvider.agendaItems
-      .where((i) => i.id == _currentMeetingGuideAgendaItemId)
-      .firstOrNull;
+  AgendaItem? get meetingGuideCardAgendaItem =>
+      agendaProvider.resolvedAgendaItems
+          .where((i) => i.id == _currentMeetingGuideAgendaItemId)
+          .firstOrNull;
 
   bool get meetingGuideCardIsPending =>
       _pendingMeetingGuideAgendaItemTimer?.isActive ?? false;
@@ -165,29 +179,52 @@ class MeetingGuideCardStore with ChangeNotifier {
     final meetingGuideMatchesLiveMeeting =
         _currentMeetingGuideAgendaItemId == _agendaProviderCurrentItemId;
 
-    if (!agendaProvider.isInBreakouts ||
-        agendaProvider.isMeetingFinished ||
+    // While a ready-vote countdown is running for the item we're currently
+    // showing, remember its buffered deadline. This is captured proactively
+    // so it's still available below even after the server clears
+    // `pendingAdvanceAgendaItemId`/`pendingAdvanceTime` the moment it actually
+    // advances.
+    final pendingAdvanceTime = agendaProvider.pendingAdvanceTime;
+    if (agendaProvider.pendingAdvanceAgendaItemId ==
+            _currentMeetingGuideAgendaItemId &&
+        pendingAdvanceTime != null) {
+      _pendingAdvanceHoldUntil =
+          pendingAdvanceTime.toUtc().add(meetingGuideAdvanceCountdownBuffer);
+    }
+
+    if (agendaProvider.isMeetingFinished ||
         _currentMeetingGuideAgendaItemId == null ||
         _agendaProviderCurrentItemId ==
             MeetingGuideCardStore.startAgendaItemId) {
-      // Skip the timer if we are at the beginning, end, if the meeting is hosted, or if we haven't
-      // seen a card yet.
+      // Skip the timer if we are at the beginning, end, or if we haven't seen a card yet.
       _pendingMeetingGuideAgendaItemTimer?.cancel();
       _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
+      _pendingAdvanceHoldUntil = null;
     } else if (!meetingGuideMatchesLiveMeeting && !isAgendaItemTimerActive) {
-      // If the current agenda item has changed, it waits 3 seconds and updates
-      // [_currentMeetingGuideAgendaItemId] to match. During this time a timer is shown counting
-      // down to the new agenda item.
-      _pendingMeetingGuideAgendaItemTimer?.cancel();
-      _pendingMeetingGuideAgendaItemTimer = Timer(Duration(seconds: 3), () {
-        _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
+      // The current agenda item has changed.
+      // Start a timer to delay the transition to the new agenda item, giving participants a countdown.
+      // This is to ensure that the countdown is visible to participants before the card transitions.
+      final holdUntil = _pendingAdvanceHoldUntil;
+      final delay = holdUntil != null
+          ? holdUntil.difference(DateTime.now().toUtc())
+          : Duration.zero;
 
-        liveMeetingProvider.setAudioTemporarilyDisabled(
-          disabled: isPlayingVideo,
-        );
-        notifyListeners();
-      });
-      pendingMeetingGuideAgendaItemElapsed.reset();
+      _pendingMeetingGuideAgendaItemTimer?.cancel();
+      if (delay <= Duration.zero) {
+        _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
+        _pendingAdvanceHoldUntil = null;
+      } else {
+        _pendingMeetingGuideAgendaItemTimer = Timer(delay, () {
+          _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
+          _pendingAdvanceHoldUntil = null;
+
+          liveMeetingProvider.setAudioTemporarilyDisabled(
+            disabled: isPlayingVideo,
+          );
+          notifyListeners();
+        });
+        pendingMeetingGuideAgendaItemElapsed.reset();
+      }
     }
 
     // If the meeting agenda item is or was playing a video, we need to update everyone to be muted
@@ -229,6 +266,69 @@ class MeetingGuideCardStore with ChangeNotifier {
     return remaining;
   }
 
+  /// Filters [details] to the entries for current [agendaItemId] only;
+  /// don't briefly render a stale previous-item snapshot.
+  static List<ParticipantAgendaItemDetails> detailsForAgendaItem(
+    List<ParticipantAgendaItemDetails>? details,
+    String? agendaItemId,
+  ) {
+    if (details == null || agendaItemId == null) return const [];
+    return details
+        .where((detail) => detail.agendaItemId == agendaItemId)
+        .toList();
+  }
+
+  /// Optimistic "ready to move on" state for current user & agenda item, keyed
+  /// to agenda item id. Checkbox renders this (if present) immediately, before
+  /// the backend write/confirm; else falls back to the item-scoped stream value.
+  final Map<String, bool> _desiredReady = {};
+
+  /// The optimistic ready value for [agendaItemId], or null if untouched.
+  bool? desiredReadyFor(String? agendaItemId) =>
+      agendaItemId == null ? null : _desiredReady[agendaItemId];
+
+  /// Sets current user's ready state for current agenda item & writes to backend.
+  /// UI flips immediately, then backend confirms (or cancels) the change. Returns
+  /// true on success, false if canceled at the "just started" prompt; reverts the
+  /// optimistic flip and rethrows if the backend write fails.
+  Future<bool> setDesiredReady({
+    required String agendaItemId,
+    required bool ready,
+  }) async {
+    final previous = _desiredReady[agendaItemId];
+    _desiredReady[agendaItemId] = ready;
+    notifyListeners();
+
+    final proceed = await agendaProvider.confirmReadyToMoveOn(
+      currentAgendaItemId: agendaItemId,
+      userIsReady: ready,
+    );
+    if (!proceed) {
+      _revertDesiredReady(agendaItemId, previous);
+      return false;
+    }
+
+    try {
+      await agendaProvider.checkReadyToAdvance(
+        agendaItemId: agendaItemId,
+        ready: ready,
+      );
+    } catch (_) {
+      _revertDesiredReady(agendaItemId, previous);
+      rethrow;
+    }
+    return true;
+  }
+
+  void _revertDesiredReady(String agendaItemId, bool? previous) {
+    if (previous == null) {
+      _desiredReady.remove(agendaItemId);
+    } else {
+      _desiredReady[agendaItemId] = previous;
+    }
+    notifyListeners();
+  }
+
   bool isReadyToAdvance(
     List<ParticipantAgendaItemDetails>? participantAgendaItemDetailsList,
     String? userId,
@@ -239,19 +339,61 @@ class MeetingGuideCardStore with ChangeNotifier {
         false;
   }
 
+  /// The number of present participants marked ready for [agendaItemId],
+  /// counting the current user's optimistic (not-yet-confirmed) vote from
+  /// [_desiredReady]. Lets the critical voter's own client cross the threshold
+  /// and show the timer immediately instead of waiting for the backend.
+  int optimisticReadyCount({
+    required String? agendaItemId,
+    required String? currentUserId,
+    required List<ParticipantAgendaItemDetails>? details,
+    required Set<String> presentParticipantIds,
+  }) {
+    final readyIds = detailsForAgendaItem(details, agendaItemId)
+        .where(
+          (p) =>
+              (p.readyToAdvance ?? false) &&
+              p.userId != null &&
+              presentParticipantIds.contains(p.userId),
+        )
+        .map((p) => p.userId!)
+        .toSet();
+
+    final desired = desiredReadyFor(agendaItemId);
+    if (desired != null &&
+        currentUserId != null &&
+        presentParticipantIds.contains(currentUserId)) {
+      if (desired) {
+        readyIds.add(currentUserId);
+      } else {
+        readyIds.remove(currentUserId);
+      }
+    }
+    return readyIds.length;
+  }
+
   Future<void> goToPreviousAgendaItem() async {
     final currentAgendaItemId = meetingGuideCardAgendaItem?.id;
-    final currentAgendaItemIndex = agendaProvider.agendaItems
+    final currentAgendaItemIndex = agendaProvider.resolvedAgendaItems
         .indexWhere((a) => a.id == currentAgendaItemId);
 
     final AgendaItem prevAgendaItem;
     if (currentAgendaItemIndex < 0 && agendaProvider.isMeetingFinished) {
-      prevAgendaItem = agendaProvider.agendaItems.last;
+      prevAgendaItem = agendaProvider.resolvedAgendaItems.last;
     } else if (currentAgendaItemIndex < 0) {
-      throw VisibleException('Meeting Guide entry not found.');
+      throw VisibleException(
+        appLocalizationService.getLocalization().meetingGuideEntryNotFound,
+      );
+    } else if (currentAgendaItemIndex == 0) {
+      throw VisibleException(
+        appLocalizationService
+            .getLocalization()
+            .alreadyAtFirstMeetingGuideEntry,
+      );
     } else {
-      prevAgendaItem =
-          agendaProvider.agendaItems.skip(currentAgendaItemIndex - 1).first;
+      prevAgendaItem = agendaProvider.resolvedAgendaItems
+          .skip(currentAgendaItemIndex - 1)
+          .first;
     }
 
     await agendaProvider.goToPreviousAgendaItem(prevAgendaItem.id);

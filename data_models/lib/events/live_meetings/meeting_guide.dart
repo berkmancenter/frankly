@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
+import 'package:data_models/events/event.dart';
 import 'package:data_models/utils/firestore_utils.dart';
 
 part 'meeting_guide.freezed.dart';
@@ -8,6 +9,66 @@ part 'meeting_guide.g.dart';
 
 const startMeetingAgendaItemId = 'start';
 const startMeetingWaitingPeriod = Duration(minutes: 5);
+
+/// The number of participants who need to mark themselves ready to advance before the meeting
+/// guide moves on to the next agenda item.
+///
+/// Shared between the client (for display) and the backend (for the real trigger) so they can
+/// never disagree about what "majority" means.
+int readyToAdvanceThreshold(int presentParticipantCount) =>
+    presentParticipantCount ~/ 2 + 1;
+
+/// Server-side delay before the scheduled advance fires after majority vote.
+const meetingGuideAdvanceDelay = Duration(seconds: 8);
+
+/// Client-side padding on top of the server's pendingAdvanceTime to absorb
+/// typical Firestore propagation latency.
+const meetingGuideAdvanceCountdownBuffer = Duration(seconds: 2);
+
+/// Placeholder token an organizer can put in a text agenda item's `content`
+/// to have it replaced with a breakout room's diffusion statement.
+const diffusionStatementToken = '{diffusionStatement}';
+
+/// Resolves [agendaItems] for a specific diffusion-statement context (e.g. a
+/// breakout room, or the main meeting when [diffusionStatement] is null).
+///
+/// Text agenda items containing [diffusionStatementToken] in their content
+/// have it replaced with [diffusionStatement] when present. When absent, the
+/// item is skipped entirely unless [showUnresolvedAsError] is true, in which
+/// case the item is kept with an error message in place of its content.
+List<AgendaItem> resolveAgendaItemsForDiffusionStatement(
+  List<AgendaItem> agendaItems,
+  String? diffusionStatement, {
+  required bool showUnresolvedAsError,
+}) {
+  final result = <AgendaItem>[];
+  for (final item in agendaItems) {
+    final content = item.content;
+    final needsStatement = item.type == AgendaItemType.text &&
+        (content?.contains(diffusionStatementToken) ?? false);
+    if (!needsStatement) {
+      result.add(item);
+    } else if (diffusionStatement != null && diffusionStatement.isNotEmpty) {
+      result.add(
+        item.copyWith(
+          content: content!.replaceAll(
+            diffusionStatementToken,
+            diffusionStatement,
+          ),
+        ),
+      );
+    } else if (showUnresolvedAsError) {
+      result.add(
+        item.copyWith(
+          content: 'Error: this agenda item uses {diffusionStatement} but '
+              'no diffusion statement is set for this room.',
+        ),
+      );
+    }
+    // else: skip -- token present, no statement available, production.
+  }
+  return result;
+}
 
 @Freezed(makeCollectionsUnmodifiable: false)
 class ParticipantAgendaItemDetails

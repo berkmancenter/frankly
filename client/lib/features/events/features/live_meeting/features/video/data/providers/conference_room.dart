@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:client/core/data/services/event_bus.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
@@ -17,6 +18,7 @@ import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart' hide Participant;
+
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -89,10 +91,31 @@ class VideoParticipant implements MeetingProviderParticipant {
 }
 
 class ConferenceRoom with ChangeNotifier {
+  static const Duration _mediaToggleLockTimeout = Duration(seconds: 4);
+
+  // The dominant speaker pipeline has three timing constants:
+  // _dominantSpeakerInputDebounce collapses rapid bursts from Agora before any logic runs.
+  // _dominantSpeakerSilenceHoldDuration delays accepting a null (no active speaker) —
+  //   a new speaker arriving within this window cancels the hold.
+  // _dominantSpeakerOutputDebounce settles any remaining chatter after the switchMap.
+  static const Duration _dominantSpeakerInputDebounce =
+      Duration(milliseconds: 500);
+  static const Duration _dominantSpeakerSilenceHoldDuration =
+      Duration(seconds: 3);
+  static const Duration _dominantSpeakerOutputDebounce = Duration(seconds: 1);
+  // If a user is confirmed as dominant speaker for this long, their raised hand
+  // is automatically lowered (they have the floor, no need to keep requesting it).
+  static const Duration _dominantSpeakerUnraiseHandDelay = Duration(seconds: 4);
+  static const Duration _participantInitializationDelay = Duration(seconds: 4);
+  // Random jitter added before calling checkReadyToAdvance after a disconnect,
+  // to avoid all remaining participants hitting Firestore simultaneously.
+  static const int _disconnectCheckReadyMaxJitterMs = 5000;
+
   final LiveMeetingProvider liveMeetingProvider;
   final AgendaProvider agendaProvider;
   final CommunityProvider communityProvider;
   final MeetingGuideCardStore meetingGuideCardModel;
+
   final String token;
   final String roomName;
 
@@ -156,10 +179,12 @@ class ConferenceRoom with ChangeNotifier {
   bool flashEnabled = false;
 
   bool get audioEnabled => _room?.localParticipant?.audioTrackEnabled ?? false;
+  bool get audioIsStreaming =>
+      _room?.localParticipant?.audioIsStreaming ?? false;
 
-  bool get videoEnabled {
-    return _room?.localParticipant?.videoTrackEnabled ?? false;
-  }
+  bool get videoEnabled => _room?.localParticipant?.videoTrackEnabled ?? false;
+  bool get videoIsStreaming =>
+      _room?.localParticipant?.videoIsStreaming ?? false;
 
   List<AgoraParticipant> get handRaisedParticipants => _orderedParticipants
       .where((p) => meetingGuideCardModel.getHandRaisedTime(p.identity) != null)
@@ -182,6 +207,8 @@ class ConferenceRoom with ChangeNotifier {
       _debouncedDominantSpeakerStream?.value?.userId;
   BehaviorSubjectWrapper<AgoraParticipant?>? _debouncedDominantSpeakerStream;
   StreamSubscription<AgoraParticipant?>? _debouncedDominantSpeakerSubscription;
+
+  StreamSubscription<AVDeviceChangedEvent>? _avDeviceChangeSubscription;
 
   /// Returns an ordered list of participants to be displayed on screen.
   ///
@@ -264,6 +291,34 @@ class ConferenceRoom with ChangeNotifier {
     liveMeetingProvider.conferenceRoom = this;
 
     liveMeetingProvider.eventProvider.addListener(_muteOthersOnOverride);
+
+    _avDeviceChangeSubscription = appEventBus.stream
+        .whereType<AVDeviceChangedEvent>()
+        .listen(_onAVDeviceChanges);
+  }
+
+  // When AVDeviceChangedEvent is emitted on event bus, check the changes in the event and toggles the video/audio enabled state accordingly;
+  // Also updates the audio/video device if necessary.
+  void _onAVDeviceChanges(AVDeviceChangedEvent event) {
+    if (event.changes.contains(AVDeviceChange.enableVideo) ||
+        event.changes.contains(AVDeviceChange.disableVideo)) {
+      toggleVideoEnabled(
+        setEnabled: event.changes.contains(AVDeviceChange.enableVideo),
+      );
+    }
+    if (event.changes.contains(AVDeviceChange.enableAudio) ||
+        event.changes.contains(AVDeviceChange.disableAudio)) {
+      toggleAudioEnabled(
+        setEnabled: event.changes.contains(AVDeviceChange.enableAudio),
+      );
+    }
+
+    if (event.changes.contains(AVDeviceChange.updateAudioDevice)) {
+      _room?.localParticipant?.updateAgoraAudioDevice();
+    }
+    if (event.changes.contains(AVDeviceChange.updateVideoDevice)) {
+      _room?.localParticipant?.updateAgoraVideoDevice();
+    }
   }
 
   void _muteOthersOnOverride() {
@@ -293,8 +348,10 @@ class ConferenceRoom with ChangeNotifier {
 
   Future<void> connect() async {
     Debug.log('ConferenceRoom.connect()');
+
     try {
       hasStartedConnecting = true;
+
       _room = AgoraRoom(
         channelName: roomName,
         token: token,
@@ -302,6 +359,7 @@ class ConferenceRoom with ChangeNotifier {
         eventProvider: liveMeetingProvider.eventProvider,
         conferenceRoom: this,
       );
+
       await _room!.connect(
         enableAudio: liveMeetingProvider.shouldStartLocalAudioOn,
         enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
@@ -345,6 +403,7 @@ class ConferenceRoom with ChangeNotifier {
 
   void _disposeStreamsAndSubscriptions() {
     liveMeetingProvider.eventProvider.removeListener(_muteOthersOnOverride);
+    _avDeviceChangeSubscription?.cancel();
 
     _debouncedDominantSpeakerSubscription?.cancel();
     _unraiseHandSubscription.cancel();
@@ -360,7 +419,7 @@ class ConferenceRoom with ChangeNotifier {
     bool? setEnabled,
     bool updateProvider = true,
   }) async {
-    final updatedEnabledValue = setEnabled ?? !videoEnabled;
+    final updatedEnabledValue = setEnabled ?? !videoIsStreaming;
     final context = navigatorState.context;
 
     if (updatedEnabledValue) {
@@ -371,7 +430,13 @@ class ConferenceRoom with ChangeNotifier {
           context,
           'Error enabling camera. Please ensure you have granted permission.',
         );
-        _room?.localParticipant?.videoTrackEnabled = false;
+        _room?.localParticipant
+          ?..videoTrackEnabled = false
+          ..videoIsStreaming = false;
+
+        if (updateProvider) {
+          liveMeetingProvider.shouldStartLocalVideoOn = false;
+        }
         return;
       }
     }
@@ -379,14 +444,19 @@ class ConferenceRoom with ChangeNotifier {
     // Lock this code so that different sections toggling audio will not cause race conditions.
     await _videoTogglingLock.synchronized(
       () async {
-        await _room!.localParticipant!.enableVideo(
-          setEnabled: updatedEnabledValue,
-        );
-        if (updateProvider) {
-          liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
+        try {
+          await _room!.localParticipant!.enableVideo(
+            setEnabled: updatedEnabledValue,
+          );
+
+          if (updateProvider) {
+            liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
+          }
+        } catch (e) {
+          loggingService.log('Error toggling video: $e');
         }
       },
-      timeout: Duration(seconds: 4),
+      timeout: _mediaToggleLockTimeout,
     );
     notifyListeners();
   }
@@ -395,7 +465,7 @@ class ConferenceRoom with ChangeNotifier {
     bool? setEnabled,
     bool updateProvider = true,
   }) async {
-    final updatedEnabledValue = setEnabled ?? !audioEnabled;
+    final updatedEnabledValue = setEnabled ?? !audioIsStreaming;
     final context = navigatorState.context;
 
     if (updatedEnabledValue) {
@@ -406,7 +476,12 @@ class ConferenceRoom with ChangeNotifier {
           context,
           'Error enabling microphone. Please ensure you have granted permission.',
         );
-        _room?.localParticipant?.audioTrackEnabled = false;
+        _room?.localParticipant
+          ?..audioIsStreaming = false
+          ..audioTrackEnabled = false;
+        if (updateProvider) {
+          liveMeetingProvider.shouldStartLocalAudioOn = false;
+        }
         return;
       }
     }
@@ -419,28 +494,32 @@ class ConferenceRoom with ChangeNotifier {
           return;
         }
 
-        final audioEnableFutures = [
-          _room!.localParticipant!.enableAudio(
-            setEnabled: updatedEnabledValue,
-          ),
-          if ((liveMeetingProvider
-                      .eventProvider.selfParticipant?.muteOverride ??
-                  false) &&
-              updatedEnabledValue)
-            firestoreLiveMeetingService.updateParticipantMuteOverride(
-              event: liveMeetingProvider.eventProvider.event,
-              participantId: userService.currentUserId!,
-              muteOverride: false,
+        try {
+          final audioEnableFutures = [
+            _room!.localParticipant!.enableAudio(
+              setEnabled: updatedEnabledValue,
             ),
-        ];
+            if ((liveMeetingProvider
+                        .eventProvider.selfParticipant?.muteOverride ??
+                    false) &&
+                updatedEnabledValue)
+              firestoreLiveMeetingService.updateParticipantMuteOverride(
+                event: liveMeetingProvider.eventProvider.event,
+                participantId: userService.currentUserId!,
+                muteOverride: false,
+              ),
+          ];
 
-        await Future.wait(audioEnableFutures);
+          await Future.wait(audioEnableFutures);
 
-        if (updateProvider) {
-          liveMeetingProvider.shouldStartLocalAudioOn = updatedEnabledValue;
+          if (updateProvider) {
+            liveMeetingProvider.shouldStartLocalAudioOn = updatedEnabledValue;
+          }
+        } catch (e) {
+          loggingService.log('Error toggling audio: $e');
         }
       },
-      timeout: Duration(seconds: 4),
+      timeout: _mediaToggleLockTimeout,
     );
 
     notifyListeners();
@@ -464,21 +543,20 @@ class ConferenceRoom with ChangeNotifier {
     _debouncedDominantSpeakerStream = BehaviorSubjectWrapper(
       room.dominantSpeakerStream
           .distinct()
-          .debounceTime(Duration(milliseconds: 500))
+          .debounceTime(_dominantSpeakerInputDebounce)
           .switchMap((id) {
         if (id == null) {
-          // If it is null then wait a few seconds to make sure there arent other changes before switching over to no active speaker
-          return Rx.timer(null, Duration(seconds: 3));
+          return Rx.timer(null, _dominantSpeakerSilenceHoldDuration);
         }
         return Stream.value(id); // Immediately emit new speaker ID
-      }).debounceTime(Duration(seconds: 1)),
+      }).debounceTime(_dominantSpeakerOutputDebounce),
     );
     _debouncedDominantSpeakerSubscription =
         _debouncedDominantSpeakerStream!.listen((_) => notifyListeners());
 
     _unraiseHandSubscription = _debouncedDominantSpeakerStream!
         .distinct()
-        .debounceTime(Duration(seconds: 4))
+        .debounceTime(_dominantSpeakerUnraiseHandDelay)
         .distinct()
         .listen((dominantSpeaker) {
       final dismissRaisedHand =
@@ -500,9 +578,24 @@ class ConferenceRoom with ChangeNotifier {
     });
 
     _updateLiveMeetingParticipants();
+    Debug.log(
+      'ConferenceRoom._onConnected => updated live meeting participants',
+    );
+
+    // Update room membership now that Agora has confirmed connection
+    unawaited(
+      firestoreLiveMeetingService.updateMeetingPresence(
+        event: liveMeetingProvider.eventProvider.event,
+        isPresent: true,
+        currentBreakoutRoomId: liveMeetingProvider.currentBreakoutRoomId,
+      ),
+    );
+
+    liveMeetingProvider.clearBreakoutRoomTransition();
 
     notifyListeners();
     _completer.complete(room);
+
     if (liveMeetingProvider.audioDefaultOn &&
             !(room.localParticipant?.audioTrackEnabled ?? true) ||
         liveMeetingProvider.videoDefaultOn &&
@@ -520,13 +613,14 @@ class ConferenceRoom with ChangeNotifier {
     ).show();
     if (!context.mounted) return;
     if (enableAudioVideo) {
+      if (!navigatorState.mounted) return;
       if (!(_room?.localParticipant?.audioTrackEnabled ?? false)) {
         await AudioVideoErrorDialog.showOnError(
           context,
           () => toggleAudioEnabled(setEnabled: true),
         );
       }
-    if (!context.mounted) return;
+      if (!context.mounted) return;
       if (!(_room?.localParticipant?.videoTrackEnabled ?? false)) {
         await AudioVideoErrorDialog.showOnError(
           context,
@@ -549,7 +643,7 @@ class ConferenceRoom with ChangeNotifier {
     // Add timers for newly connected users
     for (final participant in participants) {
       participantInitializationTimers[participant.userId] ??=
-          Timer(Duration(seconds: 4), () => notifyListeners());
+          Timer(_participantInitializationDelay, () => notifyListeners());
     }
 
     liveMeetingProvider.setMeetingProviderParticipants(
@@ -584,8 +678,11 @@ class ConferenceRoom with ChangeNotifier {
 
     if (liveMeetingProvider.isInBreakout) {
       Future.delayed(
-          Duration(milliseconds: (5.0 * random.nextDouble() * 1000).round()),
-          () {
+          Duration(
+            milliseconds:
+                (_disconnectCheckReadyMaxJitterMs * random.nextDouble())
+                    .round(),
+          ), () {
         if (!_isDisposed) {
           agendaProvider.checkReadyToAdvance();
         }

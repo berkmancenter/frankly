@@ -83,7 +83,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Edit event',
+                context.l10n.editEvent,
                 style: context.theme.textTheme.headlineSmall,
               ),
               Semantics(
@@ -135,9 +135,9 @@ class EditEventDrawerState extends State<EditEventDrawer>
               if (canBuildParticipantCountSection) ...[
                 _buildParticipantCountSection(),
                 SizedBox(height: 20),
+                _buildParticipantsSection(),
+                SizedBox(height: 20),
               ],
-              _buildParticipantsSection(),
-              SizedBox(height: 20),
               _buildBottomButtonsSection(),
               SizedBox(height: 20),
             ],
@@ -345,7 +345,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
   }
 
   Widget _buildParticipantCountSection() {
-    final peopleCount = _model.event.maxParticipants ?? 0;
+    final peopleCount = _presenter.getHostedMaxParticipantsForUi();
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(
@@ -358,14 +358,14 @@ class EditEventDrawerState extends State<EditEventDrawer>
       ),
       onTap: () async {
         final isMobile = _presenter.isMobile(context);
-        final maxParticipants = _model.event.maxParticipants ?? 8;
+        final maxParticipants = _presenter.getHostedMaxParticipantsForUi();
 
         final selectedNumber = await Dialogs.showSelectNumberDialog(
           context,
           isMobile: isMobile,
           title: context.l10n.selectMaxParticipantCount,
-          minNumber: 2,
-          maxNumber: 50,
+          minNumber: EditEventPresenter.hostedMinParticipants.toDouble(),
+          maxNumber: EditEventPresenter.hostedMaxParticipants.toDouble(),
           currentNumber: maxParticipants.toDouble(),
           buttonText: context.l10n.updateButton,
         );

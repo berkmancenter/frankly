@@ -22,6 +22,8 @@ import 'package:client/features/events/features/event_page/presentation/event_se
 import 'package:client/features/events/features/edit_event/presentation/views/edit_event_contract.dart';
 import 'package:client/features/events/features/edit_event/presentation/edit_event_presenter.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
+import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_contract.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_user_suggestions_contract.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart';
@@ -59,6 +61,7 @@ import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:client/core/data/services/shared_preferences_service.dart';
 import 'package:client/features/user/data/services/user_service.dart';
+import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/features/discussion_threads/data/services/models_helper.dart';
 import 'package:client/features/admin/utils/payment_utils.dart';
@@ -114,6 +117,7 @@ import 'mock_function.dart';
   MockSpec<EventProvider>(),
   MockSpec<EventSettingsPresenterHelper>(),
   MockSpec<EventSettingsView>(),
+  MockSpec<EventTabsControllerState>(),
   MockSpec<DiscussionThread>(),
   MockSpec<DiscussionThreadComment>(),
   MockSpec<DiscussionThreadView>(),
@@ -143,6 +147,7 @@ import 'mock_function.dart';
   MockSpec<MediaQueryData>(),
   MockSpec<MeetingGuideCardItemUserSuggestionsView>(),
   MockSpec<MeetingGuideCardStore>(),
+  MockSpec<MeetingGuideCardView>(),
   MockSpec<MeetingUserSuggestion>(),
   MockSpec<NavBarView>(),
   MockSpec<NetworkingStatusView>(),
@@ -167,6 +172,7 @@ import 'mock_function.dart';
   MockSpec<Template>(),
   MockSpec<TemplatePageProvider>(),
   MockSpec<UserAdminDetailsProvider>(),
+  MockSpec<UserDataService>(),
   MockSpec<UserService>(),
   MockSpec<WriteBatch>(),
   MockSpec<XFile>(),

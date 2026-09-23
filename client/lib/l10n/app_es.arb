@@ -202,6 +202,16 @@
       }
     }
   },
+  "@majorityOfParticipantsExample": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -259,6 +269,16 @@
     "placeholders": {
       "email": {
         "type": "Object"
+      }
+    }
+  },
+  "@peopleRequiredToMoveOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
       }
     }
   },
@@ -386,6 +406,7 @@
   "addTag": "Añadir etiqueta",
   "addToCalendar": "Añadir al calendario",
   "admin": "Administrador",
+  "agendaItemJustStartedConfirm": "¡Este punto de la agenda acaba de comenzar! ¿Seguro que quieres continuar?",
   "agendaItemsWereRemoved": "Los elementos de agenda fueron eliminados",
   "adminBilling": "Facturación de administración",
   "agendaItemWasDeleted": "El elemento de agenda fue eliminado",
@@ -395,9 +416,11 @@
   "agendaPromptWaiting": "Esperando a que el anfitrión inicie el evento...",
   "agendaTitle": "Agenda",
   "agreeAndContinue": "Aceptar y continuar",
+  "allParticipantsMutedDuringVideo": "¡Todos los participantes están silenciados durante el video!",
+  "alreadyAtFirstMeetingGuideEntry": "Ya estás en la primera entrada de la guía de reunión.",
   "alreadyUserSignIn": "¿Ya eres usuario?",
-  "anonymous": "Anónimo",
   "and": "y",
+  "anonymous": "Anónimo",
   "appDescription": "Una plataforma para deliberaciones en línea",
   "appNameHome": "{appName} - Inicio",
   "appNameTermsOfService": "Términos de Servicio de {appName}",
@@ -405,6 +428,7 @@
   "appNameUnsubscribe": "{appName} - Cancelar suscripción",
   "appNameUserSettings": "{appName} - Configuración de usuario",
   "appNameWelcome": "{appName} - Bienvenido",
+  "approveAll": "Aprobar todo",
   "appTitle": "Frankly",
   "appTitleHome": "{appName} - Inicio",
   "appTitleUnsubscribe": "{appName} - Cancelar suscripción",
@@ -416,7 +440,8 @@
   "aspectRatioClipped": "Relación de aspecto recortada",
   "attendee": "Asistente",
   "audioDeviceUpdated": "Dispositivo de audio actualizado.",
-  "audioInputDevice": "Dispositivo de entrada de audio:",
+  "audioVideoSettings": "Configuración de audio/video",
+  "avAudioErrorNotFound": "Frankly no puede acceder a su(s) micrófono(s). Modifique sus permisos/configuración de dispositivos y actualice la página para permitir el uso del micrófono.",
   "avConnecting": "Conectando...",
   "avErrorConstraints": "Error de restricciones multimedia.",
   "avErrorDisconnected": "Dispositivos de audio/video desconectados.",
@@ -428,7 +453,8 @@
   "avErrorPermissionRequired": "Se requiere permiso para usar dispositivos de audio/video.",
   "avErrorSaveDeviceSettings": "Error al guardar la configuración de dispositivos de audio/video. Por favor, inténtelo de nuevo o contacte al soporte.",
   "avIssues": "¿Problemas de audio/video?",
-  "aVIssues": "Problemas de A/V",
+  "avVideoErrorNotFound": "Frankly no puede acceder a su(s) cámara(s). Modifique sus permisos/configuración de dispositivos y actualice la página para permitir el uso de la cámara.",
+  "audiovisualSettings": "Configuración audiovisual",
   "awaitingResponses": "Esperando respuestas…",
   "back": "Atrás",
   "background": "Fondo",
@@ -438,6 +464,7 @@
   "billing": "Facturación",
   "brandingAndTheme": "Marca y tema",
   "brandYourSpace": "Marcar tu espacio",
+  "breakoutRoomTransitionTimeout": "¡No se pudo encontrar esa sala de grupo! Regresando a la reunión principal.",
   "breakoutUpdated": "¡Sala de grupos actualizada!",
   "breakouts": "Grupos",
   "broadcast": "Transmisión",
@@ -449,6 +476,7 @@
   "byCategory": "Por categoría",
   "bySigningInRegisteringOrUsing": "Al iniciar sesión, registrarse o usar {appName}, acepto estar sujeto a los ",
   "bySize": "Por tamaño",
+  "cameraInput": "Entrada de cámara",
   "cancel": "Cancelar",
   "cancelCurrentPlan": "¿Cancelar plan actual?",
   "cancelEmailEdit": "Cancel",
@@ -499,6 +527,7 @@
   "confirmRemoveAllAgendaItems": "¿Está seguro de que desea eliminar todos los elementos de agenda de las salas de grupos? No podrá deshacer esta acción.",
   "confirmRemoveParticipant": "¿Está seguro de que desea eliminar a {name} de este evento?",
   "congratulations": "¡Felicidades!",
+  "connectingToRoom": "Conectando a la sala...",
   "contactEmail": "Correo de contacto",
   "continueAfterVerification": "He Verificado Mi Correo",
   "contactUs": "Contáctanos",
@@ -550,7 +579,7 @@
   "editEvent": "Editar evento",
   "editImage": "Editar imagen",
   "editItem": "Editar elemento",
-  "email": "Email",
+  "email": "Correo electrónico",
   "emailAddressAlreadyInUse": "Ya ha creado una cuenta vinculada a esta dirección de email. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente.",
   "emailAddressAlreadyInUseLoginError": "Este correo electrónico ya está en uso. Inténtalo ",
   "emailNotYetVerified": "Tu correo aún no ha sido verificado. Por favor revisa tu bandeja de entrada y haz clic en el enlace de verificación.",
@@ -593,6 +622,7 @@
   "errorLoadingMemberships": "Algo salió mal al cargar las membresías. Por favor, actualice.",
   "errorLoadingProfileInfo": "Hubo un error al cargar la información del perfil.",
   "errorLoadingWordCloudResponses": "Error al cargar las respuestas de la nube de palabras",
+  "errorLoadingRequests": "Algo salió mal al cargar las solicitudes. Por favor, actualice.",
   "errorOccurred": "Se produjo un error",
   "eventData": "Datos",
   "eventDescription": "Descripción del evento",
@@ -615,12 +645,16 @@
   "facebookUrl": "URL de Facebook",
   "facilitator": "Facilitador",
   "fakeParticipantCount": "Recuento de participantes falsos",
+  "freeTextRegistrationQuestion": "Pregunta de registro de texto libre",
+  "freeTextRegistrationQuestionRequired": "Se requiere que los registrados respondan a esta pregunta",
   "filter": "filtrar",
   "filterMemberListByName": "Filtrar lista de miembros por nombre",
   "finish": "Finalizar",
+  "finishRsvp": "Finalizar RSVP",
   "floatingChat": "Chat Flotante",
   "follow": "Seguir",
   "followCommunityButton": "Botón seguir comunidad",
+  "followerRequest": "Solicitud de seguidor",
   "followRequestSent": "Solicitud de seguimiento enviada",
   "forgotPasswordPrefix": "¿Olvidaste tu contraseña?",
   "forgotPasswordEnterEmail": "Ingresa tu correo electrónico",
@@ -653,6 +687,7 @@
   "imageUrlIsNotSet": "(URL de imagen no establecida.)",
   "imageUrlIsRequired": "La URL de la imagen es obligatoria",
   "imageUrlNotSet": "(URL de imagen no establecida.)",
+  "imReadyToMoveOn": "Estoy listo para continuar",
   "incorrectEmailOrPassword": "Correo electrónico o contraseña incorrectos",
   "instagramUrl": "URL de Instagram",
   "instantMeeting": "Reunión instantánea",
@@ -682,6 +717,8 @@
   "links": "Enlaces",
   "livestream": "Transmisión en vivo",
   "loading": "Cargando",
+  "loadingBreakoutRoomPleaseWait": "Cargando sala de grupo. Por favor, espera...",
+  "loadingRoomPleaseWait": "Cargando sala. Por favor, espera...",
   "locked": "Bloqueado",
   "loggingIn": "iniciando sesión",
   "logIntoApp": "Iniciar sesión en {appName}",
@@ -691,6 +728,8 @@
   "logo": "Logotipo",
   "logout": "Cerrar sesión",
   "loopVideo": "Repetir video",
+  "majorityOfParticipants": "La mayoría de los participantes deben estar de acuerdo para avanzar a la siguiente actividad del evento.",
+  "majorityOfParticipantsExample": "En este evento, {count} de las {total} personas que participan deben indicar que están listas para continuar antes de comenzar el siguiente elemento.",
   "makeASuggestion": "Hacer una sugerencia",
   "makeThisSpacePrivate": "Hacer este espacio privado",
   "manageCommunity": "Administrar comunidad",
@@ -703,6 +742,7 @@
   "meetingEndMessage": "Esta reunión ha terminado. Puede cerrar esta ventana.",
   "meetingEndWithFollowMessage": "Esta reunión ha terminado. Puede cerrar esta ventana o visitar {name} para continuar la conversación.",
   "meetingGuideCard": "tarjeta-guía-reunión",
+  "meetingGuideEntryNotFound": "No se encontró la entrada de la guía de reunión.",
   "member": "Miembro",
   "memberRolesHelpMessage": "Consulte el Centro de ayuda para obtener detalles sobre los permisos por rol.",
   "members": "Miembros",
@@ -713,10 +753,13 @@
   "messageIsRequired": "El mensaje es obligatorio",
   "messageParticipants": "Enviar mensaje a participantes",
   "messageTime": "Hora del mensaje",
+  "micAndCameraEnabled": "El micrófono y la cámara están activados al inicio de la llamada",
+  "microphoneInput": "Entrada de micrófono",
   "microsoftTeams": "Microsoft Teams",
   "mins": "mins",
   "miscellaneous": "Misceláneo",
   "moderator": "Moderador",
+  "movingOntoNextAgendaItem": "Pasando al siguiente punto de la agenda",
   "mustAddAtLeastTwoCategories": "Debe añadir al menos dos (2) categorías.",
   "mustBeLoggedInToAccessThisSection": "Debe estar conectado para acceder a esta sección",
   "mustBeValidHexColor": "Debe ser un HEX válido",
@@ -729,6 +772,7 @@
   "myUpcomingEvents": "Mis próximos eventos",
   "name": "Nombre",
   "needMoreHelp": "¿Necesitas más ayuda? ",
+  "networkRequestBlocked": "No pudimos conectarnos al servidor. Una VPN, un filtro DNS o una extensión de privacidad o de bloqueo de anuncios podría estar bloqueando las solicitudes. Prueba con otra red o navegador, o desactiva el bloqueador y vuelve a intentarlo.",
   "newAnnouncement": "Nuevo anuncio",
   "newRoomNumber": "Número de sala nueva:",
   "newSubscription": "Nueva Suscripción",
@@ -739,12 +783,16 @@
   "noAccountFound": "No se encontró ninguna cuenta. Intente iniciar sesión con una dirección de email diferente. O regístrese con esta.",
   "noAnnouncementsYet": "Aún no hay anuncios.",
   "noCancel": "No, Cancelar",
+  "noCameraAvailable": "No hay cámara disponible",
+  "noCameraDetected": "No se detectó ninguna cámara",
   "noChatDataForEvent": "No hay datos de chat para este evento.",
   "noDevicesFound": "No se encontraron dispositivos",
   "noEventsFound": "No se encontraron eventos.",
+  "noFollowRequestsCurrently": "No hay solicitudes de seguimiento actualmente",
   "noItems": "No hay {name}",
   "noLetThemStay": "No, déjalos quedarse",
   "noMatchingMembersFound": "No se encontraron miembros coincidentes.",
+  "noMeetingGuideForThisMeeting": "No hay guía de reunión para esta reunión",
   "noMembersFoundToExport": "No se encontraron miembros para exportar.",
   "none": "Ninguno",
   "noOneIsHereYet": "Nadie está aquí todavía.",
@@ -771,6 +819,7 @@
   "onboardingCreateTemplateSubtitle": "¿De qué quieres hablar? Elige una plantilla y estructura el evento. ",
   "onboardingHostEventSubtitle": "Puedes ser el anfitrión o dejar que los miembros hablen directamente entre sí. ",
   "onboardingInviteSomeoneSubtitle": "Sigue los próximos eventos, recursos y más.",
+  "onlyOneFreeTextQuestionNotice": "Puede agregar una pregunta de texto libre. Todas las demás preguntas deben ser de opción múltiple.",
   "optional": "Opcional",
   "or": "O",
   "otherDataDownload": "Las encuestas, sugerencias y chat se pueden descargar desde la página del evento.",
@@ -781,6 +830,36 @@
   "participantActions": "Acciones del participante",
   "participantActionsForUserWithId": "Acciones del participante para el usuario con ID {userId}",
   "participantCount": "{count} participantes",
+  "registrationCountLabel": "{count} {count, plural, =1{Registro} other{Registros}}",
+  "@registrationCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "registrationCountWithActive": "{regCount} registros ({activeCount} activos)",
+  "@registrationCountWithActive": {
+    "placeholders": {
+      "regCount": {
+        "type": "int"
+      },
+      "activeCount": {
+        "type": "int"
+      }
+    }
+  },
+  "registrationCountWithAttended": "{regCount} registros ({attendedCount} asistieron)",
+  "@registrationCountWithAttended": {
+    "placeholders": {
+      "regCount": {
+        "type": "int"
+      },
+      "attendedCount": {
+        "type": "int"
+      }
+    }
+  },
   "participantReassigned": "Participante reasignado",
   "participants": "Participantes",
   "participantsLoadError": "Algo salió mal al cargar los participantes. Por favor, actualice.",
@@ -791,6 +870,8 @@
   "pasteOrEnterAUrl": "Pegue o ingrese una URL",
   "pasteOrEnterUrl": "Pegar o ingresar URL",
   "people": "personas",
+  "peopleReady": "personas listas",
+  "peopleRequiredToMoveOn": "{count} de {total} personas necesarias para continuar",
   "permissionsAdminDescription": "Control total sobre la configuración de la comunidad, roles de miembros y todo el contenido.",
   "permissionsFacilitatorDescription": "Puede programar y organizar eventos basados en plantillas existentes.",
   "permissionsMemberDescription": "Alguien que se ha unido a la comunidad. Puede asistir a eventos, crear publicaciones y recibir anuncios de la comunidad.",
@@ -800,6 +881,7 @@
   "pickAColor": "Elige un color",
   "playsAt": "Comienza a las {time}",
   "pleaseAddSomeAnswers": "Por favor, agregue algunas respuestas",
+  "pleaseAnswerQuestions": "Por favor, responda algunas preguntas para que podamos emparejarlo con el grupo adecuado.",
   "pleaseCompleteAllYourQuestionsAndAnswers": "¡Por favor, complete todas sus preguntas y respuestas!",
   "pleaseCompletePreviousQuestionAndBothAnswers": "Por favor, complete la pregunta anterior y ambas respuestas",
   "pleaseConfirmAvailability": "Por favor, confirme que está disponible a las {eventTime} del {eventDate} para participar en este evento.",
@@ -840,6 +922,8 @@
   "questionGoesHere": "La pregunta va aquí",
   "questionIsRequired": "La pregunta es obligatoria",
   "questionSaved": "¡Pregunta guardada!",
+  "questionTypeFreeText": "Texto libre",
+  "questionTypeMultipleChoice": "Opción múltiple",
   "questionWithNumber": "Pregunta {number}",
   "raiseHandJoinSpeakerQueue": "Levanta la mano para unirte a la cola de oradores",
   "raiseHandToJoin": "Levante la mano para unirse a la cola de oradores",
@@ -850,7 +934,7 @@
   "ready": "Listo",
   "reassign": "Reasignar",
   "recentRooms": "Salas Recientes",
-  "record": "Grabar",
+  "record": "Grabaci\u00f3n",
   "recording": "Grabando",
   "recordingPreparing": "Preparando grabación...",
   "recordingStatusChecking": "(verificando...)",
@@ -875,7 +959,9 @@
   "removeTemplate": "Eliminar plantilla",
   "reorderingNotSavedUntilQuestionsCompleted": "El reordenamiento no se guardará hasta que se completen todas las preguntas.",
   "requestToFollow": "Solicitar seguir",
+  "requests": "Solicitudes",
   "required": "Requerido",
+  "requiredToMoveOn": "requerido para continuar",
   "resendVerificationEmail": "Reenviar Correo",
   "resendVerificationEmailLink": "reenviar el correo.",
   "resources": "Recursos",
@@ -894,18 +980,23 @@
   "rsvp": "RSVP",
   "save": "Guardar",
   "saveAgendaItem": "Guardar elemento de agenda",
+  "saveAndClose": "Guardar y cerrar",
+  "saveAndJoin": "Guardar y unirse",
   "saved": "Guardado",
   "saveChangesQuestion": "¿Guardar cambios?",
   "saveEvent": "Guardar evento",
   "saveSettings": "Guardar configuración",
   "saveTemplate": "Guardar plantilla",
+  "saySomething": "Escribe algo",
   "search": "Buscar",
   "searchEvents": "Buscar eventos",
   "searchTemplates": "Buscar plantillas",
+  "sec": "Seg",
   "sectionNotFilledYet": "Esta sección aún no se ha completado.",
   "seeManagingYourCommunity": "Ver la gestión de su comunidad para más detalles.",
   "selectADay": "Seleccionar un día",
   "selectATime": "Seleccionar una hora",
+  "noMicrophoneAvailable": "No hay micrófono disponible",
   "selectAudioInputDevice": "Seleccionar dispositivo de entrada de audio",
   "selectData": "Seleccionar datos",
   "selectedColorsContrastError": "Los colores seleccionados no tienen suficiente contraste. Por favor, elige colores diferentes.",
@@ -934,6 +1025,7 @@
   "settings": "Configuración",
   "settingsFor": "Configuración para {communityName}",
   "setYourPayeeAccountDetails": "Establecer los detalles de su cuenta de pagos",
+  "shareYourCommunityWithOthers": "Comparte tu comunidad con otros",
   "showAgendaItem": "Mostrar elemento de agenda",
   "showAnnouncementsButton": "Botón mostrar anuncios",
   "showOptions": "Mostrar opciones",
@@ -964,6 +1056,7 @@
   "socialLinkedIn": "LinkedIn",
   "socialTwitter": "Twitter",
   "somethingWentWrong": "Algo salió mal",
+  "somethingWentWrongLoadingRoom": "Algo salió mal al cargar la sala. ¡Actualiza la página!",
   "somethingWentWrongLongPrefix": "Lo sentimos, algo salió mal.",
   "somethingWentWrongLongMiddle": "Actualiza la página e intenta iniciar sesión en Frankly nuevamente.\n\nSi continúas teniendo problemas, puedes ",
   "somethingWentWrongLongSuffix": "contactar al soporte para obtener ayuda",
@@ -976,6 +1069,7 @@
   "start": "Iniciar",
   "startCommunity": "Iniciar una comunidad",
   "startEvent": "Iniciar Evento",
+  "startingNextAgendaItem": "Iniciando el siguiente punto de la agenda",
   "startsTomorrow": "Comienza mañana",
   "startTime": "Hora de inicio",
   "submitChatButton": "Botón enviar chat",
@@ -1012,6 +1106,7 @@
   "titleCannotBeEmpty": "El título no puede estar vacío",
   "titleIsRequired": "El título es obligatorio",
   "tooManyRequests": "Demasiadas solicitudes fallidas. Por favor, inténtelo de nuevo más tarde.",
+  "transcription": "Transcripción",
   "troubleshoot": "Solucionar problemas",
   "troubleshootingGuide": "Guía de solución de problemas",
   "tryAgain": "Por favor, inténtelo de nuevo",
@@ -1020,6 +1115,7 @@
   "twitterUrl": "URL de Twitter",
   "typeSomething": "Escribe algo",
   "unfollow": "Dejar de seguir",
+  "unknownUser": "Usuario desconocido",
   "uniqueUrlDisplayName": "Nombre de URL único (Opcional)",
   "uniqueUrlDisplayNameOptional": "Nombre de URL único (Opcional)",
   "unsubscribeNow": "Cancelar suscripción ahora",
@@ -1050,16 +1146,15 @@
   "verificationEmailSent": "Enviamos un correo de verificación a {email}. Para verificar tu cuenta y continuar, usa el enlace del correo.",
   "verificationEmailSentTo": "Enviamos un correo de verificación a {email}.",
   "verificationAccountInstructions": "Usa el enlace del correo para verificar y continuar.",
-  "verificationLinkExpired": "Your verification link has expired. Please resend a new one.",
-  "verificationLinkExpiredTitle": "Your verification link has expired.",
-  "resendEmailAndTryAgain": "Resend the verification email and try again.",
+  "verificationLinkExpired": "Tu enlace de verificacion ha expirado. Vuelve a enviar uno nuevo.",
+  "verificationLinkExpiredTitle": "Tu enlace de verificacion ha expirado.",
+  "resendEmailAndTryAgain": "Reenvia el correo de verificacion e intentalo de nuevo.",
   "verificationLinkExpiresIn": "Este enlace de correo electrónico expirará en 30 minutos.",
   "verifyYourEmail": "Verifica Tu Correo Electrónico",
   "video": "Video",
   "videoDeviceUpdated": "Dispositivo de video actualizado.",
   "videoDisabled": "Vídeo desactivado",
   "videoElement": "{label}-elemento-video",
-  "videoInputDevice": "Dispositivo de entrada de vídeo:",
   "videoPreview": "Vista previa de video",
   "videoTabUpload": "SUBIR",
   "videoTabUrl": "URL",
@@ -1084,19 +1179,19 @@
   "wordCloudPrompt": "Introduzca una palabra para la nube de palabras",
   "wordCloudPromptRequired": "Por favor, introduzca una palabra para la nube de palabras",
   "wordList": "Lista de palabras",
-  "wrongEmail": "Wrong email? Edit",
+  "wrongEmail": "¿Correo incorrecto? Editar",
   "wrongEmailEditAddress": "(¿Querías usar una dirección diferente para tu cuenta? Edita la dirección.)",
   "editYourEmailAddressLink": "Edita tu dirección de correo",
   "editYourAddressLink": "Edita la dirección",
-  "emailCannotBeUsedTitle": "This email address is already in use.",
-  "emailCannotBeUsedBody": "You're currently using this address.",
-  "logInInsteadLink": "Log in instead",
-  "orCheckAndTryAgain": " or you can check what you entered and ",
-  "tryAgainLink": "try again",
-  "needHelp": "Need help? ",
-  "contactUsDot": "Contact us.",
+  "emailCannotBeUsedTitle": "Esta direccion de correo electrónico ya esta en uso.",
+  "emailCannotBeUsedBody": "Actualmente estas usando esta direccion.",
+  "logInInsteadLink": "Inicia sesion en su lugar",
+  "orCheckAndTryAgain": " o puedes revisar lo que ingresaste y ",
+  "tryAgainLink": "intentarlo de nuevo",
+  "needHelp": "¿Necesitas ayuda? ",
+  "contactUsDot": "Contactanos.",
   "content": "Contenido",
-  "emailCannotBeUsedFieldError": "This email address cannot be used.",
+  "emailCannotBeUsedFieldError": "Esta direccion de correo electrónico no se puede usar.",
   "emailCannotBeVerifiedTitle": "Tu correo electrónico no puede verificarse en este momento.",
   "emailCannotBeVerifiedBodyBeforeLink": "Algo salió mal. Inténtalo de nuevo más tarde.\n¿Todavía no puedes verificar? ",
   "emailCannotBeVerifiedBodyAfterLink": " para obtener ayuda.",
@@ -1113,13 +1208,15 @@
   "yesRefresh": "Sí, actualizar",
   "yesUpdatePlan": "Sí, actualizar plan",
   "you": "Tú",
+  "youAreInTheWaitingRoom": "Estás en la sala de espera.",
   "youCanChangeThisLater": "Puedes cambiar esto más tarde",
   "youHaventJoinedAnyCommunities": "No te has unido a ninguna comunidad",
   "youNeedToBeLoggedInToDoThis": "Necesita iniciar sesión para hacer esto",
   "yourChangesToProfileCantBeSaved": "Tus cambios al perfil no se pueden guardar ahora mismo",
+  "youreReadyToMoveOn": "Estás listo para continuar",
   "yourName": "Tu nombre",
   "youtubeUrl": "URL de YouTube",
   "youtubeVideoLookupFailed": "Lo sentimos, la búsqueda del video de YouTube falló.",
-  "youWereRemovedFromThisEventAndCannotRejoin": "<MISSING: youWereRemovedFromThisEventAndCannotRejoin>",
+  "youWereRemovedFromThisEventAndCannotRejoin": "Has sido eliminado de este evento y no puedes volver a unirte.",
   "zoom": "Zoom"
 }

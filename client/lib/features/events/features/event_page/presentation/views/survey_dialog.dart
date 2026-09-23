@@ -1,4 +1,6 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/random_utils.dart';
+import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/styles.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,15 @@ class SurveyDialog extends StatelessWidget {
       if (breakoutQuestions == null) return null;
       return SurveyDialogResult(
         questions: breakoutQuestions.map((q) {
+          if (q.type == BreakoutQuestionType.freeText) {
+            return q.copyWith(
+              freeTextAnswer: 'Random response ${random.nextInt(100000)}',
+            );
+          } else if (q.answers.isEmpty) {
+            // Edge case: clear the freeTextAnswer if the question is not a free text question
+            return q.copyWith(freeTextAnswer: null);
+          }
+
           final answerOptions = q.answers.expand((a) => a.options).toList();
           final answerOptionId = answerOptions.isEmpty
               ? ''
@@ -66,9 +77,6 @@ class SurveyDialog extends StatelessWidget {
 
     const spacerHeight = 20.0;
 
-    const String description =
-        'Please answer a few questions so we can match you with the right group.';
-
     return Padding(
       padding: const EdgeInsets.all(30.0),
       child: Column(
@@ -76,17 +84,17 @@ class SurveyDialog extends StatelessWidget {
         children: [
           SizedBox(height: 40),
           HeightConstrainedText(
-            'Finish RSVP',
+            context.l10n.finishRsvp,
             style: AppTextStyle.headline1,
           ),
           SizedBox(height: spacerHeight),
           HeightConstrainedText(
-            description,
+            context.l10n.pleaseAnswerQuestions,
             style: AppTextStyle.bodyMedium,
           ),
           SizedBox(height: spacerHeight),
           for (var questionData in surveyPresenter.surveyQuestions)
-            _buildQuestionInfo(context, questionData),
+            _buildQuestionInfo(context, surveyPresenter, questionData),
           SizedBox(height: spacerHeight),
           Align(
             alignment: Alignment.centerRight,
@@ -99,7 +107,7 @@ class SurveyDialog extends StatelessWidget {
                         ),
                       )
                   : null,
-              text: 'Finish',
+              text: context.l10n.finish,
             ),
           ),
           SizedBox(height: spacerHeight),
@@ -110,11 +118,33 @@ class SurveyDialog extends StatelessWidget {
 
   Widget _buildQuestionInfo(
     BuildContext context,
+    SurveyPresenter surveyPresenter,
     BreakoutQuestion questionData,
   ) {
+    final isMobile = responsiveLayoutService.isMobile(context);
+
+    if (questionData.type == BreakoutQuestionType.freeText) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 10),
+          HeightConstrainedText(
+            questionData.title,
+            style: AppTextStyle.headline4,
+          ),
+          SizedBox(height: 5),
+          CustomTextField(
+            controller: surveyPresenter.freeTextResponseController,
+            maxLines: 3,
+            maxLength: 270,
+          ),
+          SizedBox(height: 10),
+        ],
+      );
+    }
+
     final answerOptions =
         questionData.answers.map((e) => e.options).flattened.toList();
-    final isMobile = responsiveLayoutService.isMobile(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

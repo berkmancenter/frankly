@@ -22,7 +22,8 @@ _$_RecordingSession _$$_RecordingSessionFromJson(Map<String, dynamic> json) =>
       breakoutSessionId: json['breakoutSessionId'] as String?,
       agoraResourceId: json['agoraResourceId'] as String?,
       agoraSid: json['agoraSid'] as String?,
-      agoraRttTaskId: json['agoraRttTaskId'] as String?,
+      agoraRttAgentId: json['agoraRttAgentId'] as String?,
+      rttLanguage: json['rttLanguage'] as String?,
       gcsPrefix: json['gcsPrefix'] as String?,
       chatPath: json['chatPath'] as String?,
       errorMessage: json['errorMessage'] as String?,
@@ -34,6 +35,11 @@ _$_RecordingSession _$$_RecordingSessionFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      uidToDisplayName:
+          (json['uidToDisplayName'] as Map<String, dynamic>?)?.map(
+                (k, e) => MapEntry(k, e as String),
+              ) ??
+              const {},
     );
 
 Map<String, dynamic> _$$_RecordingSessionToJson(_$_RecordingSession instance) =>
@@ -50,12 +56,14 @@ Map<String, dynamic> _$$_RecordingSessionToJson(_$_RecordingSession instance) =>
       'breakoutSessionId': instance.breakoutSessionId,
       'agoraResourceId': instance.agoraResourceId,
       'agoraSid': instance.agoraSid,
-      'agoraRttTaskId': instance.agoraRttTaskId,
+      'agoraRttAgentId': instance.agoraRttAgentId,
+      'rttLanguage': instance.rttLanguage,
       'gcsPrefix': instance.gcsPrefix,
       'chatPath': instance.chatPath,
       'errorMessage': instance.errorMessage,
       'artifactPaths': instance.artifactPaths,
       'participantIds': instance.participantIds,
+      'uidToDisplayName': instance.uidToDisplayName,
     };
 
 const _$RecordingRoomTypeEnumMap = {

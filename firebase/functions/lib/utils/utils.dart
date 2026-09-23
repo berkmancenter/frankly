@@ -12,6 +12,20 @@ class JsonMap extends SerializeableRequest {
 
 bool isNullOrEmpty(String? value) => value == null || value.trim() == '';
 
+const _productionProjectId = 'asml-deliberations';
+
+/// Whether this deploy is the production Firebase project.
+///
+/// Defaults to true (production) if `app.project_id` is unset, so an
+/// unconfigured deploy never leaks internal error text to real participants.
+bool get isProductionEnvironment {
+  try {
+    return functions.config.get('app.project_id') == _productionProjectId;
+  } catch (_) {
+    return true;
+  }
+}
+
 void orElseUnauthorized(bool condition, {String? logMessage}) {
   if (!condition) {
     if (logMessage == null) {

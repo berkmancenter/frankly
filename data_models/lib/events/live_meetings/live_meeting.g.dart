@@ -29,6 +29,8 @@ _$_LiveMeeting _$$_LiveMeetingFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       recordingSessionId: json['recordingSessionId'] as String?,
+      pendingAdvanceAgendaItemId: json['pendingAdvanceAgendaItemId'] as String?,
+      pendingAdvanceTime: dateTimeFromTimestamp(json['pendingAdvanceTime']),
     );
 
 Map<String, dynamic> _$$_LiveMeetingToJson(_$_LiveMeeting instance) =>
@@ -41,6 +43,8 @@ Map<String, dynamic> _$$_LiveMeetingToJson(_$_LiveMeeting instance) =>
       'isMeetingCardMinimized': instance.isMeetingCardMinimized,
       'pinnedUserIds': instance.pinnedUserIds,
       'recordingSessionId': instance.recordingSessionId,
+      'pendingAdvanceAgendaItemId': instance.pendingAdvanceAgendaItemId,
+      'pendingAdvanceTime': timestampFromDateTime(instance.pendingAdvanceTime),
     };
 
 _$_LiveMeetingParticipant _$$_LiveMeetingParticipantFromJson(
@@ -62,9 +66,7 @@ Map<String, dynamic> _$$_LiveMeetingParticipantToJson(
 _$_LiveMeetingEvent _$$_LiveMeetingEventFromJson(Map<String, dynamic> json) =>
     _$_LiveMeetingEvent(
       event: $enumDecodeNullable(_$LiveMeetingEventTypeEnumMap, json['event']),
-      timestamp: json['timestamp'] == null
-          ? null
-          : DateTime.parse(json['timestamp'] as String),
+      timestamp: dateTimeFromTimestamp(json['timestamp']),
       agendaItem: json['agendaItem'] as String?,
       hostless: json['hostless'] as bool? ?? false,
     );
@@ -120,6 +122,7 @@ _$_BreakoutRoom _$$_BreakoutRoomFromJson(Map<String, dynamic> json) =>
       createdDate: dateTimeFromTimestamp(json['createdDate']),
       record: json['record'] as bool? ?? false,
       recordingSessionId: json['recordingSessionId'] as String?,
+      diffusionStatement: json['diffusionStatement'] as String?,
     );
 
 Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
@@ -135,6 +138,7 @@ Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
       'createdDate': serverTimestamp(instance.createdDate),
       'record': instance.record,
       'recordingSessionId': instance.recordingSessionId,
+      'diffusionStatement': instance.diffusionStatement,
     };
 
 const _$BreakoutRoomFlagStatusEnumMap = {
@@ -153,6 +157,7 @@ _$_BreakoutRoomSession _$$_BreakoutRoomSessionFromJson(
           _$BreakoutAssignmentMethodEnumMap, json['assignmentMethod']),
       targetParticipantsPerRoom: json['targetParticipantsPerRoom'] as int,
       hasWaitingRoom: json['hasWaitingRoom'] as bool,
+      useHostedApi: json['useHostedApi'] as bool? ?? false,
       maxRoomNumber: json['maxRoomNumber'] as int?,
       createdDate: dateTimeFromTimestamp(json['createdDate']),
       scheduledTime: dateTimeFromTimestamp(json['scheduledTime']),
@@ -170,6 +175,7 @@ Map<String, dynamic> _$$_BreakoutRoomSessionToJson(
           _$BreakoutAssignmentMethodEnumMap[instance.assignmentMethod]!,
       'targetParticipantsPerRoom': instance.targetParticipantsPerRoom,
       'hasWaitingRoom': instance.hasWaitingRoom,
+      'useHostedApi': instance.useHostedApi,
       'maxRoomNumber': instance.maxRoomNumber,
       'createdDate': serverTimestamp(instance.createdDate),
       'scheduledTime': timestampFromDateTime(instance.scheduledTime),
@@ -186,5 +192,4 @@ const _$BreakoutRoomStatusEnumMap = {
 const _$BreakoutAssignmentMethodEnumMap = {
   BreakoutAssignmentMethod.targetPerRoom: 'targetPerRoom',
   BreakoutAssignmentMethod.smartMatch: 'smartMatch',
-  BreakoutAssignmentMethod.category: 'category',
 };

@@ -263,6 +263,7 @@ class FirestoreLiveMeetingService {
       eventRef
           .collection('event-participants')
           .where('currentBreakoutRoomId', isEqualTo: breakoutRoomId)
+          .where('isPresent', isEqualTo: true)
           .snapshots(includeMetadataChanges: true)
           .asyncMap(
             (snapshot) => FirestoreEventService.convertParticipantListAsync(

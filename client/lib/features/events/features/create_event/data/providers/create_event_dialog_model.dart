@@ -203,10 +203,6 @@ class CreateEventDialogModel with ChangeNotifier {
       image:
           _event.image ?? selectedTemplate?.image ?? generateRandomImageUrl(),
       minParticipants: _event.minParticipants ?? Event.defaultMinParticipants,
-      maxParticipants: _event.maxParticipants ??
-          (eventType == EventType.hosted
-              ? Event.defaultMaxParticipants
-              : Event.defaultMaxParticipantsInHostlessEvent),
       isLocked: false,
       agendaItems: agendaItems,
       preEventCardData:
@@ -275,11 +271,7 @@ class CreateEventDialogModel with ChangeNotifier {
     }
 
     if (_eventTypeWhenEventWasCreated != _event.eventType) {
-      _event = _event.copyWith(
-        maxParticipants: _event.eventType == EventType.hosted
-            ? Event.defaultMaxParticipants
-            : Event.defaultMaxParticipantsInHostlessEvent,
-      );
+      _event = _event.copyWith(maxParticipants: null);
 
       if (_event.eventType == EventType.livestream &&
           _event.liveStreamInfo == null) {

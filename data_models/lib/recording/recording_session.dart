@@ -45,12 +45,14 @@ class RecordingSession with _$RecordingSession {
     String? breakoutSessionId,
     String? agoraResourceId,
     String? agoraSid,
-    String? agoraRttTaskId,
+    String? agoraRttAgentId,
+    String? rttLanguage,
     String? gcsPrefix,
     String? chatPath,
     String? errorMessage,
     @Default({}) Map<String, String> artifactPaths,
     @Default([]) List<String> participantIds,
+    @Default({}) Map<String, String> uidToDisplayName,
   }) = _RecordingSession;
 
   factory RecordingSession.fromJson(Map<String, dynamic> json) =>

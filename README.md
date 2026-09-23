@@ -4,8 +4,9 @@ Welcome to the Frankly repo!
 
 Frankly is an online deliberations platform that allows anyone to host video-enabled conversations about any topic. Key functionalities include:
 
-- Matching participants into breakout rooms based on survey questions
-- Creating structured event templates with different activities to take participants through
+- Matching participants into breakout rooms based on survey questions.
+    - See our [Frankly Match](https://github.com/berkmancenter/frankly-match) repo, which hosts our active research effort in this area, as well as a hosted API version of this functionality.
+- Creating structured event templates with different activities to take participants through.
 
 The Frankly codebase is AGPL 3.0 licensed (see LICENSE.txt). Dependencies distributed with Frankly (external and vendored) are AGPL compatible and should be consulted as needed.
 
