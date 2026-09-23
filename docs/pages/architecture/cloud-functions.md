@@ -79,18 +79,18 @@ allowlist fall back to the default cross-origin host.
 
 ## Firestore Triggers
 
-| Trigger                    | Path                               | Action                                                       |
-| -------------------------- | ---------------------------------- | ------------------------------------------------------------ |
-| EventOnCreate/Update       | `.../events/{eId}`                 | Schedules email reminders via Cloud Tasks                    |
-| EventParticipantOnWrite    | `.../event-participants/{pId}`     | Updates participant count estimates                          |
-| ParticipantAgendaItemDetailsOnWrite | `.../participant-details/{uid}` | Advances agenda item when a majority of present participants are ready |
-| OnDiscussionThread/Comment | Discussion thread paths            | Sends notifications                                          |
-| CommunityOnCreate          | `community/{cId}`                  | Initial community setup                                      |
-| OnCommunityMembership      | Membership paths                   | Membership side effects                                      |
-| OnPartnerAgreements        | Partner paths                      | Partner configuration                                        |
-| OnTemplate                 | Template paths                     | Template setup                                               |
-| produceSessions (JS)       | `recording-sessions/{id}` onUpdate | Downloads and processes recording when status=stopped        |
-| UpdatePresenceStatus       | RTDB `status/{uid}`                | Writes Firestore offline status when RTDB detects disconnect |
+| Trigger                             | Path                               | Action                                                                 |
+| ----------------------------------- | ---------------------------------- | ---------------------------------------------------------------------- |
+| EventOnCreate/Update                | `.../events/{eId}`                 | Schedules email reminders via Cloud Tasks                              |
+| EventParticipantOnWrite             | `.../event-participants/{pId}`     | Updates participant count estimates                                    |
+| ParticipantAgendaItemDetailsOnWrite | `.../participant-details/{uid}`    | Advances agenda item when a majority of present participants are ready |
+| OnDiscussionThread/Comment          | Discussion thread paths            | Sends notifications                                                    |
+| CommunityOnCreate                   | `community/{cId}`                  | Initial community setup                                                |
+| OnCommunityMembership               | Membership paths                   | Membership side effects                                                |
+| OnPartnerAgreements                 | Partner paths                      | Partner configuration                                                  |
+| OnTemplate                          | Template paths                     | Template setup                                                         |
+| produceSessions (JS)                | `recording-sessions/{id}` onUpdate | Downloads and processes recording when status=stopped                  |
+| UpdatePresenceStatus                | RTDB `status/{uid}`                | Writes Firestore offline status when RTDB detects disconnect           |
 
 ## Scheduled Functions
 
@@ -125,3 +125,5 @@ Two client-callable functions use an idempotent convergent pattern for hostless 
 Safe to call redundantly. Client doesn't need to know if it "won".
 
 Agenda-item advance uses the same idempotent convergent logic but is now driven server-side by the `ParticipantAgendaItemDetailsOnWrite` trigger (see Firestore Triggers) rather than client calls: it reacts to each ready-vote write, and its transactions make concurrent evaluations converge on a single advance. The `CheckAdvanceMeetingGuide` helper is no longer client-callable.
+
+When enough present participants are ready on a **non-final** agenda item, the server schedules `AdvanceMeetingGuideAfterDelay` roughly `meetingGuideAdvanceDelay` (8s) out and writes a `pendingAdvanceTime`; the client renders this window as the advance-countdown ring ("moving onto the next agenda item"). The **final** agenda item is a special case: the meeting finishes immediately (`finishMeeting`) with no scheduled advance, so no countdown is shown for it.
