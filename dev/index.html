@@ -1583,6 +1583,9 @@ second command safely appends to it.</p>
 <p>Documentation for the emulator suite is available here:<br />
 <a href="https://firebase.google.com/docs/emulator-suite">https://firebase.google.com/docs/emulator-suite</a></p>
 <p>The emulators run against the Firebase project ID specified by <code>FIREBASE_PROJECT_ID</code> in <code>client/.env</code>. This must match your actual Firebase project. If you see CORS errors when trying to load pages in your local version, double check that this has been set correctly.</p>
+<blockquote>
+<p><strong>Scheduled functions in the emulator:</strong> Cloud Tasks can't dispatch callbacks to a local <code>127.0.0.1</code> emulator, so scheduled work (e.g. the delayed agenda advance) is invoked by a direct HTTP callback instead. The callback URL is rewritten to the project the emulator is actually running as (<code>GCLOUD_PROJECT</code>), so a configured <code>app.functions_url_prefix</code> that points at a different project id won't silently 404 and drop the call.</p>
+</blockquote>
 <hr />
 <h3 id="emulator-initial-setup-configuration">Emulator Initial Setup &amp; Configuration</h3>
 <p>The emulators use a local configuration file instead of <code>functions:config:set</code>.</p>

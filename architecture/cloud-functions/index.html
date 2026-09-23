@@ -1206,6 +1206,7 @@
 <p><strong>How it works:</strong> Multiple clients call simultaneously (via <code>HostlessActionFallbackController</code> with probabilistic timer). Server inspects current state -- if already done, returns success (no-op). If not, performs action atomically. <code>processingId</code> prevents duplicate breakout assignment processing.</p>
 <p>Safe to call redundantly. Client doesn't need to know if it "won".</p>
 <p>Agenda-item advance uses the same idempotent convergent logic but is now driven server-side by the <code>ParticipantAgendaItemDetailsOnWrite</code> trigger (see Firestore Triggers) rather than client calls: it reacts to each ready-vote write, and its transactions make concurrent evaluations converge on a single advance. The <code>CheckAdvanceMeetingGuide</code> helper is no longer client-callable.</p>
+<p>When enough present participants are ready on a <strong>non-final</strong> agenda item, the server schedules <code>AdvanceMeetingGuideAfterDelay</code> roughly <code>meetingGuideAdvanceDelay</code> (8s) out and writes a <code>pendingAdvanceTime</code>; the client renders this window as the advance-countdown ring ("moving onto the next agenda item"). The <strong>final</strong> agenda item is a special case: the meeting finishes immediately (<code>finishMeeting</code>) with no scheduled advance, so no countdown is shown for it.</p>
 
 
 
