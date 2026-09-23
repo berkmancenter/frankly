@@ -406,7 +406,8 @@
       "EmailEventReminder",
       "ExtendCloudTaskScheduler",
       "MuxWebhooks",
-      "ShareLink"
+      "ShareLink",
+      "ServeIndex"
     ],
     "helperdbpubsub": [
       "downloadRecording",
