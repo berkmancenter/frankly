@@ -82,10 +82,11 @@ class _EventTabsState extends State<EventTabs> {
     final eventTabsControllerState = context.watch<EventTabsControllerState>();
     final existingChatModel = readProviderOrNull<ChatModel?>(context);
 
+    final mainParentPath = EventProvider.read(context).event.fullPath;
     final parentPath =
         LiveMeetingProvider.readOrNull(context)?.isInBreakout == true
             ? context.read<AgendaProvider>().liveMeetingPath
-            : EventProvider.read(context).event.fullPath;
+            : mainParentPath;
 
     final localChild =
         _buildUserSubmittedAgendaWrapper(eventTabsControllerState);
@@ -99,6 +100,7 @@ class _EventTabsState extends State<EventTabs> {
           return ChatModel(
             communityProvider: CommunityProvider.read(context),
             parentPath: parentPath,
+            mainParentPath: mainParentPath,
             eventTabsControllerState: eventTabsControllerState,
           )..initialize();
         },

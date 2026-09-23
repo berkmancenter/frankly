@@ -242,25 +242,31 @@ class FloatingChatDisplay extends StatefulWidget {
 class _FloatingChatDisplayState extends State<FloatingChatDisplay> {
   final _floatingMessages = <String, ChatMessage>{};
 
+  ChatModel? _chatModel;
   StreamSubscription? _onNewMessageSubscription;
-  StreamSubscription? _onMainMeetingNewMessageSubscription;
+
+  ChatModel? _getChatModel(BuildContext context) {
+    try {
+      return Provider.of<ChatModel>(context);
+    } on ProviderNotFoundException {
+      return null;
+    }
+  }
 
   void _onNewMessage(ChatMessage newMessage, {bool onlyShowBroadcast = false}) {
-    final snapshotIsAdmin =
-        newMessage.membershipStatusSnapshot?.isAdmin ?? false;
-    final isBroadcast = (newMessage.broadcast ?? false) && snapshotIsAdmin;
+    final event = EventProvider.readOrNull(context)?.event;
+    final isHostOrMod =
+        (newMessage.creatorId != null && newMessage.creatorId == event?.creatorId) ||
+        (newMessage.membershipStatusSnapshot?.isMod ?? false);
+    final isBroadcast = (newMessage.broadcast ?? false) && isHostOrMod;
     final floatMessage = !onlyShowBroadcast || isBroadcast;
     if (floatMessage) {
       setState(() => _floatingMessages[newMessage.id!] = newMessage);
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-
+  void _setupSubscription() {
     final liveMeetingProvider = LiveMeetingProvider.readOrNull(context);
-
     if (liveMeetingProvider == null) {
       return;
     }
@@ -269,28 +275,28 @@ class _FloatingChatDisplayState extends State<FloatingChatDisplay> {
     final isInLiveStreamLobby =
         EventProvider.read(context).isLiveStream && !isInBreakout;
 
-    _onNewMessageSubscription = context.read<ChatModel>().newMessages?.listen(
+    _onNewMessageSubscription = _chatModel?.newMessages?.listen(
           (message) => _onNewMessage(
             message,
             onlyShowBroadcast: isInLiveStreamLobby,
           ),
         );
+  }
 
-    if (liveMeetingProvider.isInBreakout) {
-      _onMainMeetingNewMessageSubscription =
-          context.read<ChatModel>().newMessages?.listen(
-                (message) => _onNewMessage(
-                  message,
-                  onlyShowBroadcast: true,
-                ),
-              );
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final newChatModel = _getChatModel(context);
+    if (_chatModel != newChatModel) {
+      _chatModel = newChatModel;
+      _onNewMessageSubscription?.cancel();
+      _setupSubscription();
     }
   }
 
   @override
   void dispose() {
     _onNewMessageSubscription?.cancel();
-    _onMainMeetingNewMessageSubscription?.cancel();
     super.dispose();
   }
 
@@ -406,6 +412,24 @@ class _FloatingChatState extends State<FloatingChat> {
                 imageHeight: 32,
               ),
               SizedBox(width: 8),
+              if (widget.chatMessage.broadcast ?? false) ...[
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: context.theme.colorScheme.tertiary,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: HeightConstrainedText(
+                    context.l10n.broadcast.toUpperCase(),
+                    style: context.theme.textTheme.labelSmall!.copyWith(
+                      color: context.theme.colorScheme.onTertiary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 6),
+              ],
               if (widget.chatMessage.isFloatingEmoji)
                 ProxiedImage(
                   null,
