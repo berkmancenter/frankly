@@ -135,9 +135,9 @@ class EditEventDrawerState extends State<EditEventDrawer>
               if (canBuildParticipantCountSection) ...[
                 _buildParticipantCountSection(),
                 SizedBox(height: 20),
+                _buildParticipantsSection(),
+                SizedBox(height: 20),
               ],
-              _buildParticipantsSection(),
-              SizedBox(height: 20),
               _buildBottomButtonsSection(),
               SizedBox(height: 20),
             ],

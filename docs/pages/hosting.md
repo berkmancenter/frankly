@@ -115,6 +115,38 @@ This is configured by the catch-all rewrite in `firebase.json`:
 }
 ```
 
+### Same-origin callable routing (`/api/*`)
+
+On web, client-callable Cloud Functions are invoked over a same-origin path,
+`https://<your-host>/api/<FunctionName>`, which `firebase.json` rewrites to the
+matching function. These `/api/*` rewrites are listed **above** the `ServeIndex`
+catch-all so they take precedence (Firebase Hosting uses first-match-wins):
+
+```json
+{ "source": "/api/GetMeetingJoinInfo", "function": "GetMeetingJoinInfo" }
+```
+
+Routing callables through the app's own origin avoids the separate
+`us-central1-<project>.cloudfunctions.net` host, which some clients cannot reach
+(DNS filters, VPNs, iCloud Private Relay, or privacy/ad-blocking extensions). A
+blocked callable would otherwise surface to the user as a generic error. It also
+skips the CORS preflight a cross-origin callable requires.
+
+The client keeps an allowlist, `sameOriginCallables` in
+`client/lib/core/data/services/same_origin_callables.dart`, of the functions
+that have an `/api/*` rewrite. A callable **not** in the allowlist falls back to
+the default cross-origin host, so a missing rewrite degrades gracefully instead
+of breaking. The allowlist and the `/api/*` rewrites must stay in sync; the test
+`same_origin_callables_test.dart` fails if they diverge. When you add a new
+client-callable function, add it to **both** the allowlist and the `/api/*`
+rewrites.
+
+The `/api/` prefix keeps these paths from colliding with client-side app routes.
+Because the calls are same-origin they are already covered by `connect-src
+'self'` in the CSP (below), so no CSP change is needed unless you move callables
+to a custom domain or a Cloud Run `*.run.app` host, in which case add that host
+to `connect-src` in `serve-index.js`.
+
 ### Content Security Policy (CSP)
 
 The CSP is set as an HTTP response header by `ServeIndex` (in `firebase/functions/js/serve-index.js`). It uses `'strict-dynamic'` with a per-request nonce, which means:

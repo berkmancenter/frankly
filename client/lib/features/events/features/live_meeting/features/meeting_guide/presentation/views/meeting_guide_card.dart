@@ -434,12 +434,11 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
 
   Widget _buildBottomSection() {
     context.watch<AgendaProvider>();
-    context.watch<MeetingGuideCardStore>();
+    final meetingGuideCardStore = context.watch<MeetingGuideCardStore>();
     context.watch<LiveMeetingProvider>();
     context.watch<UserService>();
     context.watch<CommunityProvider>();
     context.watch<UserDataService>();
-    context.watch<MeetingGuideCardStore>();
 
     final participantAgendaItemDetailsStream =
         _presenter.getParticipantAgendaItemDetailsStream();
@@ -467,18 +466,26 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               final canUserControlMeeting = _presenter.canUserControlMeeting;
               final currentAgendaItemId = _presenter.getCurrentAgendaItemId();
               final currentItem = _presenter.getCurrentAgendaItem();
+              // Filter to only build from the current agenda item's details.
+              final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
+                participantAgendaItemDetailsList,
+                currentAgendaItemId,
+              );
               final presentParticipantIds =
                   _presenter.getPresentParticipantIds().toSet();
               final readyThreshold =
                   _presenter.getReadyThreshold(presentParticipantIds);
               final readyToMoveOnCount = _presenter.readyToMoveOnCount(
-                participantAgendaItemDetailsList,
+                itemDetails,
                 presentParticipantIds,
               );
               final isMeetingStarted = _presenter.isMeetingStarted();
               final isCardPending = _presenter.isCardPending();
-              final isPendingAdvance =
-                  _presenter.isPendingAdvance(currentAgendaItemId);
+              final isPendingAdvance = _presenter.isPendingAdvanceOptimistic(
+                currentAgendaItemId: currentAgendaItemId,
+                itemDetails: itemDetails,
+                presentParticipantIds: presentParticipantIds,
+              );
               final meetingFinished =
                   currentItem == null && isMeetingStarted && !isCardPending;
               final isHosted = _presenter.isHosted();
@@ -552,15 +559,9 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                   tooltipKey: tooltipKey,
                   readyThreshold: readyThreshold,
                   presentParticipantIds: presentParticipantIds,
-                  userIsReady: participantAgendaItemDetailsList
-                          ?.firstWhere(
-                            (p) => p.userId == _presenter.getUserId(),
-                            orElse: () => ParticipantAgendaItemDetails(
-                              readyToAdvance: false,
-                            ),
-                          )
-                          .readyToAdvance ??
-                      false,
+                  userIsReady: meetingGuideCardStore
+                          .desiredReadyFor(currentAgendaItemId) ??
+                      _presenter.isReadyToAdvance(itemDetails),
                   currentAgendaItemId: currentAgendaItemId,
                 );
               }
@@ -945,7 +946,6 @@ class ReadyButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agendaProvider = AgendaProvider.watch(context);
     return ActionButton(
       minWidth: isMobile ? 350 : 150,
       color: isMobile
@@ -955,15 +955,21 @@ class ReadyButton extends HookWidget {
       textColor: isMobile
           ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.primary,
-      // Disallow undo
-      onPressed: userIsReady
-          ? null
-          : () => alertOnError(context, () async {
-                await agendaProvider.toggleMoveForward(
-                  currentAgendaItemId: currentAgendaItemId,
-                  userIsReady: !userIsReady,
-                );
-              }),
+      // Optimistic two-way toggle: never disabled. The checkbox flips
+      // immediately from the store's desired state; the send is fire-and-forget
+      // so the button doesn't sit disabled during the round-trip.
+      onPressed: () {
+        final store = context.read<MeetingGuideCardStore>();
+        unawaited(
+          alertOnError(
+            context,
+            () => store.setDesiredReady(
+              agendaItemId: currentAgendaItemId,
+              ready: !userIsReady,
+            ),
+          ),
+        );
+      },
       hideLoadingIndicator: true,
       child: Row(
         mainAxisSize: MainAxisSize.max,

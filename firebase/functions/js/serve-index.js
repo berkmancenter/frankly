@@ -51,13 +51,15 @@ function buildCsp(nonce) {
             ` https://res.cloudinary.com https://api.cloudinary.com` +
             ` https://player.vimeo.com https://api.segment.io` +
             ` https://api.linkpreview.net https://*.stripe.com` +
+            ` https://stats.berkman.harvard.edu` +
             ` https://frankly.org https://fonts.gstatic.com https://www.gstatic.com`,
         `img-src 'self' data: blob:` +
             ` https://res.cloudinary.com https://*.googleusercontent.com` +
             ` https://picsum.photos https://fastly.picsum.photos`,
         `media-src 'self' blob: https://res.cloudinary.com https://*.mux.com`,
         `frame-src 'self'` +
-            ` https://player.vimeo.com https://*.stripe.com https://*.firebaseapp.com`,
+            ` https://player.vimeo.com https://*.stripe.com https://*.firebaseapp.com` +
+            ` https://*.firebaseio.com https://upload-widget.cloudinary.com`,
         `worker-src 'self' blob:`,
         `object-src 'none'`,
         `base-uri 'self'`,

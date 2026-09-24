@@ -84,8 +84,6 @@ lib/features/events/features/event_page/presentation/views/prerequisite_template
 lib/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart	271862a4d469	1	Are you sure want to delete?
 lib/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart	f32c6e444d01	2	Choose Template
 lib/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart	fca381ed271f	2	No Templates Available
-lib/features/events/features/event_page/presentation/views/survey_dialog.dart	176a793fc409	1	Finish RSVP
-lib/features/events/features/event_page/presentation/views/survey_dialog.dart	a6c7a84baa67	1	Finish
 lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	05d581d3caeb	1	Participants will be sent into rooms at . .
 lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	1509f561f241	1	Save
 lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	2d8bb2d5d25f	1	Intro Length
@@ -116,20 +114,16 @@ lib/features/events/features/live_meeting/features/admin_panel/presentation/widg
 lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	a77e88d8e1f8	1	Something went wrong loading breakout rooms. Please refresh
 lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	a8760c5dafc6	1	Breakouts
 lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	b5a02a38cdf7	1	Reassigned to Room
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	c9022680f888	1	people
 lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	8ce2e5759c23	1	When you are ready to start streaming, enter the Stream URL and Stream Key into the stream settings of your streaming ap…
 lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	b765bb77ac91	1	Stream URL:
 lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	c075e1db21a9	1	Stream Key:
 lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	ef6050ae9df7	1	WARNING: Anyone with this stream key can stream content on your stream. Keep it secret.
 lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	fc34cee49701	1	Admin Live Stream Setup
 lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_widget.dart	7d9193178c67	1	Stream will show here when it is active.
-lib/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart	3400934c1710	1	This agenda item just started! Are you sure you want to move on?
 lib/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_card.dart	48f819378c0a	1	Are you sure you want to delete?
 lib/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_user_suggestions.dart	f06da98ce34f	1	Let participants suggest agenda items and then upvote or downvote.
 lib/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/agenda_item_word_cloud.dart	d8360e7ab86d	1	Participants will be asked to respond with a list of words or short phrases.
 lib/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/meeting_agenda.dart	7afc7b8b9c56	1	There is no agenda for this event.
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card.dart	1ff57a29d7c9	1	Next
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card.dart	28715b281ef7	1	Moving to the next agenda item...
 lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	32265d8c245e	1	Some people are still finishing the video.
 lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	a4fd010af9d3	1	We'll be ready in:
 lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	a95ee2f8f340	1	Everyone is ready to move on.
@@ -156,8 +150,6 @@ lib/features/events/features/live_meeting/features/video/presentation/widgets/pa
 lib/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart	fec2ac0f4cf1	1	Edit Profile
 lib/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart	ff1cee744146	1	Pin
 lib/features/events/features/live_meeting/presentation/views/leave_regular_dialog.dart	71c238d0d7db	2	That's it!
-lib/features/events/features/live_meeting/presentation/views/live_meeting_mobile_page.dart	c224b2af45ba	1	Audio/Video Settings
-lib/features/events/features/live_meeting/presentation/views/live_meeting_mobile_page.dart	dc42b8ff7b3f	1	You are in the waiting room.
 lib/features/events/features/live_meeting/presentation/views/meeting_dialog.dart	af127fd2ab4c	1	There was an error connecting to the room.
 lib/features/events/features/live_meeting/presentation/widgets/live_meeting_desktop.dart	a9e153ee4bba	1	JOIN
 lib/features/events/features/live_meeting/presentation/widgets/live_meeting_desktop.dart	dc42b8ff7b3f	1	You are in the waiting room.
@@ -169,7 +161,7 @@ lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.da
 lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	49780701dc2d	1	No thanks
 lib/features/events/presentation/widgets/event_button.dart	9d4e6fe6676d	1	Livestream
 lib/features/events/presentation/widgets/event_button.dart	e7b77e0c5035	1	Scheduled event
-lib/features/events/presentation/widgets/participants_list.dart	de545d070f63	1	1 person
+lib/features/events/presentation/widgets/participants_list.dart	de545d070f63	2	1 person
 lib/features/home/presentation/views/home_page_event_card.dart	1d8ff7ac5681	1	Upcoming Event
 lib/features/home/presentation/views/home_page_event_card.dart	9d4e6fe6676d	1	Livestream
 lib/features/resources/presentation/views/community_resources.dart	c477d8584f90	1	Are you sure you want to delete this resource?

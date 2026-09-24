@@ -2154,6 +2154,24 @@ class MockAgendaProvider extends _i1.Mock implements _i9.AgendaProvider {
       ) as _i40.Future<void>);
 
   @override
+  _i40.Future<bool> confirmReadyToMoveOn({
+    required String? currentAgendaItemId,
+    bool? userIsReady = true,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #confirmReadyToMoveOn,
+          [],
+          {
+            #currentAgendaItemId: currentAgendaItemId,
+            #userIsReady: userIsReady,
+          },
+        ),
+        returnValue: _i40.Future<bool>.value(false),
+        returnValueForMissingStub: _i40.Future<bool>.value(false),
+      ) as _i40.Future<bool>);
+
+  @override
   _i40.Future<void> toggleMoveForward({
     required String? currentAgendaItemId,
     bool? userIsReady = true,
@@ -12850,6 +12868,40 @@ class MockMeetingGuideCardStore extends _i1.Mock
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
+
+  @override
+  String? get currentAgendaModelItemId => (super.noSuchMethod(
+        Invocation.getter(#currentAgendaModelItemId),
+        returnValueForMissingStub: null,
+      ) as String?);
+
+  @override
+  _i2.AgendaItem? get meetingGuideCardAgendaItem => (super.noSuchMethod(
+        Invocation.getter(#meetingGuideCardAgendaItem),
+        returnValueForMissingStub: null,
+      ) as _i2.AgendaItem?);
+
+  @override
+  int optimisticReadyCount({
+    required String? agendaItemId,
+    required String? currentUserId,
+    required List<_i46.ParticipantAgendaItemDetails>? details,
+    required Set<String>? presentParticipantIds,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #optimisticReadyCount,
+          [],
+          {
+            #agendaItemId: agendaItemId,
+            #currentUserId: currentUserId,
+            #details: details,
+            #presentParticipantIds: presentParticipantIds,
+          },
+        ),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
 
   @override
   bool get meetingGuideCardIsPending => (super.noSuchMethod(

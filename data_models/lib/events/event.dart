@@ -60,7 +60,7 @@ class Event with _$Event implements SerializeableRequest {
 
   static const int defaultMinParticipants = 0;
   static const int defaultMaxParticipants = 8;
-  static const int defaultMaxParticipantsInHostlessEvent = 10000;
+  static const int defaultMaxParticipantsInHostlessEvent = 1000;
 
   Event._();
 
@@ -169,6 +169,14 @@ class Event with _$Event implements SerializeableRequest {
 
   bool get isHosted => eventType == EventType.hosted;
 
+  /// The maxParticipants value to use, falling back to a per-type default
+  /// when the field itself hasn't been set.
+  int get effectiveMaxParticipants =>
+      maxParticipants ??
+      (eventType == EventType.hostless
+          ? defaultMaxParticipantsInHostlessEvent
+          : defaultMaxParticipants);
+
   bool get hasPreEventData => preEventCardData?.hasData ?? false;
 
   bool get hasPostEventData => postEventCardData?.hasData ?? false;
@@ -189,6 +197,15 @@ class Event with _$Event implements SerializeableRequest {
       startTime = startTime + durationAfterStart;
     }
     return startTime;
+  }
+
+  /// Whether the event has started and not yet ended, as of [now].
+  bool isActive(DateTime now) {
+    final start = scheduledTime;
+    if (start == null || start.isAfter(now)) return false;
+
+    final end = start.add(Duration(minutes: durationInMinutes));
+    return end.isAfter(now);
   }
 }
 
