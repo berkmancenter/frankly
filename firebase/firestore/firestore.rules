@@ -72,6 +72,11 @@ service cloud.firestore {
             allow write: if false;
         }
 
+        match /config/emailVerificationWhitelist {
+            allow read: if hasAuth();
+            allow write: if false;
+        }
+
         match /publicUser/{userId} {
             allow create: if hasAuth() && request.auth.uid == userId;
             allow delete: if hasAuth() && request.auth.uid == userId;
