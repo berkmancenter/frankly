@@ -11,6 +11,7 @@ export enum Membership {
     member = 'member',
     facilitator = 'facilitator',
     mod = 'mod',
+    moderator = 'moderator',
     admin = 'admin',
     owner = 'owner',
 }
