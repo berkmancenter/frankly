@@ -78,6 +78,11 @@ UID:$eventId\r
 SUMMARY:Event\r''';
 
     expect(writtenData, contains(expectedData));
+    final eventUrl = 'https://${functions.config.get('app.domain')}'
+        '/space/$communityId/discuss/$templateId/$eventId';
+    final unfolded = writtenData!.replaceAll(RegExp(r'\r?\n[ \t]'), '');
+    expect(unfolded, contains('LOCATION:$eventUrl'));
+    expect(unfolded, contains('URL:$eventUrl'));
   });
 }
 
