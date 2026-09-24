@@ -57,6 +57,10 @@ jobs:
           force: true
           mapping-file: ${{ github.workspace }}/.github/workflows/function-mapping.json
 
+      # Allows serve-index to display the correct version
+      - name: Update Production Version
+        run: functions:config:set app.version="${{ github.ref_name }}"
+
       - name: Deploy Functions
         uses: w9jds/firebase-action@v13.22.1
         with:
