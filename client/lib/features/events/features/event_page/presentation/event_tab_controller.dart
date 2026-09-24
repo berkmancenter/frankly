@@ -421,7 +421,6 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
             parentPath: context.watch<ChatModel>().parentPath,
             messageInputHint: 'Say something',
             allowBroadcast: liveMeetingProvider != null &&
-                !liveMeetingProvider.isInBreakout &&
                 context.watch<EventPermissionsProvider>().canBroadcastChat,
           ),
         ),

@@ -2,7 +2,6 @@ import 'package:client/core/utils/provider_utils.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart';
 import 'package:client/styles/styles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/chat/data/providers/chat_model.dart';
 import 'package:client/features/chat/presentation/widgets/message_display.dart';
@@ -19,6 +18,7 @@ import 'package:client/core/localization/localization_helper.dart';
 
 class ChatWidget extends StatelessWidget {
   final String parentPath;
+  final String? mainParentPath;
   final ChatModel? chatModel;
   final String? messageInputHint;
   final bool shouldGuardCommunityMember;
@@ -26,6 +26,7 @@ class ChatWidget extends StatelessWidget {
 
   const ChatWidget({
     required this.parentPath,
+    this.mainParentPath,
     this.chatModel,
     this.messageInputHint,
     this.shouldGuardCommunityMember = false,
@@ -45,6 +46,7 @@ class ChatWidget extends StatelessWidget {
         create: (context) => ChatModel(
           communityProvider: CommunityProvider.read(context),
           parentPath: parentPath,
+          mainParentPath: mainParentPath,
         )..initialize(),
         child: chatWidget,
       );
@@ -77,10 +79,12 @@ class _ChatWidgetState extends State<_ChatWidget> {
 
   Future<void> _sendMessageWithAlert() => alertOnError(context, () async {
         final text = _message.text;
+        final broadcast = _broadcast;
         _message.clear();
+        setState(() => _broadcast = false);
         await context
             .read<ChatModel>()
-            .createChatMessage(text: text, broadcast: _broadcast);
+            .createChatMessage(text: text, broadcast: broadcast);
       });
 
   Future<void> _sendMessage() => widget.shouldGuardCommunityMember

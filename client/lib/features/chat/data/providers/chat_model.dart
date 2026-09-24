@@ -10,6 +10,7 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/user_input/chat.dart';
+import 'package:rxdart/rxdart.dart';
 
 class ChatModel with ChangeNotifier {
   static const _kChatId = 'community_chat';
@@ -17,9 +18,12 @@ class ChatModel with ChangeNotifier {
   final CommunityProvider communityProvider;
   final EventTabsControllerState? eventTabsControllerState;
   final String parentPath;
+  final String? mainParentPath;
   final String chatId = _kChatId;
 
   String? _lastReadMessageId;
+  BehaviorSubjectWrapper<List<ChatMessage>>? _localMessagesStream;
+  BehaviorSubjectWrapper<List<ChatMessage>>? _mainMessagesStream;
   BehaviorSubjectWrapper<List<ChatMessage>>? _messagesStream;
   StreamSubscription<List<ChatMessage>>? _messagesStreamSubscription;
 
@@ -82,17 +86,62 @@ class ChatModel with ChangeNotifier {
     required this.communityProvider,
     this.eventTabsControllerState,
     required this.parentPath,
+    this.mainParentPath,
   });
 
   void initialize() {
     if (_messagesStream?.stream == null ||
         _messagesStream?.stream.hasError == true) {
       _messagesStream?.dispose();
-      _messagesStream = firestoreChatService.chatMessagesStream(
+      _localMessagesStream?.dispose();
+      _mainMessagesStream?.dispose();
+
+      _localMessagesStream = firestoreChatService.chatMessagesStream(
         parentPath: parentPath,
         chatId: _kChatId,
         limit: 200,
       );
+
+      if (mainParentPath != null && mainParentPath != parentPath) {
+        _mainMessagesStream = firestoreChatService.chatMessagesStream(
+          parentPath: mainParentPath!,
+          chatId: _kChatId,
+          limit: 100,
+        );
+
+        final localStream = _localMessagesStream!;
+        final mainStream = _mainMessagesStream!;
+
+        final combinedStream = Rx.combineLatest2<List<ChatMessage>,
+            List<ChatMessage>, List<ChatMessage>>(
+          localStream.startWith(localStream.value ?? const <ChatMessage>[]),
+          mainStream.startWith(mainStream.value ?? const <ChatMessage>[]),
+          (localMessages, mainMessages) {
+            final broadcastMessages =
+                mainMessages.where((m) => m.broadcast == true);
+            final allMessagesMap = <String, ChatMessage>{};
+            for (final m in localMessages) {
+              if (m.id != null) allMessagesMap[m.id!] = m;
+            }
+            for (final m in broadcastMessages) {
+              if (m.id != null) allMessagesMap[m.id!] = m;
+            }
+            final list = allMessagesMap.values.toList();
+            list.sort((a, b) {
+              final aDate =
+                  a.createdDate ?? DateTime.fromMillisecondsSinceEpoch(0);
+              final bDate =
+                  b.createdDate ?? DateTime.fromMillisecondsSinceEpoch(0);
+              return bDate.compareTo(aDate);
+            });
+            return list;
+          },
+        );
+        _messagesStream = wrapInBehaviorSubject(combinedStream);
+      } else {
+        _messagesStream = _localMessagesStream;
+      }
+
       _messagesStreamSubscription?.cancel();
       _messagesStreamSubscription = _messagesStream!.listen(_onMessagesUpdate);
     }
@@ -110,6 +159,10 @@ class ChatModel with ChangeNotifier {
   void dispose() {
     _messagesStreamSubscription?.cancel();
     _messagesStream?.dispose();
+    if (_localMessagesStream != _messagesStream) {
+      _localMessagesStream?.dispose();
+    }
+    _mainMessagesStream?.dispose();
     super.dispose();
   }
 
@@ -145,8 +198,12 @@ class ChatModel with ChangeNotifier {
     );
     if (emotionType == null && (text == null || text.trim().isEmpty)) return;
 
+    final targetPath = (broadcast && mainParentPath != null)
+        ? mainParentPath!
+        : parentPath;
+
     final messageId =
-        firestoreChatService.generateNewChatMessageId(parentPath, _kChatId);
+        firestoreChatService.generateNewChatMessageId(targetPath, _kChatId);
 
     final membership =
         userDataService.getMembership(communityProvider.communityId).status;
@@ -168,7 +225,7 @@ class ChatModel with ChangeNotifier {
 
     await firestoreChatService.createChatMessage(
       communityId: communityProvider.communityId,
-      parentPath: parentPath,
+      parentPath: targetPath,
       chatId: _kChatId,
       chatMessage: newMessage,
     );

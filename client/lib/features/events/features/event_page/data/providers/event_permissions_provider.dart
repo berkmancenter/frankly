@@ -88,8 +88,7 @@ class EventPermissionsProvider with ChangeNotifier {
   }
 
   bool get canBroadcastChat =>
-      (_isHost || communityPermissions.membershipStatus.isMod) &&
-      eventProvider.isLiveStream;
+      _isHost || communityPermissions.membershipStatus.isMod;
 
   bool get canPinItemInParticipantWidget => _isHost;
 
