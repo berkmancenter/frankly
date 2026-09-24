@@ -27,6 +27,7 @@ class FirestoreNotFoundException implements Exception {}
 class FirestoreDatabase {
   static const String communityCollectionName = 'community';
   static const String templatesCollectionName = 'templates';
+  static const String configCollectionName = 'config';
 
   static bool usingEmulator = false;
 
@@ -54,6 +55,17 @@ class FirestoreDatabase {
 
   String generateNewDocId({required String collectionPath}) {
     return firestore.collection(collectionPath).doc().id;
+  }
+
+  Future<List<String>> getEmailVerificationWhitelist() async {
+    final snapshot = await firestore
+        .doc('$configCollectionName/emailVerificationWhitelist')
+        .get();
+    final data = snapshot.data();
+    if (!snapshot.exists || data == null) return [];
+    final emails = data['emails'];
+    if (emails is! List) return [];
+    return emails.whereType<String>().toList();
   }
 
   Future<List<Community>> allPublicCommunities() async {
