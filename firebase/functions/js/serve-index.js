@@ -59,7 +59,7 @@ function buildCsp(nonce) {
         `media-src 'self' blob: https://res.cloudinary.com https://*.mux.com`,
         `frame-src 'self'` +
             ` https://player.vimeo.com https://*.stripe.com https://*.firebaseapp.com` +
-            ` https://*.firebaseio.com`,
+            ` https://*.firebaseio.com https://upload-widget.cloudinary.com`,
         `worker-src 'self' blob:`,
         `object-src 'none'`,
         `base-uri 'self'`,
