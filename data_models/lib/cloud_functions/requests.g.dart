@@ -1123,3 +1123,30 @@ Map<String, dynamic> _$$_GetUserIdFromAgoraIdResponseToJson(
     <String, dynamic>{
       'userId': instance.userId,
     };
+
+_$_GetMeetingWordCloudDataRequest _$$_GetMeetingWordCloudDataRequestFromJson(
+        Map<String, dynamic> json) =>
+    _$_GetMeetingWordCloudDataRequest(
+      eventPath: json['eventPath'] as String,
+    );
+
+Map<String, dynamic> _$$_GetMeetingWordCloudDataRequestToJson(
+        _$_GetMeetingWordCloudDataRequest instance) =>
+    <String, dynamic>{
+      'eventPath': instance.eventPath,
+    };
+
+_$_GetMeetingWordCloudDataResponse _$$_GetMeetingWordCloudDataResponseFromJson(
+        Map<String, dynamic> json) =>
+    _$_GetMeetingWordCloudDataResponse(
+      entries: (json['entries'] as List<dynamic>?)
+              ?.map((e) => WordCloudData.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$$_GetMeetingWordCloudDataResponseToJson(
+        _$_GetMeetingWordCloudDataResponse instance) =>
+    <String, dynamic>{
+      'entries': instance.entries.map((e) => e.toJson()).toList(),
+    };

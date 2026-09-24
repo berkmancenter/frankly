@@ -1,3 +1,4 @@
+import 'package:data_models/user_input/word_cloud_data.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
@@ -564,6 +565,8 @@ class EventProvider with ChangeNotifier {
   Future<void> generatePollsSuggestionsDataCsv({
     required List<ChatSuggestionData> suggestionData,
     required List<PollData> pollData,
+    List<WordCloudData> wordCloudData = const [],
+    required List<AgendaItem> agendaItems,
     required String eventId,
     required List<BreakoutRoom> breakoutRooms,
   }) async {
@@ -581,9 +584,7 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Deleted');
     rows.add(firstRow);
 
-    // Get agenda items from event to map agendaItemId to prompt text
-    final event = _eventStream.value;
-    final agendaItems = event?.agendaItems ?? [];
+    // Use the export dialog's event snapshot for suggestion prompts.
 
     // Process suggestion data
     for (int i = 0; i < suggestionData.length; i++) {
@@ -650,12 +651,32 @@ class EventProvider with ChangeNotifier {
       rows.add(row);
     }
 
+    for (final entry in wordCloudData) {
+      rows.add([
+        'Wordcloud',
+        entry.createdDate == null
+            ? ''
+            : dateTimeFormat(date: entry.createdDate!),
+        entry.userId,
+        entry.prompt,
+        entry.message,
+        _getRoomName(
+          roomId: entry.roomId,
+          eventId: eventId,
+          breakoutRooms: breakoutRooms,
+        ),
+        entry.upvotes,
+        '',
+        false,
+      ]);
+    }
+
     final sanitizedRows = rows.map((row) => sanitizeCsvRow(row)).toList();
     String csv = const ListToCsvConverter().convert(sanitizedRows);
 
     final stringToBase64 = utf8.fuse(base64);
-    final content = stringToBase64.encode(csv);
-    final fileName = 'polls-suggestions-data-$eventId.csv';
+    final content = stringToBase64.encode('\uFEFF$csv');
+    final fileName = 'prompt-responses-$eventId.csv';
 
     AnchorElement(
       href: 'data:application/octet-stream;charset=utf-8;base64,$content',

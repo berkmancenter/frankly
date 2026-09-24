@@ -33,6 +33,8 @@ mixin _$ParticipantAgendaItemDetails {
   /// This users response to a poll for this agenda item.
   String? get pollResponse => throw _privateConstructorUsedError;
   List<String> get wordCloudResponses => throw _privateConstructorUsedError;
+  List<WordCloudData> get wordCloudEntries =>
+      throw _privateConstructorUsedError;
   List<MeetingUserSuggestion> get suggestions =>
       throw _privateConstructorUsedError; // Participant's position within a video
   double? get videoCurrentTime => throw _privateConstructorUsedError;
@@ -61,6 +63,7 @@ abstract class $ParticipantAgendaItemDetailsCopyWith<$Res> {
       DateTime? handRaisedTime,
       String? pollResponse,
       List<String> wordCloudResponses,
+      List<WordCloudData> wordCloudEntries,
       List<MeetingUserSuggestion> suggestions,
       double? videoCurrentTime,
       double? videoDuration});
@@ -87,6 +90,7 @@ class _$ParticipantAgendaItemDetailsCopyWithImpl<$Res,
     Object? handRaisedTime = freezed,
     Object? pollResponse = freezed,
     Object? wordCloudResponses = null,
+    Object? wordCloudEntries = null,
     Object? suggestions = null,
     Object? videoCurrentTime = freezed,
     Object? videoDuration = freezed,
@@ -120,6 +124,10 @@ class _$ParticipantAgendaItemDetailsCopyWithImpl<$Res,
           ? _value.wordCloudResponses
           : wordCloudResponses // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      wordCloudEntries: null == wordCloudEntries
+          ? _value.wordCloudEntries
+          : wordCloudEntries // ignore: cast_nullable_to_non_nullable
+              as List<WordCloudData>,
       suggestions: null == suggestions
           ? _value.suggestions
           : suggestions // ignore: cast_nullable_to_non_nullable
@@ -154,6 +162,7 @@ abstract class _$$_ParticipantAgendaItemDetailsCopyWith<$Res>
       DateTime? handRaisedTime,
       String? pollResponse,
       List<String> wordCloudResponses,
+      List<WordCloudData> wordCloudEntries,
       List<MeetingUserSuggestion> suggestions,
       double? videoCurrentTime,
       double? videoDuration});
@@ -179,6 +188,7 @@ class __$$_ParticipantAgendaItemDetailsCopyWithImpl<$Res>
     Object? handRaisedTime = freezed,
     Object? pollResponse = freezed,
     Object? wordCloudResponses = null,
+    Object? wordCloudEntries = null,
     Object? suggestions = null,
     Object? videoCurrentTime = freezed,
     Object? videoDuration = freezed,
@@ -212,6 +222,10 @@ class __$$_ParticipantAgendaItemDetailsCopyWithImpl<$Res>
           ? _value.wordCloudResponses
           : wordCloudResponses // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      wordCloudEntries: null == wordCloudEntries
+          ? _value.wordCloudEntries
+          : wordCloudEntries // ignore: cast_nullable_to_non_nullable
+              as List<WordCloudData>,
       suggestions: null == suggestions
           ? _value.suggestions
           : suggestions // ignore: cast_nullable_to_non_nullable
@@ -240,6 +254,7 @@ class _$_ParticipantAgendaItemDetails implements _ParticipantAgendaItemDetails {
       this.handRaisedTime,
       this.pollResponse,
       this.wordCloudResponses = const [],
+      this.wordCloudEntries = const [],
       this.suggestions = const [],
       this.videoCurrentTime,
       this.videoDuration});
@@ -269,6 +284,9 @@ class _$_ParticipantAgendaItemDetails implements _ParticipantAgendaItemDetails {
   final List<String> wordCloudResponses;
   @override
   @JsonKey()
+  final List<WordCloudData> wordCloudEntries;
+  @override
+  @JsonKey()
   final List<MeetingUserSuggestion> suggestions;
 // Participant's position within a video
   @override
@@ -278,7 +296,7 @@ class _$_ParticipantAgendaItemDetails implements _ParticipantAgendaItemDetails {
 
   @override
   String toString() {
-    return 'ParticipantAgendaItemDetails(userId: $userId, agendaItemId: $agendaItemId, meetingId: $meetingId, readyToAdvance: $readyToAdvance, handRaisedTime: $handRaisedTime, pollResponse: $pollResponse, wordCloudResponses: $wordCloudResponses, suggestions: $suggestions, videoCurrentTime: $videoCurrentTime, videoDuration: $videoDuration)';
+    return 'ParticipantAgendaItemDetails(userId: $userId, agendaItemId: $agendaItemId, meetingId: $meetingId, readyToAdvance: $readyToAdvance, handRaisedTime: $handRaisedTime, pollResponse: $pollResponse, wordCloudResponses: $wordCloudResponses, wordCloudEntries: $wordCloudEntries, suggestions: $suggestions, videoCurrentTime: $videoCurrentTime, videoDuration: $videoDuration)';
   }
 
   @override
@@ -300,6 +318,8 @@ class _$_ParticipantAgendaItemDetails implements _ParticipantAgendaItemDetails {
             const DeepCollectionEquality()
                 .equals(other.wordCloudResponses, wordCloudResponses) &&
             const DeepCollectionEquality()
+                .equals(other.wordCloudEntries, wordCloudEntries) &&
+            const DeepCollectionEquality()
                 .equals(other.suggestions, suggestions) &&
             (identical(other.videoCurrentTime, videoCurrentTime) ||
                 other.videoCurrentTime == videoCurrentTime) &&
@@ -318,6 +338,7 @@ class _$_ParticipantAgendaItemDetails implements _ParticipantAgendaItemDetails {
       handRaisedTime,
       pollResponse,
       const DeepCollectionEquality().hash(wordCloudResponses),
+      const DeepCollectionEquality().hash(wordCloudEntries),
       const DeepCollectionEquality().hash(suggestions),
       videoCurrentTime,
       videoDuration);
@@ -348,6 +369,7 @@ abstract class _ParticipantAgendaItemDetails
       final DateTime? handRaisedTime,
       final String? pollResponse,
       final List<String> wordCloudResponses,
+      final List<WordCloudData> wordCloudEntries,
       final List<MeetingUserSuggestion> suggestions,
       final double? videoCurrentTime,
       final double? videoDuration}) = _$_ParticipantAgendaItemDetails;
@@ -374,6 +396,8 @@ abstract class _ParticipantAgendaItemDetails
   String? get pollResponse;
   @override
   List<String> get wordCloudResponses;
+  @override
+  List<WordCloudData> get wordCloudEntries;
   @override
   List<MeetingUserSuggestion> get suggestions;
   @override // Participant's position within a video
