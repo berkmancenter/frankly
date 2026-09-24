@@ -50,7 +50,21 @@ class UserService with ChangeNotifier {
 
   SignInState _signInState = SignInState.loading;
 
+  /// Emails that can sign in without verifying, cached after the first fetch.
+  Set<String>? _emailVerificationWhitelist;
+
   String _emailActionContinueUrl() => '${html.window.location.origin}/';
+
+  Future<void> _loadEmailVerificationWhitelistIfNeeded() async {
+    if (_emailVerificationWhitelist != null) return;
+    try {
+      final emails = await firestoreDatabase.getEmailVerificationWhitelist();
+      _emailVerificationWhitelist = emails.map((e) => e.toLowerCase()).toSet();
+    } catch (_) {
+      _emailVerificationWhitelist = {};
+    }
+    notifyListeners();
+  }
 
   Future<void> verifyEmail() async {
     await _currentUser?.sendEmailVerification(
@@ -90,8 +104,14 @@ class UserService with ChangeNotifier {
 
   FirebaseAuth get firebaseAuth => _firebaseAuth;
 
-  bool get isCurrentUserEmailVerified =>
-      _firebaseAuth.currentUser?.emailVerified ?? false;
+  bool get isCurrentUserEmailVerified {
+    final user = _firebaseAuth.currentUser;
+    if (user == null) return false;
+    if (user.emailVerified) return true;
+    final email = user.email?.toLowerCase();
+    return email != null &&
+        (_emailVerificationWhitelist?.contains(email) ?? false);
+  }
 
   bool get isSignedIn {
     final localCurrentUser = _currentUser;
@@ -173,6 +193,10 @@ class UserService with ChangeNotifier {
   }
 
   Future<void> initialize() async {
+    // Kick off in parallel with everything else below so it's already cached
+    // by the time a signed-in, unverified user hits the verification gate.
+    unawaited(_loadEmailVerificationWhitelistIfNeeded());
+
     if (usingEmulator) {
       await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
       // Set persistence to session for emulator to avoid logout across hard reloads
@@ -228,6 +252,7 @@ class UserService with ChangeNotifier {
       try {
         await _firebaseAuth.currentUser?.reload();
       } catch (_) {}
+      unawaited(_loadEmailVerificationWhitelistIfNeeded());
     }
 
     // Set signedIn immediately so the UI (email verification gate, etc.) is
