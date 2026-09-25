@@ -120,6 +120,7 @@ class AgoraRoom with ChangeNotifier {
     required bool enableVideo,
   }) async {
     await mediaDeviceService.init();
+    if (_isDisposed) return;
 
     _engine = createAgoraRtcEngine();
 
@@ -128,6 +129,7 @@ class AgoraRoom with ChangeNotifier {
         appId: Environment.agoraAppId,
       ),
     );
+    if (_isDisposed) return;
 
     final currentUserId = userService.currentUserId!;
     final agoraUid = uidToInt(currentUserId);
@@ -145,6 +147,7 @@ class AgoraRoom with ChangeNotifier {
 
     _rtcEngineEventHandler = RtcEngineEventHandler(
       onError: (ErrorCodeType err, String msg) {
+        if (_isDisposed) return;
         print('[onError] err: $err, msg: $msg');
         if (err == ErrorCodeType.errJoinChannelRejected) {
           conferenceRoom.setConnectError(
@@ -353,6 +356,7 @@ class AgoraRoom with ChangeNotifier {
     // the video/audio being enabled with the wrong device.
     await engine.enableLocalVideo(false);
     await engine.enableLocalAudio(false);
+    if (_isDisposed) return;
 
     await engine.joinChannel(
       channelId: channelName,
