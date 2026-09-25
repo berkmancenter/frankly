@@ -756,6 +756,7 @@
   "myUpcomingEvents": "我的即將舉行的活動",
   "name": "名稱",
   "needMoreHelp": "需要更多幫助？ ",
+  "networkRequestBlocked": "無法連線到伺服器。VPN、DNS 過濾器或隱私/廣告攔截擴充功能可能正在封鎖請求。請嘗試其他網路或瀏覽器，或停用攔截程式後重試。",
   "newAnnouncement": "新公告",
   "newRoomNumber": "新房間號碼：",
   "newSubscription": "新訂閱",

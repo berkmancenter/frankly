@@ -671,12 +671,15 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isRaisedHandVisible = _presenter.isRaisedHandVisible;
         final presentParticipantIds =
             _presenter.getPresentParticipantIds().toSet();
+        // A null id here would break the timer widget for the whole delay, so
+        // fall back to a safe id value.
+        final currentAgendaItemId = _presenter.getCurrentAgendaItemId();
         final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
           participantAgendaItemDetailsList,
-          currentItem?.id,
+          currentAgendaItemId,
         );
         final isCardPending = _presenter.isPendingAdvanceOptimistic(
-          currentAgendaItemId: currentItem?.id,
+          currentAgendaItemId: currentAgendaItemId,
           itemDetails: itemDetails,
           presentParticipantIds: presentParticipantIds,
         );
@@ -791,7 +794,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                                               TargetPlatform.iOS ||
                                           defaultTargetPlatform ==
                                               TargetPlatform.android),
-                                  isMirrorCheck: true,
                                 );
                               },
                             ),

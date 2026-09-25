@@ -83,6 +83,7 @@ class CheckAdvanceMeetingGuide {
         eventPath: eventPath,
         breakoutRoomId: breakoutRoomId,
         event: event,
+        diffusionStatement: diffusionStatement,
       );
 
       // If this is the last item, we can move on immediately
@@ -142,6 +143,7 @@ class CheckAdvanceMeetingGuide {
     required String eventPath,
     required String? breakoutRoomId,
     required Event event,
+    required String? diffusionStatement,
   }) async {
     final liveMeeting = await firestoreUtils.getFirestoreObject(
       path: liveMeetingPath,
@@ -296,7 +298,17 @@ class CheckAdvanceMeetingGuide {
     // actually triggering the advance after the delay.
     return AdvanceCheckResult(
       isPendingOrAdvancing: true,
-      isLastAgendaItem: currentAgendaItemId == event.agendaItems.lastOrNull?.id,
+      // Use the resolved agenda (the list advanceMeetingGuide navigates), not
+      // raw: a trailing {diffusionStatement} item with no statement is dropped
+      // in prod, so raw would see the last visible item as not-final and run a
+      // pointless countdown instead of finishing immediately per the spec.
+      // The client gates on resolved too, so raw here would desync the two.
+      isLastAgendaItem: currentAgendaItemId ==
+          resolveAgendaItemsForDiffusionStatement(
+            event.agendaItems,
+            diffusionStatement,
+            showUnresolvedAsError: !isProductionEnvironment,
+          ).lastOrNull?.id,
       newlyPendingAgendaItemId: currentAgendaItemId,
       pendingAdvanceTime: pendingAdvanceTime,
     );
