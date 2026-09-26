@@ -459,7 +459,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     borderType: BorderType.underline,
                     controller: _displayNameController,
                     labelText: context.l10n.yourName,
-                    hintText: 'e.g. Jane Doe',
+                    hintText: context.l10n.nameHintExample,
                     onEditingComplete: () => _submitForm(),
                     validator: (value) {
                       if (value == null || value.isEmpty) {

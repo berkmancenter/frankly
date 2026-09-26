@@ -8,6 +8,7 @@ import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class NetworkingStatus extends StatefulWidget {
   final Widget child;
@@ -144,7 +145,7 @@ class LowBandwidth extends StatelessWidget {
         ),
         SizedBox(width: 10),
         Text(
-          'Low Bandwidth',
+          context.l10n.lowBandwidth,
           style: AppTextStyle.subhead
               .copyWith(color: context.theme.colorScheme.error),
         ),
@@ -169,7 +170,7 @@ class ExplanationText extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            'Try turning off your camera for a smoother experience',
+            context.l10n.lowBandwidthExplanation,
             style: AppTextStyle.subhead
                 .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
           ),

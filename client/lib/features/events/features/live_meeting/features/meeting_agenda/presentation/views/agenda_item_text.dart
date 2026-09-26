@@ -41,8 +41,7 @@ class AgendaItemText extends StatelessWidget {
             initialValue: agendaItemTextData.content,
             markdownEditor: true,
             labelText: context.l10n.content,
-            hintText:
-                'Keep it short! You don’t want people to spend time reading.',
+            hintText: context.l10n.keepItShortHint,
             maxLines: null,
             minLines: 4,
             keyboardType: TextInputType.multiline,

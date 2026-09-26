@@ -11,6 +11,7 @@ import 'package:client/features/events/features/create_event/presentation/widget
 import 'package:client/features/events/presentation/widgets/custom_drag_scroll_behaviour.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/templates/template.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:provider/provider.dart';
 
 /// Widget that shows all templates within the community and lets you search through
@@ -60,7 +61,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
   Widget _buildSearchBar() {
     return CustomTextField(
       padding: EdgeInsets.zero,
-      labelText: 'Search templates',
+      labelText: context.l10n.searchTemplates,
       labelStyle: TextStyle(color: context.theme.colorScheme.primary),
       textStyle:
           TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),

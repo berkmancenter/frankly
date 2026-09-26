@@ -5,6 +5,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/community/community.dart';
 
 class FeaturedToggleButton extends StatefulWidget {
@@ -64,8 +65,7 @@ class _FeaturedToggleButtonState extends State<FeaturedToggleButton> {
         showLoading: false,
         builder: (_, featuredItems) {
           return Tooltip(
-            message:
-                'Featured Templates and Events will show up at the top of the Home page.',
+            message: context.l10n.featuredTemplatesAndEventsHint,
             child: Container(
               decoration: widget.decoration ??
                   BoxDecoration(
