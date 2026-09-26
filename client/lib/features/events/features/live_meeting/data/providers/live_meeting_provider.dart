@@ -87,6 +87,11 @@ class LiveMeetingProvider with ChangeNotifier {
   bool _leftMeeting = false;
   bool _userLeftBreakouts = false;
 
+  /// True when the user left breakouts because their join/rejoin transition
+  /// stalled/timed out (did not "leave breakout room" explicitly);
+  /// callers can offer a retry instead of treating this as intentional.
+  bool _breakoutTransitionTimedOut = false;
+
   /// The ID of the breakout room the user is currently transitioning into, or null if no
   /// transition is in progress. We need to track this separately because there may be a delay
   /// between when the user is sent to the breakout room and when they actually join the breakout
@@ -224,6 +229,8 @@ class LiveMeetingProvider with ChangeNotifier {
 
   bool get userLeftBreakouts => _userLeftBreakouts;
 
+  bool get breakoutTransitionTimedOut => _breakoutTransitionTimedOut;
+
   String? get breakoutRoomOverride => _breakoutRoomOverride;
 
   /// Whether the user is currently transitioning into a breakout room. True from the moment the
@@ -318,8 +325,9 @@ class LiveMeetingProvider with ChangeNotifier {
     final hasWaitingRoom = waitingRoomInfo != null &&
         (!isNullOrEmpty(waitingRoomInfo.content) ||
             !isNullOrEmpty(waitingRoomInfo.introMediaItem?.url));
-    final livestreamInWaitingRoom =
-        isLiveStream && isBeforeStartTime && hasWaitingRoom;
+    final livestreamInWaitingRoom = isLiveStream &&
+        hasWaitingRoom &&
+        (isBeforeStartTime || _breakoutTransitionTimedOut);
 
     return hostlessInWaitingRoom || livestreamInWaitingRoom;
   }
@@ -569,6 +577,7 @@ class LiveMeetingProvider with ChangeNotifier {
       // True immediately after calling leaveBreakoutRoom, so reset it here since
       // the user is moving to another room rather than leaving breakouts entirely.
       _userLeftBreakouts = false;
+      _breakoutTransitionTimedOut = false;
       _restartMainRoomRecordingIfNeeded();
     }
 
@@ -774,6 +783,7 @@ class LiveMeetingProvider with ChangeNotifier {
           );
         }
 
+        _breakoutTransitionTimedOut = true;
         leaveBreakoutRoom();
         showToast(
           appLocalizationService
@@ -954,6 +964,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
   void enterBreakoutRoom({String? roomId}) {
     _userLeftBreakouts = false;
+    _breakoutTransitionTimedOut = false;
     if (roomId != null) {
       _breakoutRoomOverride = roomId;
       _activeRoomJoinInfoFuture = null;
@@ -1002,6 +1013,8 @@ class LiveMeetingProvider with ChangeNotifier {
     firestoreLiveMeetingService.updateMeetingPresence(
       event: eventProvider.event,
       isPresent: true,
+      // Explicitly place the user back in waiting room
+      currentBreakoutRoomId: 'waiting-room',
     );
 
     notifyListeners();
