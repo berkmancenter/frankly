@@ -376,6 +376,7 @@ class ConferenceRoom with ChangeNotifier {
         // disposed notifier throws, so bail out; dispose already tore _room down.
         if (_isDisposed) return;
         _room!.addListener(notifyListeners);
+        _connectError = null;
         return;
       } catch (err, stacktrace) {
         loggingService.log('error');
