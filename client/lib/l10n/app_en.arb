@@ -702,6 +702,7 @@
   "myUpcomingEvents": "My Upcoming Events",
   "name": "Name",
   "needMoreHelp": "Need more help? ",
+  "networkRequestBlocked": "We could not reach the server. A VPN, DNS filter, or a privacy or ad-blocking extension may be blocking requests. Try a different network or browser, or disable the blocker, then try again.",
   "newAnnouncement": "New Announcement",
   "newRoomNumber": "New Room Number:",
   "newSubscription": "New Subscription",

@@ -33,8 +33,9 @@ AI Policy:
 <!-- Items to remember to address before submitting. -->
 
 - [ ] Where applicable, I have added localization (l10n) entries to my feature for user-facing text.
-- I have built locally and committed any updated freezed files.
+- [ ] I have built locally and committed any updated freezed files.
 - [ ] For new Cloud Functions, I have added the function to `function-mapping.json`.
+- [ ] For new client-callable Cloud Functions, I have added an `/api/<FunctionName>` rewrite in `firebase.json` and the function to the `sameOriginCallables` allowlist.
 - [ ] I have ensured that all touched files have been formatted and are unmarked by the linter.
 - [ ] I have updated any relevant documentation for changed functionality.
 

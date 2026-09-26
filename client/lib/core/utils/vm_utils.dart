@@ -33,6 +33,10 @@ class CustomPointerInterceptor extends StatelessWidget {
 
 void registerWebViewFactory(String key, dynamic Function(dynamic) factory) {}
 
-HttpsCallablePlatform? getHttpsCallableWeb(String functionName) => null;
+HttpsCallablePlatform? getHttpsCallableWeb(
+  String functionName, [
+  String? sameOriginBase,
+]) =>
+    null;
 
 void stopMediaTrack(html.MediaStreamTrack track) {}

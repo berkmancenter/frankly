@@ -25,6 +25,9 @@ jobs:
           filters: |
             client:
               - 'client/**'
+              # The /api callable rewrites the VM parity test checks against the
+              # client allowlist are here, so we need to test for drift if it changes.
+              - 'firebase.json'
       - name: Set up Node.js
         if: steps.changes.outputs.client == 'true'
         uses: actions/setup-node@v4
@@ -55,6 +58,12 @@ jobs:
         if: steps.changes.outputs.client == 'true'
         id: test
         run: flutter test --platform chrome
+
+      # VM-only invariant tests (read files from disk / @TestOn('vm')) that the
+      # chrome run above skips.
+      - name: Run VM Invariant Tests
+        if: steps.changes.outputs.client == 'true'
+        run: flutter test test/lib/core/data/services/same_origin_callables_test.dart test/lib/core/data/services/same_origin_callables_usage_test.dart
 
       - name: Update Product Version
         if: steps.changes.outputs.client == 'true'  && steps.test.outcome == 'success'

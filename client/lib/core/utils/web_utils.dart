@@ -77,13 +77,26 @@ void registerWebViewFactory(String key, html.Element Function(int) factory) {
   ui_web.platformViewRegistry.registerViewFactory(key, factory);
 }
 
-HttpsCallablePlatform? getHttpsCallableWeb(String functionName) {
-  final callable = FirebaseFunctionsWeb(
+// Non-null [sameOriginBase] calls the function via a same-origin URL
+// (firebase.json /api rewrite) instead of the cross-origin functions host.
+HttpsCallablePlatform? getHttpsCallableWeb(
+  String functionName, [
+  String? sameOriginBase,
+]) {
+  final functions = FirebaseFunctionsWeb(
     region: 'us-central1',
     app: FirebaseFunctionsWeb.instance.app,
-  ).httpsCallable(null, functionName, HttpsCallableOptions());
+  );
 
-  return callable;
+  if (sameOriginBase != null) {
+    return functions.httpsCallableWithUri(
+      null,
+      Uri.parse('$sameOriginBase/$functionName'),
+      HttpsCallableOptions(),
+    );
+  }
+
+  return functions.httpsCallable(null, functionName, HttpsCallableOptions());
 }
 
 void stopMediaTrack(html.MediaStreamTrack track) {
