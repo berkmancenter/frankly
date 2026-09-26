@@ -101,6 +101,7 @@ jobs:
           envkey_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
           envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
+          envkey_BYPASS_EMAIL_VERIFICATION: ${{ secrets.BYPASS_EMAIL_VERIFICATION }}
 
       - name: Build App
         id: build_app
