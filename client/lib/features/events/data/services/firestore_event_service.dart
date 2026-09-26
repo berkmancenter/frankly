@@ -7,6 +7,7 @@ import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/platform_utils.dart';
+import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
@@ -481,6 +482,8 @@ class FirestoreEventService {
       joinParameters: queryParametersService.mostRecentQueryParameters,
       breakoutRoomSurveyQuestions: breakoutRoomSurveyResults?.questions ?? [],
       zipCode: breakoutRoomSurveyResults?.zipCode,
+      email: userService.firebaseAuth.currentUser?.email,
+      name: UserInfoProvider.forUser(uid).info?.displayName,
     );
     print('Participant $participant');
     final participantRef = reference.collection('event-participants').doc(uid);
@@ -692,6 +695,8 @@ class FirestoreEventService {
       id: userId,
       breakoutRoomSurveyQuestions: surveyDialogResult.questions,
       zipCode: surveyDialogResult.zipCode,
+      email: userService.firebaseAuth.currentUser?.email,
+      name: UserInfoProvider.forUser(userId).info?.displayName,
     );
     final participantRef = eventReference(
       communityId: event.communityId,
@@ -705,6 +710,8 @@ class FirestoreEventService {
         [
           Participant.kFieldBreakoutRoomSurveyQuestions,
           Participant.kFieldZipCode,
+          Participant.kFieldEmail,
+          Participant.kFieldName,
         ],
         toFirestoreJson(participant.toJson()),
       ),
