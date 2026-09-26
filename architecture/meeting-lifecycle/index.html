@@ -842,7 +842,7 @@
 </code></pre></div>
 <p>State is derived from: <code>_leftMeeting</code>, <code>_clickedEnterMeeting</code>, <code>isInstant</code>, <code>shouldBeInBreakout</code>, <code>shouldBeInWaitingRoom</code>, <code>shouldBeInLiveStream</code>.</p>
 <h2 id="meeting-join-flow">Meeting Join Flow</h2>
-<div class="highlight"><pre><span></span><code>sequenceDiagram
+<pre class="mermaid"><code>sequenceDiagram
     participant User
     participant EventPage
     participant MeetingDialog
@@ -864,8 +864,7 @@
     LiveMeetingProvider-&gt;&gt;AgoraRoom: connect(channel, token, uid)
     AgoraRoom-&gt;&gt;Agora: joinChannel()
     Agora--&gt;&gt;AgoraRoom: onJoinChannelSuccess
-    AgoraRoom-&gt;&gt;AgoraRoom: state=CONNECTED, enable audio/video
-</code></pre></div>
+    AgoraRoom-&gt;&gt;AgoraRoom: state=CONNECTED, enable audio/video</code></pre>
 <h2 id="event-timing">Event Timing</h2>
 <table>
 <thead>
@@ -907,7 +906,7 @@
 </table>
 <p><strong>Clock sync:</strong> <code>ClockService</code> calls <code>GetServerTimestamp</code> on app start, computes offset between client and server. All time comparisons use <code>clockService.now()</code> (adjusted) rather than <code>DateTime.now()</code>.</p>
 <h2 id="breakout-room-flow">Breakout Room Flow</h2>
-<div class="highlight"><pre><span></span><code>sequenceDiagram
+<pre class="mermaid"><code>sequenceDiagram
     participant Host
     participant Server
     participant Firestore
@@ -927,8 +926,7 @@
     P-&gt;&gt;P: Disconnect main AgoraRoom
     P-&gt;&gt;Server: GetBreakoutRoomJoinInfo(roomId)
     Server--&gt;&gt;P: {breakout token, channel}
-    P-&gt;&gt;AgoraRoom: connect(breakoutChannel, token)
-</code></pre></div>
+    P-&gt;&gt;AgoraRoom: connect(breakoutChannel, token)</code></pre>
 <h2 id="agora-connection-lifecycle">Agora Connection Lifecycle</h2>
 <p><strong>States:</strong> <code>CONNECTING</code>, <code>CONNECTED</code>, <code>RECONNECTING</code>, <code>DISCONNECTED</code></p>
 <p><strong>Key callbacks:</strong></p>

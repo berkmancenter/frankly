@@ -756,7 +756,7 @@
 
 <h1 id="architecture">Architecture</h1>
 <h2 id="system-diagram">System Diagram</h2>
-<div class="highlight"><pre><span></span><code>graph TD
+<pre class="mermaid"><code>graph TD
     subgraph "Flutter Client (Web)"
         UI[Widgets / Presentation]
         PROV[Providers - ChangeNotifier + GetIt]
@@ -801,8 +801,7 @@
     MATCH --&gt; SHEETS
     UI --&gt; CLOUD
     UI --&gt; MATOMO
-    HOSTING --&gt; UI
-</code></pre></div>
+    HOSTING --&gt; UI</code></pre>
 <h2 id="deployed-components">Deployed Components</h2>
 <table>
 <thead>
