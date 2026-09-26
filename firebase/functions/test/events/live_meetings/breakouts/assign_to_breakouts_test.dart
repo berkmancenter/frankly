@@ -291,8 +291,16 @@ void main() {
     test('includes email alongside freeTextResponse when present', () {
       final payload = buildFranklyMatchApiPayload(
         participantSurveyResponsesLookup: {},
-        participantFreeTextResponsesLookup: {'p1': 'I like hiking'},
-        participantEmailLookup: {'p1': 'p1@example.com'},
+        participantFreeTextResponsesLookup: {
+          'p1': 'I like hiking',
+          'p2': 'I enjoy reading',
+          'p3': 'I am a dinosaur',
+        },
+        participantEmailLookup: {
+          'p1': 'p1@example.com',
+          'p2': 'p2@example.com',
+          'p3': 'p3@example.com',
+        },
         participantNameLookup: {},
         targetParticipantsPerRoom: 2,
       );
@@ -304,6 +312,14 @@ void main() {
             'freeTextResponse': 'I like hiking',
             'email': 'p1@example.com',
           },
+          'p2': {
+            'freeTextResponse': 'I enjoy reading',
+            'email': 'p2@example.com',
+          },
+          'p3': {
+            'freeTextResponse': 'I am a dinosaur',
+            'email': 'p3@example.com',
+          },
         },
       );
     });
@@ -311,9 +327,17 @@ void main() {
     test('includes name alongside freeTextResponse when present', () {
       final payload = buildFranklyMatchApiPayload(
         participantSurveyResponsesLookup: {},
-        participantFreeTextResponsesLookup: {'p1': 'I like hiking'},
+        participantFreeTextResponsesLookup: {
+          'p1': 'I like hiking',
+          'p2': 'I enjoy reading',
+          'p3': 'I am a dinosaur',
+        },
         participantEmailLookup: {},
-        participantNameLookup: {'p1': 'Pat Smith'},
+        participantNameLookup: {
+          'p1': 'Pat Smith',
+          'p2': 'Alex Johnson',
+          'p3': 'Charlie Brown',
+        },
         targetParticipantsPerRoom: 2,
       );
 
@@ -323,6 +347,14 @@ void main() {
           'p1': {
             'freeTextResponse': 'I like hiking',
             'name': 'Pat Smith',
+          },
+          'p2': {
+            'freeTextResponse': 'I enjoy reading',
+            'name': 'Alex Johnson',
+          },
+          'p3': {
+            'freeTextResponse': 'I am a dinosaur',
+            'name': 'Charlie Brown',
           },
         },
       );
