@@ -589,7 +589,7 @@ class ConferenceRoom with ChangeNotifier {
     // callback. Ignore it so we don't wire up subscriptions, write presence, or
     // complete the connection future twice ("Bad state: Future already
     // completed").
-    if (_isDisposed || _completer.isCompleted) return;
+    if (_isDisposed || _completer.isCompleted || room != _room) return;
     Debug.log('ConferenceRoom._onConnected => state: ${room.state}');
 
     _debouncedDominantSpeakerStream = BehaviorSubjectWrapper(
