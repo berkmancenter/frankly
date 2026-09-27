@@ -25,8 +25,13 @@ enum AgoraRoomState {
 }
 
 class AgoraRoom with ChangeNotifier {
-  late final RtcEngine engine;
-  late final RtcEngineEventHandler _rtcEngineEventHandler;
+  /// Nullable because a room can be disposed before [connect] has created the
+  /// engine (a breakout transition can tear the room down mid-init). [dispose]
+  /// null-checks it directly; all other callers reach it after connect via the
+  /// [engine] getter, by which point it is non-null.
+  RtcEngine? _engine;
+  RtcEngine get engine => _engine!;
+  RtcEngineEventHandler? _rtcEngineEventHandler;
 
   final String channelName;
   final String token;
@@ -41,6 +46,13 @@ class AgoraRoom with ChangeNotifier {
     required this.liveMeetingProvider,
     required this.conferenceRoom,
   });
+
+  /// Set once [dispose] begins. Agora can keep firing SDK callbacks (and the
+  /// underlying engine can keep emitting events) after we have torn the room
+  /// down, e.g. when a breakout transition disposes this room while a join is
+  /// still in flight. Every callback checks this before touching state so we
+  /// never call [notifyListeners] (or drive the conference room) on a dead room.
+  bool _isDisposed = false;
 
   AgoraRoomState _state = AgoraRoomState.CONNECTING;
   AgoraRoomState get state => _state;
@@ -108,14 +120,16 @@ class AgoraRoom with ChangeNotifier {
     required bool enableVideo,
   }) async {
     await mediaDeviceService.init();
+    if (_isDisposed) return;
 
-    engine = createAgoraRtcEngine();
+    _engine = createAgoraRtcEngine();
 
     await engine.initialize(
       RtcEngineContext(
         appId: Environment.agoraAppId,
       ),
     );
+    if (_isDisposed) return;
 
     final currentUserId = userService.currentUserId!;
     final agoraUid = uidToInt(currentUserId);
@@ -133,6 +147,7 @@ class AgoraRoom with ChangeNotifier {
 
     _rtcEngineEventHandler = RtcEngineEventHandler(
       onError: (ErrorCodeType err, String msg) {
+        if (_isDisposed) return;
         print('[onError] err: $err, msg: $msg');
         if (err == ErrorCodeType.errJoinChannelRejected) {
           conferenceRoom.setConnectError(
@@ -141,6 +156,7 @@ class AgoraRoom with ChangeNotifier {
         }
       },
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) async {
+        if (_isDisposed) return;
         _state = AgoraRoomState.CONNECTED;
 
         unawaited(conferenceRoom.onConnected(room: this));
@@ -168,6 +184,7 @@ class AgoraRoom with ChangeNotifier {
         );
       },
       onUserJoined: (RtcConnection connection, int rUid, int elapsed) async {
+        if (_isDisposed) return;
         print(
           '[onUserJoined] connection: ${connection.toJson()} remoteUid: $rUid elapsed: $elapsed',
         );
@@ -330,7 +347,7 @@ class AgoraRoom with ChangeNotifier {
       },
     );
 
-    engine.registerEventHandler(_rtcEngineEventHandler);
+    engine.registerEventHandler(_rtcEngineEventHandler!);
 
     // Enable audio and video modules so receiving works.
     await engine.enableAudio();
@@ -339,6 +356,7 @@ class AgoraRoom with ChangeNotifier {
     // the video/audio being enabled with the wrong device.
     await engine.enableLocalVideo(false);
     await engine.enableLocalAudio(false);
+    if (_isDisposed) return;
 
     await engine.joinChannel(
       channelId: channelName,
@@ -355,21 +373,33 @@ class AgoraRoom with ChangeNotifier {
   }
 
   @override
-  dispose() {
-    try {
-      engine.unregisterEventHandler(_rtcEngineEventHandler);
-      // Ensure local video preview was started before disposing
-      if (_localParticipant?.videoLocalPreviewStarted == true) {
-        engine.stopPreview();
-      }
+  void notifyListeners() {
+    if (!_isDisposed) super.notifyListeners();
+  }
 
-      engine.enableLocalVideo(false);
-      engine.enableLocalAudio(false);
-      engine.leaveChannel();
-      engine.release();
-    } catch (e, stackTrace) {
-      print('Error disposing Agora engine: $e');
-      reportError(e, stackTrace);
+  @override
+  dispose() {
+    _isDisposed = true;
+    final localEngine = _engine;
+    final localHandler = _rtcEngineEventHandler;
+    if (localEngine != null) {
+      try {
+        if (localHandler != null) {
+          localEngine.unregisterEventHandler(localHandler);
+        }
+        // Ensure local video preview was started before disposing
+        if (_localParticipant?.videoLocalPreviewStarted == true) {
+          localEngine.stopPreview();
+        }
+
+        localEngine.enableLocalVideo(false);
+        localEngine.enableLocalAudio(false);
+        localEngine.leaveChannel();
+        localEngine.release();
+      } catch (e, stackTrace) {
+        print('Error disposing Agora engine: $e');
+        reportError(e, stackTrace);
+      }
     }
     super.dispose();
   }
