@@ -159,6 +159,17 @@ class AgoraUtils {
       return;
     }
 
+    // Stop STT agent FIRST so VTT files are flushed to storage before the
+    // recording stop triggers produceSessions (which looks for VTTs).
+    final agentId = session.agoraRttAgentId;
+    if (agentId != null) {
+      try {
+        await AgoraSttApi(agoraUtils: this).stopTranscription(agentId: agentId);
+      } catch (e) {
+        print('Error stopping STT agent for session $sessionId: $e');
+      }
+    }
+
     if (session.agoraResourceId != null && session.agoraSid != null) {
       try {
         final result = await http.post(
