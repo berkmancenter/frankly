@@ -120,10 +120,14 @@ class _DataTabState extends State<DataTab> {
         )) {
           status = -2; // recording in progress
         } else {
-          // Count total artifact files across all sessions.
+          // Count mp4 parts across all sessions (skip transcript artifacts).
           final fileCount = sessions.fold<int>(
             0,
-            (sum, s) => sum + s.artifactPaths.length,
+            (sum, s) =>
+                sum +
+                s.artifactPaths.keys
+                    .where((k) => k.startsWith(RecordingSession.kArtifactMp4))
+                    .length,
           );
           status = fileCount > 0 ? fileCount : 0;
         }
