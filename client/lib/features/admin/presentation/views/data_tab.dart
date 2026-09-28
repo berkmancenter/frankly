@@ -42,6 +42,8 @@ class _DataTabState extends State<DataTab> {
   //   -1    = error / failed
   final Map<String, int?> _recordingParts = {};
   final Map<String, ValueNotifier<int?>> _recordingNotifiers = {};
+  final Map<String, int?> _transcriptParts = {};
+  final Map<String, ValueNotifier<int?>> _transcriptNotifiers = {};
   final Map<String, StreamSubscription?> _sessionSubscriptions = {};
 
   // Tracks sessions where we've already attempted VTT artifact repair
@@ -78,6 +80,9 @@ class _DataTabState extends State<DataTab> {
     for (final notifier in _recordingNotifiers.values) {
       notifier.dispose();
     }
+    for (final notifier in _transcriptNotifiers.values) {
+      notifier.dispose();
+    }
     _eventsSubscription.cancel();
     _allEvents.dispose();
     super.dispose();
@@ -89,6 +94,8 @@ class _DataTabState extends State<DataTab> {
     if (_recordingParts.containsKey(event.id)) return;
     _recordingParts[event.id] = null; // null = loading
     (_recordingNotifiers[event.id] ??= ValueNotifier(null)).value = null;
+    _transcriptParts[event.id] = null;
+    (_transcriptNotifiers[event.id] ??= ValueNotifier(null)).value = null;
     _subscribeToSessions(event);
   }
 
@@ -134,6 +141,17 @@ class _DataTabState extends State<DataTab> {
 
         setState(() => _recordingParts[event.id] = status);
         _recordingNotifiers[event.id]?.value = status;
+
+        final trxCount = sessions.fold<int>(
+          0,
+          (sum, s) =>
+              sum +
+              s.artifactPaths.keys
+                  .where((k) => k.startsWith(RecordingSession.kArtifactTrx))
+                  .length,
+        );
+        setState(() => _transcriptParts[event.id] = trxCount);
+        _transcriptNotifiers[event.id]?.value = trxCount;
 
         // Check for sessions where STT was enabled (they will exist in storage) but
         // VTT artifacts were never registered to the session doc. This happens when
@@ -373,6 +391,8 @@ class _DataTabState extends State<DataTab> {
                         hasTranscript: hasTranscript,
                         recordingParts: _recordingParts,
                         recordingNotifiers: _recordingNotifiers,
+                        transcriptParts: _transcriptParts,
+                        transcriptNotifiers: _transcriptNotifiers,
                       ),
                     ],
                   ),
@@ -390,6 +410,8 @@ class _DataTabState extends State<DataTab> {
                       hasTranscript: hasTranscript,
                       recordingParts: _recordingParts,
                       recordingNotifiers: _recordingNotifiers,
+                      transcriptParts: _transcriptParts,
+                      transcriptNotifiers: _transcriptNotifiers,
                     ),
                   ],
                 ),
@@ -529,6 +551,8 @@ class _DownloadDataButton extends StatelessWidget {
     required this.hasTranscript,
     required this.recordingParts,
     required this.recordingNotifiers,
+    required this.transcriptParts,
+    required this.transcriptNotifiers,
     required this.eventInPast,
   });
 
@@ -538,6 +562,8 @@ class _DownloadDataButton extends StatelessWidget {
   final bool hasTranscript;
   final Map<String, int?> recordingParts;
   final Map<String, ValueNotifier<int?>> recordingNotifiers;
+  final Map<String, int?> transcriptParts;
+  final Map<String, ValueNotifier<int?>> transcriptNotifiers;
   final bool eventInPast;
 
   @override
@@ -565,6 +591,8 @@ class _DownloadDataButton extends StatelessWidget {
             hasTranscript: hasTranscript,
             recordingParts: recordingParts,
             recordingNotifier: recordingNotifiers[event.id],
+            transcriptParts: transcriptParts,
+            transcriptNotifier: transcriptNotifiers[event.id],
             eventInPast: eventInPast,
             communityProvider: communityProvider,
           ),
