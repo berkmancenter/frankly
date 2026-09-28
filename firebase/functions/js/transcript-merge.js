@@ -116,6 +116,72 @@ function mergeCsvContents(csvTexts) {
     return parts.filter((p) => p.length > 0).join('\n') + '\n'
 }
 
+function parseVtt(vttText) {
+    const lines = vttText.split('\n')
+    const cues = []
+    let i = 0
+
+    while (i < lines.length && !lines[i].includes('-->')) i++
+
+    while (i < lines.length) {
+        const line = lines[i].trim()
+        if (line.includes('-->')) {
+            const [startStr, endStr] = line.split('-->')
+            const start = startStr.trim()
+            const end = endStr.trim()
+            i++
+            let text = ''
+            while (i < lines.length && lines[i].trim() !== '') {
+                if (text) text += ' '
+                text += lines[i].trim()
+                i++
+            }
+            if (text) {
+                cues.push({ start, end, text })
+            }
+        } else {
+            i++
+        }
+    }
+    return cues
+}
+
+function cuesToCsv(cues, uidMap) {
+    const header = 'Start,End,Speaker,Speaker ID,Text'
+    const rows = cues.map((cue) => {
+        let speaker = ''
+        let speakerId = ''
+        let text = cue.text
+        const match = text.match(/^<v\s+(\d+)>(.*)$/)
+        if (match) {
+            const uid = match[1]
+            speaker = uidMap[uid] || `Speaker ${uid}`
+            speakerId = uid
+            text = match[2]
+        }
+        const escaped = text.replace(/"/g, '""')
+        const speakerEscaped = speaker.replace(/"/g, '""')
+        return `${cue.start},${cue.end},"${speakerEscaped}","${speakerId}","${escaped}"`
+    })
+    return [header, ...rows].join('\n')
+}
+
+function cuesToPlainText(cues, uidMap) {
+    return cues
+        .map((cue) => {
+            let speaker = ''
+            let text = cue.text
+            const match = text.match(/^<v\s+(\d+)>(.*)$/)
+            if (match) {
+                const uid = match[1]
+                speaker = uidMap[uid] || `Speaker ${uid}`
+                text = match[2]
+            }
+            return speaker ? `[${cue.start}] ${speaker}: ${text}` : `[${cue.start}] ${text}`
+        })
+        .join('\n')
+}
+
 module.exports = {
     parseFragmentTimestampMs,
     isLocaleTaggedFilename,
@@ -124,4 +190,7 @@ module.exports = {
     isContentDuplicate,
     buildMergeOrder,
     mergeCsvContents,
+    parseVtt,
+    cuesToCsv,
+    cuesToPlainText,
 }
