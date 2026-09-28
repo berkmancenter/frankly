@@ -46,8 +46,7 @@ class _DataTabState extends State<DataTab> {
   final Map<String, ValueNotifier<int?>> _transcriptNotifiers = {};
   final Map<String, StreamSubscription?> _sessionSubscriptions = {};
 
-  // Tracks sessions where we've already attempted VTT artifact repair
-  // to avoid repeated calls to repairSessionArtifacts.
+  // Sessions already sent to repairSessionArtifacts.
   final Set<String> _repairedSessionIds = {};
 
   late StreamSubscription<List<Event>> _eventsSubscription;
@@ -153,11 +152,7 @@ class _DataTabState extends State<DataTab> {
         setState(() => _transcriptParts[event.id] = trxCount);
         _transcriptNotifiers[event.id]?.value = trxCount;
 
-        // Check for sessions where STT was enabled (they will exist in storage) but
-        // VTT artifacts were never registered to the session doc. This happens when
-        // Agora's STT agent takes longer than the produceSessions flush window to
-        // write files to GCS.
-        _maybeRepairMissingVtts(sessions);
+        _maybeRepairMissingArtifacts(sessions);
       },
       onError: (_) {
         if (!mounted) return;
@@ -167,24 +162,36 @@ class _DataTabState extends State<DataTab> {
     );
   }
 
-  /// Call repairSessionArtifacts for any stopped session that has STT enabled
-  /// (agoraRttAgentId set) but no transcript_vtt_* artifacts registered.
-  /// Only attempt each session once to avoid repeated calls on every
-  /// Firestore snapshot.
-  void _maybeRepairMissingVtts(List<RecordingSession> sessions) {
+  // Past produceSessions' 65s MP4 backoff.
+  static const _repairDelay = Duration(seconds: 90);
+
+  /// Repair stopped sessions missing MP4s or transcripts, once per session.
+  void _maybeRepairMissingArtifacts(List<RecordingSession> sessions) {
     for (final session in sessions) {
       final id = session.sessionId;
       if (id == null) continue;
       if (_repairedSessionIds.contains(id)) continue;
       if (session.status != RecordingSessionStatus.stopped) continue;
-      if (session.agoraRttAgentId == null) continue;
 
-      final hasVtt = session.artifactPaths.keys
-          .any((k) => k.startsWith('transcript_vtt_'));
-      if (hasVtt) continue;
+      final keys = session.artifactPaths.keys;
+      final missingMp4 = session.agoraSid != null &&
+          !keys.any((k) => k.startsWith(RecordingSession.kArtifactMp4));
+      final missingTrx = session.agoraRttAgentId != null &&
+          !keys.any((k) => k.startsWith(RecordingSession.kArtifactTrx));
+      if (!missingMp4 && !missingTrx) continue;
 
       _repairedSessionIds.add(id);
-      _callRepairSessionArtifacts(id);
+      final sinceStop = session.stoppedAt == null
+          ? Duration.zero
+          : DateTime.now().difference(session.stoppedAt!);
+      final wait = _repairDelay - sinceStop;
+      if (wait.isNegative) {
+        _callRepairSessionArtifacts(id);
+      } else {
+        Future.delayed(wait, () {
+          if (mounted) _callRepairSessionArtifacts(id);
+        });
+      }
     }
   }
 
