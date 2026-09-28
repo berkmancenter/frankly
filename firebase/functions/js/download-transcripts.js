@@ -10,78 +10,8 @@ const signedUrlExpiration = 15 * 60 * 1000
 
 const eventPathRegex = /^community\/[^\/]+\/templates\/[^\/]+\/events\/[^\/]+$/
 
-/// Parses a VTT file into an array of cue objects.
-function parseVtt(vttText) {
-    const lines = vttText.split('\n')
-    const cues = []
-    let i = 0
-
-    // Skip header
-    while (i < lines.length && !lines[i].includes('-->')) i++
-
-    while (i < lines.length) {
-        const line = lines[i].trim()
-        if (line.includes('-->')) {
-            const [startStr, endStr] = line.split('-->')
-            const start = startStr.trim()
-            const end = endStr.trim()
-            i++
-            let text = ''
-            while (i < lines.length && lines[i].trim() !== '') {
-                if (text) text += ' '
-                text += lines[i].trim()
-                i++
-            }
-            if (text) {
-                cues.push({ start, end, text })
-            }
-        } else {
-            i++
-        }
-    }
-    return cues
-}
-
-/// Converts VTT cues to CSV format with speaker name resolution.
-function cuesToCsv(cues, uidMap) {
-    const header = 'Start,End,Speaker,Speaker ID,Text'
-    const rows = cues.map((cue) => {
-        // VTT may include speaker label as "<v SpeakerUid>text"
-        let speaker = ''
-        let speakerId = ''
-        let text = cue.text
-        const match = text.match(/^<v\s+(\d+)>(.*)$/)
-        if (match) {
-            const uid = match[1]
-            speaker = uidMap[uid] || `Speaker ${uid}`
-            speakerId = uid
-            text = match[2]
-        }
-        // Escape CSV fields
-        const escaped = text.replace(/"/g, '""')
-        const speakerEscaped = speaker.replace(/"/g, '""')
-        return `${cue.start},${cue.end},"${speakerEscaped}","${speakerId}","${escaped}"`
-    })
-    return [header, ...rows].join('\n')
-}
-
-/// Converts VTT cues to plain text format.
-function cuesToPlainText(cues, uidMap) {
-    return cues
-        .map((cue) => {
-            let speaker = ''
-            let text = cue.text
-            const match = text.match(/^<v\s+(\d+)>(.*)$/)
-            if (match) {
-                const uid = match[1]
-                speaker = uidMap[uid] || `Speaker ${uid}`
-                text = match[2]
-            }
-            return speaker ? `[${cue.start}] ${speaker}: ${text}` : `[${cue.start}] ${text}`
-        })
-        .join('\n')
-}
-
+// Returns one signed URL per recording-session's merged transcript CSV
+// (complete_trx_<n>, written by produce-sessions.js)
 const downloadTranscripts = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
         try {
@@ -94,19 +24,13 @@ const downloadTranscripts = functions.https.onRequest((req, res) => {
             const decodedToken = await admin.auth().verifyIdToken(authToken)
             const uid = decodedToken.uid
 
-            const { eventPath, format } = req.body
+            const { eventPath } = req.body
             if (!eventPath) {
                 res.status(400).json({ error: 'eventPath not found' })
                 return
             }
             if (!eventPathRegex.test(eventPath)) {
                 res.status(400).json({ error: 'Invalid eventPath format' })
-                return
-            }
-
-            const exportFormat = format || 'csv'
-            if (!['csv', 'text', 'vtt'].includes(exportFormat)) {
-                res.status(400).json({ error: 'Invalid format. Use: csv, text, vtt' })
                 return
             }
 
@@ -130,7 +54,6 @@ const downloadTranscripts = functions.https.onRequest((req, res) => {
                 return
             }
 
-            // Find all recording sessions for this event that have VTT artifacts.
             const sessionsSnap = await firestore
                 .collection('recording-sessions')
                 .where('eventId', '==', event.id)
@@ -149,81 +72,24 @@ const downloadTranscripts = functions.https.onRequest((req, res) => {
             for (const sessionDoc of sessionsSnap.docs) {
                 const session = sessionDoc.data()
                 const artifactPaths = session.artifactPaths || {}
-                const rawUidMap = session.uidToDisplayName || {}
                 const roomId = session.roomId || 'unknown'
                 const roomType = session.roomType || 'main'
 
-                // Resolve Firebase userIds to display names in parallel.
-                const uidMap = {}
-                const uidEntries = Object.entries(rawUidMap)
-                const resolved = await Promise.all(
-                    uidEntries.map(async ([, userId]) => {
-                        try {
-                            const userDoc = await firestore.doc(`publicUser/${userId}`).get()
-                            return userDoc.exists ? userDoc.data().displayName : null
-                        } catch (_) {
-                            return null
-                        }
-                    })
-                )
-                uidEntries.forEach(([agoraUid, userId], i) => {
-                    uidMap[agoraUid] = resolved[i] || userId
-                })
-
-                // Collect all VTT artifact paths for this session.
-                const vttPaths = Object.entries(artifactPaths)
-                    .filter(([key]) => key.startsWith('transcript_vtt_'))
+                const trxPaths = Object.entries(artifactPaths)
+                    .filter(([key]) => key.startsWith('complete_trx_'))
                     .map(([, path]) => path)
 
-                if (vttPaths.length === 0) continue
-
-                for (const vttPath of vttPaths) {
+                for (const trxPath of trxPaths) {
                     try {
-                        const [contents] = await bucket.file(vttPath).download()
-                        const vttText = contents.toString('utf-8')
-
-                        if (exportFormat === 'vtt') {
-                            // Return signed URL for raw VTT download
-                            const vttFilename = vttPath.split('/').pop() || `${roomId}.vtt`
-                            const [url] = await bucket.file(vttPath).getSignedUrl({
-                                action: 'read',
-                                expires: Date.now() + signedUrlExpiration,
-                                responseDisposition: `attachment; filename="${vttFilename}"`,
-                            })
-                            transcripts.push({ roomId, roomType, format: 'vtt', url })
-                        } else {
-                            const cues = parseVtt(vttText)
-                            let converted
-                            let ext
-                            if (exportFormat === 'csv') {
-                                converted = cuesToCsv(cues, uidMap)
-                                ext = 'csv'
-                            } else {
-                                converted = cuesToPlainText(cues, uidMap)
-                                ext = 'txt'
-                            }
-
-                            // Write converted file to GCS and return signed URL.
-                            // Derive output path from the VTT source path to
-                            // avoid issues if gcsPrefix is missing.
-                            const vttBase = (vttPath.split('/').pop() || 'transcript').replace(
-                                /\.vtt$/i,
-                                ''
-                            )
-                            const outDir = vttPath.substring(0, vttPath.lastIndexOf('/'))
-                            const outPath = `${outDir}/${vttBase}.${ext}`
-                            await bucket.file(outPath).save(converted, {
-                                contentType: ext === 'csv' ? 'text/csv' : 'text/plain',
-                            })
-                            const [url] = await bucket.file(outPath).getSignedUrl({
-                                action: 'read',
-                                expires: Date.now() + signedUrlExpiration,
-                                responseDisposition: `attachment; filename="${roomId}-${vttBase}.${ext}"`,
-                            })
-                            transcripts.push({ roomId, roomType, format: exportFormat, url })
-                        }
+                        const filename = trxPath.split('/').pop() || `${roomId}.csv`
+                        const [url] = await bucket.file(trxPath).getSignedUrl({
+                            action: 'read',
+                            expires: Date.now() + signedUrlExpiration,
+                            responseDisposition: `attachment; filename="${filename}"`,
+                        })
+                        transcripts.push({ roomId, roomType, url })
                     } catch (fileErr) {
-                        console.error(`Error processing VTT ${vttPath}:`, fileErr)
+                        console.error(`Error signing transcript ${trxPath}:`, fileErr)
                     }
                 }
             }
