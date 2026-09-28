@@ -2,13 +2,20 @@ const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const cors = require('cors')({ origin: true })
 
-const { listSessionFiles, vttsOf, registerVtts } = require('./session-artifacts')
+const {
+    listSessionFiles,
+    mp4sOf,
+    vttsOf,
+    registerMp4s,
+    registerVtts,
+    mergeTranscript,
+} = require('./session-artifacts')
 
 const firestore = admin.firestore()
 const storage = admin.storage()
 const bucketName = functions.config().agora.storage_bucket_name
 
-// Registers VTTs that produceSessions missed. Called by the client.
+// Idempotently fills in artifacts produceSessions missed. Called by the client.
 const repairSessionArtifacts = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
         try {
@@ -52,36 +59,52 @@ const repairSessionArtifacts = functions.https.onRequest((req, res) => {
                 return
             }
 
-            // Check if VTTs are already registered -- nothing to repair.
-            const existingVtts = Object.keys(session.artifactPaths || {}).filter((k) =>
-                k.startsWith('transcript_vtt_')
-            )
-            if (existingVtts.length > 0) {
-                res.status(200).json({ repaired: false, reason: 'VTTs already registered' })
+            const keys = Object.keys(session.artifactPaths || {})
+            const hasMp4 = keys.some((k) => k.startsWith('complete_mp4_'))
+            const hasVtt = keys.some((k) => k.startsWith('transcript_vtt_'))
+            const hasTrx = keys.includes('complete_trx_0')
+            if (hasMp4 && hasVtt && hasTrx) {
+                res.status(200).json({ repaired: false, reason: 'Nothing to repair' })
                 return
             }
 
             const bucket = storage.bucket(bucketName)
             const allFiles = await listSessionFiles(bucket, gcsPrefix)
-
+            const mp4Files = mp4sOf(allFiles)
             const vttFiles = vttsOf(allFiles)
-            if (vttFiles.length === 0) {
-                res.status(200).json({ repaired: false, reason: 'No VTT files found in GCS' })
-                return
+
+            let mp4s = 0
+            let vtts = 0
+            let merged = false
+
+            if (!hasMp4 && mp4Files.length > 0) {
+                await registerMp4s(sessionDoc.ref, mp4Files)
+                mp4s = mp4Files.length
+            }
+            if (!hasVtt && vttFiles.length > 0) {
+                await registerVtts(sessionDoc.ref, vttFiles)
+                vtts = vttFiles.length
+            }
+            if (!hasTrx && vttFiles.length > 0) {
+                await mergeTranscript({
+                    bucket,
+                    firestore,
+                    ref: sessionDoc.ref,
+                    session,
+                    vttFiles,
+                    mp4Files,
+                })
+                merged = true
             }
 
-            await registerVtts(sessionDoc.ref, vttFiles)
+            const repaired = mp4s > 0 || vtts > 0 || merged
+            if (repaired) {
+                console.log(
+                    `Repaired session ${sessionId}: mp4s=${mp4s} vtts=${vtts} merged=${merged}`
+                )
+            }
 
-            console.log(
-                `Repaired session ${sessionId}: registered ${
-                    vttFiles.length
-                } VTT file(s): ${vttFiles.map((f) => f.name).join(', ')}`
-            )
-
-            res.status(200).json({
-                repaired: true,
-                registered: vttFiles.length,
-            })
+            res.status(200).json({ repaired, mp4s, vtts, merged })
         } catch (err) {
             console.error('Error repairing session artifacts:', err)
             res.status(500).json({ error: 'Failed to repair session artifacts' })
