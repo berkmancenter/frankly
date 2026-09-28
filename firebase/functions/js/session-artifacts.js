@@ -90,7 +90,7 @@ async function resolveUidMap(firestore, rawUidMap) {
     return uidMap
 }
 
-// Merge VTTs to one CSV, register as complete_trx_0.
+// Merge VTTs to one CSV (header-only if none), register as complete_trx_0.
 async function mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4Files }) {
     const entries = vttFiles.map((f) => ({ key: f.name, path: f.name }))
     const { localeEntries, defaultEntries } = splitLocaleAndDefault(entries)
@@ -116,7 +116,7 @@ async function mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4F
             return cuesToCsv(parseVtt(buf.toString('utf-8')), uidMap)
         })
     )
-    const mergedCsv = mergeCsvContents(csvFragments)
+    const mergedCsv = mergeCsvContents(csvFragments) || `${cuesToCsv([], {})}\n`
 
     const mp4Name = mp4Files[0]?.name
     const outPath = mp4Name

@@ -9,6 +9,7 @@ const {
     registerMp4s,
     registerVtts,
     mergeTranscript,
+    stoppedLongEnough,
     transcriptState,
 } = require('./session-artifacts')
 
@@ -86,7 +87,10 @@ const repairSessionArtifacts = functions.https.onRequest((req, res) => {
                 await registerVtts(sessionDoc.ref, vttFiles)
                 vtts = vttFiles.length
             }
-            if (!hasTrx && vttFiles.length > 0) {
+            // Zero VTTs get a header-only CSV once late ones are unlikely.
+            const trxSettled =
+                session.agoraRttAgentId != null && stoppedLongEnough(session)
+            if (!hasTrx && (vttFiles.length > 0 || trxSettled)) {
                 await mergeTranscript({
                     bucket,
                     firestore,
