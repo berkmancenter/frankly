@@ -923,6 +923,7 @@
   "recordingStatusFile": "個檔案",
   "recordingStatusFiles": "個檔案",
   "recordingStatusInProgress": "正在錄製",
+  "recordingStatusNone": "(無)",
   "recordingStatusParts": "({count} 部分)",
   "recordingStatusPreparing": "(準備中...)",
   "recordingStatusProcessing": "正在處理錄製",

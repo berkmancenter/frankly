@@ -51,6 +51,9 @@ class _DataTabState extends State<DataTab> {
   // Last (or scheduled) repair time per session.
   final Map<String, DateTime> _repairAt = {};
 
+  // Sessions the server reported will never have a transcript.
+  final Set<String> _noTranscript = {};
+
   late StreamSubscription<List<Event>> _eventsSubscription;
 
   @override
@@ -147,25 +150,44 @@ class _DataTabState extends State<DataTab> {
         setState(() => _recordingParts[event.id] = status);
         _recordingNotifiers[event.id]?.value = status;
 
-        final trxCount = sessions.fold<int>(
-          0,
-          (sum, s) =>
-              sum +
-              s.artifactPaths.keys
-                  .where((k) => k.startsWith(RecordingSession.kArtifactTrx))
-                  .length,
-        );
-        setState(() => _transcriptParts[event.id] = trxCount);
-        _transcriptNotifiers[event.id]?.value = trxCount;
+        _updateTranscriptStatus(event.id);
 
         _maybeRepairMissingArtifacts(sessions);
       },
       onError: (_) {
         if (!mounted) return;
-        setState(() => _recordingParts[event.id] = -1);
+        setState(() {
+          _recordingParts[event.id] = -1;
+          _transcriptParts[event.id] = -1;
+        });
         _recordingNotifiers[event.id]?.value = -1;
+        _transcriptNotifiers[event.id]?.value = -1;
       },
     );
+  }
+
+  // Transcript status: null loading, -1 failed, -2 none, 0 preparing, N parts.
+  void _updateTranscriptStatus(String eventId) {
+    final sessions = _sessionsByEvent[eventId];
+    if (sessions == null) return;
+    final trxCount = sessions.fold<int>(
+      0,
+      (sum, s) =>
+          sum +
+          s.artifactPaths.keys
+              .where((k) => k.startsWith(RecordingSession.kArtifactTrx))
+              .length,
+    );
+    final settledNone = sessions.isNotEmpty &&
+        sessions.every(
+          (s) =>
+              s.status == RecordingSessionStatus.stopped &&
+              (s.agoraRttAgentId == null ||
+                  _noTranscript.contains(s.sessionId)),
+        );
+    final status = trxCount == 0 && settledNone ? -2 : trxCount;
+    setState(() => _transcriptParts[eventId] = status);
+    _transcriptNotifiers[eventId]?.value = status;
   }
 
   // Past produceSessions' 65s MP4 backoff.
@@ -195,11 +217,11 @@ class _DataTabState extends State<DataTab> {
       final wait = _repairDelay - sinceStop;
       if (wait.isNegative) {
         _repairAt[id] = now;
-        _callRepairSessionArtifacts(id);
+        _callRepairSessionArtifacts(session);
       } else {
         _repairAt[id] = now.add(wait);
         Future.delayed(wait, () {
-          if (mounted) _callRepairSessionArtifacts(id);
+          if (mounted) _callRepairSessionArtifacts(session);
         });
       }
     }
@@ -210,12 +232,13 @@ class _DataTabState extends State<DataTab> {
     if (sessions != null) _maybeRepairMissingArtifacts(sessions);
   }
 
-  Future<void> _callRepairSessionArtifacts(String sessionId) async {
+  Future<void> _callRepairSessionArtifacts(RecordingSession session) async {
+    final sessionId = session.sessionId!;
     try {
       final idToken =
           await UserService().firebaseAuth.currentUser?.getIdToken();
       if (idToken == null) return;
-      await http.post(
+      final response = await http.post(
         Uri.parse(
           '${Environment.functionsUrlPrefix}/repairSessionArtifacts',
         ),
@@ -225,8 +248,14 @@ class _DataTabState extends State<DataTab> {
         },
         body: jsonEncode({'sessionId': sessionId}),
       );
-      // The Firestore listener will pick up the updated artifactPaths
-      // automatically -- no need to handle the response.
+      // New artifactPaths arrive via the Firestore listener; only the
+      // settled "no transcript" state has to come from the response.
+      if (response.statusCode != 200 || !mounted) return;
+      final body = jsonDecode(response.body);
+      if (body is Map && body['transcript'] == 'none') {
+        _noTranscript.add(sessionId);
+        _updateTranscriptStatus(session.eventId);
+      }
     } catch (e) {
       // Non-critical: if repair fails, the user can still download
       // whatever artifacts were originally registered.

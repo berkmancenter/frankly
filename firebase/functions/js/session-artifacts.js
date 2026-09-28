@@ -15,6 +15,8 @@ const {
 // 65s total.
 const MP4_RETRY_DELAYS_MS = [5000, 10000, 20000, 30000]
 const VTT_FLUSH_WAIT_MS = 15000
+// Wait this long after stop before treating zero VTTs as final.
+const TRX_SETTLE_MS = 60000
 
 const defaultSleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -126,9 +128,24 @@ async function mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4F
     return outPath
 }
 
+const stoppedLongEnough = (session, now = Date.now()) => {
+    const stoppedMs = session.stoppedAt?.toMillis?.()
+    return stoppedMs != null && now - stoppedMs >= TRX_SETTLE_MS
+}
+
+// Transcript state for the client: 'ready' | 'pending' | 'none'.
+function transcriptState({ session, hasTrx, now = Date.now() }) {
+    if (hasTrx) return 'ready'
+    if (session.agoraRttAgentId == null) return 'none'
+    return stoppedLongEnough(session, now) ? 'none' : 'pending'
+}
+
 module.exports = {
     MP4_RETRY_DELAYS_MS,
     VTT_FLUSH_WAIT_MS,
+    TRX_SETTLE_MS,
+    stoppedLongEnough,
+    transcriptState,
     sanitizePrefix,
     listSessionFiles,
     listUntilMp4,
