@@ -46,8 +46,10 @@ class _DataTabState extends State<DataTab> {
   final Map<String, ValueNotifier<int?>> _transcriptNotifiers = {};
   final Map<String, StreamSubscription?> _sessionSubscriptions = {};
 
-  // Sessions already sent to repairSessionArtifacts.
-  final Set<String> _repairedSessionIds = {};
+  final Map<String, List<RecordingSession>> _sessionsByEvent = {};
+
+  // Last (or scheduled) repair time per session.
+  final Map<String, DateTime> _repairAt = {};
 
   late StreamSubscription<List<Event>> _eventsSubscription;
 
@@ -62,7 +64,10 @@ class _DataTabState extends State<DataTab> {
       if (!mounted) return;
       for (final event in events) {
         final isPast = event.scheduledTime?.isBefore(DateTime.now()) ?? false;
-        if (isPast && (event.eventSettings?.alwaysRecord ?? false)) {
+        final settings = event.eventSettings;
+        if (isPast &&
+            ((settings?.alwaysRecord ?? false) ||
+                (settings?.alwaysTranscribe ?? false))) {
           _maybeStartRecordingCheck(event);
         }
       }
@@ -115,6 +120,7 @@ class _DataTabState extends State<DataTab> {
               ),
             )
             .toList();
+        _sessionsByEvent[event.id] = sessions;
 
         int status;
         if (sessions.isEmpty) {
@@ -164,13 +170,16 @@ class _DataTabState extends State<DataTab> {
 
   // Past produceSessions' 65s MP4 backoff.
   static const _repairDelay = Duration(seconds: 90);
+  static const _repairCooldown = Duration(seconds: 30);
 
-  /// Repair stopped sessions missing MP4s or transcripts, once per session.
+  /// Repair stopped sessions missing MP4s or transcripts. Idempotent.
   void _maybeRepairMissingArtifacts(List<RecordingSession> sessions) {
+    final now = DateTime.now();
     for (final session in sessions) {
       final id = session.sessionId;
       if (id == null) continue;
-      if (_repairedSessionIds.contains(id)) continue;
+      final last = _repairAt[id];
+      if (last != null && now.isBefore(last.add(_repairCooldown))) continue;
       if (session.status != RecordingSessionStatus.stopped) continue;
 
       final keys = session.artifactPaths.keys;
@@ -180,19 +189,25 @@ class _DataTabState extends State<DataTab> {
           !keys.any((k) => k.startsWith(RecordingSession.kArtifactTrx));
       if (!missingMp4 && !missingTrx) continue;
 
-      _repairedSessionIds.add(id);
       final sinceStop = session.stoppedAt == null
           ? Duration.zero
-          : DateTime.now().difference(session.stoppedAt!);
+          : now.difference(session.stoppedAt!);
       final wait = _repairDelay - sinceStop;
       if (wait.isNegative) {
+        _repairAt[id] = now;
         _callRepairSessionArtifacts(id);
       } else {
+        _repairAt[id] = now.add(wait);
         Future.delayed(wait, () {
           if (mounted) _callRepairSessionArtifacts(id);
         });
       }
     }
+  }
+
+  void _repairEventArtifacts(Event event) {
+    final sessions = _sessionsByEvent[event.id];
+    if (sessions != null) _maybeRepairMissingArtifacts(sessions);
   }
 
   Future<void> _callRepairSessionArtifacts(String sessionId) async {
@@ -400,6 +415,7 @@ class _DataTabState extends State<DataTab> {
                         recordingNotifiers: _recordingNotifiers,
                         transcriptParts: _transcriptParts,
                         transcriptNotifiers: _transcriptNotifiers,
+                        onOpen: () => _repairEventArtifacts(event),
                       ),
                     ],
                   ),
@@ -419,6 +435,7 @@ class _DataTabState extends State<DataTab> {
                       recordingNotifiers: _recordingNotifiers,
                       transcriptParts: _transcriptParts,
                       transcriptNotifiers: _transcriptNotifiers,
+                      onOpen: () => _repairEventArtifacts(event),
                     ),
                   ],
                 ),
@@ -561,6 +578,7 @@ class _DownloadDataButton extends StatelessWidget {
     required this.transcriptParts,
     required this.transcriptNotifiers,
     required this.eventInPast,
+    required this.onOpen,
   });
 
   final Event event;
@@ -572,6 +590,7 @@ class _DownloadDataButton extends StatelessWidget {
   final Map<String, int?> transcriptParts;
   final Map<String, ValueNotifier<int?>> transcriptNotifiers;
   final bool eventInPast;
+  final VoidCallback onOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -589,6 +608,7 @@ class _DownloadDataButton extends StatelessWidget {
       borderSide: BorderSide(color: Theme.of(context).primaryColor),
       textColor: Theme.of(context).primaryColor,
       onPressed: () async {
+        onOpen();
         await showDialog<void>(
           context: context,
           builder: (dialogContext) => EventDataDownloadDialog(
