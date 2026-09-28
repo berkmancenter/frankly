@@ -1,26 +1,27 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
-const crypto = require('crypto')
 
 const {
-    splitLocaleAndDefault,
-    findDuplicateCandidates,
-    isContentDuplicate,
-    buildMergeOrder,
-    mergeCsvContents,
-    parseVtt,
-    cuesToCsv,
-} = require('./transcript-merge')
+    VTT_FLUSH_WAIT_MS,
+    listSessionFiles,
+    listUntilMp4,
+    mp4sOf,
+    vttsOf,
+    registerMp4s,
+    registerVtts,
+    mergeTranscript,
+} = require('./session-artifacts')
 
 const firestore = admin.firestore()
 const storage = admin.storage()
 const bucketName = functions.config().agora.storage_bucket_name
 
-// Triggered when a recording session transitions to 'stopped'.
-// Locates artifacts Agora deposited under gcsPrefix (MP4 recordings, VTT
-// transcripts) and registers their paths on the session document.
-const produceSessions = functions.firestore
-    .document('recording-sessions/{sessionId}')
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+// On stop, register MP4/VTT artifacts and merge the transcript.
+const produceSessions = functions
+    .runWith({ timeoutSeconds: 300 })
+    .firestore.document('recording-sessions/{sessionId}')
     .onUpdate(async (change, context) => {
         const before = change.before.data()
         const after = change.after.data()
@@ -36,51 +37,41 @@ const produceSessions = functions.firestore
         }
 
         const bucket = storage.bucket(bucketName)
+        const ref = change.after.ref
+        const listFiles = () => listSessionFiles(bucket, gcsPrefix)
 
-        // List all files under the session prefix once.
         let allFiles
         try {
-            const [files] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
-            allFiles = files
-
-            // STT strips non-alphanumeric chars from fileNamePrefix segments
-            // (Agora rejects them in STT but not Cloud Recording). Check the
-            // sanitized prefix too so VTT files are discovered.
-            const sanitizedPrefix = gcsPrefix
-                .split('/')
-                .map((s) => s.replace(/[^a-zA-Z0-9]/g, ''))
-                .join('/')
-            if (sanitizedPrefix !== gcsPrefix) {
-                const [extraFiles] = await bucket.getFiles({ prefix: `${sanitizedPrefix}/` })
-                allFiles = [...allFiles, ...extraFiles]
-            }
+            allFiles = await listFiles()
         } catch (err) {
             console.error(`Error listing files for session ${sessionId}:`, err)
             return null
         }
 
         // --- Register MP4 ---
+        // MP4 upload can lag the stop. Retry only if recording ran.
+        let waitedMs = 0
         let finalMp4Files = []
         try {
-            const mp4Files = allFiles.filter((f) => f.name.endsWith('.mp4'))
-            finalMp4Files = mp4Files
+            const hadRecording = after.agoraResourceId != null || after.agoraSid != null
+            if (hadRecording && mp4sOf(allFiles).length === 0) {
+                const result = await listUntilMp4({ listFiles, initialFiles: allFiles })
+                allFiles = result.files
+                waitedMs = result.waitedMs
+            }
 
-            if (mp4Files.length === 0) {
-                console.warn(`No MP4 found under ${gcsPrefix}/ for session ${sessionId}`)
+            finalMp4Files = mp4sOf(allFiles)
+            if (finalMp4Files.length === 0) {
+                console.warn(
+                    `No MP4 found under ${gcsPrefix}/ for session ${sessionId} after waiting ${waitedMs}ms`
+                )
             } else {
+                await registerMp4s(ref, finalMp4Files)
                 console.log(
-                    `Found ${
-                        mp4Files.length
-                    } MP4(s) under ${gcsPrefix}/ for session ${sessionId}: ${mp4Files
+                    `Registered ${finalMp4Files.length} MP4(s) for session ${sessionId} after ${waitedMs}ms: ${finalMp4Files
                         .map((f) => f.name)
                         .join(', ')}`
                 )
-                const updates = {}
-                mp4Files.forEach((f, i) => {
-                    updates[`artifactPaths.complete_mp4_${i}`] = f.name
-                })
-                await change.after.ref.update(updates)
-                console.log(`Registered ${mp4Files.length} MP4(s) for session ${sessionId}`)
             }
         } catch (err) {
             console.error(`Error registering MP4 for session ${sessionId}:`, err)
@@ -89,47 +80,32 @@ const produceSessions = functions.firestore
         // --- Register VTT transcript files ---
         let finalVttFiles = []
         try {
-            let vttFiles = allFiles.filter((f) => f.name.endsWith('.vtt'))
+            let vttFiles = vttsOf(allFiles)
 
-            // If STT was enabled but VTTs aren't found yet, the agent may still
-            // be flushing files to storage. Retry after a delay.
+            // Wait for STT flush; MP4 wait counts toward it.
             const hasSTT = after.agoraRttAgentId != null
             if (vttFiles.length === 0 && hasSTT) {
-                console.log(
-                    `No VTT files yet for STT-enabled session ${sessionId}, waiting 15s for agent flush...`
-                )
-                await new Promise((resolve) => setTimeout(resolve, 15000))
-
-                // Re-scan both paths
-                const [retryFiles] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
-                let retryAll = retryFiles
-                const sanitizedRetry = gcsPrefix
-                    .split('/')
-                    .map((s) => s.replace(/[^a-zA-Z0-9]/g, ''))
-                    .join('/')
-                if (sanitizedRetry !== gcsPrefix) {
-                    const [extraRetry] = await bucket.getFiles({ prefix: `${sanitizedRetry}/` })
-                    retryAll = [...retryAll, ...extraRetry]
+                const remainingMs = Math.max(0, VTT_FLUSH_WAIT_MS - waitedMs)
+                if (remainingMs > 0) {
+                    console.log(
+                        `No VTT files yet for STT-enabled session ${sessionId}, waiting ${remainingMs}ms for agent flush...`
+                    )
+                    await sleep(remainingMs)
                 }
-                vttFiles = retryAll.filter((f) => f.name.endsWith('.vtt'))
+                allFiles = await listFiles()
+                vttFiles = vttsOf(allFiles)
             }
 
             finalVttFiles = vttFiles
-
             if (vttFiles.length === 0) {
                 console.log(`No VTT files found under ${gcsPrefix}/ for session ${sessionId}`)
             } else {
+                await registerVtts(ref, vttFiles)
                 console.log(
-                    `Found ${vttFiles.length} VTT file(s) for session ${sessionId}: ${vttFiles
+                    `Registered ${vttFiles.length} VTT file(s) for session ${sessionId}: ${vttFiles
                         .map((f) => f.name)
                         .join(', ')}`
                 )
-                const updates = {}
-                vttFiles.forEach((f, i) => {
-                    updates[`artifactPaths.transcript_vtt_${i}`] = f.name
-                })
-                await change.after.ref.update(updates)
-                console.log(`Registered ${vttFiles.length} VTT file(s) for session ${sessionId}`)
             }
         } catch (err) {
             console.error(`Error registering VTT for session ${sessionId}:`, err)
@@ -138,63 +114,14 @@ const produceSessions = functions.firestore
         // --- Merge VTT fragments into one CSV transcript ---
         try {
             if (finalVttFiles.length > 0) {
-                const entries = finalVttFiles.map((f) => ({ key: f.name, path: f.name }))
-                const { localeEntries, defaultEntries } = splitLocaleAndDefault(entries)
-                const candidates = findDuplicateCandidates(localeEntries, defaultEntries)
-
-                const keysToDrop = new Set()
-                for (const { localeEntry, defaultEntry } of candidates) {
-                    const [localeBuf] = await bucket.file(localeEntry.path).download()
-                    const [defaultBuf] = await bucket.file(defaultEntry.path).download()
-                    const localeHash = crypto.createHash('sha256').update(localeBuf).digest('hex')
-                    const defaultHash = crypto.createHash('sha256').update(defaultBuf).digest('hex')
-                    if (
-                        isContentDuplicate(
-                            localeHash,
-                            localeBuf.length,
-                            defaultHash,
-                            defaultBuf.length
-                        )
-                    ) {
-                        keysToDrop.add(localeEntry.key)
-                    }
-                }
-
-                const mergeOrder = buildMergeOrder(entries, keysToDrop)
-
-                const rawUidMap = after.uidToDisplayName || {}
-                const uidEntries = Object.entries(rawUidMap)
-                const resolvedNames = await Promise.all(
-                    uidEntries.map(async ([, userId]) => {
-                        try {
-                            const userDoc = await firestore.doc(`publicUser/${userId}`).get()
-                            return userDoc.exists ? userDoc.data().displayName : null
-                        } catch (_) {
-                            return null
-                        }
-                    })
-                )
-                const uidMap = {}
-                uidEntries.forEach(([agoraUid, userId], i) => {
-                    uidMap[agoraUid] = resolvedNames[i] || userId
+                const outPath = await mergeTranscript({
+                    bucket,
+                    firestore,
+                    ref,
+                    session: after,
+                    vttFiles: finalVttFiles,
+                    mp4Files: finalMp4Files,
                 })
-
-                const csvFragments = await Promise.all(
-                    mergeOrder.map(async (entry) => {
-                        const [buf] = await bucket.file(entry.path).download()
-                        const cues = parseVtt(buf.toString('utf-8'))
-                        return cuesToCsv(cues, uidMap)
-                    })
-                )
-                const mergedCsv = mergeCsvContents(csvFragments)
-
-                const mp4Name = finalMp4Files[0]?.name
-                const outPath = mp4Name
-                    ? mp4Name.replace(/\.mp4$/i, '.csv')
-                    : `${gcsPrefix}/transcript_0.csv`
-
-                await bucket.file(outPath).save(mergedCsv, { contentType: 'text/csv' })
-                await change.after.ref.update({ 'artifactPaths.complete_trx_0': outPath })
                 console.log(`Registered merged transcript for session ${sessionId}: ${outPath}`)
             }
         } catch (err) {
