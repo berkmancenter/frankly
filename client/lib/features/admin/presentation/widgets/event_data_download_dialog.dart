@@ -29,6 +29,8 @@ class EventDataDownloadDialog extends StatefulWidget {
     required this.hasTranscript,
     required this.recordingParts,
     required this.recordingNotifier,
+    required this.transcriptParts,
+    required this.transcriptNotifier,
     required this.eventInPast,
     required this.communityProvider,
   }) : super(key: key);
@@ -39,6 +41,8 @@ class EventDataDownloadDialog extends StatefulWidget {
   final bool hasTranscript;
   final Map<String, int?> recordingParts;
   final ValueNotifier<int?>? recordingNotifier;
+  final Map<String, int?> transcriptParts;
+  final ValueNotifier<int?>? transcriptNotifier;
   final bool eventInPast;
   final CommunityProvider communityProvider;
 
@@ -285,10 +289,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
         'Authorization': 'Bearer $idToken',
         'Content-Type': 'application/json',
       },
-      body: jsonEncode({
-        'eventPath': event.fullPath,
-        'format': 'csv',
-      }),
+      body: jsonEncode({'eventPath': event.fullPath}),
     );
     if (response.statusCode != 200) {
       throw Exception(errorMsg);
@@ -320,6 +321,12 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     if (parts == null) return ' ${context.l10n.recordingStatusChecking}';
     if (parts == 0) return ' ${context.l10n.recordingStatusPreparing}';
     if (parts == -1) return ' ${context.l10n.recordingStatusFailed}';
+    return ' ${context.l10n.recordingStatusParts(parts)}';
+  }
+
+  String _transcriptAnnotation(BuildContext context, int? parts) {
+    if (parts == null) return ' ${context.l10n.recordingStatusChecking}';
+    if (parts == 0) return ' ${context.l10n.recordingStatusPreparing}';
     return ' ${context.l10n.recordingStatusParts(parts)}';
   }
 
@@ -358,13 +365,14 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     }
   }
 
-  bool _isDownloadEnabled(int? recordingParts) {
+  bool _isDownloadEnabled(int? recordingParts, int? transcriptParts) {
     final recordingReady = showRecording && (recordingParts ?? 0) > 0;
+    final transcriptReady = showTranscript && (transcriptParts ?? 0) > 0;
     return (showRecording && recordingSelected && recordingReady) ||
         (showRegistrant && registrantListSelected) ||
         chatDataSelected ||
         pollsSuggestionsDataSelected ||
-        transcriptSelected;
+        (transcriptSelected && transcriptReady);
   }
 
   @override
@@ -445,7 +453,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     }
   }
 
-  Widget _buildDialogContent(int? recordingParts) {
+  Widget _buildDialogContent(int? recordingParts, int? transcriptParts) {
     final chatsLength = chatData.length;
     final pollsSuggestionsLength = suggestionData.length + pollData.length;
 
@@ -506,10 +514,13 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
               if (showTranscript)
                 CheckboxListTile(
                   value: transcriptSelected,
+                  enabled: transcriptParts != null && transcriptParts > 0,
                   onChanged: (value) => setState(
                     () => transcriptSelected = value ?? false,
                   ),
-                  title: Text(context.l10n.transcriptsCsv),
+                  title: Text(
+                    '${context.l10n.transcriptsCsv}${_transcriptAnnotation(context, transcriptParts)}',
+                  ),
                 ),
             ],
           ),
@@ -521,7 +532,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
           child: Text(context.l10n.cancel),
         ),
         TextButton(
-          onPressed: (_isDownloadEnabled(recordingParts) && !isDownloading)
+          onPressed: (_isDownloadEnabled(recordingParts, transcriptParts) &&
+                  !isDownloading)
               ? _handleDownload
               : null,
           child: isDownloading
@@ -545,6 +557,19 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     );
   }
 
+  Widget _buildWithTranscriptNotifier(int? recordingParts) {
+    if (showTranscript) {
+      final notifier = widget.transcriptNotifier ??
+          ValueNotifier(widget.transcriptParts[widget.event.id]);
+      return ValueListenableBuilder<int?>(
+        valueListenable: notifier,
+        builder: (context, transcriptParts, _) =>
+            _buildDialogContent(recordingParts, transcriptParts),
+      );
+    }
+    return _buildDialogContent(recordingParts, null);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (showRecording) {
@@ -562,10 +587,10 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
               }
             });
           }
-          return _buildDialogContent(recordingParts);
+          return _buildWithTranscriptNotifier(recordingParts);
         },
       );
     }
-    return _buildDialogContent(null);
+    return _buildWithTranscriptNotifier(null);
   }
 }
