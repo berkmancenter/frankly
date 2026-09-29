@@ -112,6 +112,10 @@ jobs:
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
         run: flutter build web --release --source-maps --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 
+      - name: Replace Service Worker with Cache Switch
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        run: cp web_overrides/flutter_service_worker.js build/web/flutter_service_worker.js
+
       - name: Upload sourcemaps to Sentry
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
         env:
