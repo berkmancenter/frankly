@@ -30,7 +30,7 @@ jobs:
 
       - name: Update Product Version
         run: |
-          sed -i 's/__VERSION__/${{ github.ref_name }}/g' ${{ github.workspace }}/client/web/index.html
+          sed -i 's|__VERSION__|${{ github.ref_name }}|g' ${{ github.workspace }}/client/web/index.html
 
       - name: Update Google Auth Client ID
         run: |
