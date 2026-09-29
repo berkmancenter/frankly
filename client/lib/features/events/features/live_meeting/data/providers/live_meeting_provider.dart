@@ -176,7 +176,8 @@ class LiveMeetingProvider with ChangeNotifier {
   static const int _hostlessFallbackJitterMs = 20000;
   static const int _pendingBreakoutsFallbackJitterMs = 30000;
   static const int _breakoutRoomTransitionHeartbeatSeconds = 5;
-  static const int _breakoutRoomTransitionTimeoutSeconds = 10;
+  // Covers cold-start join info plus Agora connect retries.
+  static const int _breakoutRoomTransitionTimeoutSeconds = 30;
 
   MeetingUiState get activeUiState {
     final showEnterMeeting = isInstant && !clickedEnterMeeting;
@@ -690,7 +691,10 @@ class LiveMeetingProvider with ChangeNotifier {
         )..initialize();
       }
 
-      if (eventProvider.event.eventType == EventType.hostless) {
+      final eventType = eventProvider.event.eventType;
+      if (eventType == EventType.hostless ||
+          eventType == EventType.livestream) {
+        // Auto opt in; only mods and the host get asked.
         await firestoreLiveMeetingService.updateAvailableForBreakoutSessionId(
           event: eventProvider.event,
           breakoutSessionId:
@@ -699,7 +703,7 @@ class LiveMeetingProvider with ChangeNotifier {
         );
         final isMod =
             userDataService.getMembership(communityProvider.communityId).isMod;
-        if (isMod) {
+        if (isMod || isHost) {
           final confirmJoiningBreakouts = await ConfirmDialog(
             mainText:
                 'Would you like to participate in breakout room assignments?',
@@ -1067,10 +1071,15 @@ class LiveMeetingProvider with ChangeNotifier {
   Future<GetMeetingJoinInfoResponse> getBreakoutRoomFuture({
     required String roomId,
   }) async {
-    _inTransitionToBreakoutRoomId = roomId;
     _cachedJoinInfoRoomId = roomId;
     _activeRoomJoinInfoFuture = null;
-    _startBreakoutRoomTransitionTimer();
+    // Waiting room never connects to Agora, so no transition to time out.
+    if (roomId == breakoutsWaitingRoomId) {
+      _clearBreakoutRoomTransition();
+    } else {
+      _inTransitionToBreakoutRoomId = roomId;
+      _startBreakoutRoomTransitionTimer();
+    }
 
     _loadBreakoutLiveMeetingStream(roomId);
 
