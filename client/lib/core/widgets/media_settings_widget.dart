@@ -302,8 +302,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                               child: Text(
                                 widget.hostedEvent
                                     ? context.l10n.micAndCameraEnabled
-                                    : context
-                                        .l10n.micAndCameraEnabledNotHosted,
+                                    : context.l10n.micAndCameraEnabledNotHosted,
                                 textAlign: TextAlign.center,
                                 softWrap: true,
                                 style: context.theme.textTheme.bodyMedium!
