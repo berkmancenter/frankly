@@ -27,6 +27,7 @@ class RecordingSession with _$RecordingSession {
   static const String kFieldCommunityId = 'communityId';
   static const String kArtifactMp4 = 'complete_mp4';
   static const String kArtifactTranscript = 'transcript_json';
+  static const String kArtifactTrx = 'complete_trx';
 
   factory RecordingSession({
     String? sessionId,

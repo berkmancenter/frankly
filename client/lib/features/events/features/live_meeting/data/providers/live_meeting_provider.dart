@@ -87,6 +87,11 @@ class LiveMeetingProvider with ChangeNotifier {
   bool _leftMeeting = false;
   bool _userLeftBreakouts = false;
 
+  /// True when the user left breakouts because their join/rejoin transition
+  /// stalled/timed out (did not "leave breakout room" explicitly);
+  /// callers can offer a retry instead of treating this as intentional.
+  bool _breakoutTransitionTimedOut = false;
+
   /// The ID of the breakout room the user is currently transitioning into, or null if no
   /// transition is in progress. We need to track this separately because there may be a delay
   /// between when the user is sent to the breakout room and when they actually join the breakout
@@ -171,7 +176,8 @@ class LiveMeetingProvider with ChangeNotifier {
   static const int _hostlessFallbackJitterMs = 20000;
   static const int _pendingBreakoutsFallbackJitterMs = 30000;
   static const int _breakoutRoomTransitionHeartbeatSeconds = 5;
-  static const int _breakoutRoomTransitionTimeoutSeconds = 10;
+  // Covers cold-start join info plus Agora connect retries.
+  static const int _breakoutRoomTransitionTimeoutSeconds = 30;
 
   MeetingUiState get activeUiState {
     final showEnterMeeting = isInstant && !clickedEnterMeeting;
@@ -223,6 +229,8 @@ class LiveMeetingProvider with ChangeNotifier {
       BreakoutRoomStatus.active;
 
   bool get userLeftBreakouts => _userLeftBreakouts;
+
+  bool get breakoutTransitionTimedOut => _breakoutTransitionTimedOut;
 
   String? get breakoutRoomOverride => _breakoutRoomOverride;
 
@@ -318,8 +326,9 @@ class LiveMeetingProvider with ChangeNotifier {
     final hasWaitingRoom = waitingRoomInfo != null &&
         (!isNullOrEmpty(waitingRoomInfo.content) ||
             !isNullOrEmpty(waitingRoomInfo.introMediaItem?.url));
-    final livestreamInWaitingRoom =
-        isLiveStream && isBeforeStartTime && hasWaitingRoom;
+    final livestreamInWaitingRoom = isLiveStream &&
+        hasWaitingRoom &&
+        (isBeforeStartTime || _breakoutTransitionTimedOut);
 
     return hostlessInWaitingRoom || livestreamInWaitingRoom;
   }
@@ -569,6 +578,7 @@ class LiveMeetingProvider with ChangeNotifier {
       // True immediately after calling leaveBreakoutRoom, so reset it here since
       // the user is moving to another room rather than leaving breakouts entirely.
       _userLeftBreakouts = false;
+      _breakoutTransitionTimedOut = false;
       _restartMainRoomRecordingIfNeeded();
     }
 
@@ -681,7 +691,10 @@ class LiveMeetingProvider with ChangeNotifier {
         )..initialize();
       }
 
-      if (eventProvider.event.eventType == EventType.hostless) {
+      final eventType = eventProvider.event.eventType;
+      if (eventType == EventType.hostless ||
+          eventType == EventType.livestream) {
+        // Auto opt in; only mods and the host get asked.
         await firestoreLiveMeetingService.updateAvailableForBreakoutSessionId(
           event: eventProvider.event,
           breakoutSessionId:
@@ -690,7 +703,7 @@ class LiveMeetingProvider with ChangeNotifier {
         );
         final isMod =
             userDataService.getMembership(communityProvider.communityId).isMod;
-        if (isMod) {
+        if (isMod || isHost) {
           final confirmJoiningBreakouts = await ConfirmDialog(
             mainText:
                 'Would you like to participate in breakout room assignments?',
@@ -774,6 +787,7 @@ class LiveMeetingProvider with ChangeNotifier {
           );
         }
 
+        _breakoutTransitionTimedOut = true;
         leaveBreakoutRoom();
         showToast(
           appLocalizationService
@@ -954,6 +968,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
   void enterBreakoutRoom({String? roomId}) {
     _userLeftBreakouts = false;
+    _breakoutTransitionTimedOut = false;
     if (roomId != null) {
       _breakoutRoomOverride = roomId;
       _activeRoomJoinInfoFuture = null;
@@ -1002,6 +1017,8 @@ class LiveMeetingProvider with ChangeNotifier {
     firestoreLiveMeetingService.updateMeetingPresence(
       event: eventProvider.event,
       isPresent: true,
+      // Explicitly place the user back in waiting room
+      currentBreakoutRoomId: 'waiting-room',
     );
 
     notifyListeners();
@@ -1054,10 +1071,15 @@ class LiveMeetingProvider with ChangeNotifier {
   Future<GetMeetingJoinInfoResponse> getBreakoutRoomFuture({
     required String roomId,
   }) async {
-    _inTransitionToBreakoutRoomId = roomId;
     _cachedJoinInfoRoomId = roomId;
     _activeRoomJoinInfoFuture = null;
-    _startBreakoutRoomTransitionTimer();
+    // Waiting room never connects to Agora, so no transition to time out.
+    if (roomId == breakoutsWaitingRoomId) {
+      _clearBreakoutRoomTransition();
+    } else {
+      _inTransitionToBreakoutRoomId = roomId;
+      _startBreakoutRoomTransitionTimer();
+    }
 
     _loadBreakoutLiveMeetingStream(roomId);
 

@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:client/app.dart';
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
@@ -103,7 +104,10 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
     if (userService.signInState == SignInState.signedIn && _initialized) {
       if (userService.isSignedIn &&
           !userService.isCurrentUserEmailVerified &&
-          !kDebugMode) {
+          // Bypass email verification during development or testing,
+          // or if explicitly set in the environment
+          !kDebugMode &&
+          !Environment.bypassEmailVerification) {
         return VerifyEmailPage(
           email: userService.firebaseAuth.currentUser?.email ?? '',
         );
