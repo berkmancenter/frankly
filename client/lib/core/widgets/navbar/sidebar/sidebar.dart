@@ -253,6 +253,7 @@ class _SideBarState extends State<SideBar> {
             child: RichText(
               textAlign: TextAlign.right,
               text: TextSpan(
+                // ignore: hardcoded_string -- deliberate build/version indicator.
                 text: 'v$version',
                 style: context.theme.textTheme.labelMedium!.copyWith(
                   color: context.theme.colorScheme.onSurfaceVariant,

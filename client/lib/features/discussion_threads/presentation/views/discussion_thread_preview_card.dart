@@ -251,7 +251,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                         onTap: onSeeMoreTap,
                         isIcon: false,
                         child: Text(
-                          'See more',
+                          context.l10n.seeMore,
                           style: AppTextStyle.bodyMedium.copyWith(
                             color: context.theme.colorScheme.onSurfaceVariant,
                           ),

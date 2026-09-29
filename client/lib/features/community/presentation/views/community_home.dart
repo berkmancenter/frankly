@@ -324,7 +324,7 @@ class _CommunityHomeState extends State<CommunityHome> {
       children: [
         if (email != null && email.isNotEmpty) ...[
           Text(
-            'Contact',
+            context.l10n.contact,
             style: AppTextStyle.headline4
                 .copyWith(color: context.theme.colorScheme.secondary),
           ),
