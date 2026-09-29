@@ -555,10 +555,14 @@ class BreakoutStatusInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     final liveMeetingProvider = LiveMeetingProvider.watch(context);
 
+    // Check if breakouts are active without the user being present;
+    // This is used to determine if the user should be prompted to join a breakout room,
+    // or if they are waiting for one to start.
     final breakoutsAreActiveWithoutUser = liveMeetingProvider.breakoutsActive &&
         !liveMeetingProvider.assignedBreakoutRoomIsLoading &&
         !liveMeetingProvider.shouldBeInBreakout &&
-        !liveMeetingProvider.userLeftBreakouts;
+        (!liveMeetingProvider.userLeftBreakouts ||
+            liveMeetingProvider.breakoutTransitionTimedOut);
 
     final breakoutsPending = [
           BreakoutRoomStatus.pending,
@@ -595,7 +599,8 @@ class BreakoutStatusInformation extends StatelessWidget {
 
           // If the scheduled time has passed, status is not pending, or countdown is unreasonably long, show "Generating" instead of a countdown
           if (breakoutRoomRemainingTime.isNegative ||
-              breakoutSession?.breakoutRoomStatus != BreakoutRoomStatus.pending ||
+              breakoutSession?.breakoutRoomStatus !=
+                  BreakoutRoomStatus.pending ||
               breakoutRoomRemainingTime > maxReasonableCountdown) {
             breakoutRoomRemainingTime = Duration.zero;
           }
@@ -654,6 +659,7 @@ class BreakoutStatusInformation extends StatelessWidget {
             height: 45,
             onPressed: () async {
               final event = context.read<EventProvider>().event;
+              final liveMeetingProvider = context.read<LiveMeetingProvider>();
 
               await alertOnError(
                 context,
@@ -665,6 +671,10 @@ class BreakoutStatusInformation extends StatelessWidget {
                   ),
                 ),
               );
+
+              // Clears any prior leave/timeout state so currentBreakoutRoomId falls back to
+              // the (possibly pre-existing) assignedBreakoutRoomId, not stuck as null.
+              liveMeetingProvider.enterBreakoutRoom();
             },
           ),
         ],
