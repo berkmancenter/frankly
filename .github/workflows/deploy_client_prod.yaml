@@ -84,6 +84,7 @@ jobs:
         run: cp web_overrides/flutter_service_worker.js build/web/flutter_service_worker.js
 
       - name: Upload sourcemaps to Sentry
+        continue-on-error: true
         env:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
