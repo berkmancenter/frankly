@@ -20,12 +20,11 @@ packages:
   agora_rtc_engine:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "6b0f2ae2e13d8cfc4341f91d6c325d3dd659d4dd"
-      url: "https://github.com/berkmancenter/Agora-Flutter-SDK.git"
-    source: git
-    version: "6.3.0"
+      name: agora_rtc_engine
+      sha256: "153310a2cf92f2d126523795f61548131f3bb29eb05c310db5b01c7f4bc4cbfd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.6.4"
   analyzer:
     dependency: transitive
     description:
@@ -971,10 +970,10 @@ packages:
     dependency: transitive
     description:
       name: iris_method_channel
-      sha256: "131d0a40ba646ba8fd4bf76e24d4ebd4aa3174ee39aa5fe8240c3b827979052c"
+      sha256: "9ba4f428bc944ef2a2eb04495f3e184d598984c1724991748a293172c6d1e43b"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.2.7"
   js:
     dependency: "direct main"
     description:
