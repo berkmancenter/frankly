@@ -17,9 +17,11 @@ class MediaSettingsWidget extends StatefulWidget {
   const MediaSettingsWidget({
     super.key,
     required this.shouldShowVideoPreview,
+    this.hostedEvent = false,
     this.isMirrorCheck = false,
   });
   final bool shouldShowVideoPreview;
+  final bool hostedEvent;
   final bool isMirrorCheck;
 
   @override
@@ -293,11 +295,21 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                       Column(
                         children: [
                           if (widget.isMirrorCheck)
-                            Text(
-                              context.l10n.micAndCameraEnabled,
-                              style:
-                                  context.theme.textTheme.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.bold,
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                maxWidth: 320,
+                              ),
+                              child: Text(
+                                widget.hostedEvent
+                                    ? context.l10n.micAndCameraEnabled
+                                    : context
+                                        .l10n.micAndCameraEnabledNotHosted,
+                                textAlign: TextAlign.center,
+                                softWrap: true,
+                                style: context.theme.textTheme.bodyMedium!
+                                    .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           const SizedBox(height: 8),
