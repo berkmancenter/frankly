@@ -684,6 +684,7 @@
   "messageParticipants": "Message Participants",
   "messageTime": "Message time",
   "micAndCameraEnabled": "Mic and camera are on at the start of the call",
+  "micAndCameraEnabledNotHosted": "Mic and camera will be enabled when breakout rooms start",
   "microphoneInput": "Microphone Input",
   "microsoftTeams": "Microsoft Teams",
   "mins": "mins",
