@@ -1,3 +1,4 @@
+import 'package:client/app.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/circle_icon_button.dart';
@@ -164,8 +165,10 @@ class _SideBarState extends State<SideBar> {
       );
 
   Widget _buildBottomSidebarButtons(bool isSignedIn) {
-    final version =
-        js_util.getProperty(html.window, 'platformVersion').toString();
+    // Prefer build-time release, fall back to possibly stale HTML value.
+    final version = sentryRelease.isNotEmpty
+        ? sentryRelease
+        : js_util.getProperty(html.window, 'platformVersion').toString();
     return Container(
       color: isSignedIn ? context.theme.colorScheme.surface : null,
       padding: const EdgeInsets.all(20),
