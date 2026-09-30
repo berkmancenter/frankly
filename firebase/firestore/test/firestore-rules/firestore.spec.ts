@@ -117,6 +117,20 @@ describe("Firestore security rules", async () => {
       await firebase.assertSucceeds(userDocRef.update(updateDataMap));
       await firebase.assertFails(userDocRef.delete());
     });
+
+    it("counts as member", async () => {
+      await communityRulesHelper.createMembership("alice", "moderator");
+      const chatRef = getAuthedFirestore("alice").doc(
+        "community/communityId/chats/newChat"
+      );
+
+      await firebase.assertSucceeds(
+        chatRef.set({
+          [fieldCreatorId]: "alice",
+          [fieldMembershipStatusSnapshot]: "moderator",
+        })
+      );
+    });
   });
 
   describe("/publicUser/{userId}", () => {
