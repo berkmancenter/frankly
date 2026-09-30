@@ -109,6 +109,23 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
     dbAdmin = yield firebase
         .initializeAdminApp({ projectId: PROJECT_ID })
         .firestore();
+    // Stored moderator status is 'moderator'
+    describe("moderator status", () => {
+        const communityRulesHelper = new firestore_rules_helper_1.CommunityRulesHelper(dbAdmin, [
+            { collection: "community", document: "communityId" },
+            { collection: "templates", document: "templateId" },
+            { collection: "events", document: "eventId" },
+            { collection: "chats", document: "messageId" },
+        ]);
+        it("counts as mod", () => __awaiter(void 0, void 0, void 0, function* () {
+            yield communityRulesHelper.getDocumentRef(dbAdmin).set(originalDataMap);
+            yield communityRulesHelper.createMembership("alice", "moderator");
+            const userDocRef = communityRulesHelper.getDocumentRef(getAuthedFirestore("alice"));
+            yield firebase.assertSucceeds(userDocRef.get());
+            yield firebase.assertSucceeds(userDocRef.update(updateDataMap));
+            yield firebase.assertFails(userDocRef.delete());
+        }));
+    });
     describe("/publicUser/{userId}", () => {
         const collection = "publicUser";
         const communityRulesHelper = new firestore_rules_helper_1.CommunityRulesHelper(dbAdmin, [
