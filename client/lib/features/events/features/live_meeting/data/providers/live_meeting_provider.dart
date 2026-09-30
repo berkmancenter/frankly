@@ -121,6 +121,8 @@ class LiveMeetingProvider with ChangeNotifier {
 
   String? _currentBreakoutRoomsStreamSession;
   BehaviorSubjectWrapper<List<BreakoutRoom>>? _assignedBreakoutRoomStream;
+  BehaviorSubjectWrapper<BreakoutRoom?>? _overrideBreakoutRoomStream;
+  StreamSubscription? _overrideBreakoutRoomSubscription;
 
   List<MeetingProviderParticipant>? _meetingProviderParticipants;
 
@@ -298,6 +300,11 @@ class LiveMeetingProvider with ChangeNotifier {
 
   BreakoutRoom? get assignedBreakoutRoom =>
       _assignedBreakoutRoomStream?.stream.valueOrNull?.firstOrNull;
+
+  /// Room the user is in; differs from assigned when an admin enters a room.
+  BreakoutRoom? get currentBreakoutRoom => _breakoutRoomOverride != null
+      ? _overrideBreakoutRoomStream?.stream.valueOrNull
+      : assignedBreakoutRoom;
 
   bool get assignedBreakoutRoomIsLoading =>
       _assignedBreakoutRoomStream?.stream.valueOrNull == null;
@@ -544,6 +551,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _onUnloadSubscription.cancel();
     _onReconnectSubscription?.cancel();
     _assignedBreakoutRoomsStreamSubscription?.cancel();
+    _overrideBreakoutRoomSubscription?.cancel();
 
     _presenceUpdater?.cancel();
     _transitionTimer?.cancel();
@@ -564,6 +572,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _liveMeetingStream.dispose();
     _breakoutLiveMeetingStream?.dispose();
     _assignedBreakoutRoomStream?.dispose();
+    _overrideBreakoutRoomStream?.dispose();
 
     super.dispose();
   }
@@ -967,6 +976,7 @@ class LiveMeetingProvider with ChangeNotifier {
       _breakoutRoomOverride = roomId;
       _activeRoomJoinInfoFuture = null;
       _loadBreakoutLiveMeetingStream(roomId);
+      _loadOverrideBreakoutRoomStream(roomId);
     }
 
     notifyListeners();
@@ -1007,6 +1017,9 @@ class LiveMeetingProvider with ChangeNotifier {
 
     _breakoutLiveMeetingStream?.dispose();
     _breakoutLiveMeetingStream = null;
+    _overrideBreakoutRoomSubscription?.cancel();
+    _overrideBreakoutRoomStream?.dispose();
+    _overrideBreakoutRoomStream = null;
 
     firestoreLiveMeetingService.updateMeetingPresence(
       event: eventProvider.event,
@@ -1060,6 +1073,20 @@ class LiveMeetingProvider with ChangeNotifier {
     );
     _breakoutLiveMeetingSubscription =
         _breakoutLiveMeetingStream?.listen((_) => notifyListeners());
+  }
+
+  void _loadOverrideBreakoutRoomStream(String roomId) {
+    _overrideBreakoutRoomSubscription?.cancel();
+    _overrideBreakoutRoomStream?.dispose();
+    _overrideBreakoutRoomStream =
+        firestoreLiveMeetingService.breakoutRoomStream(
+      event: eventProvider.event,
+      breakoutRoomSessionId:
+          liveMeeting?.currentBreakoutSession?.breakoutRoomSessionId ?? '',
+      breakoutRoomId: roomId,
+    );
+    _overrideBreakoutRoomSubscription =
+        _overrideBreakoutRoomStream?.listen((_) => notifyListeners());
   }
 
   Future<GetMeetingJoinInfoResponse> getBreakoutRoomFuture({
