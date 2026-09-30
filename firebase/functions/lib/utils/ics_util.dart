@@ -42,6 +42,7 @@ class IcsEvent {
   external IcsDuration get duration;
   external String title;
   external String url;
+  external String location;
   external String uid;
   external String productId;
 
@@ -51,6 +52,7 @@ class IcsEvent {
     IcsDuration duration,
     String title,
     String url,
+    String location,
     String uid,
     String productId,
   });
@@ -107,10 +109,12 @@ class IcsUtil {
     final scheduledEvents =
         events.where((event) => event.scheduledTime != null).map((event) {
       final scheduledTime = event.scheduledTime!.toUtc();
+      final eventUrl =
+          'https://$domain/space/${community.displayId}/discuss/${event.templateId}/${event.id}';
       return IcsEvent(
         title: event.title ?? 'Event',
-        url:
-            'https://$domain/space/${community.displayId}/discuss/${event.templateId}/${event.id}',
+        url: eventUrl,
+        location: eventUrl,
         uid: event.id,
         startInputType: 'utc',
         start: [
