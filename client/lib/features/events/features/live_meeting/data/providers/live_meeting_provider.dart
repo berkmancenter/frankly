@@ -694,30 +694,24 @@ class LiveMeetingProvider with ChangeNotifier {
       final eventType = eventProvider.event.eventType;
       if (eventType == EventType.hostless ||
           eventType == EventType.livestream) {
-        // Auto opt in; only mods and the host get asked.
-        await firestoreLiveMeetingService.updateAvailableForBreakoutSessionId(
-          event: eventProvider.event,
-          breakoutSessionId:
-              localLiveMeeting.currentBreakoutSession?.breakoutRoomSessionId ??
-                  '',
-        );
+        // Auto opt in; mods and the host opt in only if they confirm.
         final isMod =
             userDataService.getMembership(communityProvider.communityId).isMod;
-        if (isMod || isHost) {
-          final confirmJoiningBreakouts = await ConfirmDialog(
-            mainText:
-                'Would you like to participate in breakout room assignments?',
-            confirmText: appLocalizationService.getLocalization().yesJoin,
-            cancelText: appLocalizationService.getLocalization().noSkip,
-          ).show();
+        final shouldJoin = !(isMod || isHost) ||
+            await ConfirmDialog(
+              mainText:
+                  'Would you like to participate in breakout room assignments?',
+              confirmText: appLocalizationService.getLocalization().yesJoin,
+              cancelText: appLocalizationService.getLocalization().noSkip,
+            ).show();
 
-          if (!confirmJoiningBreakouts) {
-            await firestoreLiveMeetingService
-                .updateAvailableForBreakoutSessionId(
-              event: eventProvider.event,
-              breakoutSessionId: '',
-            );
-          }
+        if (shouldJoin) {
+          await firestoreLiveMeetingService.updateAvailableForBreakoutSessionId(
+            event: eventProvider.event,
+            breakoutSessionId: localLiveMeeting
+                    .currentBreakoutSession?.breakoutRoomSessionId ??
+                '',
+          );
         }
       } else if (useBotControls) {
         await firestoreLiveMeetingService.updateAvailableForBreakoutSessionId(
