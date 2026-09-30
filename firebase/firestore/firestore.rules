@@ -290,7 +290,7 @@ service cloud.firestore {
                     match /chats/{messageId=**} {
                         allow read: if hasAuth() && (isParticipant(getEventPath()) || isCommunityMod());
 
-                        allow create: if hasAuth() && verifyMembershipSnapshot() && (isParticipant(getEventPath()) || isCommunityMod());
+                        allow create: if hasAuth() && verifyMembershipSnapshot() && isDocCreator(request.resource) && (isParticipant(getEventPath()) || isCommunityMod());
 
                         allow update: if hasAuth() && (isDocCreator(resource) || isCommunityMod());
                     }
