@@ -87,8 +87,19 @@ class EventPermissionsProvider with ChangeNotifier {
     return eventProvider.event.creatorId == userService.currentUserId;
   }
 
+  // Placeholder to tie to a user setting in the future:
+  bool get allHostsCanBroadcast => true;
+
   bool get canBroadcastChat =>
-      _isHost || communityPermissions.membershipStatus.isMod;
+      (allHostsCanBroadcast && _isHost) ||
+      communityPermissions.membershipStatus.isMod;
+
+  bool isAuthorizedBroadcast(ChatMessage message) {
+    final senderIsHost = message.creatorId == eventProvider.event.creatorId;
+    final senderIsMod = message.membershipStatusSnapshot?.isMod ?? false;
+    return (message.broadcast ?? false) &&
+        ((allHostsCanBroadcast && senderIsHost) || senderIsMod);
+  }
 
   bool get canPinItemInParticipantWidget => _isHost;
 

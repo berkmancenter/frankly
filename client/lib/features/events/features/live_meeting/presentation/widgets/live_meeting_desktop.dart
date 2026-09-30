@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:client/features/chat/data/providers/chat_model.dart';
+import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart';
 import 'package:client/features/events/features/live_meeting/presentation/widgets/hostless_meeting_info.dart';
@@ -33,7 +34,6 @@ import 'package:client/core/utils/platform_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/user_input/chat.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
-import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
@@ -242,31 +242,26 @@ class FloatingChatDisplay extends StatefulWidget {
 class _FloatingChatDisplayState extends State<FloatingChatDisplay> {
   final _floatingMessages = <String, ChatMessage>{};
 
-  ChatModel? _chatModel;
   StreamSubscription? _onNewMessageSubscription;
-
-  ChatModel? _getChatModel(BuildContext context) {
-    try {
-      return Provider.of<ChatModel>(context);
-    } on ProviderNotFoundException {
-      return null;
-    }
-  }
+  StreamSubscription? _onMainMeetingNewMessageSubscription;
+  ChatModel? _mainMeetingChatModel;
 
   void _onNewMessage(ChatMessage newMessage, {bool onlyShowBroadcast = false}) {
-    final event = EventProvider.readOrNull(context)?.event;
-    final isHostOrMod =
-        (newMessage.creatorId != null && newMessage.creatorId == event?.creatorId) ||
-        (newMessage.membershipStatusSnapshot?.isMod ?? false);
-    final isBroadcast = (newMessage.broadcast ?? false) && isHostOrMod;
+    final isBroadcast = EventPermissionsProvider.read(context)
+            ?.isAuthorizedBroadcast(newMessage) ??
+        false;
     final floatMessage = !onlyShowBroadcast || isBroadcast;
     if (floatMessage) {
       setState(() => _floatingMessages[newMessage.id!] = newMessage);
     }
   }
 
-  void _setupSubscription() {
+  @override
+  void initState() {
+    super.initState();
+
     final liveMeetingProvider = LiveMeetingProvider.readOrNull(context);
+
     if (liveMeetingProvider == null) {
       return;
     }
@@ -275,28 +270,34 @@ class _FloatingChatDisplayState extends State<FloatingChatDisplay> {
     final isInLiveStreamLobby =
         EventProvider.read(context).isLiveStream && !isInBreakout;
 
-    _onNewMessageSubscription = _chatModel?.newMessages?.listen(
+    _onNewMessageSubscription = context.read<ChatModel>().newMessages?.listen(
           (message) => _onNewMessage(
             message,
             onlyShowBroadcast: isInLiveStreamLobby,
           ),
         );
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final newChatModel = _getChatModel(context);
-    if (_chatModel != newChatModel) {
-      _chatModel = newChatModel;
-      _onNewMessageSubscription?.cancel();
-      _setupSubscription();
+    if (liveMeetingProvider.isInBreakout) {
+      // Context ChatModel is the breakout's; main chat needs its own.
+      _mainMeetingChatModel = ChatModel(
+        communityProvider: CommunityProvider.read(context),
+        parentPath: EventProvider.read(context).event.fullPath,
+      )..initialize();
+      _onMainMeetingNewMessageSubscription =
+          _mainMeetingChatModel!.newMessages?.listen(
+        (message) => _onNewMessage(
+          message,
+          onlyShowBroadcast: true,
+        ),
+      );
     }
   }
 
   @override
   void dispose() {
     _onNewMessageSubscription?.cancel();
+    _onMainMeetingNewMessageSubscription?.cancel();
+    _mainMeetingChatModel?.dispose();
     super.dispose();
   }
 
@@ -579,10 +580,14 @@ class BreakoutStatusInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     final liveMeetingProvider = LiveMeetingProvider.watch(context);
 
+    // Check if breakouts are active without the user being present;
+    // This is used to determine if the user should be prompted to join a breakout room,
+    // or if they are waiting for one to start.
     final breakoutsAreActiveWithoutUser = liveMeetingProvider.breakoutsActive &&
         !liveMeetingProvider.assignedBreakoutRoomIsLoading &&
         !liveMeetingProvider.shouldBeInBreakout &&
-        !liveMeetingProvider.userLeftBreakouts;
+        (!liveMeetingProvider.userLeftBreakouts ||
+            liveMeetingProvider.breakoutTransitionTimedOut);
 
     final breakoutsPending = [
           BreakoutRoomStatus.pending,
@@ -619,7 +624,8 @@ class BreakoutStatusInformation extends StatelessWidget {
 
           // If the scheduled time has passed, status is not pending, or countdown is unreasonably long, show "Generating" instead of a countdown
           if (breakoutRoomRemainingTime.isNegative ||
-              breakoutSession?.breakoutRoomStatus != BreakoutRoomStatus.pending ||
+              breakoutSession?.breakoutRoomStatus !=
+                  BreakoutRoomStatus.pending ||
               breakoutRoomRemainingTime > maxReasonableCountdown) {
             breakoutRoomRemainingTime = Duration.zero;
           }
@@ -678,6 +684,7 @@ class BreakoutStatusInformation extends StatelessWidget {
             height: 45,
             onPressed: () async {
               final event = context.read<EventProvider>().event;
+              final liveMeetingProvider = context.read<LiveMeetingProvider>();
 
               await alertOnError(
                 context,
@@ -689,6 +696,10 @@ class BreakoutStatusInformation extends StatelessWidget {
                   ),
                 ),
               );
+
+              // Clears any prior leave/timeout state so currentBreakoutRoomId falls back to
+              // the (possibly pre-existing) assignedBreakoutRoomId, not stuck as null.
+              liveMeetingProvider.enterBreakoutRoom();
             },
           ),
         ],

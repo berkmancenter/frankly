@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:client/services.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
@@ -142,10 +141,10 @@ class CloudFunctionsLiveMeetingService {
   Future<void> toggleLikeDislikeOnMeetingUserSuggestion(
     ParticipantAgendaItemDetailsMeta request,
   ) async {
-    final HttpsCallable callable = FirebaseFunctions.instance
-        .httpsCallable('toggleLikeDislikeOnMeetingUserSuggestion');
-
-    await callable.call(request.toJson());
+    await cloudFunctions.callFunction(
+      'toggleLikeDislikeOnMeetingUserSuggestion',
+      request.toJson(),
+    );
   }
 
   Future<GetUserIdFromAgoraIdResponse> getUserIdFromAgoraId(

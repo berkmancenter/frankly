@@ -198,6 +198,15 @@ class Event with _$Event implements SerializeableRequest {
     }
     return startTime;
   }
+
+  /// Whether the event has started and not yet ended, as of [now].
+  bool isActive(DateTime now) {
+    final start = scheduledTime;
+    if (start == null || start.isAfter(now)) return false;
+
+    final end = start.add(Duration(minutes: durationInMinutes));
+    return end.isAfter(now);
+  }
 }
 
 @Freezed(makeCollectionsUnmodifiable: false)
@@ -285,6 +294,8 @@ class Participant with _$Participant implements SerializeableRequest {
   static const String kFieldBreakoutRoomSurveyQuestions =
       'breakoutRoomSurveyQuestions';
   static const String kFieldZipCode = 'zipCode';
+  static const String kFieldEmail = 'email';
+  static const String kFieldName = 'name';
   static const String kAvailableForBreakoutSessionId =
       'availableForBreakoutSessionId';
   static const String kFieldMuteOverride = 'muteOverride';
@@ -318,6 +329,8 @@ class Participant with _$Participant implements SerializeableRequest {
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
     DateTime? mostRecentPresentTime,
     String? zipCode,
+    String? email,
+    String? name,
   }) = _Participant;
 
   factory Participant.fromJson(Map<String, dynamic> json) =>

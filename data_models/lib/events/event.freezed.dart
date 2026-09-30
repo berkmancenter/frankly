@@ -1755,6 +1755,8 @@ mixin _$Participant {
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
   DateTime? get mostRecentPresentTime => throw _privateConstructorUsedError;
   String? get zipCode => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1788,7 +1790,9 @@ abstract class $ParticipantCopyWith<$Res> {
       List<BreakoutQuestion> breakoutRoomSurveyQuestions,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       DateTime? mostRecentPresentTime,
-      String? zipCode});
+      String? zipCode,
+      String? email,
+      String? name});
 }
 
 /// @nodoc
@@ -1821,6 +1825,8 @@ class _$ParticipantCopyWithImpl<$Res, $Val extends Participant>
     Object? breakoutRoomSurveyQuestions = null,
     Object? mostRecentPresentTime = freezed,
     Object? zipCode = freezed,
+    Object? email = freezed,
+    Object? name = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -1891,6 +1897,14 @@ class _$ParticipantCopyWithImpl<$Res, $Val extends Participant>
           ? _value.zipCode
           : zipCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -1923,7 +1937,9 @@ abstract class _$$_ParticipantCopyWith<$Res>
       List<BreakoutQuestion> breakoutRoomSurveyQuestions,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       DateTime? mostRecentPresentTime,
-      String? zipCode});
+      String? zipCode,
+      String? email,
+      String? name});
 }
 
 /// @nodoc
@@ -1954,6 +1970,8 @@ class __$$_ParticipantCopyWithImpl<$Res>
     Object? breakoutRoomSurveyQuestions = null,
     Object? mostRecentPresentTime = freezed,
     Object? zipCode = freezed,
+    Object? email = freezed,
+    Object? name = freezed,
   }) {
     return _then(_$_Participant(
       id: null == id
@@ -2024,6 +2042,14 @@ class __$$_ParticipantCopyWithImpl<$Res>
           ? _value.zipCode
           : zipCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -2051,7 +2077,9 @@ class _$_Participant implements _Participant {
       this.breakoutRoomSurveyQuestions = const [],
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       this.mostRecentPresentTime,
-      this.zipCode});
+      this.zipCode,
+      this.email,
+      this.name});
 
   factory _$_Participant.fromJson(Map<String, dynamic> json) =>
       _$$_ParticipantFromJson(json);
@@ -2105,10 +2133,14 @@ class _$_Participant implements _Participant {
   final DateTime? mostRecentPresentTime;
   @override
   final String? zipCode;
+  @override
+  final String? email;
+  @override
+  final String? name;
 
   @override
   String toString() {
-    return 'Participant(id: $id, communityId: $communityId, externalCommunityId: $externalCommunityId, templateId: $templateId, lastUpdatedTime: $lastUpdatedTime, createdDate: $createdDate, scheduledTime: $scheduledTime, status: $status, isPresent: $isPresent, availableForBreakoutSessionId: $availableForBreakoutSessionId, membershipStatus: $membershipStatus, currentBreakoutRoomId: $currentBreakoutRoomId, muteOverride: $muteOverride, joinParameters: $joinParameters, breakoutRoomSurveyQuestions: $breakoutRoomSurveyQuestions, mostRecentPresentTime: $mostRecentPresentTime, zipCode: $zipCode)';
+    return 'Participant(id: $id, communityId: $communityId, externalCommunityId: $externalCommunityId, templateId: $templateId, lastUpdatedTime: $lastUpdatedTime, createdDate: $createdDate, scheduledTime: $scheduledTime, status: $status, isPresent: $isPresent, availableForBreakoutSessionId: $availableForBreakoutSessionId, membershipStatus: $membershipStatus, currentBreakoutRoomId: $currentBreakoutRoomId, muteOverride: $muteOverride, joinParameters: $joinParameters, breakoutRoomSurveyQuestions: $breakoutRoomSurveyQuestions, mostRecentPresentTime: $mostRecentPresentTime, zipCode: $zipCode, email: $email, name: $name)';
   }
 
   @override
@@ -2149,30 +2181,35 @@ class _$_Participant implements _Participant {
                 breakoutRoomSurveyQuestions) &&
             (identical(other.mostRecentPresentTime, mostRecentPresentTime) ||
                 other.mostRecentPresentTime == mostRecentPresentTime) &&
-            (identical(other.zipCode, zipCode) || other.zipCode == zipCode));
+            (identical(other.zipCode, zipCode) || other.zipCode == zipCode) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      communityId,
-      externalCommunityId,
-      templateId,
-      lastUpdatedTime,
-      createdDate,
-      scheduledTime,
-      status,
-      isPresent,
-      availableForBreakoutSessionId,
-      membershipStatus,
-      currentBreakoutRoomId,
-      muteOverride,
-      const DeepCollectionEquality().hash(joinParameters),
-      const DeepCollectionEquality().hash(breakoutRoomSurveyQuestions),
-      mostRecentPresentTime,
-      zipCode);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        communityId,
+        externalCommunityId,
+        templateId,
+        lastUpdatedTime,
+        createdDate,
+        scheduledTime,
+        status,
+        isPresent,
+        availableForBreakoutSessionId,
+        membershipStatus,
+        currentBreakoutRoomId,
+        muteOverride,
+        const DeepCollectionEquality().hash(joinParameters),
+        const DeepCollectionEquality().hash(breakoutRoomSurveyQuestions),
+        mostRecentPresentTime,
+        zipCode,
+        email,
+        name
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -2209,7 +2246,9 @@ abstract class _Participant implements Participant {
       final List<BreakoutQuestion> breakoutRoomSurveyQuestions,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       final DateTime? mostRecentPresentTime,
-      final String? zipCode}) = _$_Participant;
+      final String? zipCode,
+      final String? email,
+      final String? name}) = _$_Participant;
 
   factory _Participant.fromJson(Map<String, dynamic> json) =
       _$_Participant.fromJson;
@@ -2259,6 +2298,10 @@ abstract class _Participant implements Participant {
   DateTime? get mostRecentPresentTime;
   @override
   String? get zipCode;
+  @override
+  String? get email;
+  @override
+  String? get name;
   @override
   @JsonKey(ignore: true)
   _$$_ParticipantCopyWith<_$_Participant> get copyWith =>

@@ -152,10 +152,14 @@ class EventPageState extends State<EventPage> implements EventPageView {
           final eventPageProvider = context.read<EventPageProvider>();
           final event = eventPageProvider.eventProvider.event;
 
+          // Don't confirm joining an event that's already in progress.
+          final showConfirmDialog =
+              showConfirm && !event.isActive(clockService.now());
+
           JoinEventResults joinResults = await alertOnError<JoinEventResults>(
                 context,
                 () => eventPageProvider.joinEvent(
-                  showConfirm: showConfirm,
+                  showConfirm: showConfirmDialog,
                   joinCommunity: joinCommunity,
                 ),
               ) ??

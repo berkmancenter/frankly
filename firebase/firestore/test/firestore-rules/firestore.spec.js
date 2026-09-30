@@ -20,13 +20,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -109,6 +119,31 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
     dbAdmin = yield firebase
         .initializeAdminApp({ projectId: PROJECT_ID })
         .firestore();
+    // Stored moderator status is 'moderator'
+    describe("moderator status", () => {
+        const communityRulesHelper = new firestore_rules_helper_1.CommunityRulesHelper(dbAdmin, [
+            { collection: "community", document: "communityId" },
+            { collection: "templates", document: "templateId" },
+            { collection: "events", document: "eventId" },
+            { collection: "chats", document: "messageId" },
+        ]);
+        it("counts as mod", () => __awaiter(void 0, void 0, void 0, function* () {
+            yield communityRulesHelper.getDocumentRef(dbAdmin).set(originalDataMap);
+            yield communityRulesHelper.createMembership("alice", "moderator");
+            const userDocRef = communityRulesHelper.getDocumentRef(getAuthedFirestore("alice"));
+            yield firebase.assertSucceeds(userDocRef.get());
+            yield firebase.assertSucceeds(userDocRef.update(updateDataMap));
+            yield firebase.assertFails(userDocRef.delete());
+        }));
+        it("counts as member", () => __awaiter(void 0, void 0, void 0, function* () {
+            yield communityRulesHelper.createMembership("alice", "moderator");
+            const chatRef = getAuthedFirestore("alice").doc("community/communityId/chats/newChat");
+            yield firebase.assertSucceeds(chatRef.set({
+                [fieldCreatorId]: "alice",
+                [fieldMembershipStatusSnapshot]: "moderator",
+            }));
+        }));
+    });
     describe("/publicUser/{userId}", () => {
         const collection = "publicUser";
         const communityRulesHelper = new firestore_rules_helper_1.CommunityRulesHelper(dbAdmin, [
@@ -1068,7 +1103,9 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             const user = getAuthedFirestore("alice");
                             const userColRef = communityRulesHelper.getCollectionRef(user);
                             const userDocRef = communityRulesHelper.getDocumentRef(user);
-                            yield firebase.assertSucceeds(userColRef.add(originalDataMap));
+                            yield firebase.assertFails(userColRef.add(originalDataMap));
+                            yield firebase.assertSucceeds(userColRef.add({ creatorId: "alice" }));
+                            yield firebase.assertFails(userColRef.add({ creatorId: "bob" }));
                             yield firebase.assertSucceeds(userDocRef.get());
                             yield firebase.assertFails(userDocRef.set({ creatorId: "alice" }, { merge: true }));
                             yield firebase.assertFails(userDocRef.update(updateDataMap));
@@ -1096,7 +1133,9 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                         case firestore_rules_helper_1.Membership.owner:
                                         case firestore_rules_helper_1.Membership.admin:
                                         case firestore_rules_helper_1.Membership.mod:
-                                            yield firebase.assertSucceeds(userColRef.add(originalDataMap));
+                                            yield firebase.assertFails(userColRef.add(originalDataMap));
+                                            yield firebase.assertSucceeds(userColRef.add({ creatorId: "alice" }));
+                                            yield firebase.assertFails(userColRef.add({ creatorId: "bob" }));
                                             yield firebase.assertSucceeds(userDocRef.get());
                                             yield firebase.assertSucceeds(userDocRef.set(originalDataMap));
                                             yield firebase.assertSucceeds(userDocRef.update(updateDataMap));

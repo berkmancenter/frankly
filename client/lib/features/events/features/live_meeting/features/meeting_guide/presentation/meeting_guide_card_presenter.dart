@@ -203,6 +203,15 @@ class MeetingGuideCardPresenter {
         _meetingGuideCardStore.isHoldingPendingAdvanceTransition;
   }
 
+  /// Whether [currentAgendaItemId] is the final agenda item. The backend finishes
+  /// the meeting immediately for the last item (no scheduled advance), so the
+  /// "moving onto the next agenda item" countdown must not be shown for it.
+  bool isLastAgendaItem(String? currentAgendaItemId) {
+    if (currentAgendaItemId == null) return false;
+    final items = _agendaProvider.resolvedAgendaItems;
+    return items.isNotEmpty && items.last.id == currentAgendaItemId;
+  }
+
   /// Whether the advance countdown should display for the current user, accounting
   /// for the user's optimistic ready vote and all fully-written ready votes.
   bool isPendingAdvanceOptimistic({
@@ -210,6 +219,9 @@ class MeetingGuideCardPresenter {
     required List<ParticipantAgendaItemDetails>? itemDetails,
     required Set<String> presentParticipantIds,
   }) {
+    // No next item to move onto: the meeting finishes immediately, so never
+    // show the advance countdown/ring for the last agenda item.
+    if (isLastAgendaItem(currentAgendaItemId)) return false;
     if (isPendingAdvance(currentAgendaItemId)) return true;
     final optimisticCount = _meetingGuideCardStore.optimisticReadyCount(
       agendaItemId: currentAgendaItemId,

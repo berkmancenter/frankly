@@ -191,6 +191,7 @@ class ChatModel with ChangeNotifier {
     String? text,
     EmotionType? emotionType,
     bool broadcast = false,
+    String? parentPathOverride,
   }) async {
     assert(
       text != null || emotionType != null,
@@ -198,10 +199,8 @@ class ChatModel with ChangeNotifier {
     );
     if (emotionType == null && (text == null || text.trim().isEmpty)) return;
 
-    final targetPath = (broadcast && mainParentPath != null)
-        ? mainParentPath!
-        : parentPath;
-
+    final targetPath = parentPathOverride ??
+        ((broadcast && mainParentPath != null) ? mainParentPath! : parentPath);
     final messageId =
         firestoreChatService.generateNewChatMessageId(targetPath, _kChatId);
 
@@ -218,7 +217,9 @@ class ChatModel with ChangeNotifier {
       broadcast: broadcast,
     );
 
-    if (emotionType == null) {
+    // Other chats never echo back here, so don't buffer.
+    if (emotionType == null &&
+        (targetPath == parentPath || targetPath == mainParentPath)) {
       _sendingMessages[messageId] = newMessage;
       notifyListeners();
     }

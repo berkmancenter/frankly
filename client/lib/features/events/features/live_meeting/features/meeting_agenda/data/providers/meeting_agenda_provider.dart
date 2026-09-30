@@ -93,7 +93,7 @@ class AgendaProvider with ChangeNotifier {
       resolveAgendaItemsForDiffusionStatement(
         _agendaItems,
         isInBreakouts
-            ? liveMeetingProvider?.assignedBreakoutRoom?.diffusionStatement
+            ? liveMeetingProvider?.currentBreakoutRoom?.diffusionStatement
             : null,
         showUnresolvedAsError: Environment.enableDevEventSettings,
       );

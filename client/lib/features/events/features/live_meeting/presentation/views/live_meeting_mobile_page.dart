@@ -671,12 +671,15 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isRaisedHandVisible = _presenter.isRaisedHandVisible;
         final presentParticipantIds =
             _presenter.getPresentParticipantIds().toSet();
+        // A null id here would break the timer widget for the whole delay, so
+        // fall back to a safe id value.
+        final currentAgendaItemId = _presenter.getCurrentAgendaItemId();
         final itemDetails = MeetingGuideCardStore.detailsForAgendaItem(
           participantAgendaItemDetailsList,
-          currentItem?.id,
+          currentAgendaItemId,
         );
         final isCardPending = _presenter.isPendingAdvanceOptimistic(
-          currentAgendaItemId: currentItem?.id,
+          currentAgendaItemId: currentAgendaItemId,
           itemDetails: itemDetails,
           presentParticipantIds: presentParticipantIds,
         );
@@ -791,7 +794,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                                               TargetPlatform.iOS ||
                                           defaultTargetPlatform ==
                                               TargetPlatform.android),
-                                  isMirrorCheck: true,
                                 );
                               },
                             ),
@@ -1082,8 +1084,10 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
       return ChatWidget(
         parentPath: context.watch<ChatModel>().parentPath,
         messageInputHint: context.l10n.saySomething,
-        allowBroadcast:
+        allowBroadcast: (!context.watch<LiveMeetingProvider>().isInBreakout ||
+                context.watch<LiveMeetingProvider>().isInBreakoutWaitingRoom) &&
             context.watch<EventPermissionsProvider>().canBroadcastChat,
+        broadcastParentPath: EventProvider.read(context).event.fullPath,
       );
     } else if (selectedTab == TabType.suggestions) {
       return Padding(

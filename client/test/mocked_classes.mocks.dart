@@ -12870,6 +12870,40 @@ class MockMeetingGuideCardStore extends _i1.Mock
       ) as bool);
 
   @override
+  String? get currentAgendaModelItemId => (super.noSuchMethod(
+        Invocation.getter(#currentAgendaModelItemId),
+        returnValueForMissingStub: null,
+      ) as String?);
+
+  @override
+  _i2.AgendaItem? get meetingGuideCardAgendaItem => (super.noSuchMethod(
+        Invocation.getter(#meetingGuideCardAgendaItem),
+        returnValueForMissingStub: null,
+      ) as _i2.AgendaItem?);
+
+  @override
+  int optimisticReadyCount({
+    required String? agendaItemId,
+    required String? currentUserId,
+    required List<_i46.ParticipantAgendaItemDetails>? details,
+    required Set<String>? presentParticipantIds,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #optimisticReadyCount,
+          [],
+          {
+            #agendaItemId: agendaItemId,
+            #currentUserId: currentUserId,
+            #details: details,
+            #presentParticipantIds: presentParticipantIds,
+          },
+        ),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
+
+  @override
   bool get meetingGuideCardIsPending => (super.noSuchMethod(
         Invocation.getter(#meetingGuideCardIsPending),
         returnValue: false,

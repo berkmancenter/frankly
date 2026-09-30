@@ -23,6 +23,7 @@ class ChatWidget extends StatelessWidget {
   final String? messageInputHint;
   final bool shouldGuardCommunityMember;
   final bool allowBroadcast;
+  final String? broadcastParentPath;
 
   const ChatWidget({
     required this.parentPath,
@@ -31,6 +32,7 @@ class ChatWidget extends StatelessWidget {
     this.messageInputHint,
     this.shouldGuardCommunityMember = false,
     this.allowBroadcast = false,
+    this.broadcastParentPath,
   });
 
   @override
@@ -39,6 +41,7 @@ class ChatWidget extends StatelessWidget {
       messageInputHint: messageInputHint,
       shouldGuardCommunityMember: shouldGuardCommunityMember,
       allowBroadcast: allowBroadcast,
+      broadcastParentPath: broadcastParentPath,
     );
 
     if (watchProviderOrNull<ChatModel>(context) == null) {
@@ -60,11 +63,13 @@ class _ChatWidget extends StatefulWidget {
   final String? messageInputHint;
   final bool shouldGuardCommunityMember;
   final bool allowBroadcast;
+  final String? broadcastParentPath;
 
   const _ChatWidget({
     this.messageInputHint,
     this.shouldGuardCommunityMember = false,
     this.allowBroadcast = false,
+    this.broadcastParentPath,
   });
 
   @override
@@ -82,9 +87,13 @@ class _ChatWidgetState extends State<_ChatWidget> {
         final broadcast = _broadcast;
         _message.clear();
         setState(() => _broadcast = false);
-        await context
-            .read<ChatModel>()
-            .createChatMessage(text: text, broadcast: broadcast);
+        await context.read<ChatModel>().createChatMessage(
+              text: text,
+              broadcast: broadcast,
+              // Broadcasts go to the main chat so every room gets them.
+              parentPathOverride:
+                  broadcast ? widget.broadcastParentPath : null,
+            );
       });
 
   Future<void> _sendMessage() => widget.shouldGuardCommunityMember

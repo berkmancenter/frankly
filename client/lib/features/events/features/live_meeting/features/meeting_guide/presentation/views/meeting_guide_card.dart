@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/live_meeting/presentation/views/leave_regular_dialog.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_item_image.dart';
@@ -12,7 +11,6 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_contract.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/models/meeting_guide_card_model.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/meeting_guide_card_presenter.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/raising_hand.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
@@ -24,13 +22,11 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
-import 'package:client/app.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
-import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
@@ -55,24 +51,6 @@ class _MeetingGuideCardState extends State<MeetingGuideCard> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Only show tutorial is it was not shown before and if meeting is not hosted (only in hostLess).
-      final canShowTutorial = !responsiveLayoutService.isMobile(context) &&
-          !sharedPreferencesService.wasMeetingTutorialShown() &&
-          !EventProvider.read(context).event.isHosted &&
-          Provider.of<AgendaProvider>(context, listen: false).isInBreakouts &&
-          !useBotControls;
-
-      if (canShowTutorial) {
-        unawaited(sharedPreferencesService.setMeetingTutorialShown(true));
-
-        await showCustomDialog(
-          context: context,
-          builder: (context) => MeetingGuideTutorial(),
-        );
-      }
-    });
   }
 
   @override
