@@ -1301,7 +1301,11 @@ describe("Firestore security rules", async () => {
               const userColRef = communityRulesHelper.getCollectionRef(user);
               const userDocRef = communityRulesHelper.getDocumentRef(user);
 
-              await firebase.assertSucceeds(userColRef.add(originalDataMap));
+              await firebase.assertFails(userColRef.add(originalDataMap));
+              await firebase.assertSucceeds(
+                userColRef.add({ creatorId: "alice" })
+              );
+              await firebase.assertFails(userColRef.add({ creatorId: "bob" }));
               await firebase.assertSucceeds(userDocRef.get());
               await firebase.assertFails(
                 userDocRef.set({ creatorId: "alice" }, { merge: true })
@@ -1340,8 +1344,14 @@ describe("Firestore security rules", async () => {
                   case Membership.owner:
                   case Membership.admin:
                   case Membership.mod:
-                    await firebase.assertSucceeds(
+                    await firebase.assertFails(
                       userColRef.add(originalDataMap)
+                    );
+                    await firebase.assertSucceeds(
+                      userColRef.add({ creatorId: "alice" })
+                    );
+                    await firebase.assertFails(
+                      userColRef.add({ creatorId: "bob" })
                     );
                     await firebase.assertSucceeds(userDocRef.get());
                     await firebase.assertSucceeds(

@@ -226,6 +226,9 @@ class LiveMeetingProvider with ChangeNotifier {
 
   bool get isInBreakout => currentBreakoutRoomId != null;
 
+  bool get isInBreakoutWaitingRoom =>
+      currentBreakoutRoomId == breakoutsWaitingRoomId;
+
   bool get breakoutsActive =>
       liveMeeting?.currentBreakoutSession?.breakoutRoomStatus ==
       BreakoutRoomStatus.active;

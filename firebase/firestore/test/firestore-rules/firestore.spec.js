@@ -1103,7 +1103,9 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             const user = getAuthedFirestore("alice");
                             const userColRef = communityRulesHelper.getCollectionRef(user);
                             const userDocRef = communityRulesHelper.getDocumentRef(user);
-                            yield firebase.assertSucceeds(userColRef.add(originalDataMap));
+                            yield firebase.assertFails(userColRef.add(originalDataMap));
+                            yield firebase.assertSucceeds(userColRef.add({ creatorId: "alice" }));
+                            yield firebase.assertFails(userColRef.add({ creatorId: "bob" }));
                             yield firebase.assertSucceeds(userDocRef.get());
                             yield firebase.assertFails(userDocRef.set({ creatorId: "alice" }, { merge: true }));
                             yield firebase.assertFails(userDocRef.update(updateDataMap));
@@ -1131,7 +1133,9 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                                         case firestore_rules_helper_1.Membership.owner:
                                         case firestore_rules_helper_1.Membership.admin:
                                         case firestore_rules_helper_1.Membership.mod:
-                                            yield firebase.assertSucceeds(userColRef.add(originalDataMap));
+                                            yield firebase.assertFails(userColRef.add(originalDataMap));
+                                            yield firebase.assertSucceeds(userColRef.add({ creatorId: "alice" }));
+                                            yield firebase.assertFails(userColRef.add({ creatorId: "bob" }));
                                             yield firebase.assertSucceeds(userDocRef.get());
                                             yield firebase.assertSucceeds(userDocRef.set(originalDataMap));
                                             yield firebase.assertSucceeds(userDocRef.update(updateDataMap));
