@@ -322,7 +322,14 @@ class _CommunityHomeState extends State<CommunityHome> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Row(
+          children: [
+            _buildShare(),
+            Spacer(),
+          ],
+        ),
         if (email != null && email.isNotEmpty) ...[
+          SizedBox(height: 20),
           Text(
             'Contact',
             style: AppTextStyle.headline4
@@ -337,14 +344,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                   .copyWith(color: context.theme.colorScheme.secondary),
             ),
           ),
-          SizedBox(height: 10),
         ],
-        Row(
-          children: [
-            _buildShare(),
-            Spacer(),
-          ],
-        ),
         SizedBox(height: 30),
         _buildEngagementButtons(showDonations),
       ],
