@@ -132,7 +132,7 @@ service cloud.firestore {
         // Community
         match /community/{communityId} {
             function isCommunityMember(communityId) {
-                let memberSet = ['member', 'facilitator', 'mod', 'admin', 'owner'].toSet();
+                let memberSet = ['member', 'facilitator', 'moderator', 'mod', 'admin', 'owner'].toSet();
                 return hasAuth() && getMembershipStatus(communityId) in memberSet;
             }
 
