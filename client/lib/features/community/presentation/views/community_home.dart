@@ -22,6 +22,7 @@ import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
+import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
@@ -117,8 +118,10 @@ class _CommunityHomeState extends State<CommunityHome> {
               SizedBox(height: 30),
               _buildEvents(),
               SizedBox(height: 30),
-              CommunityHomeAboutSection(community: community),
-              SizedBox(height: 30),
+              if (!isNullOrEmpty(community.description)) ...[
+                CommunityHomeAboutSection(community: community),
+                SizedBox(height: 30),
+              ],
               _buildContactUsSection(showDonations),
               SizedBox(height: 30),
             ],
@@ -160,8 +163,10 @@ class _CommunityHomeState extends State<CommunityHome> {
           child: _CommunityDetailWidget(community: community),
         ),
         SizedBox(height: 30),
-        CommunityHomeAboutSection(community: community),
-        SizedBox(height: 20),
+        if (!isNullOrEmpty(community.description)) ...[
+          CommunityHomeAboutSection(community: community),
+          SizedBox(height: 20),
+        ],
         _buildContactUsSection(showDonations),
         SizedBox(height: 30),
       ],
