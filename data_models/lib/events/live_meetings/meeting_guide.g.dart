@@ -19,6 +19,10 @@ _$_ParticipantAgendaItemDetails _$$_ParticipantAgendaItemDetailsFromJson(
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      wordCloudEntries: (json['wordCloudEntries'] as List<dynamic>?)
+              ?.map((e) => WordCloudData.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       suggestions: (json['suggestions'] as List<dynamic>?)
               ?.map((e) =>
                   MeetingUserSuggestion.fromJson(e as Map<String, dynamic>))
@@ -38,6 +42,8 @@ Map<String, dynamic> _$$_ParticipantAgendaItemDetailsToJson(
       'handRaisedTime': timestampFromDateTime(instance.handRaisedTime),
       'pollResponse': instance.pollResponse,
       'wordCloudResponses': instance.wordCloudResponses,
+      'wordCloudEntries':
+          instance.wordCloudEntries.map((e) => e.toJson()).toList(),
       'suggestions': instance.suggestions.map((e) => e.toJson()).toList(),
       'videoCurrentTime': instance.videoCurrentTime,
       'videoDuration': instance.videoDuration,

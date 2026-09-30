@@ -1,3 +1,4 @@
+import 'package:data_models/user_input/word_cloud_data.dart';
 import 'dart:async';
 import 'dart:convert';
 
@@ -76,6 +77,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   bool isLoadingPollsSuggestions = true;
   List<ChatSuggestionData> suggestionData = [];
   List<PollData> pollData = [];
+  List<WordCloudData> wordCloudData = [];
+  bool _promptDataLoaded = false;
 
   Future<void> downloadAllRecordings(Event event) async {
     final errorMsg = context.l10n.errorOccurred;
@@ -213,43 +216,47 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     }
   }
 
+  Future<void> _loadWordCloudData() async {
+    final response = await cloudFunctions.callFunction(
+      'GetMeetingWordCloudData',
+      GetMeetingWordCloudDataRequest(eventPath: widget.event.fullPath).toJson(),
+    );
+    wordCloudData = GetMeetingWordCloudDataResponse.fromJson(response).entries;
+  }
+
   Future<void> downloadPollsSuggestionsData(Event event) async {
-    // If empty, fall back to retrying the cloud fetch.
-    if (suggestionData.isEmpty || pollData.isEmpty) {
-      try {
-        final chatSuggestionRequest = GetMeetingChatsSuggestionsDataRequest(
-          eventPath: widget.event.fullPath,
-        );
-        final chatSuggestionResponse = await cloudFunctions.callFunction(
-          'GetMeetingChatSuggestionData',
-          chatSuggestionRequest.toJson(),
-        );
-        final chatSuggestionResult =
-            GetMeetingChatsSuggestionsDataResponse.fromJson(
-          chatSuggestionResponse,
-        );
+    // Retry failed loads rather than exporting a partial result.
+    if (!_promptDataLoaded) {
+      final chatSuggestionRequest = GetMeetingChatsSuggestionsDataRequest(
+        eventPath: widget.event.fullPath,
+      );
+      final chatSuggestionResponse = await cloudFunctions.callFunction(
+        'GetMeetingChatSuggestionData',
+        chatSuggestionRequest.toJson(),
+      );
+      final chatSuggestionResult =
+          GetMeetingChatsSuggestionsDataResponse.fromJson(
+        chatSuggestionResponse,
+      );
 
-        suggestionData = chatSuggestionResult.chatsSuggestionsList
-                ?.where((e) => e.type == ChatSuggestionType.suggestion)
-                .toList() ??
-            [];
+      suggestionData = chatSuggestionResult.chatsSuggestionsList
+              ?.where((e) => e.type == ChatSuggestionType.suggestion)
+              .toList() ??
+          [];
 
-        final pollRequest =
-            GetMeetingPollDataRequest(eventPath: widget.event.fullPath);
-        final pollResponse = await cloudFunctions.callFunction(
-          'GetMeetingPollData',
-          pollRequest.toJson(),
-        );
-        final pollResult = GetMeetingPollDataResponse.fromJson(pollResponse);
-        pollData = pollResult.polls ?? [];
-      } catch (e) {
-        // If there's an error loading data, assume no data available
-        suggestionData = [];
-        pollData = [];
-      }
+      final pollRequest =
+          GetMeetingPollDataRequest(eventPath: widget.event.fullPath);
+      final pollResponse = await cloudFunctions.callFunction(
+        'GetMeetingPollData',
+        pollRequest.toJson(),
+      );
+      final pollResult = GetMeetingPollDataResponse.fromJson(pollResponse);
+      pollData = pollResult.polls ?? [];
+      await _loadWordCloudData();
+      _promptDataLoaded = true;
     }
 
-    if (suggestionData.isEmpty && pollData.isEmpty) {
+    if (suggestionData.isEmpty && pollData.isEmpty && wordCloudData.isEmpty) {
       if (mounted) {
         showRegularToast(
           context,
@@ -270,6 +277,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       await provider.generatePollsSuggestionsDataCsv(
         suggestionData: suggestionData,
         pollData: pollData,
+        wordCloudData: wordCloudData,
+        agendaItems: event.agendaItems,
         eventId: event.id,
         breakoutRooms: breakoutRooms,
       );
@@ -433,6 +442,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       );
       final pollResult = GetMeetingPollDataResponse.fromJson(pollResponse);
       pollData = pollResult.polls ?? [];
+      await _loadWordCloudData();
+      _promptDataLoaded = true;
 
       if (mounted) {
         setState(() {
@@ -448,6 +459,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
           chatData = [];
           suggestionData = [];
           pollData = [];
+          wordCloudData = [];
         });
       }
     }
@@ -455,7 +467,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
 
   Widget _buildDialogContent(int? recordingParts, int? transcriptParts) {
     final chatsLength = chatData.length;
-    final pollsSuggestionsLength = suggestionData.length + pollData.length;
+    final pollsSuggestionsLength =
+        suggestionData.length + pollData.length + wordCloudData.length;
 
     return AlertDialog(
       title: Text(context.l10n.selectData),

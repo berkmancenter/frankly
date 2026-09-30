@@ -1,3 +1,4 @@
+import 'package:data_models/user_input/word_cloud_data.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data_models/announcements/announcement.dart';
 import 'package:data_models/user_input/chat_suggestion_data.dart';
@@ -1017,4 +1018,23 @@ class GetUserIdFromAgoraIdResponse
 
   factory GetUserIdFromAgoraIdResponse.fromJson(Map<String, dynamic> json) =>
       _$GetUserIdFromAgoraIdResponseFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class GetMeetingWordCloudDataRequest
+    with _$GetMeetingWordCloudDataRequest
+    implements SerializeableRequest {
+  factory GetMeetingWordCloudDataRequest({required String eventPath}) =
+      _GetMeetingWordCloudDataRequest;
+  factory GetMeetingWordCloudDataRequest.fromJson(Map<String, dynamic> json) =>
+      _$GetMeetingWordCloudDataRequestFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class GetMeetingWordCloudDataResponse with _$GetMeetingWordCloudDataResponse {
+  factory GetMeetingWordCloudDataResponse({
+    @Default([]) List<WordCloudData> entries,
+  }) = _GetMeetingWordCloudDataResponse;
+  factory GetMeetingWordCloudDataResponse.fromJson(Map<String, dynamic> json) =>
+      _$GetMeetingWordCloudDataResponseFromJson(json);
 }

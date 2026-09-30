@@ -1,3 +1,4 @@
+import 'package:data_models/user_input/word_cloud_data.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
@@ -79,6 +80,7 @@ class ParticipantAgendaItemDetails
   static const String kFieldMeetingId = 'meetingId';
   static const String kFieldReadyToAdvance = 'readyToAdvance';
   static const String kFieldWordCloudResponses = 'wordCloudResponses';
+  static const String kFieldWordCloudEntries = 'wordCloudEntries';
   static const String kFieldVideoCurrentTime = 'videoCurrentTime';
   static const String kFieldVideoDuration = 'videoDuration';
   static const String kFieldPollResponse = 'pollResponse';
@@ -98,6 +100,7 @@ class ParticipantAgendaItemDetails
     /// This users response to a poll for this agenda item.
     String? pollResponse,
     @Default([]) List<String> wordCloudResponses,
+    @Default([]) List<WordCloudData> wordCloudEntries,
     @Default([]) List<MeetingUserSuggestion> suggestions,
     // Participant's position within a video
     double? videoCurrentTime,
