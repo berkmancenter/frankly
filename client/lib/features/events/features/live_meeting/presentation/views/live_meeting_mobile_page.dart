@@ -1084,7 +1084,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
       return ChatWidget(
         parentPath: context.watch<ChatModel>().parentPath,
         messageInputHint: context.l10n.saySomething,
-        allowBroadcast: context.watch<LiveMeetingProvider>().isInBreakout &&
+        allowBroadcast: !context.watch<LiveMeetingProvider>().isInBreakout &&
             context.watch<EventPermissionsProvider>().canBroadcastChat,
       );
     } else if (selectedTab == TabType.suggestions) {
