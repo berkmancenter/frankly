@@ -121,6 +121,8 @@ class LiveMeetingProvider with ChangeNotifier {
 
   String? _currentBreakoutRoomsStreamSession;
   BehaviorSubjectWrapper<List<BreakoutRoom>>? _assignedBreakoutRoomStream;
+  BehaviorSubjectWrapper<BreakoutRoom?>? _overrideBreakoutRoomStream;
+  StreamSubscription? _overrideBreakoutRoomSubscription;
 
   List<MeetingProviderParticipant>? _meetingProviderParticipants;
 
@@ -224,6 +226,9 @@ class LiveMeetingProvider with ChangeNotifier {
 
   bool get isInBreakout => currentBreakoutRoomId != null;
 
+  bool get isInBreakoutWaitingRoom =>
+      currentBreakoutRoomId == breakoutsWaitingRoomId;
+
   bool get breakoutsActive =>
       liveMeeting?.currentBreakoutSession?.breakoutRoomStatus ==
       BreakoutRoomStatus.active;
@@ -298,6 +303,11 @@ class LiveMeetingProvider with ChangeNotifier {
 
   BreakoutRoom? get assignedBreakoutRoom =>
       _assignedBreakoutRoomStream?.stream.valueOrNull?.firstOrNull;
+
+  /// Room the user is in; differs from assigned when an admin enters a room.
+  BreakoutRoom? get currentBreakoutRoom => _breakoutRoomOverride != null
+      ? _overrideBreakoutRoomStream?.stream.valueOrNull
+      : assignedBreakoutRoom;
 
   bool get assignedBreakoutRoomIsLoading =>
       _assignedBreakoutRoomStream?.stream.valueOrNull == null;
@@ -544,6 +554,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _onUnloadSubscription.cancel();
     _onReconnectSubscription?.cancel();
     _assignedBreakoutRoomsStreamSubscription?.cancel();
+    _overrideBreakoutRoomSubscription?.cancel();
 
     _presenceUpdater?.cancel();
     _transitionTimer?.cancel();
@@ -564,6 +575,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _liveMeetingStream.dispose();
     _breakoutLiveMeetingStream?.dispose();
     _assignedBreakoutRoomStream?.dispose();
+    _overrideBreakoutRoomStream?.dispose();
 
     super.dispose();
   }
@@ -694,30 +706,24 @@ class LiveMeetingProvider with ChangeNotifier {
       final eventType = eventProvider.event.eventType;
       if (eventType == EventType.hostless ||
           eventType == EventType.livestream) {
-        // Auto opt in; only mods and the host get asked.
-        await firestoreLiveMeetingService.updateAvailableForBreakoutSessionId(
-          event: eventProvider.event,
-          breakoutSessionId:
-              localLiveMeeting.currentBreakoutSession?.breakoutRoomSessionId ??
-                  '',
-        );
+        // Auto opt in; mods and the host opt in only if they confirm.
         final isMod =
             userDataService.getMembership(communityProvider.communityId).isMod;
-        if (isMod || isHost) {
-          final confirmJoiningBreakouts = await ConfirmDialog(
-            mainText:
-                'Would you like to participate in breakout room assignments?',
-            confirmText: appLocalizationService.getLocalization().yesJoin,
-            cancelText: appLocalizationService.getLocalization().noSkip,
-          ).show();
+        final shouldJoin = !(isMod || isHost) ||
+            await ConfirmDialog(
+              mainText:
+                  'Would you like to participate in breakout room assignments?',
+              confirmText: appLocalizationService.getLocalization().yesJoin,
+              cancelText: appLocalizationService.getLocalization().noSkip,
+            ).show();
 
-          if (!confirmJoiningBreakouts) {
-            await firestoreLiveMeetingService
-                .updateAvailableForBreakoutSessionId(
-              event: eventProvider.event,
-              breakoutSessionId: '',
-            );
-          }
+        if (shouldJoin) {
+          await firestoreLiveMeetingService.updateAvailableForBreakoutSessionId(
+            event: eventProvider.event,
+            breakoutSessionId: localLiveMeeting
+                    .currentBreakoutSession?.breakoutRoomSessionId ??
+                '',
+          );
         }
       } else if (useBotControls) {
         await firestoreLiveMeetingService.updateAvailableForBreakoutSessionId(
@@ -973,6 +979,7 @@ class LiveMeetingProvider with ChangeNotifier {
       _breakoutRoomOverride = roomId;
       _activeRoomJoinInfoFuture = null;
       _loadBreakoutLiveMeetingStream(roomId);
+      _loadOverrideBreakoutRoomStream(roomId);
     }
 
     notifyListeners();
@@ -1013,6 +1020,9 @@ class LiveMeetingProvider with ChangeNotifier {
 
     _breakoutLiveMeetingStream?.dispose();
     _breakoutLiveMeetingStream = null;
+    _overrideBreakoutRoomSubscription?.cancel();
+    _overrideBreakoutRoomStream?.dispose();
+    _overrideBreakoutRoomStream = null;
 
     firestoreLiveMeetingService.updateMeetingPresence(
       event: eventProvider.event,
@@ -1066,6 +1076,20 @@ class LiveMeetingProvider with ChangeNotifier {
     );
     _breakoutLiveMeetingSubscription =
         _breakoutLiveMeetingStream?.listen((_) => notifyListeners());
+  }
+
+  void _loadOverrideBreakoutRoomStream(String roomId) {
+    _overrideBreakoutRoomSubscription?.cancel();
+    _overrideBreakoutRoomStream?.dispose();
+    _overrideBreakoutRoomStream =
+        firestoreLiveMeetingService.breakoutRoomStream(
+      event: eventProvider.event,
+      breakoutRoomSessionId:
+          liveMeeting?.currentBreakoutSession?.breakoutRoomSessionId ?? '',
+      breakoutRoomId: roomId,
+    );
+    _overrideBreakoutRoomSubscription =
+        _overrideBreakoutRoomStream?.listen((_) => notifyListeners());
   }
 
   Future<GetMeetingJoinInfoResponse> getBreakoutRoomFuture({
