@@ -97,6 +97,42 @@ describe("Firestore security rules", async () => {
     .initializeAdminApp({ projectId: PROJECT_ID })
     .firestore();
 
+  // Stored moderator status is 'moderator'
+  describe("moderator status", () => {
+    const communityRulesHelper = new CommunityRulesHelper(dbAdmin, [
+      { collection: "community", document: "communityId" },
+      { collection: "templates", document: "templateId" },
+      { collection: "events", document: "eventId" },
+      { collection: "chats", document: "messageId" },
+    ]);
+
+    it("counts as mod", async () => {
+      await communityRulesHelper.getDocumentRef(dbAdmin).set(originalDataMap);
+      await communityRulesHelper.createMembership("alice", "moderator");
+      const userDocRef = communityRulesHelper.getDocumentRef(
+        getAuthedFirestore("alice")
+      );
+
+      await firebase.assertSucceeds(userDocRef.get());
+      await firebase.assertSucceeds(userDocRef.update(updateDataMap));
+      await firebase.assertFails(userDocRef.delete());
+    });
+
+    it("counts as member", async () => {
+      await communityRulesHelper.createMembership("alice", "moderator");
+      const chatRef = getAuthedFirestore("alice").doc(
+        "community/communityId/chats/newChat"
+      );
+
+      await firebase.assertSucceeds(
+        chatRef.set({
+          [fieldCreatorId]: "alice",
+          [fieldMembershipStatusSnapshot]: "moderator",
+        })
+      );
+    });
+  });
+
   describe("/publicUser/{userId}", () => {
     const collection = "publicUser";
     const communityRulesHelper = new CommunityRulesHelper(dbAdmin, [
