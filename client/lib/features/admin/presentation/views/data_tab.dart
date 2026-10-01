@@ -181,9 +181,10 @@ class _DataTabState extends State<DataTab> {
     final settledNone = sessions.isNotEmpty &&
         sessions.every(
           (s) =>
-              s.status == RecordingSessionStatus.stopped &&
-              (s.agoraRttAgentId == null ||
-                  _noTranscript.contains(s.sessionId)),
+              s.status == RecordingSessionStatus.failed ||
+              (s.status == RecordingSessionStatus.stopped &&
+                  (s.agoraRttAgentId == null ||
+                      _noTranscript.contains(s.sessionId))),
         );
     final status = trxCount == 0 && settledNone ? -2 : trxCount;
     setState(() => _transcriptParts[eventId] = status);
