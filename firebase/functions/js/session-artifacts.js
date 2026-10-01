@@ -208,10 +208,11 @@ async function reconcileArtifacts({
     }
 
     // Zero VTTs get a header-only CSV once late ones are unlikely.
-    const hasTrx = Boolean(session.artifactPaths?.[TRX_KEY])
+    const trxPath = session.artifactPaths?.[TRX_KEY]
+    const hasTrx = Boolean(trxPath && allFiles.some((f) => f.name === trxPath))
     const trxSettled = session.agoraRttAgentId != null && stoppedLongEnough(session, now)
     const needsMerge =
-        vttFiles.length > 0 ? transcriptStale(session, vttFiles) : !hasTrx && trxSettled
+        vttFiles.length > 0 ? !hasTrx || transcriptStale(session, vttFiles) : !hasTrx && trxSettled
     if (needsMerge) {
         await mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4Files })
         merged = true

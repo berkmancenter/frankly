@@ -286,6 +286,20 @@ test('reconcileArtifacts registers late MP4s and re-merges late VTTs', async () 
     assert.match(bucket.saved['p/a.csv'], /yo/)
 })
 
+test('reconcileArtifacts re-merges when the registered CSV is gone from GCS', async () => {
+    const { result, ref, bucket } = await reconcile(
+        {
+            artifactPaths: { transcript_vtt_0: 'p/a.vtt', complete_trx_0: 'p/a.csv' },
+            mergedVtts: ['p/a.vtt'],
+        },
+        ['p/a.mp4', 'p/a.vtt'],
+        { 'p/a.vtt': vtt('00:00:00.000', 'hi') }
+    )
+    assert.equal(result.merged, true)
+    assert.equal(ref.updates.at(-1)['artifactPaths.complete_trx_0'], 'p/a.csv')
+    assert.match(bucket.saved['p/a.csv'], /hi/)
+})
+
 test('reconcileArtifacts keeps registered keys when listing is empty', async () => {
     const { result, ref } = await reconcile(
         { artifactPaths: { complete_mp4_0: 'p/a.mp4', complete_trx_0: 'p/a.csv' }, mergedVtts: [] },
