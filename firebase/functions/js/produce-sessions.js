@@ -3,6 +3,7 @@ const admin = require('firebase-admin')
 
 const {
     VTT_FLUSH_WAIT_MS,
+    TRX_SETTLE_MS,
     listSessionFiles,
     listUntilMp4,
     mp4sOf,
@@ -82,7 +83,6 @@ const produceSessions = functions
 
         // --- Register VTT transcript files ---
         let finalVttFiles = []
-        let vttListOk = true
         const hasSTT = after.agoraRttAgentId != null
         try {
             let vttFiles = vttsOf(allFiles)
@@ -96,12 +96,7 @@ const produceSessions = functions
                     )
                     await sleep(remainingMs)
                 }
-                try {
-                    allFiles = await listFiles()
-                } catch (err) {
-                    vttListOk = false
-                    throw err
-                }
+                allFiles = await listFiles()
                 vttFiles = vttsOf(allFiles)
             }
 
@@ -120,9 +115,10 @@ const produceSessions = functions
             console.error(`Error registering VTT for session ${sessionId}:`, err)
         }
 
-        // --- Merge VTT fragments into one CSV transcript (header-only if none) ---
+        // --- Merge VTT fragments into one CSV transcript ---
+        // Zero VTTs: header-only CSV is left to the late pass, after the settle window.
         try {
-            if (finalVttFiles.length > 0 || (hasSTT && vttListOk)) {
+            if (finalVttFiles.length > 0) {
                 const outPath = await mergeTranscript({
                     bucket,
                     firestore,
@@ -140,7 +136,14 @@ const produceSessions = functions
         // --- Late pass: pick up fragments that landed after the first merge ---
         if (hasSTT || finalMp4Files.length > 0) {
             try {
-                await sleep(VTT_FLUSH_WAIT_MS)
+                // No VTTs yet: wait out the settle window so the empty CSV is final.
+                const stoppedMs = after.stoppedAt?.toMillis?.() ?? Date.now()
+                const settleLeftMs = TRX_SETTLE_MS - (Date.now() - stoppedMs)
+                const lateWaitMs =
+                    hasSTT && finalVttFiles.length === 0
+                        ? Math.max(VTT_FLUSH_WAIT_MS, settleLeftMs + 1000)
+                        : VTT_FLUSH_WAIT_MS
+                await sleep(lateWaitMs)
                 const fresh = (await ref.get()).data()
                 const result = await reconcileArtifacts({
                     bucket,
