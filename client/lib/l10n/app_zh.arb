@@ -930,6 +930,7 @@
   "recordingStatusFile": "个文件",
   "recordingStatusFiles": "个文件",
   "recordingStatusInProgress": "正在录制",
+  "recordingStatusNone": "(无)",
   "recordingStatusParts": "({count} 部分)",
   "recordingStatusPreparing": "(准备中...)",
   "recordingStatusProcessing": "正在处理录制",

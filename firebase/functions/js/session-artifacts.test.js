@@ -9,6 +9,8 @@ const {
     registerMp4s,
     registerVtts,
     mergeTranscript,
+    TRX_SETTLE_MS,
+    transcriptState,
 } = require('./session-artifacts')
 
 const file = (name) => ({ name })
@@ -152,4 +154,37 @@ test('mergeTranscript falls back to gcsPrefix path without MP4', async () => {
         mp4Files: [],
     })
     assert.equal(outPath, 'p/transcript_0.csv')
+})
+
+test('transcriptState settles to none only after the settle window', () => {
+    const now = 1_000_000
+    const stoppedAt = (ms) => ({ toMillis: () => ms })
+    const agent = { agoraRttAgentId: 'a' }
+    assert.equal(transcriptState({ session: agent, hasTrx: true, now }), 'ready')
+    assert.equal(transcriptState({ session: {}, hasTrx: false, now }), 'none')
+    assert.equal(transcriptState({ session: agent, hasTrx: false, now }), 'pending')
+    assert.equal(
+        transcriptState({ session: { ...agent, stoppedAt: stoppedAt(now - 1000) }, hasTrx: false, now }),
+        'pending',
+    )
+    assert.equal(
+        transcriptState({ session: { ...agent, stoppedAt: stoppedAt(now - TRX_SETTLE_MS) }, hasTrx: false, now }),
+        'none',
+    )
+})
+
+test('mergeTranscript writes a header-only CSV when there are no VTTs', async () => {
+    const bucket = fakeBucket()
+    const ref = fakeRef()
+    const outPath = await mergeTranscript({
+        bucket,
+        firestore: fakeFirestore({}),
+        ref,
+        session: { gcsPrefix: 'p' },
+        vttFiles: [],
+        mp4Files: [file('p/rec.mp4')],
+    })
+    assert.equal(outPath, 'p/rec.csv')
+    assert.equal(bucket.saved['p/rec.csv'], 'Start,End,Speaker,Speaker ID,Text\n')
+    assert.deepEqual(ref.updates, [{ 'artifactPaths.complete_trx_0': 'p/rec.csv' }])
 })
