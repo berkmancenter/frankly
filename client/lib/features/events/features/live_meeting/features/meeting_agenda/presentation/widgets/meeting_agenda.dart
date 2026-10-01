@@ -101,8 +101,13 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
     final agendaProvider = context.watch<AgendaProvider>();
     final hasAnyUnsavedItems = agendaProvider.unsavedItems.isNotEmpty;
 
+    // While editing, show the raw (unresolved) items so the organizer sees
+    // and can edit {diffusionStatement} token. Otherwise,
+    // resolve them the same way the meeting guide does.
     final allAgendaItems = [
-      ..._agendaProvider.agendaItems,
+      ...(canEditAgenda
+          ? _agendaProvider.agendaItems
+          : _agendaProvider.resolvedAgendaItems),
       ..._agendaProvider.unsavedItems,
     ];
 

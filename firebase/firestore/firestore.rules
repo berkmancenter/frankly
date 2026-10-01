@@ -43,12 +43,13 @@ service cloud.firestore {
             return status in ['owner', 'admin'];
         }
 
+        // Stored role is 'moderator'; 'mod' kept for rules tests.
         function isMod(status) {
-            return status in ['owner', 'admin', 'mod'];
+            return status in ['owner', 'admin', 'moderator', 'mod'];
         }
 
         function isFacilitator(status) {
-            return status in ['owner', 'admin', 'mod', 'facilitator'];
+            return status in ['owner', 'admin', 'moderator', 'mod', 'facilitator'];
         }
 
         function requiresApprovalToJoin(communityId) {
@@ -131,7 +132,7 @@ service cloud.firestore {
         // Community
         match /community/{communityId} {
             function isCommunityMember(communityId) {
-                let memberSet = ['member', 'facilitator', 'mod', 'admin', 'owner'].toSet();
+                let memberSet = ['member', 'facilitator', 'moderator', 'mod', 'admin', 'owner'].toSet();
                 return hasAuth() && getMembershipStatus(communityId) in memberSet;
             }
 
@@ -290,7 +291,7 @@ service cloud.firestore {
                     match /chats/{messageId=**} {
                         allow read: if hasAuth() && (isParticipant(getEventPath()) || isCommunityMod());
 
-                        allow create: if hasAuth() && verifyMembershipSnapshot() && (isParticipant(getEventPath()) || isCommunityMod());
+                        allow create: if hasAuth() && verifyMembershipSnapshot() && isDocCreator(request.resource) && (isParticipant(getEventPath()) || isCommunityMod());
 
                         allow update: if hasAuth() && (isDocCreator(resource) || isCommunityMod());
                     }

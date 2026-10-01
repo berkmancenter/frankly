@@ -138,6 +138,7 @@ class ChatModel with ChangeNotifier {
     String? text,
     EmotionType? emotionType,
     bool broadcast = false,
+    String? parentPathOverride,
   }) async {
     assert(
       text != null || emotionType != null,
@@ -145,8 +146,9 @@ class ChatModel with ChangeNotifier {
     );
     if (emotionType == null && (text == null || text.trim().isEmpty)) return;
 
+    final targetPath = parentPathOverride ?? parentPath;
     final messageId =
-        firestoreChatService.generateNewChatMessageId(parentPath, _kChatId);
+        firestoreChatService.generateNewChatMessageId(targetPath, _kChatId);
 
     final membership =
         userDataService.getMembership(communityProvider.communityId).status;
@@ -161,14 +163,15 @@ class ChatModel with ChangeNotifier {
       broadcast: broadcast,
     );
 
-    if (emotionType == null) {
+    // Other chats never echo back here, so don't buffer.
+    if (emotionType == null && targetPath == parentPath) {
       _sendingMessages[messageId] = newMessage;
       notifyListeners();
     }
 
     await firestoreChatService.createChatMessage(
       communityId: communityProvider.communityId,
-      parentPath: parentPath,
+      parentPath: targetPath,
       chatId: _kChatId,
       chatMessage: newMessage,
     );
