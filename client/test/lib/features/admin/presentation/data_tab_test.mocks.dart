@@ -1123,6 +1123,12 @@ class MockEvent extends _i1.Mock implements _i7.Event {
       ) as bool);
 
   @override
+  int get effectiveMaxParticipants => (super.noSuchMethod(
+        Invocation.getter(#effectiveMaxParticipants),
+        returnValue: 0,
+      ) as int);
+
+  @override
   bool get hasPreEventData => (super.noSuchMethod(
         Invocation.getter(#hasPreEventData),
         returnValue: false,
@@ -1256,6 +1262,15 @@ class MockEvent extends _i1.Mock implements _i7.Event {
           ),
         ),
       ) as Duration);
+
+  @override
+  bool isActive(DateTime? now) => (super.noSuchMethod(
+        Invocation.method(
+          #isActive,
+          [now],
+        ),
+        returnValue: false,
+      ) as bool);
 
   @override
   Map<String, dynamic> toJson() => (super.noSuchMethod(

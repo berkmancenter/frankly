@@ -272,6 +272,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
         pollData: pollData,
         eventId: event.id,
         breakoutRooms: breakoutRooms,
+        agendaItems: event.agendaItems,
       );
     } finally {
       provider.dispose();
