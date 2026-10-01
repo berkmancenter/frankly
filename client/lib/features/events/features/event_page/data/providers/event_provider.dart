@@ -566,6 +566,7 @@ class EventProvider with ChangeNotifier {
     required List<PollData> pollData,
     required String eventId,
     required List<BreakoutRoom> breakoutRooms,
+    required List<AgendaItem> agendaItems,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -580,10 +581,6 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Downvotes');
     firstRow.add('Deleted');
     rows.add(firstRow);
-
-    // Get agenda items from event to map agendaItemId to prompt text
-    final event = _eventStream.value;
-    final agendaItems = event?.agendaItems ?? [];
 
     // Process suggestion data
     for (int i = 0; i < suggestionData.length; i++) {
