@@ -195,7 +195,11 @@ class _DataTabState extends State<DataTab> {
   static const _repairCooldown = Duration(seconds: 30);
 
   /// Repair stopped sessions missing MP4s or transcripts. Idempotent.
-  void _maybeRepairMissingArtifacts(List<RecordingSession> sessions) {
+  /// [all] also checks sessions that have keys, for late GCS files.
+  void _maybeRepairMissingArtifacts(
+    List<RecordingSession> sessions, {
+    bool all = false,
+  }) {
     final now = DateTime.now();
     for (final session in sessions) {
       final id = session.sessionId;
@@ -209,7 +213,7 @@ class _DataTabState extends State<DataTab> {
           !keys.any((k) => k.startsWith(RecordingSession.kArtifactMp4));
       final missingTrx = session.agoraRttAgentId != null &&
           !keys.any((k) => k.startsWith(RecordingSession.kArtifactTrx));
-      if (!missingMp4 && !missingTrx) continue;
+      if (!all && !missingMp4 && !missingTrx) continue;
 
       final sinceStop = session.stoppedAt == null
           ? Duration.zero
@@ -229,7 +233,7 @@ class _DataTabState extends State<DataTab> {
 
   void _repairEventArtifacts(Event event) {
     final sessions = _sessionsByEvent[event.id];
-    if (sessions != null) _maybeRepairMissingArtifacts(sessions);
+    if (sessions != null) _maybeRepairMissingArtifacts(sessions, all: true);
   }
 
   Future<void> _callRepairSessionArtifacts(RecordingSession session) async {
