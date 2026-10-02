@@ -15,6 +15,7 @@ const {
     artifactDiff,
     sameSet,
     transcriptStale,
+    reconcileArtifacts,
 } = require('./session-artifacts')
 
 const file = (name) => ({ name })
@@ -227,6 +228,71 @@ test('transcriptStale falls back to registered VTTs for legacy sessions', () => 
     const session = { artifactPaths: { complete_trx_0: 'p/rec.csv', transcript_vtt_0: 'a.vtt' } }
     assert.equal(transcriptStale(session, [file('a.vtt')]), false)
     assert.equal(transcriptStale(session, [file('a.vtt'), file('b.vtt')]), true)
+})
+
+const reconcile = (session, listing, contents = {}) => {
+    const bucket = fakeBucket(contents, { 'p/': listing.map(file) })
+    const ref = fakeRef()
+    const run = reconcileArtifacts({
+        bucket,
+        firestore: fakeFirestore({}),
+        ref,
+        session: { gcsPrefix: 'p', ...session },
+        deleteField: 'DEL',
+    })
+    return run.then((result) => ({ result, ref, bucket }))
+}
+
+test('reconcileArtifacts is a no-op when everything matches', async () => {
+    const { result, ref } = await reconcile(
+        {
+            artifactPaths: {
+                complete_mp4_0: 'p/a.mp4',
+                transcript_vtt_0: 'p/a.vtt',
+                complete_trx_0: 'p/a.csv',
+            },
+            mergedVtts: ['p/a.vtt'],
+        },
+        ['p/a.mp4', 'p/a.vtt', 'p/a.csv']
+    )
+    assert.equal(result.repaired, false)
+    assert.deepEqual(ref.updates, [])
+})
+
+test('reconcileArtifacts registers late MP4s and re-merges late VTTs', async () => {
+    const { result, ref, bucket } = await reconcile(
+        {
+            artifactPaths: {
+                complete_mp4_0: 'p/a.mp4',
+                transcript_vtt_0: 'p/a.vtt',
+                complete_trx_0: 'p/a.csv',
+            },
+            mergedVtts: ['p/a.vtt'],
+        },
+        ['p/a.mp4', 'p/b.mp4', 'p/a.vtt', 'p/b.vtt'],
+        { 'p/a.vtt': vtt('00:00:00.000', 'hi'), 'p/b.vtt': vtt('00:00:01.000', 'yo') }
+    )
+    assert.deepEqual(result, {
+        repaired: true,
+        mp4s: 1,
+        vtts: 1,
+        merged: true,
+        mp4Total: 2,
+        vttTotal: 2,
+    })
+    assert.equal(ref.updates[0]['artifactPaths.complete_mp4_1'], 'p/b.mp4')
+    assert.equal(ref.updates[1]['artifactPaths.transcript_vtt_1'], 'p/b.vtt')
+    assert.deepEqual(ref.updates[2].mergedVtts, ['p/a.vtt', 'p/b.vtt'])
+    assert.match(bucket.saved['p/a.csv'], /yo/)
+})
+
+test('reconcileArtifacts keeps registered keys when listing is empty', async () => {
+    const { result, ref } = await reconcile(
+        { artifactPaths: { complete_mp4_0: 'p/a.mp4', complete_trx_0: 'p/a.csv' }, mergedVtts: [] },
+        []
+    )
+    assert.equal(result.repaired, false)
+    assert.deepEqual(ref.updates, [])
 })
 
 test('registerMp4s deletes stale higher indexes when deleteField is given', async () => {

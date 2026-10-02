@@ -175,6 +175,58 @@ const stoppedLongEnough = (session, now = Date.now()) => {
     return stoppedMs != null && now - stoppedMs >= TRX_SETTLE_MS
 }
 
+// Bring artifactPaths and the CSV in line with what is in GCS.
+async function reconcileArtifacts({
+    bucket,
+    firestore,
+    ref,
+    session,
+    deleteField,
+    now = Date.now(),
+}) {
+    const allFiles = await listSessionFiles(bucket, session.gcsPrefix)
+    const mp4Files = mp4sOf(allFiles)
+    const vttFiles = vttsOf(allFiles)
+    const mp4Diff = artifactDiff(session, MP4_KEY, mp4Files)
+    const vttDiff = artifactDiff(session, VTT_KEY, vttFiles)
+
+    let mp4s = 0
+    let vtts = 0
+    let rewrote = false
+    let merged = false
+
+    // Never wipe registered keys because a listing came back empty.
+    if (mp4Files.length > 0 && !sameSet(mp4Diff)) {
+        await registerMp4s(ref, mp4Files, { session, deleteField })
+        mp4s = mp4Diff.unregistered.length
+        rewrote = true
+    }
+    if (vttFiles.length > 0 && !sameSet(vttDiff)) {
+        await registerVtts(ref, vttFiles, { session, deleteField })
+        vtts = vttDiff.unregistered.length
+        rewrote = true
+    }
+
+    // Zero VTTs get a header-only CSV once late ones are unlikely.
+    const hasTrx = Boolean(session.artifactPaths?.[TRX_KEY])
+    const trxSettled = session.agoraRttAgentId != null && stoppedLongEnough(session, now)
+    const needsMerge =
+        vttFiles.length > 0 ? transcriptStale(session, vttFiles) : !hasTrx && trxSettled
+    if (needsMerge) {
+        await mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4Files })
+        merged = true
+    }
+
+    return {
+        repaired: rewrote || merged,
+        mp4s,
+        vtts,
+        merged,
+        mp4Total: mp4Files.length,
+        vttTotal: vttFiles.length,
+    }
+}
+
 // Transcript state for the client: 'ready' | 'pending' | 'none'.
 function transcriptState({ session, hasTrx, now = Date.now() }) {
     if (hasTrx) return 'ready'
@@ -203,4 +255,5 @@ module.exports = {
     registerVtts,
     mergeTranscript,
     transcriptStale,
+    reconcileArtifacts,
 }
