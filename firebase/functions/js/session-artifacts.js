@@ -155,8 +155,19 @@ async function mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4F
         : `${session.gcsPrefix}/transcript_0.csv`
 
     await bucket.file(outPath).save(mergedCsv, { contentType: 'text/csv' })
-    await ref.update({ 'artifactPaths.complete_trx_0': outPath })
+    await ref.update({
+        [`artifactPaths.${TRX_KEY}`]: outPath,
+        mergedVtts: vttFiles.map((f) => f.name),
+    })
     return outPath
+}
+
+// True if the CSV is missing or was built from a different VTT set.
+// Legacy sessions fall back to registered VTTs as the merge source.
+function transcriptStale(session, vttFiles) {
+    if (!session.artifactPaths?.[TRX_KEY]) return true
+    const sources = new Set(session.mergedVtts ?? registeredPaths(session, VTT_KEY))
+    return sources.size !== vttFiles.length || vttFiles.some((f) => !sources.has(f.name))
 }
 
 const stoppedLongEnough = (session, now = Date.now()) => {
@@ -191,4 +202,5 @@ module.exports = {
     registerMp4s,
     registerVtts,
     mergeTranscript,
+    transcriptStale,
 }

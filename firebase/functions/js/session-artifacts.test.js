@@ -14,6 +14,7 @@ const {
     registeredPaths,
     artifactDiff,
     sameSet,
+    transcriptStale,
 } = require('./session-artifacts')
 
 const file = (name) => ({ name })
@@ -140,7 +141,9 @@ test('mergeTranscript orders fragments, drops locale dupes, maps speakers', asyn
     })
 
     assert.equal(outPath, 'p/rec.csv')
-    assert.deepEqual(ref.updates, [{ 'artifactPaths.complete_trx_0': 'p/rec.csv' }])
+    assert.deepEqual(ref.updates, [
+        { 'artifactPaths.complete_trx_0': 'p/rec.csv', mergedVtts: [late, dupe, early] },
+    ])
     assert.equal(
         bucket.saved['p/rec.csv'],
         'Start,End,Speaker,Speaker ID,Text\n' +
@@ -200,7 +203,30 @@ test('mergeTranscript writes a header-only CSV when there are no VTTs', async ()
     })
     assert.equal(outPath, 'p/rec.csv')
     assert.equal(bucket.saved['p/rec.csv'], 'Start,End,Speaker,Speaker ID,Text\n')
-    assert.deepEqual(ref.updates, [{ 'artifactPaths.complete_trx_0': 'p/rec.csv' }])
+    assert.deepEqual(ref.updates, [{ 'artifactPaths.complete_trx_0': 'p/rec.csv', mergedVtts: [] }])
+})
+
+test('transcriptStale detects missing CSV and changed VTT sets', () => {
+    const trx = { complete_trx_0: 'p/rec.csv' }
+    assert.equal(transcriptStale({}, []), true)
+    assert.equal(
+        transcriptStale({ artifactPaths: trx, mergedVtts: ['a.vtt'] }, [file('a.vtt')]),
+        false
+    )
+    assert.equal(
+        transcriptStale({ artifactPaths: trx, mergedVtts: ['a.vtt'] }, [
+            file('a.vtt'),
+            file('b.vtt'),
+        ]),
+        true
+    )
+    assert.equal(transcriptStale({ artifactPaths: trx, mergedVtts: [] }, []), false)
+})
+
+test('transcriptStale falls back to registered VTTs for legacy sessions', () => {
+    const session = { artifactPaths: { complete_trx_0: 'p/rec.csv', transcript_vtt_0: 'a.vtt' } }
+    assert.equal(transcriptStale(session, [file('a.vtt')]), false)
+    assert.equal(transcriptStale(session, [file('a.vtt'), file('b.vtt')]), true)
 })
 
 test('registerMp4s deletes stale higher indexes when deleteField is given', async () => {
