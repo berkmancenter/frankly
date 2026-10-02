@@ -11,6 +11,9 @@ const {
     mergeTranscript,
     TRX_SETTLE_MS,
     transcriptState,
+    registeredPaths,
+    artifactDiff,
+    sameSet,
 } = require('./session-artifacts')
 
 const file = (name) => ({ name })
@@ -50,7 +53,10 @@ test('sanitizePrefix strips non-alphanumerics per segment', () => {
 test('listSessionFiles merges raw and sanitized prefixes', async () => {
     const bucket = fakeBucket({}, { 'a-b/': [file('a-b/x.mp4')], 'ab/': [file('ab/x.vtt')] })
     const files = await listSessionFiles(bucket, 'a-b')
-    assert.deepEqual(files.map((f) => f.name), ['a-b/x.mp4', 'ab/x.vtt'])
+    assert.deepEqual(
+        files.map((f) => f.name),
+        ['a-b/x.mp4', 'ab/x.vtt']
+    )
 })
 
 test('listSessionFiles lists once when prefix is already clean', async () => {
@@ -164,12 +170,20 @@ test('transcriptState settles to none only after the settle window', () => {
     assert.equal(transcriptState({ session: {}, hasTrx: false, now }), 'none')
     assert.equal(transcriptState({ session: agent, hasTrx: false, now }), 'pending')
     assert.equal(
-        transcriptState({ session: { ...agent, stoppedAt: stoppedAt(now - 1000) }, hasTrx: false, now }),
-        'pending',
+        transcriptState({
+            session: { ...agent, stoppedAt: stoppedAt(now - 1000) },
+            hasTrx: false,
+            now,
+        }),
+        'pending'
     )
     assert.equal(
-        transcriptState({ session: { ...agent, stoppedAt: stoppedAt(now - TRX_SETTLE_MS) }, hasTrx: false, now }),
-        'none',
+        transcriptState({
+            session: { ...agent, stoppedAt: stoppedAt(now - TRX_SETTLE_MS) },
+            hasTrx: false,
+            now,
+        }),
+        'none'
     )
 })
 
@@ -187,4 +201,27 @@ test('mergeTranscript writes a header-only CSV when there are no VTTs', async ()
     assert.equal(outPath, 'p/rec.csv')
     assert.equal(bucket.saved['p/rec.csv'], 'Start,End,Speaker,Speaker ID,Text\n')
     assert.deepEqual(ref.updates, [{ 'artifactPaths.complete_trx_0': 'p/rec.csv' }])
+})
+
+test('registeredPaths filters by key prefix', () => {
+    const session = {
+        artifactPaths: {
+            complete_mp4_0: 'a.mp4',
+            transcript_vtt_0: 'a.vtt',
+            complete_trx_0: 'a.csv',
+        },
+    }
+    assert.deepEqual(registeredPaths(session, 'complete_mp4_'), ['a.mp4'])
+    assert.deepEqual(registeredPaths({}, 'complete_mp4_'), [])
+})
+
+test('artifactDiff finds unregistered and missing paths', () => {
+    const session = { artifactPaths: { complete_mp4_0: 'a.mp4', complete_mp4_1: 'gone.mp4' } }
+    const diff = artifactDiff(session, 'complete_mp4_', [file('a.mp4'), file('b.mp4')])
+    assert.deepEqual(diff, { unregistered: ['b.mp4'], missing: ['gone.mp4'] })
+    assert.equal(sameSet(diff), false)
+    assert.equal(
+        sameSet(artifactDiff(session, 'complete_mp4_', [file('a.mp4'), file('gone.mp4')])),
+        true
+    )
 })

@@ -40,8 +40,36 @@ async function listSessionFiles(bucket, gcsPrefix) {
 const mp4sOf = (files) => files.filter((f) => f.name.endsWith('.mp4'))
 const vttsOf = (files) => files.filter((f) => f.name.endsWith('.vtt'))
 
+const MP4_KEY = 'complete_mp4_'
+const VTT_KEY = 'transcript_vtt_'
+const TRX_KEY = 'complete_trx_0'
+
+// Registered artifactPaths values for a key prefix.
+function registeredPaths(session, keyPrefix) {
+    return Object.entries(session.artifactPaths || {})
+        .filter(([k]) => k.startsWith(keyPrefix))
+        .map(([, v]) => v)
+}
+
+// GCS files not registered, and registered paths no longer in GCS.
+function artifactDiff(session, keyPrefix, files) {
+    const registered = new Set(registeredPaths(session, keyPrefix))
+    const names = new Set(files.map((f) => f.name))
+    return {
+        unregistered: files.filter((f) => !registered.has(f.name)).map((f) => f.name),
+        missing: [...registered].filter((p) => !names.has(p)),
+    }
+}
+
+const sameSet = (diff) => diff.unregistered.length === 0 && diff.missing.length === 0
+
 // Re-list with backoff until an MP4 appears.
-async function listUntilMp4({ listFiles, initialFiles, delaysMs = MP4_RETRY_DELAYS_MS, sleep = defaultSleep }) {
+async function listUntilMp4({
+    listFiles,
+    initialFiles,
+    delaysMs = MP4_RETRY_DELAYS_MS,
+    sleep = defaultSleep,
+}) {
     let files = initialFiles
     let waitedMs = 0
     for (const delay of delaysMs) {
@@ -144,6 +172,12 @@ module.exports = {
     MP4_RETRY_DELAYS_MS,
     VTT_FLUSH_WAIT_MS,
     TRX_SETTLE_MS,
+    MP4_KEY,
+    VTT_KEY,
+    TRX_KEY,
+    registeredPaths,
+    artifactDiff,
+    sameSet,
     stoppedLongEnough,
     transcriptState,
     sanitizePrefix,
