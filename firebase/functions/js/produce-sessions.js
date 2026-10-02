@@ -10,6 +10,7 @@ const {
     registerMp4s,
     registerVtts,
     mergeTranscript,
+    reconcileArtifacts,
 } = require('./session-artifacts')
 
 const firestore = admin.firestore()
@@ -68,7 +69,9 @@ const produceSessions = functions
             } else {
                 await registerMp4s(ref, finalMp4Files)
                 console.log(
-                    `Registered ${finalMp4Files.length} MP4(s) for session ${sessionId} after ${waitedMs}ms: ${finalMp4Files
+                    `Registered ${
+                        finalMp4Files.length
+                    } MP4(s) for session ${sessionId} after ${waitedMs}ms: ${finalMp4Files
                         .map((f) => f.name)
                         .join(', ')}`
                 )
@@ -132,6 +135,28 @@ const produceSessions = functions
             }
         } catch (err) {
             console.error(`Error merging transcript for session ${sessionId}:`, err)
+        }
+
+        // --- Late pass: pick up fragments that landed after the first merge ---
+        if (hasSTT || finalMp4Files.length > 0) {
+            try {
+                await sleep(VTT_FLUSH_WAIT_MS)
+                const fresh = (await ref.get()).data()
+                const result = await reconcileArtifacts({
+                    bucket,
+                    firestore,
+                    ref,
+                    session: fresh,
+                    deleteField: admin.firestore.FieldValue.delete(),
+                })
+                if (result.repaired) {
+                    console.log(
+                        `Late reconcile for session ${sessionId}: ${JSON.stringify(result)}`
+                    )
+                }
+            } catch (err) {
+                console.error(`Error in late reconcile for session ${sessionId}:`, err)
+            }
         }
 
         return null
