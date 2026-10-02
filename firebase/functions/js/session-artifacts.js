@@ -81,23 +81,26 @@ async function listUntilMp4({
     return { files, waitedMs }
 }
 
-async function registerMp4s(ref, mp4Files) {
-    if (mp4Files.length === 0) return
+// Write indexed keys; delete stale higher indexes when deleteField is given.
+async function registerIndexed(ref, keyPrefix, files, { session, deleteField } = {}) {
+    if (files.length === 0) return
     const updates = {}
-    mp4Files.forEach((f, i) => {
-        updates[`artifactPaths.complete_mp4_${i}`] = f.name
+    files.forEach((f, i) => {
+        updates[`artifactPaths.${keyPrefix}${i}`] = f.name
     })
+    if (session && deleteField) {
+        for (const k of Object.keys(session.artifactPaths || {})) {
+            const idx = Number(k.slice(keyPrefix.length))
+            if (k.startsWith(keyPrefix) && idx >= files.length) {
+                updates[`artifactPaths.${k}`] = deleteField
+            }
+        }
+    }
     await ref.update(updates)
 }
 
-async function registerVtts(ref, vttFiles) {
-    if (vttFiles.length === 0) return
-    const updates = {}
-    vttFiles.forEach((f, i) => {
-        updates[`artifactPaths.transcript_vtt_${i}`] = f.name
-    })
-    await ref.update(updates)
-}
+const registerMp4s = (ref, mp4Files, opts) => registerIndexed(ref, MP4_KEY, mp4Files, opts)
+const registerVtts = (ref, vttFiles, opts) => registerIndexed(ref, VTT_KEY, vttFiles, opts)
 
 async function resolveUidMap(firestore, rawUidMap) {
     const uidEntries = Object.entries(rawUidMap || {})

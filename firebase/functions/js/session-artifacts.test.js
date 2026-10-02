@@ -203,6 +203,32 @@ test('mergeTranscript writes a header-only CSV when there are no VTTs', async ()
     assert.deepEqual(ref.updates, [{ 'artifactPaths.complete_trx_0': 'p/rec.csv' }])
 })
 
+test('registerMp4s deletes stale higher indexes when deleteField is given', async () => {
+    const ref = fakeRef()
+    const session = {
+        artifactPaths: {
+            complete_mp4_0: 'a.mp4',
+            complete_mp4_1: 'b.mp4',
+            complete_mp4_2: 'c.mp4',
+        },
+    }
+    await registerMp4s(ref, [file('a.mp4'), file('c.mp4')], { session, deleteField: 'DEL' })
+    assert.deepEqual(ref.updates, [
+        {
+            'artifactPaths.complete_mp4_0': 'a.mp4',
+            'artifactPaths.complete_mp4_1': 'c.mp4',
+            'artifactPaths.complete_mp4_2': 'DEL',
+        },
+    ])
+})
+
+test('registerVtts without deleteField leaves other keys alone', async () => {
+    const ref = fakeRef()
+    const session = { artifactPaths: { transcript_vtt_0: 'a.vtt', transcript_vtt_1: 'b.vtt' } }
+    await registerVtts(ref, [file('a.vtt')], { session })
+    assert.deepEqual(ref.updates, [{ 'artifactPaths.transcript_vtt_0': 'a.vtt' }])
+})
+
 test('registeredPaths filters by key prefix', () => {
     const session = {
         artifactPaths: {
