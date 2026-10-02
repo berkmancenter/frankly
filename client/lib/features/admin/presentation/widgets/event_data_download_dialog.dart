@@ -328,7 +328,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     if (parts == null) return ' ${context.l10n.recordingStatusChecking}';
     if (parts == 0) return ' ${context.l10n.recordingStatusPreparing}';
     if (parts == -1) return ' ${context.l10n.recordingStatusFailed}';
-    if (parts == -2) return ' ${context.l10n.recordingStatusNone}';
+    if (parts == -2) return ' (${context.l10n.none.toLowerCase()})';
     return ' ${context.l10n.recordingStatusParts(parts)}';
   }
 
