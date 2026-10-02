@@ -17,6 +17,14 @@
       "repairSessionArtifacts"
     ],
     "firebase/functions/js/serve-index.js": ["ServeIndex"],
+    "firebase/functions/js/session-artifacts.js": [
+      "produceSessions",
+      "repairSessionArtifacts"
+    ],
+    "firebase/functions/js/transcript-merge.js": [
+      "produceSessions",
+      "repairSessionArtifacts"
+    ],
     "firebase/functions/lib/admin/partner_agreements/on_partner_agreements.dart": [
       "PartnerAgreementOnCreate",
       "PartnerAgreementOnUpdate"

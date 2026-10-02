@@ -46,8 +46,13 @@ class _DataTabState extends State<DataTab> {
   final Map<String, ValueNotifier<int?>> _transcriptNotifiers = {};
   final Map<String, StreamSubscription?> _sessionSubscriptions = {};
 
-  // Sessions already sent to repairSessionArtifacts.
-  final Set<String> _repairedSessionIds = {};
+  final Map<String, List<RecordingSession>> _sessionsByEvent = {};
+
+  // Last (or scheduled) repair time per session.
+  final Map<String, DateTime> _repairAt = {};
+
+  // Sessions the server reported will never have a transcript.
+  final Set<String> _noTranscript = {};
 
   late StreamSubscription<List<Event>> _eventsSubscription;
 
@@ -62,7 +67,10 @@ class _DataTabState extends State<DataTab> {
       if (!mounted) return;
       for (final event in events) {
         final isPast = event.scheduledTime?.isBefore(DateTime.now()) ?? false;
-        if (isPast && (event.eventSettings?.alwaysRecord ?? false)) {
+        final settings = event.eventSettings;
+        if (isPast &&
+            ((settings?.alwaysRecord ?? false) ||
+                (settings?.alwaysTranscribe ?? false))) {
           _maybeStartRecordingCheck(event);
         }
       }
@@ -115,6 +123,7 @@ class _DataTabState extends State<DataTab> {
               ),
             )
             .toList();
+        _sessionsByEvent[event.id] = sessions;
 
         int status;
         if (sessions.isEmpty) {
@@ -141,36 +150,63 @@ class _DataTabState extends State<DataTab> {
         setState(() => _recordingParts[event.id] = status);
         _recordingNotifiers[event.id]?.value = status;
 
-        final trxCount = sessions.fold<int>(
-          0,
-          (sum, s) =>
-              sum +
-              s.artifactPaths.keys
-                  .where((k) => k.startsWith(RecordingSession.kArtifactTrx))
-                  .length,
-        );
-        setState(() => _transcriptParts[event.id] = trxCount);
-        _transcriptNotifiers[event.id]?.value = trxCount;
+        _updateTranscriptStatus(event.id);
 
         _maybeRepairMissingArtifacts(sessions);
       },
       onError: (_) {
         if (!mounted) return;
-        setState(() => _recordingParts[event.id] = -1);
+        setState(() {
+          _recordingParts[event.id] = -1;
+          _transcriptParts[event.id] = -1;
+        });
         _recordingNotifiers[event.id]?.value = -1;
+        _transcriptNotifiers[event.id]?.value = -1;
       },
     );
   }
 
+  // Transcript status: null loading, -1 failed, -2 none, 0 preparing, N parts.
+  void _updateTranscriptStatus(String eventId) {
+    final sessions = _sessionsByEvent[eventId];
+    if (sessions == null) return;
+    final trxCount = sessions.fold<int>(
+      0,
+      (sum, s) =>
+          sum +
+          s.artifactPaths.keys
+              .where((k) => k.startsWith(RecordingSession.kArtifactTrx))
+              .length,
+    );
+    final settledNone = sessions.isNotEmpty &&
+        sessions.every(
+          (s) =>
+              s.status == RecordingSessionStatus.failed ||
+              (s.status == RecordingSessionStatus.stopped &&
+                  (s.agoraRttAgentId == null ||
+                      _noTranscript.contains(s.sessionId))),
+        );
+    final status = trxCount == 0 && settledNone ? -2 : trxCount;
+    setState(() => _transcriptParts[eventId] = status);
+    _transcriptNotifiers[eventId]?.value = status;
+  }
+
   // Past produceSessions' 65s MP4 backoff.
   static const _repairDelay = Duration(seconds: 90);
+  static const _repairCooldown = Duration(seconds: 30);
 
-  /// Repair stopped sessions missing MP4s or transcripts, once per session.
-  void _maybeRepairMissingArtifacts(List<RecordingSession> sessions) {
+  /// Repair stopped sessions missing MP4s or transcripts. Idempotent.
+  /// [all] also checks sessions that have keys, for late GCS files.
+  void _maybeRepairMissingArtifacts(
+    List<RecordingSession> sessions, {
+    bool all = false,
+  }) {
+    final now = DateTime.now();
     for (final session in sessions) {
       final id = session.sessionId;
       if (id == null) continue;
-      if (_repairedSessionIds.contains(id)) continue;
+      final last = _repairAt[id];
+      if (last != null && now.isBefore(last.add(_repairCooldown))) continue;
       if (session.status != RecordingSessionStatus.stopped) continue;
 
       final keys = session.artifactPaths.keys;
@@ -178,29 +214,36 @@ class _DataTabState extends State<DataTab> {
           !keys.any((k) => k.startsWith(RecordingSession.kArtifactMp4));
       final missingTrx = session.agoraRttAgentId != null &&
           !keys.any((k) => k.startsWith(RecordingSession.kArtifactTrx));
-      if (!missingMp4 && !missingTrx) continue;
+      if (!all && !missingMp4 && !missingTrx) continue;
 
-      _repairedSessionIds.add(id);
       final sinceStop = session.stoppedAt == null
           ? Duration.zero
-          : DateTime.now().difference(session.stoppedAt!);
+          : now.difference(session.stoppedAt!);
       final wait = _repairDelay - sinceStop;
       if (wait.isNegative) {
-        _callRepairSessionArtifacts(id);
+        _repairAt[id] = now;
+        _callRepairSessionArtifacts(session);
       } else {
+        _repairAt[id] = now.add(wait);
         Future.delayed(wait, () {
-          if (mounted) _callRepairSessionArtifacts(id);
+          if (mounted) _callRepairSessionArtifacts(session);
         });
       }
     }
   }
 
-  Future<void> _callRepairSessionArtifacts(String sessionId) async {
+  void _repairEventArtifacts(Event event) {
+    final sessions = _sessionsByEvent[event.id];
+    if (sessions != null) _maybeRepairMissingArtifacts(sessions, all: true);
+  }
+
+  Future<void> _callRepairSessionArtifacts(RecordingSession session) async {
+    final sessionId = session.sessionId!;
     try {
       final idToken =
           await UserService().firebaseAuth.currentUser?.getIdToken();
       if (idToken == null) return;
-      await http.post(
+      final response = await http.post(
         Uri.parse(
           '${Environment.functionsUrlPrefix}/repairSessionArtifacts',
         ),
@@ -210,8 +253,14 @@ class _DataTabState extends State<DataTab> {
         },
         body: jsonEncode({'sessionId': sessionId}),
       );
-      // The Firestore listener will pick up the updated artifactPaths
-      // automatically -- no need to handle the response.
+      // New artifactPaths arrive via the Firestore listener; only the
+      // settled "no transcript" state has to come from the response.
+      if (response.statusCode != 200 || !mounted) return;
+      final body = jsonDecode(response.body);
+      if (body is Map && body['transcript'] == 'none') {
+        _noTranscript.add(sessionId);
+        _updateTranscriptStatus(session.eventId);
+      }
     } catch (e) {
       // Non-critical: if repair fails, the user can still download
       // whatever artifacts were originally registered.
@@ -400,6 +449,7 @@ class _DataTabState extends State<DataTab> {
                         recordingNotifiers: _recordingNotifiers,
                         transcriptParts: _transcriptParts,
                         transcriptNotifiers: _transcriptNotifiers,
+                        onOpen: () => _repairEventArtifacts(event),
                       ),
                     ],
                   ),
@@ -419,6 +469,7 @@ class _DataTabState extends State<DataTab> {
                       recordingNotifiers: _recordingNotifiers,
                       transcriptParts: _transcriptParts,
                       transcriptNotifiers: _transcriptNotifiers,
+                      onOpen: () => _repairEventArtifacts(event),
                     ),
                   ],
                 ),
@@ -561,6 +612,7 @@ class _DownloadDataButton extends StatelessWidget {
     required this.transcriptParts,
     required this.transcriptNotifiers,
     required this.eventInPast,
+    required this.onOpen,
   });
 
   final Event event;
@@ -572,6 +624,7 @@ class _DownloadDataButton extends StatelessWidget {
   final Map<String, int?> transcriptParts;
   final Map<String, ValueNotifier<int?>> transcriptNotifiers;
   final bool eventInPast;
+  final VoidCallback onOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -589,6 +642,7 @@ class _DownloadDataButton extends StatelessWidget {
       borderSide: BorderSide(color: Theme.of(context).primaryColor),
       textColor: Theme.of(context).primaryColor,
       onPressed: () async {
+        onOpen();
         await showDialog<void>(
           context: context,
           builder: (dialogContext) => EventDataDownloadDialog(

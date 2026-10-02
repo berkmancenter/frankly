@@ -9,6 +9,13 @@ const {
     registerMp4s,
     registerVtts,
     mergeTranscript,
+    TRX_SETTLE_MS,
+    transcriptState,
+    registeredPaths,
+    artifactDiff,
+    sameSet,
+    transcriptStale,
+    reconcileArtifacts,
 } = require('./session-artifacts')
 
 const file = (name) => ({ name })
@@ -48,7 +55,10 @@ test('sanitizePrefix strips non-alphanumerics per segment', () => {
 test('listSessionFiles merges raw and sanitized prefixes', async () => {
     const bucket = fakeBucket({}, { 'a-b/': [file('a-b/x.mp4')], 'ab/': [file('ab/x.vtt')] })
     const files = await listSessionFiles(bucket, 'a-b')
-    assert.deepEqual(files.map((f) => f.name), ['a-b/x.mp4', 'ab/x.vtt'])
+    assert.deepEqual(
+        files.map((f) => f.name),
+        ['a-b/x.mp4', 'ab/x.vtt']
+    )
 })
 
 test('listSessionFiles lists once when prefix is already clean', async () => {
@@ -132,7 +142,9 @@ test('mergeTranscript orders fragments, drops locale dupes, maps speakers', asyn
     })
 
     assert.equal(outPath, 'p/rec.csv')
-    assert.deepEqual(ref.updates, [{ 'artifactPaths.complete_trx_0': 'p/rec.csv' }])
+    assert.deepEqual(ref.updates, [
+        { 'artifactPaths.complete_trx_0': 'p/rec.csv', mergedVtts: [late, dupe, early] },
+    ])
     assert.equal(
         bucket.saved['p/rec.csv'],
         'Start,End,Speaker,Speaker ID,Text\n' +
@@ -152,4 +164,196 @@ test('mergeTranscript falls back to gcsPrefix path without MP4', async () => {
         mp4Files: [],
     })
     assert.equal(outPath, 'p/transcript_0.csv')
+})
+
+test('transcriptState settles to none only after the settle window', () => {
+    const now = 1_000_000
+    const stoppedAt = (ms) => ({ toMillis: () => ms })
+    const agent = { agoraRttAgentId: 'a' }
+    assert.equal(transcriptState({ session: agent, hasTrx: true, now }), 'ready')
+    assert.equal(transcriptState({ session: {}, hasTrx: false, now }), 'none')
+    assert.equal(transcriptState({ session: agent, hasTrx: false, now }), 'pending')
+    assert.equal(
+        transcriptState({
+            session: { ...agent, stoppedAt: stoppedAt(now - 1000) },
+            hasTrx: false,
+            now,
+        }),
+        'pending'
+    )
+    assert.equal(
+        transcriptState({
+            session: { ...agent, stoppedAt: stoppedAt(now - TRX_SETTLE_MS) },
+            hasTrx: false,
+            now,
+        }),
+        'none'
+    )
+})
+
+test('mergeTranscript writes a header-only CSV when there are no VTTs', async () => {
+    const bucket = fakeBucket()
+    const ref = fakeRef()
+    const outPath = await mergeTranscript({
+        bucket,
+        firestore: fakeFirestore({}),
+        ref,
+        session: { gcsPrefix: 'p' },
+        vttFiles: [],
+        mp4Files: [file('p/rec.mp4')],
+    })
+    assert.equal(outPath, 'p/rec.csv')
+    assert.equal(bucket.saved['p/rec.csv'], 'Start,End,Speaker,Speaker ID,Text\n')
+    assert.deepEqual(ref.updates, [{ 'artifactPaths.complete_trx_0': 'p/rec.csv', mergedVtts: [] }])
+})
+
+test('transcriptStale detects missing CSV and changed VTT sets', () => {
+    const trx = { complete_trx_0: 'p/rec.csv' }
+    assert.equal(transcriptStale({}, []), true)
+    assert.equal(
+        transcriptStale({ artifactPaths: trx, mergedVtts: ['a.vtt'] }, [file('a.vtt')]),
+        false
+    )
+    assert.equal(
+        transcriptStale({ artifactPaths: trx, mergedVtts: ['a.vtt'] }, [
+            file('a.vtt'),
+            file('b.vtt'),
+        ]),
+        true
+    )
+    assert.equal(transcriptStale({ artifactPaths: trx, mergedVtts: [] }, []), false)
+})
+
+test('transcriptStale falls back to registered VTTs for legacy sessions', () => {
+    const session = { artifactPaths: { complete_trx_0: 'p/rec.csv', transcript_vtt_0: 'a.vtt' } }
+    assert.equal(transcriptStale(session, [file('a.vtt')]), false)
+    assert.equal(transcriptStale(session, [file('a.vtt'), file('b.vtt')]), true)
+})
+
+const reconcile = (session, listing, contents = {}) => {
+    const bucket = fakeBucket(contents, { 'p/': listing.map(file) })
+    const ref = fakeRef()
+    const run = reconcileArtifacts({
+        bucket,
+        firestore: fakeFirestore({}),
+        ref,
+        session: { gcsPrefix: 'p', ...session },
+        deleteField: 'DEL',
+    })
+    return run.then((result) => ({ result, ref, bucket }))
+}
+
+test('reconcileArtifacts is a no-op when everything matches', async () => {
+    const { result, ref } = await reconcile(
+        {
+            artifactPaths: {
+                complete_mp4_0: 'p/a.mp4',
+                transcript_vtt_0: 'p/a.vtt',
+                complete_trx_0: 'p/a.csv',
+            },
+            mergedVtts: ['p/a.vtt'],
+        },
+        ['p/a.mp4', 'p/a.vtt', 'p/a.csv']
+    )
+    assert.equal(result.repaired, false)
+    assert.deepEqual(ref.updates, [])
+})
+
+test('reconcileArtifacts registers late MP4s and re-merges late VTTs', async () => {
+    const { result, ref, bucket } = await reconcile(
+        {
+            artifactPaths: {
+                complete_mp4_0: 'p/a.mp4',
+                transcript_vtt_0: 'p/a.vtt',
+                complete_trx_0: 'p/a.csv',
+            },
+            mergedVtts: ['p/a.vtt'],
+        },
+        ['p/a.mp4', 'p/b.mp4', 'p/a.vtt', 'p/b.vtt'],
+        { 'p/a.vtt': vtt('00:00:00.000', 'hi'), 'p/b.vtt': vtt('00:00:01.000', 'yo') }
+    )
+    assert.deepEqual(result, {
+        repaired: true,
+        mp4s: 1,
+        vtts: 1,
+        merged: true,
+        mp4Total: 2,
+        vttTotal: 2,
+    })
+    assert.equal(ref.updates[0]['artifactPaths.complete_mp4_1'], 'p/b.mp4')
+    assert.equal(ref.updates[1]['artifactPaths.transcript_vtt_1'], 'p/b.vtt')
+    assert.deepEqual(ref.updates[2].mergedVtts, ['p/a.vtt', 'p/b.vtt'])
+    assert.match(bucket.saved['p/a.csv'], /yo/)
+})
+
+test('reconcileArtifacts re-merges when the registered CSV is gone from GCS', async () => {
+    const { result, ref, bucket } = await reconcile(
+        {
+            artifactPaths: { transcript_vtt_0: 'p/a.vtt', complete_trx_0: 'p/a.csv' },
+            mergedVtts: ['p/a.vtt'],
+        },
+        ['p/a.mp4', 'p/a.vtt'],
+        { 'p/a.vtt': vtt('00:00:00.000', 'hi') }
+    )
+    assert.equal(result.merged, true)
+    assert.equal(ref.updates.at(-1)['artifactPaths.complete_trx_0'], 'p/a.csv')
+    assert.match(bucket.saved['p/a.csv'], /hi/)
+})
+
+test('reconcileArtifacts keeps registered keys when listing is empty', async () => {
+    const { result, ref } = await reconcile(
+        { artifactPaths: { complete_mp4_0: 'p/a.mp4', complete_trx_0: 'p/a.csv' }, mergedVtts: [] },
+        []
+    )
+    assert.equal(result.repaired, false)
+    assert.deepEqual(ref.updates, [])
+})
+
+test('registerMp4s deletes stale higher indexes when deleteField is given', async () => {
+    const ref = fakeRef()
+    const session = {
+        artifactPaths: {
+            complete_mp4_0: 'a.mp4',
+            complete_mp4_1: 'b.mp4',
+            complete_mp4_2: 'c.mp4',
+        },
+    }
+    await registerMp4s(ref, [file('a.mp4'), file('c.mp4')], { session, deleteField: 'DEL' })
+    assert.deepEqual(ref.updates, [
+        {
+            'artifactPaths.complete_mp4_0': 'a.mp4',
+            'artifactPaths.complete_mp4_1': 'c.mp4',
+            'artifactPaths.complete_mp4_2': 'DEL',
+        },
+    ])
+})
+
+test('registerVtts without deleteField leaves other keys alone', async () => {
+    const ref = fakeRef()
+    const session = { artifactPaths: { transcript_vtt_0: 'a.vtt', transcript_vtt_1: 'b.vtt' } }
+    await registerVtts(ref, [file('a.vtt')], { session })
+    assert.deepEqual(ref.updates, [{ 'artifactPaths.transcript_vtt_0': 'a.vtt' }])
+})
+
+test('registeredPaths filters by key prefix', () => {
+    const session = {
+        artifactPaths: {
+            complete_mp4_0: 'a.mp4',
+            transcript_vtt_0: 'a.vtt',
+            complete_trx_0: 'a.csv',
+        },
+    }
+    assert.deepEqual(registeredPaths(session, 'complete_mp4_'), ['a.mp4'])
+    assert.deepEqual(registeredPaths({}, 'complete_mp4_'), [])
+})
+
+test('artifactDiff finds unregistered and missing paths', () => {
+    const session = { artifactPaths: { complete_mp4_0: 'a.mp4', complete_mp4_1: 'gone.mp4' } }
+    const diff = artifactDiff(session, 'complete_mp4_', [file('a.mp4'), file('b.mp4')])
+    assert.deepEqual(diff, { unregistered: ['b.mp4'], missing: ['gone.mp4'] })
+    assert.equal(sameSet(diff), false)
+    assert.equal(
+        sameSet(artifactDiff(session, 'complete_mp4_', [file('a.mp4'), file('gone.mp4')])),
+        true
+    )
 })
