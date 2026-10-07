@@ -11,69 +11,69 @@ This section covers setting up a new computer for Flutter development.
 
 ### Part 1: Platform-specific
 
-=== "macOS"
+#### macOS
 
-    1. Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web.
-    2. Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.
-    3. Optional, but recommended: Install Homebrew [here](https://brew.sh/).
-    4. Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
+1. Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web.
+2. Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.
+3. Optional, but recommended: Install Homebrew [here](https://brew.sh/).
+4. Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
 
-        ```
-        brew install git
-        ```
+    ```
+    brew install git
+    ```
 
-    5. Clone the Frankly repo in a directory where you prefer your projects to live:
+5. Clone the Frankly repo in a directory where you prefer your projects to live:
 
-        ```
-        git clone https://github.com/berkmancenter/frankly && cd frankly
-        ```
+    ```
+    git clone https://github.com/berkmancenter/frankly && cd frankly
+    ```
 
-    6. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform.
-        - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running `brew install cocoapods`, which should alleviate those errors.
-        - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
-    7. Install VSCode [here](https://code.visualstudio.com/download).
-        - **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter).
-    8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open `~/.zshenv` and add this line:
+6. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform.
+    - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running `brew install cocoapods`, which should alleviate those errors.
+    - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
+7. Install VSCode [here](https://code.visualstudio.com/download).
+    - **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter).
+8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open `~/.zshenv` and add this line:
 
-        ```
-        export PATH=$HOME/dev/flutter/bin:$PATH
-        ```
+    ```
+    export PATH=$HOME/dev/flutter/bin:$PATH
+    ```
 
-        Restart terminal sessions to see the changes.
+    Restart terminal sessions to see the changes.
 
-=== "Linux"
+#### Linux
 
-    1. Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
+1. Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
 
-        ```
-        sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
-        ```
+    ```
+    sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
+    ```
 
-        Set the path to chromium so flutter can find it:
+    Set the path to chromium so flutter can find it:
 
-        ```
-        export CHROME_EXECUTABLE=$(which chromium)
-        ```
+    ```
+    export CHROME_EXECUTABLE=$(which chromium)
+    ```
 
-    2. Clone the Frankly repo in a directory where you prefer your projects to live:
+2. Clone the Frankly repo in a directory where you prefer your projects to live:
 
-        ```
-        git clone https://github.com/berkmancenter/frankly && cd frankly
-        ```
+    ```
+    git clone https://github.com/berkmancenter/frankly && cd frankly
+    ```
 
-    3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform.
-    4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
+3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform.
+4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
 
-        !!! info ""
-            You may need to download the binary for your specific architecture [here](https://code.visualstudio.com/Download)
+    !!! info ""
+        You may need to download the binary for your specific architecture [here](https://code.visualstudio.com/Download)
 
-        - **Recommended**: Install the [Flutter VSCode extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk).
-        - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
-    5. You will probably need to add both flutter and dart to your PATH. Run:
+    - **Recommended**: Install the [Flutter VSCode extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk).
+    - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
+5. You will probably need to add both flutter and dart to your PATH. Run:
 
-        ```
-        export PATH="$PATH:$HOME/[path to flutter]/flutter/bin"
-        ```
+    ```
+    export PATH="$PATH:$HOME/[path to flutter]/flutter/bin"
+    ```
 
 ### Part 2
 
