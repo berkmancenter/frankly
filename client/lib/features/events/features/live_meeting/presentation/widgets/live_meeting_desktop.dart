@@ -413,6 +413,24 @@ class _FloatingChatState extends State<FloatingChat> {
                 imageHeight: 32,
               ),
               SizedBox(width: 8),
+              if (widget.chatMessage.broadcast ?? false) ...[
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: context.theme.colorScheme.tertiary,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: HeightConstrainedText(
+                    context.l10n.broadcast.toUpperCase(),
+                    style: context.theme.textTheme.labelSmall!.copyWith(
+                      color: context.theme.colorScheme.onTertiary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 6),
+              ],
               if (widget.chatMessage.isFloatingEmoji)
                 ProxiedImage(
                   null,

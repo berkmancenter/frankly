@@ -122,6 +122,22 @@ class MessageDisplayState extends State<MessageDisplay> {
                             ),
                           ),
                         ),
+                      if (widget.message.broadcast ?? false)
+                        Container(
+                          color: context.theme.colorScheme.tertiary,
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 3,
+                            horizontal: 4,
+                          ),
+                          child: HeightConstrainedText(
+                            context.l10n.broadcast.toUpperCase(),
+                            style:
+                                context.theme.textTheme.labelMedium!.copyWith(
+                              color: context.theme.colorScheme.onTertiary,
+                            ),
+                          ),
+                        ),
                       if (widget.isSending)
                         Container(
                           margin: const EdgeInsets.only(left: 4),
