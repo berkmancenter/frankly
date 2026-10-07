@@ -9,7 +9,7 @@ import '../utils/infra/firestore_utils.dart';
 import '../utils/notifications_utils.dart';
 import '../utils/subscription_plan_util.dart';
 import 'live_meetings/agora_api.dart';
-import 'live_meetings/agora_stt_api.dart';
+import 'live_meetings/breakouts/stop_breakout_session_recordings.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -57,9 +57,6 @@ class EventEnded extends OnCallMethod<EventEndedRequest> {
         constructor: (map) => LiveMeeting.fromJson(map),
       );
       if (liveMeeting.recordingSessionId != null) {
-        // Stop STT agent FIRST so VTT files are flushed to storage before
-        // stopRoom triggers produceSessions (which looks for VTTs).
-        await _stopSttAgent(liveMeeting.recordingSessionId!);
         await agoraUtils.stopRoom(sessionId: liveMeeting.recordingSessionId!);
       }
     } catch (e) {
@@ -74,26 +71,11 @@ class EventEnded extends OnCallMethod<EventEndedRequest> {
           .collection('$liveMeetingPath/breakout-room-sessions')
           .get();
       for (final sessionDoc in breakoutSessionDocs.documents) {
-        final breakoutRoomDocs = await firestore
-            .collection('${sessionDoc.reference.path}/breakout-rooms')
-            .get();
-        for (final roomDoc in breakoutRoomDocs.documents) {
-          final breakoutRoom = BreakoutRoom.fromJson(
-            firestoreUtils.fromFirestoreJson(roomDoc.data.toMap()),
-          );
-          if (breakoutRoom.recordingSessionId != null) {
-            try {
-              // Stop STT agent FIRST so VTT files are flushed to storage before
-              // stopRoom triggers produceSessions (which looks for VTTs).
-              await _stopSttAgent(breakoutRoom.recordingSessionId!);
-              await agoraUtils.stopRoom(
-                  sessionId: breakoutRoom.recordingSessionId!,);
-            } catch (e) {
-              print(
-                  'Error stopping breakout recording ${breakoutRoom.recordingSessionId}: $e',);
-            }
-          }
-        }
+        await stopBreakoutSessionRecordings(
+          liveMeetingPath: liveMeetingPath,
+          breakoutSessionId: sessionDoc.documentID,
+          agoraUtils: agoraUtils,
+        );
       }
     } catch (e) {
       print('Error stopping breakout room recordings on event end: $e');
@@ -120,23 +102,5 @@ class EventEnded extends OnCallMethod<EventEndedRequest> {
         ),
       ),
     );
-  }
-
-  /// Stops the STT agent for a recording session (if one exists) so that
-  /// Agora flushes VTT files to storage before produceSessions runs.
-  Future<void> _stopSttAgent(String recordingSessionId) async {
-    try {
-      final sessionDoc = await firestore
-          .collection('recording-sessions')
-          .document(recordingSessionId)
-          .get();
-      if (!sessionDoc.exists) return;
-      final agentId = sessionDoc.data.toMap()['agoraRttAgentId'] as String?;
-      if (agentId == null) return;
-      final sttApi = AgoraSttApi();
-      await sttApi.stopTranscription(agentId: agentId);
-    } catch (e) {
-      print('Error stopping STT agent for session $recordingSessionId: $e');
-    }
   }
 }

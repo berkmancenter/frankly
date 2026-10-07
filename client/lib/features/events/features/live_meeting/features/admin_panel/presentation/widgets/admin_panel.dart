@@ -448,23 +448,19 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
             filterNeedsHelp: true,
           ),
           builder: (context, needHelpRooms) {
-            // If the waiting room has participants who are present there, that are also assigned
-            // there we want to show the waiting room in this list of rooms that need help so that
-            // an admin can reassign them.
+            // If the waiting room has participants present there we want to show the waiting
+            // room in this list of rooms that need help so that an admin can reassign them.
             //
             // If someone in the waiting room flagged the room as needing help it will already
             // be in the list of rooms that need help so we don't want to add it twice.
-            final usersAssignedToWaitingRoom =
-                waitingRoom?.participantIds.toSet() ?? {};
-            final waitingRoomIsActive = waitingRoomParticipants
-                    ?.any((p) => usersAssignedToWaitingRoom.contains(p.id)) ??
-                false;
+            final waitingRoomIsActive =
+                waitingRoom != null && (waitingRoomParticipants?.isNotEmpty ?? false);
             final waitingRoomAlreadyFlaggedAsNeedHelp =
                 needHelpRooms?.any((r) => r.roomId == breakoutsWaitingRoomId) ??
                     false;
             final List<BreakoutRoom> allNeedHelpRooms = [
               if (waitingRoomIsActive && !waitingRoomAlreadyFlaggedAsNeedHelp)
-                waitingRoom!,
+                waitingRoom,
               ...needHelpRooms!,
             ];
             return Column(
@@ -796,8 +792,6 @@ class BreakoutRoomButton extends StatefulWidget {
 class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
   late BehaviorSubjectWrapper<List<Participant>> _breakoutParticipantsStream;
 
-  bool get isWaitingRoom => widget.room.roomId == breakoutsWaitingRoomId;
-
   @override
   void initState() {
     super.initState();
@@ -823,13 +817,8 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
     return StreamBuilder<List<Participant>>(
       stream: _breakoutParticipantsStream,
       builder: (context, participantsSnapshot) {
-        var participants =
+        final participants =
             participantsSnapshot.data?.map((p) => p.id).toList() ?? [];
-        if (isWaitingRoom) {
-          final assignedHere = widget.room.participantIds.toSet();
-          participants =
-              participants.where((id) => assignedHere.contains(id)).toList();
-        }
         final participantCount = participants.length;
 
         final room = widget.room;
@@ -1067,15 +1056,8 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
         builder: (context, liveBreakoutParticipants) {
           final localRoom = room!;
           final localLiveBreakoutParticipants = liveBreakoutParticipants!;
-          final isWaitingRoom = localRoom.roomId == breakoutsWaitingRoomId;
-          var participantIds =
+          final participantIds =
               localLiveBreakoutParticipants.map((p) => p.id).toList();
-          if (isWaitingRoom) {
-            final assignedHere = room.participantIds.toSet();
-            participantIds = participantIds
-                .where((id) => assignedHere.contains(id))
-                .toList();
-          }
           final participantCount = participantIds.length;
 
           final roomDisplayName = localRoom.roomId == breakoutsWaitingRoomId

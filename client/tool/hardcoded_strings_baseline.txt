@@ -127,12 +127,6 @@ lib/features/events/features/live_meeting/features/meeting_agenda/presentation/w
 lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	32265d8c245e	1	Some people are still finishing the video.
 lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	a4fd010af9d3	1	We'll be ready in:
 lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	a95ee2f8f340	1	Everyone is ready to move on.
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	1ff57a29d7c9	1	Next
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	48a80d59b7fe	1	2 of 3 are ready
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	5f2b441bbf67	1	Prompts will appear here. Once most people have clicked “Next”, we’ll move on to the next agenda item.
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	843f8ff2cfa9	1	This is your agenda.
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	bb0d08d37412	1	Ready to move on?
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	e3e701351a63	1	Agenda Item 1 of 10
 lib/features/events/features/live_meeting/features/video/presentation/views/fake_participants_dialog.dart	1509f561f241	1	Save
 lib/features/events/features/live_meeting/features/video/presentation/views/video_flutter_meeting.dart	5c799f5aa8a7	1	Need Help?
 lib/features/events/features/live_meeting/features/video/presentation/widgets/control_bar.dart	424e5d80d19c	1	Start Video

@@ -821,6 +821,7 @@
   "messageParticipants": "傳訊息給參與者",
   "messageTime": "訊息時間",
   "micAndCameraEnabled": "麥克風和相機在通話開始時啟用",
+  "micAndCameraEnabledNotHosted": "麥克風和相機將在分組討論室開始時啟用",
   "microphoneInput": "麥克風輸入",
   "microsoftTeams": "Microsoft Teams",
   "mins": "分鐘",

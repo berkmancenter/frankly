@@ -411,6 +411,7 @@ class _EventInfoState extends State<EventInfo> {
               builder: (context) {
                 return MediaSettingsWidget(
                   shouldShowVideoPreview: true,
+                  hostedEvent: widget.event.isHosted,
                   isMirrorCheck: true,
                 );
               },

@@ -1,15 +1,27 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 
+const {
+    VTT_FLUSH_WAIT_MS,
+    listSessionFiles,
+    listUntilMp4,
+    mp4sOf,
+    vttsOf,
+    registerMp4s,
+    registerVtts,
+    mergeTranscript,
+} = require('./session-artifacts')
+
 const firestore = admin.firestore()
 const storage = admin.storage()
 const bucketName = functions.config().agora.storage_bucket_name
 
-// Triggered when a recording session transitions to 'stopped'.
-// Locates artifacts Agora deposited under gcsPrefix (MP4 recordings, VTT
-// transcripts) and registers their paths on the session document.
-const produceSessions = functions.firestore
-    .document('recording-sessions/{sessionId}')
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+// On stop, register MP4/VTT artifacts and merge the transcript.
+const produceSessions = functions
+    .runWith({ timeoutSeconds: 300 })
+    .firestore.document('recording-sessions/{sessionId}')
     .onUpdate(async (change, context) => {
         const before = change.before.data()
         const after = change.after.data()
@@ -25,98 +37,95 @@ const produceSessions = functions.firestore
         }
 
         const bucket = storage.bucket(bucketName)
+        const ref = change.after.ref
+        const listFiles = () => listSessionFiles(bucket, gcsPrefix)
 
-        // List all files under the session prefix once.
         let allFiles
         try {
-            const [files] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
-            allFiles = files
-
-            // STT strips non-alphanumeric chars from fileNamePrefix segments
-            // (Agora rejects them in STT but not Cloud Recording). Check the
-            // sanitized prefix too so VTT files are discovered.
-            const sanitizedPrefix = gcsPrefix
-                .split('/')
-                .map((s) => s.replace(/[^a-zA-Z0-9]/g, ''))
-                .join('/')
-            if (sanitizedPrefix !== gcsPrefix) {
-                const [extraFiles] = await bucket.getFiles({ prefix: `${sanitizedPrefix}/` })
-                allFiles = [...allFiles, ...extraFiles]
-            }
+            allFiles = await listFiles()
         } catch (err) {
             console.error(`Error listing files for session ${sessionId}:`, err)
             return null
         }
 
         // --- Register MP4 ---
+        // MP4 upload can lag the stop. Retry only if recording ran.
+        let waitedMs = 0
+        let finalMp4Files = []
         try {
-            const mp4Files = allFiles.filter((f) => f.name.endsWith('.mp4'))
+            const hadRecording = after.agoraResourceId != null || after.agoraSid != null
+            if (hadRecording && mp4sOf(allFiles).length === 0) {
+                const result = await listUntilMp4({ listFiles, initialFiles: allFiles })
+                allFiles = result.files
+                waitedMs = result.waitedMs
+            }
 
-            if (mp4Files.length === 0) {
-                console.warn(`No MP4 found under ${gcsPrefix}/ for session ${sessionId}`)
+            finalMp4Files = mp4sOf(allFiles)
+            if (finalMp4Files.length === 0) {
+                console.warn(
+                    `No MP4 found under ${gcsPrefix}/ for session ${sessionId} after waiting ${waitedMs}ms`
+                )
             } else {
+                await registerMp4s(ref, finalMp4Files)
                 console.log(
-                    `Found ${
-                        mp4Files.length
-                    } MP4(s) under ${gcsPrefix}/ for session ${sessionId}: ${mp4Files
+                    `Registered ${finalMp4Files.length} MP4(s) for session ${sessionId} after ${waitedMs}ms: ${finalMp4Files
                         .map((f) => f.name)
                         .join(', ')}`
                 )
-                const updates = {}
-                mp4Files.forEach((f, i) => {
-                    updates[`artifactPaths.complete_mp4_${i}`] = f.name
-                })
-                await change.after.ref.update(updates)
-                console.log(`Registered ${mp4Files.length} MP4(s) for session ${sessionId}`)
             }
         } catch (err) {
             console.error(`Error registering MP4 for session ${sessionId}:`, err)
         }
 
         // --- Register VTT transcript files ---
+        let finalVttFiles = []
         try {
-            let vttFiles = allFiles.filter((f) => f.name.endsWith('.vtt'))
+            let vttFiles = vttsOf(allFiles)
 
-            // If STT was enabled but VTTs aren't found yet, the agent may still
-            // be flushing files to storage. Retry after a delay.
+            // Wait for STT flush; MP4 wait counts toward it.
             const hasSTT = after.agoraRttAgentId != null
             if (vttFiles.length === 0 && hasSTT) {
-                console.log(
-                    `No VTT files yet for STT-enabled session ${sessionId}, waiting 15s for agent flush...`
-                )
-                await new Promise((resolve) => setTimeout(resolve, 15000))
-
-                // Re-scan both paths
-                const [retryFiles] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
-                let retryAll = retryFiles
-                const sanitizedRetry = gcsPrefix
-                    .split('/')
-                    .map((s) => s.replace(/[^a-zA-Z0-9]/g, ''))
-                    .join('/')
-                if (sanitizedRetry !== gcsPrefix) {
-                    const [extraRetry] = await bucket.getFiles({ prefix: `${sanitizedRetry}/` })
-                    retryAll = [...retryAll, ...extraRetry]
+                const remainingMs = Math.max(0, VTT_FLUSH_WAIT_MS - waitedMs)
+                if (remainingMs > 0) {
+                    console.log(
+                        `No VTT files yet for STT-enabled session ${sessionId}, waiting ${remainingMs}ms for agent flush...`
+                    )
+                    await sleep(remainingMs)
                 }
-                vttFiles = retryAll.filter((f) => f.name.endsWith('.vtt'))
+                allFiles = await listFiles()
+                vttFiles = vttsOf(allFiles)
             }
 
+            finalVttFiles = vttFiles
             if (vttFiles.length === 0) {
                 console.log(`No VTT files found under ${gcsPrefix}/ for session ${sessionId}`)
             } else {
+                await registerVtts(ref, vttFiles)
                 console.log(
-                    `Found ${vttFiles.length} VTT file(s) for session ${sessionId}: ${vttFiles
+                    `Registered ${vttFiles.length} VTT file(s) for session ${sessionId}: ${vttFiles
                         .map((f) => f.name)
                         .join(', ')}`
                 )
-                const updates = {}
-                vttFiles.forEach((f, i) => {
-                    updates[`artifactPaths.transcript_vtt_${i}`] = f.name
-                })
-                await change.after.ref.update(updates)
-                console.log(`Registered ${vttFiles.length} VTT file(s) for session ${sessionId}`)
             }
         } catch (err) {
             console.error(`Error registering VTT for session ${sessionId}:`, err)
+        }
+
+        // --- Merge VTT fragments into one CSV transcript ---
+        try {
+            if (finalVttFiles.length > 0) {
+                const outPath = await mergeTranscript({
+                    bucket,
+                    firestore,
+                    ref,
+                    session: after,
+                    vttFiles: finalVttFiles,
+                    mp4Files: finalMp4Files,
+                })
+                console.log(`Registered merged transcript for session ${sessionId}: ${outPath}`)
+            }
+        } catch (err) {
+            console.error(`Error merging transcript for session ${sessionId}:`, err)
         }
 
         return null
