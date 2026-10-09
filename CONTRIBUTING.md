@@ -1,4 +1,5 @@
 <!-- omit in toc -->
+
 # Contributing to Frankly
 
 Thanks for your interest in contributing to Frankly!
@@ -6,12 +7,14 @@ Thanks for your interest in contributing to Frankly!
 We encourage and value all contributions. See the [Table of Contents](#table-of-contents) for ways to help and contribution guidelines. Reading the relevant sections beforehand will facilitate a smoother process for everyone. We look forward to your contributions. 🎉
 
 > Like the project but don't have time to contribute? There are other easy ways to support Frankly!
+>
 > - Star the project
 > - Post on social media about it
 > - Refer this project in your project's readme
 > - Mention the project at local meetups and tell your friends/colleagues
 
 <!-- omit in toc -->
+
 ## Table of Contents
 
 - [Asking Questions](#asking-questions)
@@ -23,6 +26,7 @@ We encourage and value all contributions. See the [Table of Contents](#table-of-
 - [Styleguides](#styleguides)
   - [Commit Messages](#commit-messages)
 - [Code of Conduct](#code-of-conduct)
+- [AI Usage Policy](#ai-usage-policy)
 
 ## Asking Questions
 
@@ -37,10 +41,13 @@ If you still have a question or need clarification, we recommend the following:
 We will address the issue as soon as possible.
 
 ## Reporting Bugs
+
 > ### Sensitive Bugs <!-- omit in toc -->
+>
 > Never report security related issues, vulnerabilities or bugs including sensitive information to the issue tracker, or elsewhere in public. Instead, please send sensitive bugs by email to <support@frankly.org>.
 
 <!-- omit in toc -->
+
 ### Before Submitting a Bug Report
 
 - Check [Github Issues](https://github.com/berkmancenter/frankly/issues?q=label%3Abug) to make sure the bug has not already been reported.
@@ -48,6 +55,7 @@ We will address the issue as soon as possible.
 - Investigate thoroughly so that you can describe the issue in detail in your report.
 
 <!-- omit in toc -->
+
 ### Submitting Your Report
 
 Bug reports can be submitted to [GitHub Issues](https://github.com/berkmancenter/frankly/issues/new/choose). Please select the appropriate issue type, use a descriptive and concise title, and follow the prompts.
@@ -57,9 +65,11 @@ Once it's filed, a team member will attempt to reproduce the issue with your pro
 ## Contributing
 
 > ### Legal Notice <!-- omit in toc -->
+>
 > When contributing to this project, you must agree that you have authored 100% of the content, that you have the necessary rights to the content, and that the content you contribute may be provided under the project licence.
 
 ### Getting Started
+
 We would love for you to contribute to Frankly! To set up your development environment, please refer to our [README](https://github.com/berkmancenter/frankly/blob/staging/README.md). The instructions there should allow you to run Frankly locally on your machine.
 
 If the feature you want to work on requires third-party services (e.g. Agora for video calling, or Mux for running livestreams), please follow the instructions in the README to set up your own accounts. The free tiers of these services should allow for testing development use cases.
@@ -67,20 +77,25 @@ If the feature you want to work on requires third-party services (e.g. Agora for
 If you have any questions about the instructions, please feel free to [submit an issue](https://github.com/berkmancenter/frankly/issues/new). We welcome any suggestions for improvements to the README from contributors, especially as a Pull Request to the documentation itself.
 
 ### How to Contribute
+
 When you're ready to make your first contribution to Frankly, you can open a pull request for our team to review. Here is a quick overview of the process to follow when making a code contribution:
+
 1. **Fork the Frankly repository**: Fork the Frankly GitHub repo to start making your own changes to the code. We suggest creating a branch for your code changes within your fork to help organize your contributions. (GitHub docs: [Fork a repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo))
 2. **Create a pull request**: Once your code changes are ready, it's time to create a pull request to Frankly. From the main Frankly repo, click the **Pull Requests** tab and click **New Pull Request**. At the top of the page, you will see a button to **compare across forks**. Select this option. From there, you can proceed with the standard flow to submit a pull request on GitHub. (GitHub docs: [Creating a pull request from a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork))
-3. **Provide a title and description**: When you open a pull request, the description will automatically populate with a template that the Frankly team uses for PRs. Please fill this out to help the team with the review process, and provide a descriptive title. 
+3. **Provide a title and description**: When you open a pull request, the description will automatically populate with a template that the Frankly team uses for PRs. Please fill this out to help the team with the review process, and provide a descriptive title.
 
 You're done! 🎉 Our team will review your pull request from this point. Thank you for contributing to Frankly!
 
 ### What to Work On
+
 You can see what the Frankly team is working on in the [Frankly Public Workstream](https://github.com/orgs/berkmancenter/projects/3). We would **love** your help, and that's the place to start.
 
 Look for anything in our backlog with the [help welcome](https://github.com/orgs/berkmancenter/projects/3/views/1?filterQuery=-status%3A%22Won%27t+Do%22%2C%22Consider+Later%22+label%3A%22help+welcome%22) label especially. We also have a [good first issue](https://github.com/orgs/berkmancenter/projects/3/views/1?filterQuery=-status%3A%22Won%27t+Do%22%2C%22Consider+Later%22+label%3A%22good+first+issue%22+) label for first-time contributors.
 
 ## Styleguides
+
 ### Commit Messages
+
 We prefer longform commit messages where possible! Check out [this article](https://meedan.com/post/how-to-write-longform-git-commits-for-better-software-development) for more on longform commits.
 
 **Not ideal:**
@@ -112,6 +127,21 @@ This project and everyone participating in it is governed by the
 By participating, you are expected to uphold this code. Please report unacceptable behavior
 to <support@frankly.org>.
 
+## AI Usage Policy
+
+Feel free to use AI as it can be genuinely useful! It can help explain a part of the codebase, draft descriptions, help think through problems, or keep track of complex tasks. You **must** review and understand all code generated by Gen-AI tools before submit it in your PR. You cannot simply trust generated code blindly.
+
+:point_right:  A crucial rule of thumb is the following: if it took *less time* for you to *prompt an LLM* to generate all or most of your PR submission than it will take for *a human to review it*, you should not submit it.
+
+If you do use AI to generate code in a PR:
+
+- Review and test all code before submission.
+- State in your description that you have used Gen-AI tools, and which ones, to assist in creating the PR. We have included this as a field within the PR description template.
+- If a reviewer asks you about an architectural decision you made, and your honest answer is "I'm not sure, the AI did it," your PR will likely be closed.
+- Maintainers may close PRs that appear to be entirely or largely AI-generated.
+
 <!-- omit in toc -->
+
 ## Attribution
+
 This guide is based on the [contributing.md generator](https://contributing.md/generator).
