@@ -101,9 +101,54 @@ async function notifyDembraneBridge({
             throw err
         }
     }
+
+    return mp4Files.length > 0
+}
+
+const recordingMediaExtensions = ['.mp4', '.m3u8', '.ts']
+
+function isRecordingMedia(fileName) {
+    return recordingMediaExtensions.some((extension) => fileName.endsWith(extension))
+}
+
+// Deletes the Agora recording media (MP4 and HLS) for a session once every
+// MP4 has been delivered to Dembrane, so recordings are not kept in Cloud
+// Storage. Transcript files (VTT) are left in place.
+async function deleteDeliveredRecordings({
+    enabled = false,
+    bucket,
+    gcsPrefix,
+    sessionRef,
+    sessionId,
+    fieldValue,
+}) {
+    if (enabled !== true || !gcsPrefix) return []
+
+    const [files] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
+    const mediaFiles = files.filter((file) => isRecordingMedia(file.name))
+    await Promise.all(mediaFiles.map((file) => file.delete({ ignoreNotFound: true })))
+
+    const latestSnapshot = await sessionRef.get()
+    const artifactPaths = latestSnapshot.data()?.artifactPaths ?? {}
+    const updates = {
+        'dembraneBridge.recordingsDeletedAt': fieldValue.serverTimestamp(),
+        'dembraneBridge.recordingsDeletedCount': mediaFiles.length,
+    }
+    Object.keys(artifactPaths)
+        .filter((key) => key.startsWith('complete_mp4_'))
+        .forEach((key) => {
+            updates[`artifactPaths.${key}`] = fieldValue.delete()
+        })
+    await sessionRef.update(updates)
+
+    console.log(
+        `Deleted ${mediaFiles.length} recording file(s) under ${gcsPrefix}/ for session ${sessionId} after Dembrane delivery`
+    )
+    return mediaFiles.map((file) => file.name)
 }
 
 module.exports = {
+    deleteDeliveredRecordings,
     buildBridgeHeaders,
     buildBridgePayload,
     getMissingBridgeConfig,

@@ -701,6 +701,19 @@ avoid resending them on sequential retries. Concurrent delivery attempts are not
 transactionally deduplicated; the receiver should handle duplicate submissions.
 Bridge errors are stored on the session and do not prevent transcript discovery.
 
+Set `dembrane.delete_recordings_after_delivery="true"` to delete a session's
+recording media (MP4 and HLS files) from the Agora storage bucket as soon as
+every MP4 has been delivered to the bridge. Transcript (VTT) files are kept, and
+the session's `artifactPaths.complete_mp4_*` entries are removed, so hosts can no
+longer download those recordings from Frankly. Recordings whose delivery fails
+stay in the bucket, so pair this setting with a bucket lifecycle rule that
+deletes objects after a fixed number of days, for example 7:
+
+```bash
+echo '{"rule":[{"action":{"type":"Delete"},"condition":{"age":7}}]}' > lifecycle.json
+gcloud storage buckets update gs://<agora-storage-bucket> --lifecycle-file=lifecycle.json
+```
+
 Turning off `dembrane.enabled` and redeploying functions stops forwarding. Build
 and deploy the client with `DEMBRANE_ENABLED=false` to hide linking and branding.
 Existing event fields remain readable and require no schema migration. Recording

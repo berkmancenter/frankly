@@ -1,6 +1,9 @@
 const assert = require('assert')
 
-const { notifyDembraneBridge } = require('../js/dembrane-bridge')
+const {
+    deleteDeliveredRecordings,
+    notifyDembraneBridge,
+} = require('../js/dembrane-bridge')
 
 function createSessionRef(latestData) {
     const updates = []
@@ -190,4 +193,84 @@ describe('dembrane-bridge', () => {
         assert.strictEqual(sessionRef.updates[0]['dembraneBridge.sentArtifacts.complete_mp4_0.sentAt'], undefined)
     })
 
+
+    it('deletes recording media but keeps transcripts once delivered', async () => {
+        const sessionRef = createSessionRef({
+            artifactPaths: {
+                complete_mp4_0: 'recordings/session-4/complete.mp4',
+                transcript_vtt_0: 'recordings/session-4/transcript.vtt',
+            },
+        })
+        const deleted = []
+        const file = (name) => ({
+            name,
+            async delete() {
+                deleted.push(name)
+            },
+        })
+        const bucket = {
+            async getFiles({ prefix }) {
+                assert.strictEqual(prefix, 'recordings/session-4/')
+                return [
+                    [
+                        file('recordings/session-4/complete.mp4'),
+                        file('recordings/session-4/index.m3u8'),
+                        file('recordings/session-4/segment_0.ts'),
+                        file('recordings/session-4/transcript.vtt'),
+                    ],
+                ]
+            },
+        }
+
+        await deleteDeliveredRecordings({
+            enabled: true,
+            bucket,
+            gcsPrefix: 'recordings/session-4',
+            sessionRef,
+            sessionId: 'session-4',
+            fieldValue: createFieldValue(),
+        })
+
+        assert.deepStrictEqual(deleted.sort(), [
+            'recordings/session-4/complete.mp4',
+            'recordings/session-4/index.m3u8',
+            'recordings/session-4/segment_0.ts',
+        ])
+        const update = sessionRef.updates[0]
+        assert.strictEqual(update['dembraneBridge.recordingsDeletedCount'], 3)
+        assert.strictEqual(update['artifactPaths.complete_mp4_0'], 'DELETE')
+        assert.strictEqual(update['artifactPaths.transcript_vtt_0'], undefined)
+    })
+
+    it('keeps recordings when deletion is not enabled', async () => {
+        const bucket = {
+            async getFiles() {
+                throw new Error('should not list files')
+            },
+        }
+        const deleted = await deleteDeliveredRecordings({
+            bucket,
+            gcsPrefix: 'recordings/session-5',
+            sessionRef: createSessionRef({}),
+            sessionId: 'session-5',
+            fieldValue: createFieldValue(),
+        })
+        assert.deepStrictEqual(deleted, [])
+    })
+
+    it('reports delivery only when there were recordings to send', async () => {
+        const sent = await notifyDembraneBridge({
+            enabled: true,
+            sessionRef: createSessionRef({ dembraneProjectId: 'project-123' }),
+            sessionId: 'session-6',
+            sessionData: { dembraneProjectId: 'project-123' },
+            mp4Files: [],
+            bridgeUrl: 'https://bridge.example.com',
+            bridgeToken: 'bridge-secret',
+            fetchImpl: async () => ({ ok: true, text: async () => '' }),
+            fieldValue: createFieldValue(),
+            signedUrlExpirationMs: 60000,
+        })
+        assert.strictEqual(sent, false)
+    })
 })
