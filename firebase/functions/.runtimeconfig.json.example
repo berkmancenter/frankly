@@ -46,7 +46,8 @@
   "dembrane": {
     "enabled": "false",
     "bridge_url": "https://frankly-dembrane-bridge.example.com",
-    "bridge_token": "<value>"
+    "bridge_token": "<value>",
+    "delete_recordings_after_delivery": "false"
   },
   "ics": {
     "prod_id": "Frankly"

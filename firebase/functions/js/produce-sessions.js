@@ -2,13 +2,18 @@ const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const { regionalFunctions } = require('./function-region')
 const fetch = require('node-fetch')
-const { notifyDembraneBridge } = require('./dembrane-bridge')
+const {
+    deleteDeliveredRecordings,
+    notifyDembraneBridge,
+} = require('./dembrane-bridge')
 
 const firestore = admin.firestore()
 const storage = admin.storage()
 const bucketName = functions.config().agora.storage_bucket_name
 const dembraneBridgeUrl = functions.config().dembrane?.bridge_url
 const dembraneBridgeToken = functions.config().dembrane?.bridge_token
+const deleteRecordingsAfterDelivery =
+    String(functions.config().dembrane?.delete_recordings_after_delivery) === 'true'
 
 const artifactLookupAttempts = 6
 const artifactLookupDelayMs = 10000
@@ -108,7 +113,7 @@ const produceSessions = regionalFunctions().runWith({ timeoutSeconds: 540 }).fir
                 await change.after.ref.update(buildArtifactUpdates(mp4Files))
             }
 
-            await notifyDembraneBridge({
+            const delivered = await notifyDembraneBridge({
                 enabled: String(functions.config().dembrane?.enabled) === 'true',
                 sessionRef: change.after.ref,
                 sessionId,
@@ -120,6 +125,17 @@ const produceSessions = regionalFunctions().runWith({ timeoutSeconds: 540 }).fir
                 fieldValue: admin.firestore.FieldValue,
                 signedUrlExpirationMs: bridgeSignedUrlExpiration,
             })
+
+            if (delivered === true) {
+                await deleteDeliveredRecordings({
+                    enabled: deleteRecordingsAfterDelivery,
+                    bucket,
+                    gcsPrefix,
+                    sessionRef: change.after.ref,
+                    sessionId,
+                    fieldValue: admin.firestore.FieldValue,
+                })
+            }
 
             await change.after.ref.update({
                 'postProcessing.lastAttemptAt':
