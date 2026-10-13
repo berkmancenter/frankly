@@ -28,12 +28,17 @@ jobs:
               # The /api callable rewrites the VM parity test checks against the
               # client allowlist are here, so we need to test for drift if it changes.
               - 'firebase.json'
-              - 'scripts/render-firebase-config.mjs'
+              - 'scripts/**'
       - name: Set up Node.js
         if: steps.changes.outputs.client == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "22.23.1"
+
+      - name: Run Script Tests
+        if: steps.changes.outputs.client == 'true'
+        working-directory: ${{ github.workspace }}
+        run: npm run test:scripts
 
       - name: Set Up Flutter
         if: steps.changes.outputs.client == 'true'
@@ -110,6 +115,13 @@ jobs:
           envkey_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
           envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
+
+      - name: Validate client configuration
+        # Fork PRs build without secrets and are never deployed, so only the
+        # build that goes to a preview channel is validated.
+        if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success' && github.event.pull_request.head.repo.full_name == github.repository
+        working-directory: ${{ github.workspace }}
+        run: node scripts/validate-client-config.mjs .env
 
       - name: Build App
         if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success'

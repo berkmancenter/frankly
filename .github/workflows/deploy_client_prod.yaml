@@ -74,6 +74,10 @@ jobs:
           envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
           envkey_BYPASS_EMAIL_VERIFICATION: ${{ secrets.BYPASS_EMAIL_VERIFICATION }}
 
+      - name: Validate client configuration
+        working-directory: ${{ github.workspace }}
+        run: node scripts/validate-client-config.mjs .env
+
       - name: Build the Flutter App
         run: flutter build web --release --source-maps --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 

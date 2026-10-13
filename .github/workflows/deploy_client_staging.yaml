@@ -26,6 +26,7 @@ jobs:
               - 'client/**'
               - 'firebase.json'
               - 'scripts/render-firebase-config.mjs'
+              - 'scripts/validate-client-config.mjs'
 
       - name: Set Up Flutter
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
@@ -104,6 +105,11 @@ jobs:
           envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
           envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
           envkey_BYPASS_EMAIL_VERIFICATION: ${{ secrets.BYPASS_EMAIL_VERIFICATION }}
+
+      - name: Validate client configuration
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        working-directory: ${{ github.workspace }}
+        run: node scripts/validate-client-config.mjs .env
 
       - name: Build the Flutter App
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
