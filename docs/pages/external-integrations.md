@@ -251,6 +251,22 @@ The secret looks like `whsec_...`; use the whole string, prefix included, as the
 
 ---
 
+## Deployment requirements
+
+Webhook payloads contain signed Cloud Storage download URLs. Cloud Functions signs them with its own service account, using the IAM `signBlob` API. Google does not allow this by default.
+
+Grant the functions service account the Service Account Token Creator role on itself:
+
+```bash
+gcloud iam service-accounts add-iam-policy-binding <PROJECT_ID>@appspot.gserviceaccount.com --project <PROJECT_ID> --member serviceAccount:<PROJECT_ID>@appspot.gserviceaccount.com --role roles/iam.serviceAccountTokenCreator
+```
+
+`<PROJECT_ID>@appspot.gserviceaccount.com` is the default service account for 1st-gen functions. If the deployment uses a different runtime service account, use that one in both places.
+
+Without this permission, deliveries stay `pending` with the error "Permission 'iam.serviceAccounts.signBlob' denied". They keep retrying until they fail.
+
+---
+
 ## Deployment settings
 
 All settings are optional and live in the functions config under `external_integrations`:
