@@ -32,6 +32,9 @@
     "firebase/functions/js/external-integration-delivery-task.js": [
       "externalIntegrationDeliveryTask"
     ],
+    "firebase/functions/lib/events/external_integration_defaults.dart": [
+      "EventOnCreate"
+    ],
     "firebase/functions/js/external-integrations/index.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
     "firebase/functions/js/external-integrations/config.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
     "firebase/functions/js/external-integrations/url-validation.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
