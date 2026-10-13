@@ -669,6 +669,7 @@
   "matchingQuestions": "Matching questions",
   "maximum": "Maximum",
   "meantToUseExistingAccount": "Meant to use an existing account instead?",
+  "mediaUploadsDisabled": "Media uploads are turned off on this site.",
   "meetingEndMessage": "This meeting has ended. You may close this window.",
   "meetingEndWithFollowMessage": "This meeting has ended. You may close this window or visit {name} to continue the conversation.",
   "meetingGuideCard": "meeting-guide-card",

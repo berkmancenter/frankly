@@ -91,6 +91,10 @@ class Environment {
       String.fromEnvironment('CLOUDINARY_VIDEO_PRESET');
   static const cloudinaryCloudName =
       String.fromEnvironment('CLOUDINARY_CLOUD_NAME');
+
+  /// Media uploads go through Cloudinary. Leaving CLOUDINARY_CLOUD_NAME unset
+  /// turns them off and the Cloudinary upload widget is never loaded.
+  static const mediaUploadsEnabled = cloudinaryCloudName != '';
   static const linkPreviewApiKey =
       String.fromEnvironment('LINK_PREVIEW_API_KEY');
 

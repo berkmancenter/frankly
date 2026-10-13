@@ -17,6 +17,7 @@ const fs = require('fs')
 const path = require('path')
 const functions = require('firebase-functions')
 const { regionalFunctions } = require('./function-region')
+const { buildCsp, cloudinaryEnabled } = require('./content-security-policy')
 
 // Read the template once at module load. If the file is missing the function
 // will fail to start, which surfaces the error at deploy time rather than
@@ -42,45 +43,11 @@ const rawTemplate = fs.readFileSync(TEMPLATE_PATH, 'utf8')
 const appConfig = functions.config().app || {}
 const GOOGLE_ID = appConfig.google_id || ''
 const VERSION = appConfig.version || 'dev'
+const CLOUDINARY_ENABLED = cloudinaryEnabled(appConfig)
 
 const stableTemplate = rawTemplate
     .replace(/__GOOGLE_ID__/g, GOOGLE_ID)
     .replace(/__VERSION__/g, VERSION)
-
-function buildCsp(nonce) {
-    const directives = [
-        `default-src 'self'`,
-        `script-src 'strict-dynamic' 'nonce-${nonce}' 'wasm-unsafe-eval'`,
-        `style-src 'self' 'unsafe-inline' https://vjs.zencdn.net`,
-        `font-src 'self' data: https://fonts.gstatic.com`,
-        // connect-src covers all fetch/XHR/WebSocket calls the Flutter app makes.
-        // Add entries here if new backend services are integrated.
-        `connect-src 'self'` +
-            ` https://*.firebaseio.com wss://*.firebaseio.com` +
-            ` https://*.googleapis.com https://*.cloudfunctions.net` +
-            ` https://api.agora.io https://*.agora.io wss://*.agora.io:*` +
-            ` https://*.sd-rtn.com wss://*.sd-rtn.com:*` +
-            ` https://*.twiliocdn.com https://*.twilio.com` +
-            ` https://api.mux.com https://stream.mux.com` +
-            ` https://res.cloudinary.com https://api.cloudinary.com` +
-            ` https://player.vimeo.com https://api.segment.io` +
-            ` https://api.linkpreview.net https://*.stripe.com` +
-            ` https://stats.berkman.harvard.edu` +
-            ` https://frankly.org https://fonts.gstatic.com https://www.gstatic.com`,
-        `img-src 'self' data: blob:` +
-            ` https://res.cloudinary.com https://*.googleusercontent.com` +
-            ` https://picsum.photos https://fastly.picsum.photos`,
-        `media-src 'self' blob: https://res.cloudinary.com https://*.mux.com`,
-        `frame-src 'self'` +
-            ` https://player.vimeo.com https://*.stripe.com https://*.firebaseapp.com` +
-            ` https://*.firebaseio.com https://upload-widget.cloudinary.com`,
-        `worker-src 'self' blob:`,
-        `object-src 'none'`,
-        `base-uri 'self'`,
-        `frame-ancestors 'self'`,
-    ]
-    return directives.join('; ')
-}
 
 const ServeIndex = regionalFunctions()
     .runWith({ minInstances: 1 })
@@ -92,7 +59,7 @@ const ServeIndex = regionalFunctions()
 
         const nonce = crypto.randomBytes(16).toString('base64')
         const html = stableTemplate.replace(/__SCRIPT_NONCE__/g, nonce)
-        const csp = buildCsp(nonce)
+        const csp = buildCsp(nonce, { cloudinary: CLOUDINARY_ENABLED })
 
         // no-store: the nonce is unique per response and must never be served from cache.
         res.set('Cache-Control', 'no-store')

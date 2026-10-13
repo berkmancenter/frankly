@@ -724,6 +724,7 @@
   "matchingQuestions": "配對問題",
   "maximum": "最大值",
   "meantToUseExistingAccount": "想使用現有帳戶嗎？",
+  "mediaUploadsDisabled": "本網站已關閉媒體上傳功能。",
   "meetingEndMessage": "會議已結束。您可以關閉此視窗。",
   "meetingEndWithFollowMessage": "會議已結束。您可以關閉此視窗或訪問{name}繼續對話。",
   "meetingGuideCard": "會議指南卡",

@@ -739,6 +739,7 @@
   "matchingQuestions": "Preguntas de emparejamiento",
   "maximum": "Máximo",
   "meantToUseExistingAccount": "¿Querías usar una cuenta existente en su lugar?",
+  "mediaUploadsDisabled": "La carga de archivos multimedia está desactivada en este sitio.",
   "meetingEndMessage": "Esta reunión ha terminado. Puede cerrar esta ventana.",
   "meetingEndWithFollowMessage": "Esta reunión ha terminado. Puede cerrar esta ventana o visitar {name} para continuar la conversación.",
   "meetingGuideCard": "tarjeta-guía-reunión",

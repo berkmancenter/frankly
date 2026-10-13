@@ -397,7 +397,7 @@ You can follow the official [documentation :octicons-link-external-24:](https://
 The Firebase Functions and/or Flutter client app connect to the following third party services, which must be set up and configured for local development.
 
 !!! warning "CSP Whitelist"
-When adding a new external service, you must also add its domains to the Content Security Policy in `firebase/functions/js/serve-index.js`. The CSP is only enforced in deployed environments (not locally), so missing entries will silently break features in staging/production. Be sure to include both `https://` and `wss://` schemes if the service uses WebSockets. Internal contributors can see the 'Managing External Connections' working note for the full maintenance guide and `Hosting > Content Security Policy` in `hosting.md` for the directive reference.
+When adding a new external service, you must also add its domains to the Content Security Policy in `firebase/functions/js/content-security-policy.js`. The CSP is only enforced in deployed environments (not locally), so missing entries will silently break features in staging/production. Be sure to include both `https://` and `wss://` schemes if the service uses WebSockets. Internal contributors can see the 'Managing External Connections' working note for the full maintenance guide and `Hosting > Content Security Policy` in `hosting.md` for the directive reference.
 
 ### Agora
 

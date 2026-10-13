@@ -145,22 +145,22 @@ The `/api/` prefix keeps these paths from colliding with client-side app routes.
 Because the calls are same-origin they are already covered by `connect-src
 'self'` in the CSP (below), so no CSP change is needed unless you move callables
 to a custom domain or a Cloud Run `*.run.app` host, in which case add that host
-to `connect-src` in `serve-index.js`.
+to `connect-src` in `content-security-policy.js`.
 
 ### Content Security Policy (CSP)
 
-The CSP is set as an HTTP response header by `ServeIndex` (in `firebase/functions/js/serve-index.js`). It uses `'strict-dynamic'` with a per-request nonce, which means:
+The CSP is set as an HTTP response header by `ServeIndex` (in `firebase/functions/js/serve-index.js`); the policy itself is built in `firebase/functions/js/content-security-policy.js`. It uses `'strict-dynamic'` with a per-request nonce, which means:
 
 - Every `<script>` tag in `index.html` must have `nonce="__SCRIPT_NONCE__"`. The function replaces this placeholder with a cryptographic random value on each request.
 - Scripts dynamically created by trusted (nonced) parent scripts are automatically trusted via `strict-dynamic` propagation. This covers Firebase SDK internals, Cloudinary widget internals, etc.
-- `connect-src` restricts which domains the app can make fetch/XHR/WebSocket calls to. If you add a new backend service integration, add its domain to the `connect-src` list in `serve-index.js`.
+- `connect-src` restricts which domains the app can make fetch/XHR/WebSocket calls to. If you add a new backend service integration, add its domain to the `connect-src` list in `content-security-policy.js`.
 - `frame-ancestors 'self'` prevents the app from being embedded in iframes on other sites (clickjacking protection). This directive only works as an HTTP header, not a meta tag.
 
 ### Adding a new third-party script
 
 1. Add the `<script>` tag to `client/web/index.html` with `nonce="__SCRIPT_NONCE__"`.
 2. Run `build-all.sh` or `run-dev.sh` (or let CI handle it) so `client/web/index.html` is copied to `firebase/functions/web/index.html` before building/deploying functions.
-3. If the script makes network requests to new domains, add those domains to `connect-src` in `serve-index.js`.
+3. If the script makes network requests to new domains, add those domains to `connect-src` in `content-security-policy.js`.
 4. If the script loads images or media from new domains, update `img-src` or `media-src` accordingly.
 5. If the script loads stylesheets or fonts from new domains, update `style-src` or `font-src` accordingly.
 
@@ -372,7 +372,7 @@ SHARE_LINK_URL=<value>         # URL prefix for share links, e.g. https://<app-u
 AGORA_APP_ID=<value>           # For client-side connections to Agora.
 AGORA_AREA=GLOBAL              # Optional. EU keeps media and signalling on Agora's European servers.
 
-**Cloudinary** (for media uploads):
+**Cloudinary** (for media uploads; optional). Leave `CLOUDINARY_CLOUD_NAME` unset to turn off all image and video uploads, including profile pictures. The upload controls are then hidden and the Cloudinary upload widget is never loaded, so no data is sent to Cloudinary from the browser:
 
 ```bash
 CLOUDINARY_IMAGE_PRESET=<value>
@@ -452,6 +452,17 @@ Also configure Mux webhooks in the Mux dashboard to POST to your deployed `MuxWe
 ### Cloudinary
 
 Cloudinary is used for media uploads. Configuration is done entirely via `client/.env` (see step 9). No source files need to be edited.
+
+The Cloudinary upload widget is loaded on first use, so visitors who never
+upload anything make no request to Cloudinary.
+
+To keep browsers away from Cloudinary entirely, also set
+`app.cloudinary_enabled="false"` in the Functions runtime config (default
+`"true"`). `ServeIndex` then drops every Cloudinary host from the
+Content-Security-Policy, so the browser refuses any request to Cloudinary.
+Images uploaded earlier keep their Cloudinary URLs and stop displaying. Point
+`LOGO_URL` and `app.banner_image_url` (used in emails) at images you host
+yourself, because their example values are served from Cloudinary.
 
 ### Stripe
 

@@ -1,3 +1,4 @@
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -152,25 +153,26 @@ class _ManipulateDiscussionThreadPageState
                   ],
                 ),
                 SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: AppClickableWidget(
-                    onTap: () => _presenter.pickImage(),
-                    isIcon: false,
-                    child: Row(
-                      children: [
-                        Icon(Icons.attach_file_rounded),
-                        SizedBox(width: 10),
-                        HeightConstrainedText(
-                          'Image',
-                          style: AppTextStyle.bodyMedium.copyWith(
-                            color: context.theme.colorScheme.primary,
+                if (Environment.mediaUploadsEnabled)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: AppClickableWidget(
+                      onTap: () => _presenter.pickImage(),
+                      isIcon: false,
+                      child: Row(
+                        children: [
+                          Icon(Icons.attach_file_rounded),
+                          SizedBox(width: 10),
+                          HeightConstrainedText(
+                            'Image',
+                            style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.primary,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
                 SizedBox(height: 10),
               ],
             ),
