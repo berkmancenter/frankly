@@ -16,6 +16,7 @@
     "legal_entity_name": "the <a href=https://asml.cyber.harvard.edu>Applied Social Media Lab</a> at the <a href=https://cyber.harvard.edu>Berkman Klein Center for Internet & Society<a>",
     "banner_image_url": "https://res.cloudinary.com/dh0vegjku/image/upload/v1725488218/frankly_assets/Frankly-Open-Graph_l1b9ui.png",
     "cloudinary_enabled": "true",
+    "media_upload_provider": "cloudinary",
     "privacy_policy_url": "https://frankly.org/privacy",
     "mailing_address": "1557 Massachusetts Ave, Cambridge, MA 02138",
     "alt_email_domain": "cyber.harvard.edu",

@@ -96,6 +96,7 @@ jobs:
           envkey_ENABLE_TRACE_LOG: true
           envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
           envkey_AGORA_AREA: ${{ secrets.AGORA_AREA || 'GLOBAL' }}
+          envkey_MEDIA_UPLOAD_PROVIDER: ${{ secrets.MEDIA_UPLOAD_PROVIDER || 'cloudinary' }}
           envkey_APP_NAME: Frankly
           envkey_APP_URL: https://app.frankly.org
           envkey_TERMS_URL: https://frankly.org/terms

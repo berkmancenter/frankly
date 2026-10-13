@@ -5,11 +5,18 @@
 // Cloudinary hosts are allowed unless the deployment sets
 // `app.cloudinary_enabled` to "false". Deployments that must keep media and
 // visitor traffic away from Cloudinary (for example EU-only deployments) turn
-// it off here and leave CLOUDINARY_CLOUD_NAME unset in the client build.
+// it off here, and use MEDIA_UPLOAD_PROVIDER=firebase (or leave
+// CLOUDINARY_CLOUD_NAME unset) in the client build.
 
 const cloudinaryHosts = ' https://res.cloudinary.com https://api.cloudinary.com'
 const cloudinaryMediaHost = ' https://res.cloudinary.com'
 const cloudinaryWidgetHost = ' https://upload-widget.cloudinary.com'
+
+// Download URLs for media uploaded with MEDIA_UPLOAD_PROVIDER=firebase.
+// Uploads themselves are covered by https://*.googleapis.com in connect-src.
+// Only allowed when app.media_upload_provider is "firebase", so the default
+// policy stays as it was.
+const firebaseStorageHost = ' https://firebasestorage.googleapis.com'
 
 function cloudinaryEnabled(appConfig = {}) {
     const value = appConfig.cloudinary_enabled
@@ -18,7 +25,13 @@ function cloudinaryEnabled(appConfig = {}) {
     return value.trim().toLowerCase() !== 'false'
 }
 
-function buildCsp(nonce, { cloudinary = true } = {}) {
+function firebaseStorageMediaEnabled(appConfig = {}) {
+    const value = appConfig.media_upload_provider
+    return typeof value === 'string' && value.trim().toLowerCase() === 'firebase'
+}
+
+function buildCsp(nonce, { cloudinary = true, firebaseStorage = false } = {}) {
+    const storageHost = firebaseStorage ? firebaseStorageHost : ''
     const directives = [
         `default-src 'self'`,
         `script-src 'strict-dynamic' 'nonce-${nonce}' 'wasm-unsafe-eval'`,
@@ -41,9 +54,11 @@ function buildCsp(nonce, { cloudinary = true } = {}) {
         `img-src 'self' data: blob:` +
             (cloudinary ? cloudinaryMediaHost : '') +
             ` https://*.googleusercontent.com` +
+            storageHost +
             ` https://picsum.photos https://fastly.picsum.photos`,
         `media-src 'self' blob:` +
             (cloudinary ? cloudinaryMediaHost : '') +
+            storageHost +
             ` https://*.mux.com`,
         `frame-src 'self'` +
             ` https://player.vimeo.com https://*.stripe.com https://*.firebaseapp.com` +
@@ -57,4 +72,4 @@ function buildCsp(nonce, { cloudinary = true } = {}) {
     return directives.join('; ')
 }
 
-module.exports = { buildCsp, cloudinaryEnabled }
+module.exports = { buildCsp, cloudinaryEnabled, firebaseStorageMediaEnabled }

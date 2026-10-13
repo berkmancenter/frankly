@@ -92,9 +92,20 @@ class Environment {
   static const cloudinaryCloudName =
       String.fromEnvironment('CLOUDINARY_CLOUD_NAME');
 
-  /// Media uploads go through Cloudinary. Leaving CLOUDINARY_CLOUD_NAME unset
+  /// Where image and video uploads go: `cloudinary` (default) or `firebase`.
+  /// With `firebase`, uploads are stored in FIREBASE_STORAGE_BUCKET and the
+  /// Cloudinary upload widget is never loaded.
+  static const mediaUploadProvider = String.fromEnvironment(
+    'MEDIA_UPLOAD_PROVIDER',
+    defaultValue: 'cloudinary',
+  );
+  static const useFirebaseStorageUploads = mediaUploadProvider == 'firebase';
+
+  /// Uploads are off when neither Firebase Storage nor Cloudinary is
+  /// configured. Leaving CLOUDINARY_CLOUD_NAME unset with the default provider
   /// turns them off and the Cloudinary upload widget is never loaded.
-  static const mediaUploadsEnabled = cloudinaryCloudName != '';
+  static const mediaUploadsEnabled =
+      useFirebaseStorageUploads || cloudinaryCloudName != '';
   static const linkPreviewApiKey =
       String.fromEnvironment('LINK_PREVIEW_API_KEY');
 

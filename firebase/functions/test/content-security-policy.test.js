@@ -4,10 +4,11 @@ const { test } = require('node:test')
 const {
     buildCsp,
     cloudinaryEnabled,
+    firebaseStorageMediaEnabled,
 } = require('../js/content-security-policy')
 
-// The policy ServeIndex sent before the Cloudinary switch existed. With
-// Cloudinary enabled (the default) the header must not change.
+// The policy ServeIndex sent before the Cloudinary and Firebase Storage
+// switches existed. With the defaults the header must not change.
 const previousDefaultPolicy = [
     `default-src 'self'`,
     `script-src 'strict-dynamic' 'nonce-abc' 'wasm-unsafe-eval'`,
@@ -38,9 +39,12 @@ const previousDefaultPolicy = [
     `frame-ancestors 'self'`,
 ].join('; ')
 
-test('keeps the previous policy when Cloudinary is enabled', () => {
+test('keeps the previous policy by default', () => {
     assert.equal(buildCsp('abc'), previousDefaultPolicy)
-    assert.equal(buildCsp('abc', { cloudinary: true }), previousDefaultPolicy)
+    assert.equal(
+        buildCsp('abc', { cloudinary: true, firebaseStorage: false }),
+        previousDefaultPolicy,
+    )
 })
 
 test('omits every Cloudinary host when disabled', () => {
@@ -50,10 +54,26 @@ test('omits every Cloudinary host when disabled', () => {
     assert.match(csp, /'nonce-abc'/)
 })
 
+test('allows Firebase Storage media only when it is the upload provider', () => {
+    assert.doesNotMatch(buildCsp('abc'), /firebasestorage/)
+    for (const cloudinary of [true, false]) {
+        const csp = buildCsp('abc', { cloudinary, firebaseStorage: true })
+        assert.match(csp, /img-src[^;]*https:\/\/firebasestorage\.googleapis\.com/)
+        assert.match(csp, /media-src[^;]*https:\/\/firebasestorage\.googleapis\.com/)
+    }
+})
+
 test('reads app.cloudinary_enabled from runtime config', () => {
     assert.equal(cloudinaryEnabled(), true)
     assert.equal(cloudinaryEnabled({}), true)
     assert.equal(cloudinaryEnabled({ cloudinary_enabled: 'true' }), true)
     assert.equal(cloudinaryEnabled({ cloudinary_enabled: ' FALSE ' }), false)
     assert.equal(cloudinaryEnabled({ cloudinary_enabled: false }), false)
+})
+
+test('reads app.media_upload_provider from runtime config', () => {
+    assert.equal(firebaseStorageMediaEnabled(), false)
+    assert.equal(firebaseStorageMediaEnabled({}), false)
+    assert.equal(firebaseStorageMediaEnabled({ media_upload_provider: 'cloudinary' }), false)
+    assert.equal(firebaseStorageMediaEnabled({ media_upload_provider: ' Firebase ' }), true)
 })

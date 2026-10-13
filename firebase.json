@@ -209,6 +209,9 @@
     "rules": "firebase/firestore/firestore.rules",
     "indexes": "firebase/firestore/firestore.indexes.json"
   },
+  "storage": {
+    "rules": "firebase/storage/storage.rules"
+  },
   "ignore": [
     "**/test/**",
     "**/node_modules/**",
@@ -231,6 +234,10 @@
     },
     "database": {
       "port": 9000,
+      "host": "0.0.0.0"
+    },
+    "storage": {
+      "port": 9199,
       "host": "0.0.0.0"
     },
     "hosting": {

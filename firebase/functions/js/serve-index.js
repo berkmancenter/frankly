@@ -17,7 +17,11 @@ const fs = require('fs')
 const path = require('path')
 const functions = require('firebase-functions')
 const { regionalFunctions } = require('./function-region')
-const { buildCsp, cloudinaryEnabled } = require('./content-security-policy')
+const {
+    buildCsp,
+    cloudinaryEnabled,
+    firebaseStorageMediaEnabled,
+} = require('./content-security-policy')
 
 // Read the template once at module load. If the file is missing the function
 // will fail to start, which surfaces the error at deploy time rather than
@@ -44,6 +48,7 @@ const appConfig = functions.config().app || {}
 const GOOGLE_ID = appConfig.google_id || ''
 const VERSION = appConfig.version || 'dev'
 const CLOUDINARY_ENABLED = cloudinaryEnabled(appConfig)
+const FIREBASE_STORAGE_MEDIA = firebaseStorageMediaEnabled(appConfig)
 
 const stableTemplate = rawTemplate
     .replace(/__GOOGLE_ID__/g, GOOGLE_ID)
@@ -59,7 +64,10 @@ const ServeIndex = regionalFunctions()
 
         const nonce = crypto.randomBytes(16).toString('base64')
         const html = stableTemplate.replace(/__SCRIPT_NONCE__/g, nonce)
-        const csp = buildCsp(nonce, { cloudinary: CLOUDINARY_ENABLED })
+        const csp = buildCsp(nonce, {
+            cloudinary: CLOUDINARY_ENABLED,
+            firebaseStorage: FIREBASE_STORAGE_MEDIA,
+        })
 
         // no-store: the nonce is unique per response and must never be served from cache.
         res.set('Cache-Control', 'no-store')

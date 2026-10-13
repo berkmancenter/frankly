@@ -31,7 +31,7 @@ class MediaItemSection extends StatelessWidget {
 
     if (mediaUrl != null) {
       final isVideo = MediaHelperService.allowedVideoFormats
-          .any((ext) => mediaUrl.endsWith(ext));
+          .any((ext) => MediaHelperService.urlHasExtension(mediaUrl, ext));
       final mediaItem = MediaItem(
         url: mediaUrl,
         type: isVideo ? MediaType.video : MediaType.image,

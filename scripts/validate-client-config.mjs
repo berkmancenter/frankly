@@ -10,7 +10,8 @@ import { pathToFileURL } from 'node:url';
 
 const defaultFunctionsRegion = 'us-central1';
 const agoraAreas = new Set(['GLOBAL', 'EU', 'NA', 'AS', 'JP', 'IN', 'CN']);
-const regionPattern =/^[a-z]+-[a-z]+[0-9]+$/;
+const mediaUploadProviders = new Set(['cloudinary', 'firebase']);
+const regionPattern = /^[a-z]+-[a-z]+[0-9]+$/;
 const cloudFunctionsHostPattern = /^([a-z]+-[a-z]+[0-9]+)-(.+)\.cloudfunctions\.net$/;
 
 export function parseDartDefines(source, fileName = '.env') {
@@ -63,6 +64,19 @@ export function validateClientConfig(config) {
     errors.push(
       `AGORA_AREA must be one of ${[...agoraAreas].join(', ')} (got "${config.AGORA_AREA}").`,
     );
+  }
+
+  // The client only recognises the exact value "firebase"; anything else
+  // silently means Cloudinary.
+  const provider = config.MEDIA_UPLOAD_PROVIDER ?? '';
+  if (provider && !mediaUploadProviders.has(provider)) {
+    errors.push(
+      `MEDIA_UPLOAD_PROVIDER must be one of ${[...mediaUploadProviders].join(', ')} (got "${provider}").`,
+    );
+  }
+  const bucket = (config.FIREBASE_STORAGE_BUCKET ?? '').trim();
+  if (provider === 'firebase' && (!bucket || bucket === 'any')) {
+    errors.push('MEDIA_UPLOAD_PROVIDER=firebase needs FIREBASE_STORAGE_BUCKET to be set.');
   }
 
   const region = (config.FUNCTIONS_REGION ?? '').trim() || defaultFunctionsRegion;

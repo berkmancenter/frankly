@@ -221,6 +221,20 @@
       }
     }
   },
+  "@mediaUploadImageTooLarge": {
+    "placeholders": {
+      "maxMegabytes": {
+        "type": "int"
+      }
+    }
+  },
+  "@mediaUploadVideoTooLarge": {
+    "placeholders": {
+      "maxMegabytes": {
+        "type": "int"
+      }
+    }
+  },
   "@meetingEndWithFollowMessage": {
     "placeholders": {
       "name": {
@@ -724,7 +738,13 @@
   "matchingQuestions": "配對問題",
   "maximum": "最大值",
   "meantToUseExistingAccount": "想使用現有帳戶嗎？",
+  "mediaUploadFileUnreadable": "無法讀取所選檔案。",
+  "mediaUploadImageTooLarge": "圖片大小不得超過 {maxMegabytes} MB。",
+  "mediaUploadQuickTimeNotSupported": "無法上傳 MOV 影片。請將影片轉換為 MP4 或 WebM 格式後再試一次。",
   "mediaUploadsDisabled": "本網站已關閉媒體上傳功能。",
+  "mediaUploadSignInRequired": "請登入後再上傳圖片和影片。",
+  "mediaUploadUnsupportedType": "不支援此檔案類型。圖片可以是 JPEG、PNG、GIF 或 WebP 格式，影片可以是 MP4 或 WebM 格式。",
+  "mediaUploadVideoTooLarge": "影片大小不得超過 {maxMegabytes} MB。",
   "meetingEndMessage": "會議已結束。您可以關閉此視窗。",
   "meetingEndWithFollowMessage": "會議已結束。您可以關閉此視窗或訪問{name}繼續對話。",
   "meetingGuideCard": "會議指南卡",

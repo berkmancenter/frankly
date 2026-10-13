@@ -73,7 +73,10 @@ class AgendaItemVideoPresenter {
   }
 
   bool isValidVideo() {
-    return _model.agendaItemVideoData.url.endsWith('mp4');
+    return MediaHelperService.urlHasExtension(
+      _model.agendaItemVideoData.url,
+      'mp4',
+    );
   }
 
   String? getYoutubeVideoId(String url) {

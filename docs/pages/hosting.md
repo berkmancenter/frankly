@@ -372,6 +372,8 @@ SHARE_LINK_URL=<value>         # URL prefix for share links, e.g. https://<app-u
 AGORA_APP_ID=<value>           # For client-side connections to Agora.
 AGORA_AREA=GLOBAL              # Optional. EU keeps media and signalling on Agora's European servers.
 
+**Media uploads** go to Cloudinary by default. Set `MEDIA_UPLOAD_PROVIDER=firebase` to use Firebase Storage instead (see [Media uploads in Firebase Storage](#media-uploads-in-firebase-storage-instead-of-cloudinary)).
+
 **Cloudinary** (for media uploads; optional). Leave `CLOUDINARY_CLOUD_NAME` unset to turn off all image and video uploads, including profile pictures. The upload controls are then hidden and the Cloudinary upload widget is never loaded, so no data is sent to Cloudinary from the browser:
 
 ```bash
@@ -463,6 +465,42 @@ Content-Security-Policy, so the browser refuses any request to Cloudinary.
 Images uploaded earlier keep their Cloudinary URLs and stop displaying. Point
 `LOGO_URL` and `app.banner_image_url` (used in emails) at images you host
 yourself, because their example values are served from Cloudinary.
+
+### Media uploads in Firebase Storage (instead of Cloudinary)
+
+Set `MEDIA_UPLOAD_PROVIDER=firebase` in `client/.env` to store image and video
+uploads in the bucket named by `FIREBASE_STORAGE_BUCKET`, in the same Google
+Cloud project as the rest of the app. The Cloudinary upload widget is then never
+loaded, and the `CLOUDINARY_*` values can stay empty.
+
+1. In the Firebase console, open **Storage**. The default bucket's location is
+   set when it is created and can't be changed, so for an EU deployment create
+   it in an EU location (for example `europe-west1`), or add a second bucket
+   there and use its name as `FIREBASE_STORAGE_BUCKET`.
+2. Deploy the rules in `firebase/storage/storage.rules` with
+   `firebase deploy --only storage`. If you use a bucket that isn't the default
+   one, paste the same rules into that bucket's **Rules** tab instead. The rules
+   deny everything outside `media/`; server-side access (Admin SDK, signed URLs,
+   the HMAC keys Agora uses for recordings) isn't affected by them.
+3. Set `MEDIA_UPLOAD_PROVIDER=firebase` and make sure `FIREBASE_STORAGE_BUCKET`
+   names that bucket. `scripts/validate-client-config.mjs` fails the build if the
+   bucket is missing.
+4. Set `app.media_upload_provider="firebase"` in the Functions runtime config
+   (default `"cloudinary"`) and redeploy `ServeIndex`. This adds
+   `https://firebasestorage.googleapis.com` to `img-src` and `media-src` in the
+   Content-Security-Policy; without it, uploaded images and videos are blocked
+   by the browser.
+
+Signed-in (non-anonymous) users can upload to `media/{uid}/`: images (JPEG,
+PNG, GIF, WebP, up to 10 MB) and videos (MP4 and WebM, up to 500 MB). Files are
+shared through their download URLs. The client reads each file's type from its
+content, not its name, and the rules only accept those types with a matching
+extension, so nothing can be stored as HTML or SVG.
+
+Unlike Cloudinary there is no in-browser cropping and no video transcoding.
+QuickTime (`.mov`) videos are therefore rejected with a message asking the user
+to convert them to MP4 or WebM: storing them as MP4 would mislabel the file,
+and many of them (HEVC from recent phones) don't play in Chrome or Firefox.
 
 ### Stripe
 

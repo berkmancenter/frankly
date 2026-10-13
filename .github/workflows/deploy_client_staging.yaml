@@ -80,6 +80,7 @@ jobs:
           envkey_ENABLE_TRACE_LOG: true
           envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
           envkey_AGORA_AREA: ${{ secrets.AGORA_AREA || 'GLOBAL' }}
+          envkey_MEDIA_UPLOAD_PROVIDER: ${{ secrets.MEDIA_UPLOAD_PROVIDER || 'cloudinary' }}
           envkey_SENTRY_RELEASE: ${{ env.CURRENT_RELEASE }}
           envkey_SENTRY_ENVIRONMENT: staging
           envkey_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}

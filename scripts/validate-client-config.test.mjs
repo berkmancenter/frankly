@@ -94,6 +94,30 @@ test('accepts known Agora areas and rejects unknown ones', () => {
   assert.match(errors[0], /AGORA_AREA/);
 });
 
+test('checks the media upload provider and its bucket', () => {
+  assert.deepEqual(validateClientConfig({ AGORA_APP_ID: appId }), []);
+  assert.deepEqual(
+    validateClientConfig({ AGORA_APP_ID: appId, MEDIA_UPLOAD_PROVIDER: 'cloudinary' }),
+    [],
+  );
+  assert.deepEqual(
+    validateClientConfig({
+      AGORA_APP_ID: appId,
+      MEDIA_UPLOAD_PROVIDER: 'firebase',
+      FIREBASE_STORAGE_BUCKET: 'my-eu-bucket',
+    }),
+    [],
+  );
+  assert.match(
+    validateClientConfig({ AGORA_APP_ID: appId, MEDIA_UPLOAD_PROVIDER: 'Firebase' })[0],
+    /MEDIA_UPLOAD_PROVIDER/,
+  );
+  assert.match(
+    validateClientConfig({ AGORA_APP_ID: appId, MEDIA_UPLOAD_PROVIDER: 'firebase' })[0],
+    /FIREBASE_STORAGE_BUCKET/,
+  );
+});
+
 test('the CLI exits non-zero on an invalid file and zero on a valid one', () => {
   const directory = mkdtempSync(join(tmpdir(), 'frankly-validate-config-'));
   try {
