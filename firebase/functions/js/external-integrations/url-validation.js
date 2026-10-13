@@ -143,7 +143,9 @@ function isAllowedByDomainList(hostname, allowedDomains) {
  * Returns `{ ok: true, url }` with the normalized URL string, or
  * `{ ok: false, reason }`.
  */
-function validateWebhookUrl(rawUrl, { allowedDomains = [] } = {}) {
+const LOCAL_TARGET_HOSTS = new Set(['localhost', '127.0.0.1', '::1'])
+
+function validateWebhookUrl(rawUrl, { allowedDomains = [], allowLocalTargets = false } = {}) {
     if (typeof rawUrl !== 'string' || rawUrl.trim() === '') {
         return { ok: false, reason: 'Webhook URL is required' }
     }
@@ -159,15 +161,26 @@ function validateWebhookUrl(rawUrl, { allowedDomains = [] } = {}) {
         return { ok: false, reason: 'Webhook URL is not a valid URL' }
     }
 
-    if (url.protocol !== 'https:') {
-        return { ok: false, reason: 'Webhook URL must use https' }
-    }
     if (url.username || url.password) {
         return { ok: false, reason: 'Webhook URL must not contain credentials' }
     }
 
     // URL keeps IPv6 hosts in brackets.
     const hostname = url.hostname.replace(/^\[(.*)\]$/, '$1')
+
+    // Local receivers, http included, are only allowed in the Functions
+    // emulator when explicitly enabled (see config.js).
+    if (
+        allowLocalTargets &&
+        LOCAL_TARGET_HOSTS.has(hostname) &&
+        (url.protocol === 'http:' || url.protocol === 'https:')
+    ) {
+        return { ok: true, url: url.toString(), hostname, local: true }
+    }
+
+    if (url.protocol !== 'https:') {
+        return { ok: false, reason: 'Webhook URL must use https' }
+    }
     if (!hostname) {
         return { ok: false, reason: 'Webhook URL must have a host' }
     }
@@ -232,9 +245,13 @@ async function assertResolvesToPublicAddress(hostname, { lookup = defaultLookup 
 }
 
 /** Full check used before every request: static rules plus DNS. */
-async function validateWebhookUrlForSend(rawUrl, { allowedDomains = [], lookup } = {}) {
-    const result = validateWebhookUrl(rawUrl, { allowedDomains })
+async function validateWebhookUrlForSend(
+    rawUrl,
+    { allowedDomains = [], allowLocalTargets = false, lookup } = {}
+) {
+    const result = validateWebhookUrl(rawUrl, { allowedDomains, allowLocalTargets })
     if (!result.ok) throw urlError(result.reason, false)
+    if (result.local) return result.url
     await assertResolvesToPublicAddress(result.hostname, { lookup })
     return result.url
 }

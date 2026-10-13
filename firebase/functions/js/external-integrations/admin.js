@@ -36,7 +36,7 @@ function optionalText(value, field, max, fail) {
  * Validates and normalizes an upsert request. Throws via `fail(message)`.
  * Network checks (DNS) are done separately.
  */
-function parseUpsertRequest(data, { allowedDomains, fail }) {
+function parseUpsertRequest(data, { allowedDomains, allowLocalTargets = false, fail }) {
     if (!data || typeof data !== 'object') fail('Invalid request')
     const communityId = typeof data.communityId === 'string' ? data.communityId.trim() : ''
     if (!communityId) fail('communityId is required')
@@ -53,7 +53,7 @@ function parseUpsertRequest(data, { allowedDomains, fail }) {
     const logo = validateLogoUrl(data.logoUrl == null ? null : String(data.logoUrl))
     if (!logo.ok) fail(logo.reason)
 
-    const webhook = validateWebhookUrl(data.webhookUrl, { allowedDomains })
+    const webhook = validateWebhookUrl(data.webhookUrl, { allowedDomains, allowLocalTargets })
     if (!webhook.ok) fail(webhook.reason)
 
     const events = Array.isArray(data.events) ? [...new Set(data.events.map(String))] : []
@@ -75,6 +75,7 @@ function parseUpsertRequest(data, { allowedDomains, fail }) {
         ),
         webhookUrl: webhook.url,
         webhookHostname: webhook.hostname,
+        webhookIsLocal: webhook.local === true,
         events,
         enabledForNewEvents: data.enabledForNewEvents === true,
         isActive: data.isActive !== false,
@@ -104,13 +105,19 @@ function createAdminHandlers({ firestore, config, httpsError, lookup, now = () =
     }
 
     async function upsertIntegration(data, uid) {
-        const request = parseUpsertRequest(data, { allowedDomains: config.allowedDomains, fail })
+        const request = parseUpsertRequest(data, {
+            allowedDomains: config.allowedDomains,
+            allowLocalTargets: config.allowLocalTargets === true,
+            fail,
+        })
         await assertCommunityAdmin(uid, request.communityId)
 
-        try {
-            await assertResolvesToPublicAddress(request.webhookHostname, { lookup })
-        } catch (err) {
-            fail(err.message)
+        if (!request.webhookIsLocal) {
+            try {
+                await assertResolvesToPublicAddress(request.webhookHostname, { lookup })
+            } catch (err) {
+                fail(err.message)
+            }
         }
 
         const integrations = firestore.collection(

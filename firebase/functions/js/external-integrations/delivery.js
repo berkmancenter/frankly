@@ -260,6 +260,7 @@ function createDeliveryService({
 
         const url = await validateWebhookUrlForSend(endpointDoc.data().webhookUrl, {
             allowedDomains: config.allowedDomains,
+            allowLocalTargets: config.allowLocalTargets === true,
             lookup,
         })
 

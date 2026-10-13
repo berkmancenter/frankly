@@ -7,6 +7,10 @@
 //   signed_url_ttl_minutes Lifetime of artifact download URLs in payloads.
 //                          Default 60, min 5, max 10080 (7 days).
 //   request_timeout_ms     Timeout for one webhook request. Default 10000.
+//   allow_local_targets_in_emulator
+//                          "true" lets webhook URLs point at localhost (http
+//                          or https) for local testing. Ignored unless running
+//                          in the Functions emulator.
 
 const { parseAllowedDomains } = require('./url-validation')
 
@@ -19,12 +23,14 @@ function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value))
 }
 
-function parseExternalIntegrationsConfig(raw) {
+function parseExternalIntegrationsConfig(raw, env = process.env) {
     const cfg = raw || {}
+    const inEmulator = env.FUNCTIONS_EMULATOR === 'true'
     const ttl = Number(cfg.signed_url_ttl_minutes)
     const timeout = Number(cfg.request_timeout_ms)
     return {
         allowedDomains: parseAllowedDomains(cfg.allowed_domains),
+        allowLocalTargets: inEmulator && String(cfg.allow_local_targets_in_emulator) === 'true',
         signedUrlTtlSeconds:
             clamp(
                 Number.isFinite(ttl) && ttl > 0 ? ttl : DEFAULT_SIGNED_URL_TTL_MINUTES,
