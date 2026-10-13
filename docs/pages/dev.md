@@ -171,7 +171,7 @@ The first step in running the app is to build the data_models package. Some code
 flutter pub get
 ```
 
-1. Run:
+2. Run:
 
 ```
 dart run build_runner build --delete-conflicting-outputs
