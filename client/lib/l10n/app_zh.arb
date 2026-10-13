@@ -402,6 +402,7 @@
   "addCategory": "添加类别",
   "addComment": "添加评论",
   "addCommunityImages": "添加社区图片",
+  "addIntegration": "添加集成",
   "addNew": "+ 添加新的",
   "addOption": "添加选项",
   "addPrerequisiteTemplate": "添加先决条件模板",
@@ -559,6 +560,21 @@
   "deletePost": "删除帖子",
   "deletePrerequisiteTemplate": "删除先决条件模板",
   "deleteTitleAgendaItem": "删除 $title 议程项",
+  "deliveryAttempts": "{count} 次尝试",
+  "@deliveryAttempts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deliveryKindRecording": "录音",
+  "deliveryKindTranscript": "文字记录",
+  "deliveryResend": "重新发送",
+  "deliveryResent": "已重新发送",
+  "deliveryStatusDelivered": "已送达",
+  "deliveryStatusFailed": "失败",
+  "deliveryStatusPending": "待发送",
   "description": "描述",
   "devSettings": "开发者设置",
   "discard": "放弃",
@@ -574,6 +590,7 @@
   "duplicateTemplate": "复制模板",
   "edit": "编辑",
   "editImage": "编辑图片",
+  "editIntegration": "编辑集成",
   "editItem": "编辑项目",
   "email": "电子邮箱",
   "emailAddressAlreadyInUse": "您已经创建了一个与此电子邮件地址关联的帐户。请使用电子邮件登录，如果不知道密码请点击忘记密码。或者，使用其他电子邮件重新注册。",
@@ -619,6 +636,9 @@
   "eventData": "活动数据",
   "eventDescription": "活动描述",
   "eventDetails": "活动详情",
+  "eventIntegrationNeedsRecording": "只有录制的活动才会发送内容。",
+  "eventIntegrationReferenceHint": "参考值（可选）",
+  "eventIntegrationsTitle": "将录音发送到",
   "eventIsLocked": "此活动已锁定",
   "eventLocked": "此活动已锁定",
   "events": "活动",
@@ -629,6 +649,8 @@
   "eventWasNotEntered": "未进入活动。",
   "events": "活动",
   "ex2": "例如：2",
+  "externalIntegrations": "集成",
+  "externalIntegrationsDescription": "通过签名的 Webhook 将本社区的录音和文字记录发送到其他工具。",
   "exTwo": "例：2",
   "exceedsTwentyCharacterLimit": "超过20个字符限制",
   "explorePlans": "浏览方案",
@@ -682,6 +704,36 @@
   "instantMeeting": "即时会议",
   "instead": "反而",
   "insteadSuffix": "替代",
+  "integrationActive": "已启用",
+  "integrationCopySecret": "复制密钥",
+  "integrationDelete": "删除集成",
+  "integrationDeleteConfirm": "删除 {name}？录音将不再发送给它。",
+  "@integrationDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "integrationDeliveries": "已发送到集成",
+  "integrationDescription": "简短描述",
+  "integrationDisplayName": "名称",
+  "integrationDone": "完成",
+  "integrationEnabledForNewEvents": "默认对新活动开启",
+  "integrationEventRecordingReady": "录音已就绪",
+  "integrationEventsToSend": "发送时机",
+  "integrationEventTranscriptReady": "文字记录已就绪",
+  "integrationInactive": "已停用",
+  "integrationLogoUrl": "徽标网址 (https)",
+  "integrationNameRequired": "名称和 Webhook 网址为必填项，并且至少需要选择一个事件。",
+  "integrationReferenceLabel": "每个活动的参考值标签（可选）",
+  "integrationRemoved": "已删除的集成",
+  "integrationRotateSecret": "轮换密钥",
+  "integrationRotateSecretConfirm": "当前密钥将立即失效。请用新密钥更新你的接收端。是否继续？",
+  "integrationSaved": "集成已保存",
+  "integrationSecretShownOnce": "请立即复制此密钥并保存到你的接收端。它不会再次显示。",
+  "integrationSigningSecret": "签名密钥",
+  "integrationWebhookUrl": "Webhook 网址 (https)",
   "introBeforeBreakouts": "分组讨论前约{duration}的介绍时间",
   "introductionContent": "_介绍一下自己！每个人花一分钟回答下列问题之一。_\n\n* 最近做了什么有趣的事情？\n* 你最喜欢的动画角色是谁，为什么？\n* 在你离开这个世界之前，有什么事情想要完成？\n* 你不喜欢哪部电影？\n",
   "introductions": "介绍",
@@ -778,6 +830,7 @@
   "noChatDataForEvent": "此活动没有聊天数据。",
   "noDevicesFound": "未找到设备",
   "noEventsFound": "未找到活动。",
+  "noExternalIntegrations": "还没有集成。",
   "noFollowRequestsCurrently": "目前没有追踪请求",
   "noItems": "没有{name}",
   "noLetThemStay": "不，让他们留下",
@@ -820,6 +873,7 @@
   "participantActions": "参与者操作",
   "participantActionsForUserWithId": "ID为{userId}的用户的参与者操作",
   "participantCount": "{count}位参与者",
+  "recordingsAreSentTo": "本活动的录音将发送到",
   "registrationCountLabel": "{count}个注册",
   "@registrationCountLabel": {
     "placeholders": {

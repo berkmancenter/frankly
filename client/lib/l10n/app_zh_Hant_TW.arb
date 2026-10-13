@@ -398,6 +398,7 @@
   "addCategory": "新增類別",
   "addComment": "新增評論",
   "addCommunityImages": "新增社區圖片",
+  "addIntegration": "新增整合",
   "addNew": "+ 新增",
   "addOption": "新增選項",
   "addPrerequisiteTemplate": "新增先決條件模板",
@@ -554,6 +555,21 @@
   "deletePost": "刪除貼文",
   "deletePrerequisiteTemplate": "刪除先決條件模板",
   "deleteTitleAgendaItem": "刪除 $title 議程項目",
+  "deliveryAttempts": "{count} 次嘗試",
+  "@deliveryAttempts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deliveryKindRecording": "錄影",
+  "deliveryKindTranscript": "逐字稿",
+  "deliveryResend": "重新傳送",
+  "deliveryResent": "已重新傳送",
+  "deliveryStatusDelivered": "已送達",
+  "deliveryStatusFailed": "失敗",
+  "deliveryStatusPending": "待傳送",
   "description": "描述",
   "devSettings": "開發者設定",
   "discard": "放棄",
@@ -569,6 +585,7 @@
   "duplicateTemplate": "複製範本",
   "edit": "編輯",
   "editImage": "編輯圖片",
+  "editIntegration": "編輯整合",
   "editItem": "編輯項目",
   "email": "電子郵件",
   "emailAddressAlreadyInUse": "您已經創建了一個與此電子郵件地址關聯的帳戶。請使用電子郵件登入，如果不知道密碼請點擊忘記密碼。或者，使用其他電子郵件重新註冊。",
@@ -614,6 +631,9 @@
   "eventData": "活動資料",
   "eventDescription": "活動描述",
   "eventDetails": "活動詳情",
+  "eventIntegrationNeedsRecording": "只有錄影的活動才會傳送內容。",
+  "eventIntegrationReferenceHint": "參考值（選填）",
+  "eventIntegrationsTitle": "將錄影傳送到",
   "eventIsLocked": "此活動已鎖定",
   "eventLocked": "此活動已鎖定",
   "events": "活動",
@@ -624,6 +644,8 @@
   "eventWasNotEntered": "未進入活動。",
   "events": "活動",
   "ex2": "例如：2",
+  "externalIntegrations": "整合",
+  "externalIntegrationsDescription": "透過簽署的 Webhook 將本社群的錄影和逐字稿傳送到其他工具。",
   "exTwo": "例：2",
   "exceedsTwentyCharacterLimit": "超過 20 個字元限制",
   "explorePlans": "瀏覽方案",
@@ -677,6 +699,36 @@
   "instantMeeting": "即時會議",
   "instead": "反而",
   "insteadSuffix": "替代",
+  "integrationActive": "已啟用",
+  "integrationCopySecret": "複製密鑰",
+  "integrationDelete": "刪除整合",
+  "integrationDeleteConfirm": "要刪除 {name} 嗎？錄影將不再傳送給它。",
+  "@integrationDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "integrationDeliveries": "已傳送到整合",
+  "integrationDescription": "簡短說明",
+  "integrationDisplayName": "名稱",
+  "integrationDone": "完成",
+  "integrationEnabledForNewEvents": "新活動預設開啟",
+  "integrationEventRecordingReady": "錄影已完成",
+  "integrationEventsToSend": "傳送時機",
+  "integrationEventTranscriptReady": "逐字稿已完成",
+  "integrationInactive": "已停用",
+  "integrationLogoUrl": "標誌網址 (https)",
+  "integrationNameRequired": "名稱和 Webhook 網址為必填，且至少要選擇一個事件。",
+  "integrationReferenceLabel": "每個活動參考值的標籤（選填）",
+  "integrationRemoved": "已刪除的整合",
+  "integrationRotateSecret": "更換密鑰",
+  "integrationRotateSecretConfirm": "目前的密鑰會立即失效。請以新密鑰更新你的接收端。要繼續嗎？",
+  "integrationSaved": "整合已儲存",
+  "integrationSecretShownOnce": "請立即複製此密鑰並存放在你的接收端。之後不會再顯示。",
+  "integrationSigningSecret": "簽署密鑰",
+  "integrationWebhookUrl": "Webhook 網址 (https)",
   "introBeforeBreakouts": "分組討論前約{duration}的介紹時間",
   "introductionContent": "_介紹一下自己！每位花一分鐘回答下列問題之一。_\n\n* 最近做了什麼有趣的事情？\n* 你最喜歡的動畫角色是誰，為什麼？\n* 在你離開這個世界之前，有什麼事情想要完成？\n* 你不喜歡哪部電影？\n",
   "introductions": "介紹",
@@ -773,6 +825,7 @@
   "noChatDataForEvent": "此活動沒有聊天資料。",
   "noDevicesFound": "未找到設備",
   "noEventsFound": "未找到活動。",
+  "noExternalIntegrations": "尚未設定整合。",
   "noFollowRequestsCurrently": "目前沒有追蹤請求",
   "noItems": "沒有{name}",
   "noLetThemStay": "不，讓他們留下",
@@ -815,6 +868,7 @@
   "participantActions": "參與者操作",
   "participantActionsForUserWithId": "使用者ID為{userId}的參與者操作",
   "participantCount": "{count}位參與者",
+  "recordingsAreSentTo": "本活動的錄影將傳送到",
   "registrationCountLabel": "{count}個註冊",
   "@registrationCountLabel": {
     "placeholders": {
