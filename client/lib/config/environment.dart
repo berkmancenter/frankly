@@ -1,3 +1,5 @@
+import 'package:client/config/functions_url.dart';
+
 class Environment {
   // Firebase connection properties
   static const firebaseApiKey =
@@ -20,15 +22,20 @@ class Environment {
       String.fromEnvironment('FIREBASE_STORAGE_BUCKET', defaultValue: 'any');
   static const firebaseMeasurementId =
       String.fromEnvironment('FIREBASE_MEASUREMENT_ID', defaultValue: 'any');
-  static const functionsRegion = String.fromEnvironment(
-    'FUNCTIONS_REGION',
-    defaultValue: 'us-central1',
-  );
-  static String get functionsUrlPrefix {
-    const explicit = String.fromEnvironment('FUNCTIONS_URL_PREFIX');
-    if (explicit.isNotEmpty) return explicit;
-    return 'http://127.0.0.1:5001/$firebaseProjectId/$functionsRegion';
-  }
+  static const _functionsRegion = String.fromEnvironment('FUNCTIONS_REGION');
+
+  /// Region the Cloud Functions are deployed to. Must match the
+  /// `functions.region` runtime config. Defaults to us-central1.
+  static String get functionsRegion =>
+      _functionsRegion.trim().isEmpty ? 'us-central1' : _functionsRegion.trim();
+
+  /// Base URL for direct HTTP calls to Cloud Functions. Always points at
+  /// [functionsRegion]; see [resolveFunctionsUrlPrefix].
+  static String get functionsUrlPrefix => resolveFunctionsUrlPrefix(
+        explicitPrefix: const String.fromEnvironment('FUNCTIONS_URL_PREFIX'),
+        region: functionsRegion,
+        projectId: firebaseProjectId,
+      );
 
   static const agoraAppId = String.fromEnvironment('AGORA_APP_ID');
 
