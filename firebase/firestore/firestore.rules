@@ -218,6 +218,20 @@ service cloud.firestore {
                 allow read: if hasAuth();
             }
 
+            // External integrations (webhooks). Display info is readable so
+            // participants can see where recordings are sent. All writes go
+            // through Cloud Functions, which validate URLs and manage secrets.
+            match /external-integrations/{integrationId} {
+                allow read: if hasAuth();
+                allow write: if false;
+            }
+
+            // Webhook URLs are visible to community admins only.
+            match /external-integration-endpoints/{integrationId} {
+                allow read: if isCommunityAdmin();
+                allow write: if false;
+            }
+
             match /templates/{templateId} {
                 // TODO: Update template creation to check the Community feature flags for unofficial templates.
                 allow create: if isCommunityMember(communityId) && isDocCreator(request.resource);
@@ -398,6 +412,26 @@ service cloud.firestore {
                         allow read: if hasAuth() && isCommunityAdmin();
                         allow create: if hasAuth() && isCommunityAdmin();
                     }
+
+                    // Per-event switch for an external integration, set by the
+                    // event host or community moderators.
+                    match /external-integration-settings/{integrationId} {
+                        function isValidIntegrationSettings() {
+                            let data = request.resource.data;
+                            return data.keys().hasOnly(['integrationId', 'enabled', 'externalReference', 'updatedBy', 'updatedAt'])
+                                   && data.get('integrationId', null) == integrationId
+                                   && data.get('enabled', null) is bool
+                                   && data.get('updatedBy', request.auth.uid) == request.auth.uid
+                                   && (data.get('externalReference', null) == null
+                                       || (data.externalReference is string && data.externalReference.size() <= 500));
+                        }
+
+                        allow read: if hasAuth();
+                        allow create, update: if hasAuth()
+                                                 && (isDocCreator(getEventData()) || isCommunityMod())
+                                                 && isValidIntegrationSettings();
+                        allow delete: if hasAuth() && (isDocCreator(getEventData()) || isCommunityMod());
+                    }
                 }
             }
 
@@ -496,6 +530,18 @@ service cloud.firestore {
         }
 
         match /recording-sessions/{sessionId} {
+            allow read: if hasAuth() && isMod(getMembershipStatus(resource.data.communityId));
+            allow write: if false;
+        }
+
+        // Webhook signing secrets for external integrations. Server only:
+        // created, rotated and read by Cloud Functions with admin access.
+        match /external-integration-secrets/{integrationId} {
+            allow read, write: if false;
+        }
+
+        // Webhook delivery status, written by Cloud Functions.
+        match /external-integration-deliveries/{deliveryId} {
             allow read: if hasAuth() && isMod(getMembershipStatus(resource.data.communityId));
             allow write: if false;
         }
