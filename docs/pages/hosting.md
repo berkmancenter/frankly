@@ -370,6 +370,7 @@ SHARE_LINK_URL=<value>         # URL prefix for share links, e.g. https://<app-u
 
 **Agora** (voice/video SDK):
 AGORA_APP_ID=<value>           # For client-side connections to Agora.
+AGORA_AREA=GLOBAL              # Optional. EU keeps media and signalling on Agora's European servers.
 
 **Cloudinary** (for media uploads):
 
@@ -426,6 +427,7 @@ agora.storage_bucket_name="<YOUR_VALUE_HERE>"
 agora.storage_access_key="<YOUR_VALUE_HERE>"
 agora.storage_secret_key="<YOUR_VALUE_HERE>"
 agora.webhook_secret="<YOUR_VALUE_HERE>"
+agora.recording_region="<OPTIONAL: EU, NA, AP or CN>"
 ```
 
 Setup summary:

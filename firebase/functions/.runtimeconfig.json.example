@@ -37,7 +37,8 @@
     "app_certificate": "<value>",
     "storage_secret_key": "<value>",
     "storage_access_key": "<value>",
-    "storage_bucket_name": "<value>"
+    "storage_bucket_name": "<value>",
+    "recording_region": ""
   },
   "frankly_match": {
     "api_url": "<value>",
