@@ -1018,3 +1018,111 @@ class GetUserIdFromAgoraIdResponse
   factory GetUserIdFromAgoraIdResponse.fromJson(Map<String, dynamic> json) =>
       _$GetUserIdFromAgoraIdResponseFromJson(json);
 }
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class UpsertExternalIntegrationRequest
+    with _$UpsertExternalIntegrationRequest
+    implements SerializeableRequest {
+  static const functionName = 'upsertExternalIntegration';
+
+  factory UpsertExternalIntegrationRequest({
+    required String communityId,
+
+    /// Omit to create a new integration.
+    String? integrationId,
+    required String displayName,
+    String? logoUrl,
+    String? description,
+    String? externalReferenceLabel,
+    required String webhookUrl,
+    @Default([]) List<String> events,
+    @Default(false) bool enabledForNewEvents,
+    @Default(true) bool isActive,
+  }) = _UpsertExternalIntegrationRequest;
+
+  factory UpsertExternalIntegrationRequest.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$UpsertExternalIntegrationRequestFromJson(json);
+}
+
+/// [secret] is only set when a new integration was created. It is shown once
+/// and cannot be read again.
+@Freezed(makeCollectionsUnmodifiable: false)
+class UpsertExternalIntegrationResponse
+    with _$UpsertExternalIntegrationResponse
+    implements SerializeableRequest {
+  factory UpsertExternalIntegrationResponse({
+    required String integrationId,
+    String? secret,
+  }) = _UpsertExternalIntegrationResponse;
+
+  factory UpsertExternalIntegrationResponse.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$UpsertExternalIntegrationResponseFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class RotateExternalIntegrationSecretRequest
+    with _$RotateExternalIntegrationSecretRequest
+    implements SerializeableRequest {
+  static const functionName = 'rotateExternalIntegrationSecret';
+
+  factory RotateExternalIntegrationSecretRequest({
+    required String communityId,
+    required String integrationId,
+  }) = _RotateExternalIntegrationSecretRequest;
+
+  factory RotateExternalIntegrationSecretRequest.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$RotateExternalIntegrationSecretRequestFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class RotateExternalIntegrationSecretResponse
+    with _$RotateExternalIntegrationSecretResponse
+    implements SerializeableRequest {
+  factory RotateExternalIntegrationSecretResponse({
+    required String secret,
+  }) = _RotateExternalIntegrationSecretResponse;
+
+  factory RotateExternalIntegrationSecretResponse.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$RotateExternalIntegrationSecretResponseFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class DeleteExternalIntegrationRequest
+    with _$DeleteExternalIntegrationRequest
+    implements SerializeableRequest {
+  static const functionName = 'deleteExternalIntegration';
+
+  factory DeleteExternalIntegrationRequest({
+    required String communityId,
+    required String integrationId,
+  }) = _DeleteExternalIntegrationRequest;
+
+  factory DeleteExternalIntegrationRequest.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$DeleteExternalIntegrationRequestFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class ResendExternalIntegrationDeliveryRequest
+    with _$ResendExternalIntegrationDeliveryRequest
+    implements SerializeableRequest {
+  static const functionName = 'resendExternalIntegrationDelivery';
+
+  factory ResendExternalIntegrationDeliveryRequest({
+    required String deliveryId,
+  }) = _ResendExternalIntegrationDeliveryRequest;
+
+  factory ResendExternalIntegrationDeliveryRequest.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$ResendExternalIntegrationDeliveryRequestFromJson(json);
+}
