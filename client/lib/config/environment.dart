@@ -39,6 +39,12 @@ class Environment {
 
   static const agoraAppId = String.fromEnvironment('AGORA_APP_ID');
 
+  /// Agora region that media and signalling connect to: GLOBAL (default), EU,
+  /// NA, AS, JP, IN or CN. Set EU to keep connections on Agora's European
+  /// servers.
+  static const agoraArea =
+      String.fromEnvironment('AGORA_AREA', defaultValue: 'GLOBAL');
+
   static const sentryDSN = String.fromEnvironment('SENTRY_DSN');
   static const sentryEnvironment = String.fromEnvironment('SENTRY_ENVIRONMENT');
 

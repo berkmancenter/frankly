@@ -47,6 +47,7 @@ jobs:
           envkey_FUNCTIONS_REGION: ${{ secrets.FUNCTIONS_REGION || 'us-central1' }}
           envkey_SHARE_LINK_URL: ${{ secrets.APP_FULL_URL }}/share
           envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
+          envkey_AGORA_AREA: ${{ secrets.AGORA_AREA || 'GLOBAL' }}
           envkey_SENTRY_RELEASE: ${{ github.ref_name }}
           envkey_SENTRY_ENVIRONMENT: production
           envkey_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}

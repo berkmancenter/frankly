@@ -85,6 +85,15 @@ test('accepts matching or custom-domain prefixes', () => {
   }
 });
 
+test('accepts known Agora areas and rejects unknown ones', () => {
+  for (const area of ['', 'GLOBAL', 'EU', 'eu']) {
+    assert.deepEqual(validateClientConfig({ AGORA_APP_ID: appId, AGORA_AREA: area }), []);
+  }
+  const errors = validateClientConfig({ AGORA_APP_ID: appId, AGORA_AREA: 'EUROPE' });
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /AGORA_AREA/);
+});
+
 test('the CLI exits non-zero on an invalid file and zero on a valid one', () => {
   const directory = mkdtempSync(join(tmpdir(), 'frankly-validate-config-'));
   try {

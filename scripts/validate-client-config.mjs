@@ -9,7 +9,8 @@ import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
 const defaultFunctionsRegion = 'us-central1';
-const regionPattern = /^[a-z]+-[a-z]+[0-9]+$/;
+const agoraAreas = new Set(['GLOBAL', 'EU', 'NA', 'AS', 'JP', 'IN', 'CN']);
+const regionPattern =/^[a-z]+-[a-z]+[0-9]+$/;
 const cloudFunctionsHostPattern = /^([a-z]+-[a-z]+[0-9]+)-(.+)\.cloudfunctions\.net$/;
 
 export function parseDartDefines(source, fileName = '.env') {
@@ -52,6 +53,15 @@ export function validateClientConfig(config) {
     errors.push(
       'AGORA_APP_ID must be a 32-character hexadecimal Agora application ID. ' +
         'Refusing to build a client that cannot join meetings.',
+    );
+  }
+
+  // Unknown values silently fall back to global routing in the client, which
+  // would defeat a deployment that must stay in one area.
+  const agoraArea = (config.AGORA_AREA ?? '').trim().toUpperCase();
+  if (agoraArea && !agoraAreas.has(agoraArea)) {
+    errors.push(
+      `AGORA_AREA must be one of ${[...agoraAreas].join(', ')} (got "${config.AGORA_AREA}").`,
     );
   }
 
