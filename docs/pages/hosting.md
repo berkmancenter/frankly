@@ -168,6 +168,14 @@ The CSP is set as an HTTP response header by `ServeIndex` (in `firebase/function
 
 `firebase/functions/web/index.html` is a copy of `client/web/index.html` used by the ServeIndex function. The CI/CD workflows, `build-all.sh`, and `run-dev.sh` all copy `client/web/index.html` to `firebase/functions/web/index.html` automatically before building functions. You should not need to sync these files manually.
 
+`firebase.json` tells Hosting to ignore the built `index.html`, so every HTML
+request, including `/`, goes through `ServeIndex` and gets a CSP nonce. As a
+result, `__VERSION__` and `__GOOGLE_ID__` are filled in on the ServeIndex copy:
+the functions deploy workflows substitute them when they sync the template, and
+anything left falls back to the `app.version` and `app.google_id` runtime
+config. A change to `client/web/index.html` reaches users only after the
+functions (ServeIndex) are redeployed.
+
 If you are using multiple hosting targets (e.g. staging and production sites), configure them with:
 
 ```bash
@@ -187,6 +195,15 @@ value as the `functions.region` runtime configuration for Firebase Functions.
 The Dart and JavaScript functions, callable clients, emulator URL, and Hosting
 rewrites all use this value. The default remains `us-central1`.
 
+`FUNCTIONS_URL_PREFIX` (client) and `app.functions_url_prefix` (functions) also
+name a region. The standard shapes (`https://<region>-<project>.cloudfunctions.net`
+and the emulator's `http://127.0.0.1:5001/<project>/<region>`) are moved to the
+configured region automatically, so direct HTTP calls and Cloud Tasks callbacks
+reach the functions where they are deployed. A custom domain is used as given.
+`scripts/validate-client-config.mjs` still fails the client build when
+`FUNCTIONS_URL_PREFIX` names a different region than `FUNCTIONS_REGION`, so
+keep them in sync.
+
 Cloud Tasks can use a separate location through
 `functions.cloud_tasks_region`. If it is set, that value wins; otherwise the
 queue follows the configured Functions region, falling back to the existing
@@ -204,13 +221,62 @@ node scripts/render-firebase-config.mjs \
 ```
 
 The renderer includes the region on every function-backed Hosting rewrite,
-including the `ServeIndex` catch-all. Generated environment-specific files
-should not be committed.
+including the `/api/*` callables and the `ServeIndex` catch-all. Deploy Hosting
+with the rendered file:
+
+```bash
+firebase deploy --only hosting --config firebase.generated.json
+```
+
+The client deploy workflows render `firebase.json` in place from the
+`FUNCTIONS_REGION` secret. Generated environment-specific files should not be
+committed.
 
 Firestore, Realtime Database, and Storage locations are selected when their
 resources are created and are generally not movable in place. Choose and verify
 those locations before bootstrapping a new environment; changing them later
 usually requires a new project or a data migration.
+
+### EU deployment checklist
+
+Every setting below defaults to the previous behaviour, so a deployment that
+sets none of them is unchanged. To keep data and processing in the EU:
+
+1. **Project resources.** Create Firestore, the Realtime Database and the
+   default Storage bucket in EU locations (for example `eur3`/`europe-west1`
+   for Firestore, `europe-west1` for the Realtime Database and Storage). These
+   can't be moved later.
+2. **Functions region.** `firebase functions:config:set functions.region="europe-west1"`
+   and set `app.functions_url_prefix` to
+   `https://europe-west1-<project>.cloudfunctions.net`.
+3. **Cloud Tasks.** Create the queue in the same region:
+   `gcloud tasks queues create scheduled-functions --location=europe-west1`.
+   It follows `functions.region`; set `functions.cloud_tasks_region` only to use
+   a different location.
+4. **Client build.** `FUNCTIONS_REGION=europe-west1` and
+   `FUNCTIONS_URL_PREFIX=https://europe-west1-<project>.cloudfunctions.net` in
+   `client/.env` (the `FUNCTIONS_REGION` secret in CI).
+5. **Hosting rewrites.** Render `firebase.json` for the region before deploying
+   Hosting (see above). The CI workflows do this from the `FUNCTIONS_REGION`
+   secret.
+6. **Agora.** `AGORA_AREA=EU` in the client build so media and signalling stay on
+   Agora's European servers, and `agora.recording_region="EU"` so Cloud
+   Recording runs in Agora's EU region. Point `agora.storage_bucket_name` at a
+   bucket in an EU location.
+7. **Media uploads.** `MEDIA_UPLOAD_PROVIDER=firebase` and
+   `FIREBASE_STORAGE_BUCKET=<EU bucket>` in the client build,
+   `app.media_upload_provider="firebase"` and `app.cloudinary_enabled="false"`
+   in the Functions runtime config, and leave the `CLOUDINARY_*` values empty.
+   See [Media uploads in Firebase Storage](#media-uploads-in-firebase-storage-instead-of-cloudinary).
+8. **Storage rules.** `firebase deploy --only storage` (or paste
+   `firebase/storage/storage.rules` into the bucket's Rules tab for a
+   non-default bucket).
+9. **Self-hosted images.** Point `LOGO_URL` and `app.banner_image_url` at images
+   you host yourself; the examples are served from Cloudinary.
+10. **Check.** Build the client (the config validator runs first), deploy, and
+    confirm in the browser's network tab that requests go to
+    `europe-west1-*.cloudfunctions.net`, Agora's EU edge and
+    `firebasestorage.googleapis.com`, and none to `*.cloudinary.com`.
 
 ---
 
@@ -252,10 +318,12 @@ Frankly uses Google Cloud Tasks for scheduled function work.
 
 ```bash
 gcloud config set project YOUR-FIREBASE-PROJECT-ID
-gcloud tasks queues create scheduled-functions
+gcloud tasks queues create scheduled-functions --location=us-east4
 ```
 
-Repeat for each environment as needed.
+The queue must be in the location the functions use: `functions.cloud_tasks_region`
+if set, otherwise `functions.region`, otherwise `us-east4`. Repeat for each
+environment as needed.
 
 ---
 
@@ -319,7 +387,9 @@ firebase functions:config:set \
 - `app.copyright` — Copyright statement for outgoing emails
 - `app.unsubscribe_encryption_key` — Random string used for unsubscribe link signing
 - `app.google_id` — Google OAuth Client ID for Google Sign-In (substituted into the HTML by ServeIndex)
-- `app.version` — Application version string (substituted into the HTML by ServeIndex; typically set by CI/CD)
+- `app.version` — Application version string (substituted into the HTML by ServeIndex when the deploy workflow hasn't already filled it in)
+- `app.cloudinary_enabled` — Optional, default `"true"`. `"false"` removes every Cloudinary host from the Content-Security-Policy
+- `app.media_upload_provider` — Optional, default `"cloudinary"`. `"firebase"` allows Firebase Storage download URLs in the Content-Security-Policy; set it together with the client's `MEDIA_UPLOAD_PROVIDER=firebase`
 
 **Calendar / XML namespace values**
 
@@ -331,6 +401,11 @@ firebase functions:config:set \
 
 - `functions.on_firestore.min_instances` — Minimum warm instances for the main Firestore function
 - `functions.update_live_stream_participant_count.min_instances` — Minimum warm instances for the participant count function
+
+**Regions** (optional; see [Region configuration](#region-configuration))
+
+- `functions.region` — Region all functions deploy to. Default `us-central1`
+- `functions.cloud_tasks_region` — Location of the `scheduled-functions` queue. Default: `functions.region`, else `us-east4`
 
 These values may differ between staging and production.
 
@@ -365,6 +440,7 @@ FIREBASE_MEASUREMENT_ID=<value>
 
 ```bash
 FUNCTIONS_URL_PREFIX=<value>   # Base URL for your Google Cloud Run Functions
+FUNCTIONS_REGION=us-central1   # Optional. Must match functions.region.
 SHARE_LINK_URL=<value>         # URL prefix for share links, e.g. https://<app-url>/share
 ```
 
@@ -372,7 +448,7 @@ SHARE_LINK_URL=<value>         # URL prefix for share links, e.g. https://<app-u
 AGORA_APP_ID=<value>           # For client-side connections to Agora.
 AGORA_AREA=GLOBAL              # Optional. EU keeps media and signalling on Agora's European servers.
 
-**Media uploads** go to Cloudinary by default. Set `MEDIA_UPLOAD_PROVIDER=firebase` to use Firebase Storage instead (see [Media uploads in Firebase Storage](#media-uploads-in-firebase-storage-instead-of-cloudinary)).
+**Media uploads** go to Cloudinary by default (`MEDIA_UPLOAD_PROVIDER=cloudinary`). Set `MEDIA_UPLOAD_PROVIDER=firebase` to use Firebase Storage instead (see [Media uploads in Firebase Storage](#media-uploads-in-firebase-storage-instead-of-cloudinary)).
 
 **Cloudinary** (for media uploads; optional). Leave `CLOUDINARY_CLOUD_NAME` unset to turn off all image and video uploads, including profile pictures. The upload controls are then hidden and the Cloudinary upload widget is never loaded, so no data is sent to Cloudinary from the browser:
 
@@ -408,7 +484,7 @@ MATOMO_SITE_ID=<value>
 
 ### Google Sign-In Client ID
 
-The file `client/web/index.html` contains the placeholder `__GOOGLE_ID__` in a `<meta name="google-signin-client_id">` tag. Replace this with your Google OAuth client ID before building.
+The file `client/web/index.html` contains the placeholder `__GOOGLE_ID__` in a `<meta name="google-signin-client_id">` tag. ServeIndex fills it in from `app.google_id` (or the deploy workflows fill it in from the `GOOGLE_SIGN_IN_ID` secret). You can also replace it directly before deploying the functions.
 
 ---
 
@@ -724,7 +800,8 @@ gcloud tasks queues list
 - [ ] Deploy Firestore rules, Realtime Database rules, and Firestore indexes
 - [ ] Set required `firebase functions:config` values
 - [ ] Build and deploy Firebase Functions
-- [ ] Create `scheduled-functions` Cloud Tasks queue
+- [ ] Create `scheduled-functions` Cloud Tasks queue in the functions' location
+- [ ] For an EU deployment, work through the [EU deployment checklist](#eu-deployment-checklist)
 - [ ] Copy `client/.env.hosted.example` to `client/.env` and fill in all values
 - [ ] Replace `__GOOGLE_ID__` in `client/web/index.html` with your Google OAuth client ID
 - [ ] Build Flutter client with `--dart-define-from-file=.env`
