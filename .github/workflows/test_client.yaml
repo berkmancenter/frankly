@@ -66,15 +66,9 @@ jobs:
         if: steps.changes.outputs.client == 'true'
         run: flutter test test/lib/core/data/services/same_origin_callables_test.dart test/lib/core/data/services/same_origin_callables_usage_test.dart
 
-      - name: Update Product Version
-        if: steps.changes.outputs.client == 'true'  && steps.test.outcome == 'success'
-        run: |
-          sed -i 's/__VERSION__/${{ github.sha }}/g' ${{ github.workspace }}/client/web/index.html
-
-      - name: Update Google Auth Client ID
-        if: steps.changes.outputs.client == 'true'  && steps.test.outcome == 'success'
-        run: |
-          sed -i 's/__GOOGLE_ID__/${{ secrets.GOOGLE_SIGN_IN_ID }}/g' ${{ github.workspace }}/client/web/index.html
+      # __VERSION__ and __GOOGLE_ID__ in index.html are filled in by the
+      # functions deploy (ServeIndex serves every HTML page; Hosting ignores the
+      # built index.html), so there is nothing to substitute here.
 
       - name: Create .env file
         if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success'

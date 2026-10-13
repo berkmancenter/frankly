@@ -77,7 +77,16 @@ jobs:
 
       - name: Sync index.html template for ServeIndex
         if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
-        run: cp ../../client/web/index.html web/index.html
+        env:
+          VERSION: ${{ github.sha }}
+          GOOGLE_ID: ${{ secrets.GOOGLE_SIGN_IN_ID }}
+        # ServeIndex serves every HTML page, so the build version and Google
+        # sign-in client ID go into its template here. Literal replace so the
+        # values can't reach shell or regex; an empty secret leaves the
+        # placeholder for the app.google_id runtime config fallback.
+        run: |
+          cp ../../client/web/index.html web/index.html
+          perl -pi -e 's/__VERSION__/$ENV{VERSION}/g; s/__GOOGLE_ID__/$ENV{GOOGLE_ID}/g if length $ENV{GOOGLE_ID}' web/index.html
 
       - name: Build Functions
         if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'

@@ -21,11 +21,24 @@ const { regionalFunctions } = require('./function-region')
 // Read the template once at module load. If the file is missing the function
 // will fail to start, which surfaces the error at deploy time rather than
 // silently at request time.
-// __dirname is build/js/ at runtime; web/ sits two levels up at the package root.
-const TEMPLATE_PATH = path.join(__dirname, '../../web/index.html')
+// __dirname is build/js/ when loaded by the compiled Dart entrypoint, and js/
+// when the module is required directly (tests, tooling). web/ sits at the
+// package root in both cases.
+const TEMPLATE_CANDIDATES = [
+    path.join(__dirname, '../../web/index.html'),
+    path.join(__dirname, '../web/index.html'),
+]
+const TEMPLATE_PATH =
+    TEMPLATE_CANDIDATES.find((candidate) => fs.existsSync(candidate)) ??
+    TEMPLATE_CANDIDATES[0]
 const rawTemplate = fs.readFileSync(TEMPLATE_PATH, 'utf8')
 
 // Substitute stable (non-per-request) placeholders once at startup.
+// Firebase Hosting does not serve the built client/build/web/index.html
+// (firebase.json ignores it so every HTML request gets a nonce), so the deploy
+// workflows fill __VERSION__ and __GOOGLE_ID__ into web/index.html when they
+// sync the template. Anything still left as a placeholder falls back to the
+// app.version / app.google_id runtime config.
 const appConfig = functions.config().app || {}
 const GOOGLE_ID = appConfig.google_id || ''
 const VERSION = appConfig.version || 'dev'

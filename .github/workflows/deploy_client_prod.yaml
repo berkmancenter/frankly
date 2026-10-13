@@ -28,16 +28,9 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Update Product Version
-        env:
-          VERSION: ${{ github.ref_name }}
-        # Literal replace so ref name can't reach shell or regex.
-        run: |
-          perl -pi -e 's/__VERSION__/$ENV{VERSION}/g' "${{ github.workspace }}/client/web/index.html"
-
-      - name: Update Google Auth Client ID
-        run: |
-          sed -i 's/__GOOGLE_ID__/${{ secrets.GOOGLE_SIGN_IN_ID }}/g' ${{ github.workspace }}/client/web/index.html
+      # __VERSION__ and __GOOGLE_ID__ in index.html are filled in by the
+      # functions deploy (ServeIndex serves every HTML page; Hosting ignores the
+      # built index.html), so there is nothing to substitute here.
 
       - name: Create .env file
         uses: SpicyPizza/create-envfile@v2.0
