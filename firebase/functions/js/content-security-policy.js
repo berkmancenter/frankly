@@ -41,6 +41,8 @@ function buildCsp(nonce, { cloudinary = true, firebaseStorage = false } = {}) {
         // Add entries here if new backend services are integrated.
         `connect-src 'self'` +
             ` https://*.firebaseio.com wss://*.firebaseio.com` +
+            // Realtime Database instances outside us-central1 use this domain.
+            ` https://*.firebasedatabase.app wss://*.firebasedatabase.app` +
             ` https://*.googleapis.com https://*.cloudfunctions.net` +
             ` https://api.agora.io https://*.agora.io wss://*.agora.io:*` +
             ` https://*.sd-rtn.com wss://*.sd-rtn.com:*` +
@@ -62,7 +64,7 @@ function buildCsp(nonce, { cloudinary = true, firebaseStorage = false } = {}) {
             ` https://*.mux.com`,
         `frame-src 'self'` +
             ` https://player.vimeo.com https://*.stripe.com https://*.firebaseapp.com` +
-            ` https://*.firebaseio.com` +
+            ` https://*.firebaseio.com https://*.firebasedatabase.app` +
             (cloudinary ? cloudinaryWidgetHost : ''),
         `worker-src 'self' blob:`,
         `object-src 'none'`,
