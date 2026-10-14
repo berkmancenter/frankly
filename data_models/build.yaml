@@ -1,6 +1,16 @@
+builders:
+  ts_model_builder:
+    import: "package:data_models/src/ts_codegen/ts_model_builder.dart"
+    builder_factories: ["tsModelBuilder"]
+    build_extensions: {".dart": [".model.ts"]}
+    auto_apply: dependents
+    build_to: source
+
 targets:
   $default:
     builders:
       json_serializable:
         options:
           explicit_to_json: true
+      data_models|ts_model_builder:
+        enabled: true
