@@ -901,15 +901,11 @@ class LiveMeetingProvider with ChangeNotifier {
       final timeNow = clockService.now();
       final event = eventProvider.event;
 
-      // Call eventEnded whenever the event is past its scheduled time by the
-      // email threshold, OR whenever the event had recording enabled (to ensure
-      // the recording is always stopped regardless of email threshold).
+      // Post-event email only; this runs for every participant who leaves.
       final pastThreshold =
           timeNow.difference(event.scheduledTime ?? timeNow).inMinutes >
               _postEventEmailThresholdInMinutes;
-      final hadRecording = (event.eventSettings?.alwaysRecord ?? false) ||
-          liveMeeting?.record == true;
-      if (pastThreshold || hadRecording) {
+      if (pastThreshold) {
         unawaited(
           cloudFunctionsEventService.eventEnded(
             EventEndedRequest(eventPath: eventPath),
