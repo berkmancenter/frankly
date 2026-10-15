@@ -124,16 +124,26 @@ class FakeFirestore {
         }
     }
 
+    // Transactions run one at a time, which gives the same result as
+    // Firestore retrying a transaction whose reads changed underneath it.
     async runTransaction(fn) {
-        const writes = []
-        const tx = {
-            get: (ref) => ref.get(),
-            update: (ref, data) => writes.push(() => ref.update(data)),
-            set: (ref, data, options) => writes.push(() => ref.set(data, options)),
+        const previous = this._transactionLock || Promise.resolve()
+        let release
+        this._transactionLock = new Promise((resolve) => (release = resolve))
+        await previous
+        try {
+            const writes = []
+            const tx = {
+                get: (ref) => ref.get(),
+                update: (ref, data) => writes.push(() => ref.update(data)),
+                set: (ref, data, options) => writes.push(() => ref.set(data, options)),
+            }
+            const result = await fn(tx)
+            for (const write of writes) await write()
+            return result
+        } finally {
+            release()
         }
-        const result = await fn(tx)
-        for (const write of writes) await write()
-        return result
     }
 
     get(path) {

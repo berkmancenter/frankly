@@ -24,7 +24,9 @@ const EVENT_SETTINGS = 'external-integration-settings'
 const TASK_FUNCTION_NAME = 'externalIntegrationDeliveryTask'
 const MODERATOR_STATUSES = ['owner', 'admin', 'moderator', 'mod']
 
+// A run id is 8 random bytes in hex. The task endpoint rejects anything else.
 const newRunId = () => crypto.randomBytes(8).toString('hex')
+const RUN_ID_PATTERN = /^[a-f0-9]{16}$/
 
 function toDate(value) {
     if (value == null) return null
@@ -76,7 +78,11 @@ function createDeliveryService({
     /**
      * Creates delivery documents for every deliverable artifact of a stopped
      * recording session and sends the new ones. Existing deliveries (same
-     * stable id) are left alone, so calling this again is safe.
+     * stable id) are left alone, except one that was created but never sent
+     * (for example because the function stopped before sending): it is sent
+     * now with its existing run, so calling this again is safe and also
+     * recovers such deliveries. The claim in attemptDelivery makes sure a
+     * delivery is only sent once even if two calls recover it together.
      *
      * Returns the ids of deliveries created by this call.
      */
@@ -99,6 +105,52 @@ function createDeliveryService({
         const eventPath = eventDoc.ref.path
 
         const created = []
+        const recovered = []
+        try {
+            await createDeliveries({
+                session,
+                sessionId,
+                eventPath,
+                integrations,
+                artifacts,
+                created,
+                recovered,
+            })
+        } finally {
+            // Send whatever was created or recovered, even if a later create failed.
+            await Promise.all(
+                [...created, ...recovered].map(({ id, runId }) =>
+                    attemptDelivery({ deliveryId: id, runId, runAttempt: 1 }).catch((err) =>
+                        logger.error(
+                            `External integrations: attempt for ${id} failed unexpectedly`,
+                            err
+                        )
+                    )
+                )
+            )
+        }
+        return created.map(({ id }) => id)
+    }
+
+    // True for a delivery that was created but whose current run never made
+    // an attempt and is not being attempted right now.
+    function isUndispatched(data, at) {
+        if (!data || data.status !== STATUS_PENDING) return false
+        if ((data.runAttempts || 0) !== 0) return false
+        if (typeof data.runId !== 'string' || !RUN_ID_PATTERN.test(data.runId)) return false
+        const inFlightUntil = toDate(data.inFlightUntil)
+        return !(inFlightUntil && inFlightUntil > at)
+    }
+
+    async function createDeliveries({
+        session,
+        sessionId,
+        eventPath,
+        integrations,
+        artifacts,
+        created,
+        recovered,
+    }) {
         for (const integration of integrations) {
             const settingsDoc = await firestore
                 .doc(`${eventPath}/${EVENT_SETTINGS}/${integration.id}`)
@@ -115,8 +167,9 @@ function createDeliveryService({
                 })
                 const timestamp = now()
                 const runId = newRunId()
+                const ref = firestore.doc(`${DELIVERIES}/${id}`)
                 try {
-                    await firestore.doc(`${DELIVERIES}/${id}`).create({
+                    await ref.create({
                         id,
                         communityId: session.communityId,
                         eventId: session.eventId,
@@ -142,23 +195,14 @@ function createDeliveryService({
                     created.push({ id, runId })
                 } catch (err) {
                     // gRPC ALREADY_EXISTS: delivered or queued before.
-                    if (err && (err.code === 6 || err.code === 'already-exists')) continue
-                    throw err
+                    if (!(err && (err.code === 6 || err.code === 'already-exists'))) throw err
+                    const existing = await ref.get()
+                    if (existing.exists && isUndispatched(existing.data(), timestamp)) {
+                        recovered.push({ id, runId: existing.data().runId })
+                    }
                 }
             }
         }
-
-        await Promise.all(
-            created.map(({ id, runId }) =>
-                attemptDelivery({ deliveryId: id, runId, runAttempt: 1 }).catch((err) =>
-                    logger.error(
-                        `External integrations: attempt for ${id} failed unexpectedly`,
-                        err
-                    )
-                )
-            )
-        )
-        return created.map(({ id }) => id)
     }
 
     /**
@@ -174,7 +218,7 @@ function createDeliveryService({
             if (!snapshot.exists) return { skipped: 'missing' }
             const data = snapshot.data()
             if (data.status !== STATUS_PENDING) return { skipped: 'not-pending' }
-            if (runId && data.runId !== runId) return { skipped: 'stale-run' }
+            if (data.runId !== runId) return { skipped: 'stale-run' }
             if ((data.runAttempts || 0) !== runAttempt - 1) return { skipped: 'stale-attempt' }
             const inFlightUntil = toDate(data.inFlightUntil)
             if (inFlightUntil && inFlightUntil > claimedAt) return { skipped: 'in-flight' }
@@ -409,5 +453,6 @@ module.exports = {
     ENDPOINTS,
     EVENT_SETTINGS,
     TASK_FUNCTION_NAME,
+    RUN_ID_PATTERN,
     createDeliveryService,
 }

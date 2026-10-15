@@ -262,6 +262,100 @@ test('stale or duplicate tasks are ignored', async () => {
     assert.equal(ctx.requests.length, 2)
 })
 
+test('a task without a run id is ignored', async () => {
+    const ctx = setup({
+        integrations: [{ id: 'int1', events: ['recording.ready'] }],
+        responses: [500],
+    })
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    const { payload } = ctx.tasks[0]
+    for (const runId of ['', undefined, null]) {
+        assert.deepEqual(await ctx.service.attemptDelivery({ ...payload, runId }), {
+            skipped: 'stale-run',
+        })
+    }
+    assert.equal(ctx.requests.length, 1)
+})
+
+// Simulates a function that stopped after creating a delivery but before
+// sending it: the claim transaction never runs.
+async function createUndispatched(ctx) {
+    const runTransaction = ctx.firestore.runTransaction
+    ctx.firestore.runTransaction = async () => ({ skipped: 'simulated-stop' })
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    ctx.firestore.runTransaction = runTransaction
+    assert.equal(ctx.requests.length, 0)
+}
+
+test('queueing again sends a delivery that was created but never sent', async () => {
+    const ctx = setup({ integrations: [{ id: 'int1', events: ['recording.ready'] }] })
+    await createUndispatched(ctx)
+    const pending = ctx.firestore.get(`external-integration-deliveries/${mp4Id()}`)
+    assert.equal(pending.status, 'pending')
+    assert.equal(pending.runAttempts, 0)
+
+    const created = await ctx.service.queueSessionDeliveries({
+        sessionId: 's1',
+        session: ctx.session(),
+    })
+    assert.deepEqual(created, [])
+    assert.equal(ctx.requests.length, 1)
+    const delivery = ctx.firestore.get(`external-integration-deliveries/${mp4Id()}`)
+    assert.equal(delivery.status, 'delivered')
+    assert.equal(delivery.runId, pending.runId)
+    assert.equal(delivery.attempts, 1)
+
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    assert.equal(ctx.requests.length, 1)
+})
+
+test('two concurrent recoveries send once', async () => {
+    const ctx = setup({ integrations: [{ id: 'int1', events: ['recording.ready'] }] })
+    await createUndispatched(ctx)
+    await Promise.all([
+        ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() }),
+        ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() }),
+    ])
+    assert.equal(ctx.requests.length, 1)
+    assert.equal(ctx.firestore.get(`external-integration-deliveries/${mp4Id()}`).attempts, 1)
+})
+
+test('does not recover a delivery that already made an attempt in its run', async () => {
+    const ctx = setup({
+        integrations: [{ id: 'int1', events: ['recording.ready'] }],
+        responses: [503],
+    })
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    assert.equal(ctx.requests.length, 1)
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    assert.equal(ctx.requests.length, 1)
+})
+
+test('deliveries created before a failing create are still sent', async () => {
+    // Artifacts are created in path order: the CSV first, then the MP4.
+    const ctx = setup()
+    const failingId = mp4Id()
+    const doc = ctx.firestore.doc.bind(ctx.firestore)
+    ctx.firestore.doc = (path) => {
+        const ref = doc(path)
+        if (path === `external-integration-deliveries/${failingId}`) {
+            ref.create = async () => {
+                throw new Error('firestore unavailable')
+            }
+        }
+        return ref
+    }
+    await assert.rejects(
+        ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() }),
+        /firestore unavailable/
+    )
+    assert.equal(ctx.requests.length, 1)
+    assert.equal(
+        ctx.firestore.get(`external-integration-deliveries/${csvId()}`).status,
+        'delivered'
+    )
+})
+
 test('gives up after the last retry', async () => {
     const ctx = setup({
         integrations: [{ id: 'int1', events: ['recording.ready'] }],
