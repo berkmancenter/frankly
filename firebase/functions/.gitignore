@@ -1,7 +1,7 @@
 node_modules/
 build/
 .env
-.runtimeconfig.json
+.runtimeconfig*.json
 service-account-key.json
 *.log
 # Ignore personal emulator snapshots

@@ -169,6 +169,20 @@
       }
     }
   },
+  "@mediaUploadImageTooLarge": {
+    "placeholders": {
+      "maxMegabytes": {
+        "type": "int"
+      }
+    }
+  },
+  "@mediaUploadVideoTooLarge": {
+    "placeholders": {
+      "maxMegabytes": {
+        "type": "int"
+      }
+    }
+  },
   "@meetingEndWithFollowMessage": {
     "placeholders": {
       "name": {
@@ -669,6 +683,13 @@
   "matchingQuestions": "Matching questions",
   "maximum": "Maximum",
   "meantToUseExistingAccount": "Meant to use an existing account instead?",
+  "mediaUploadFileUnreadable": "The selected file could not be read.",
+  "mediaUploadImageTooLarge": "Images can be at most {maxMegabytes} MB.",
+  "mediaUploadQuickTimeNotSupported": "MOV videos can't be uploaded here. Convert the video to MP4 or WebM and try again.",
+  "mediaUploadsDisabled": "Media uploads are turned off on this site.",
+  "mediaUploadSignInRequired": "Sign in to upload images and videos.",
+  "mediaUploadUnsupportedType": "This file type isn't supported. Images can be JPEG, PNG, GIF or WebP, and videos can be MP4 or WebM.",
+  "mediaUploadVideoTooLarge": "Videos can be at most {maxMegabytes} MB.",
   "meetingEndMessage": "This meeting has ended. You may close this window.",
   "meetingEndWithFollowMessage": "This meeting has ended. You may close this window or visit {name} to continue the conversation.",
   "meetingGuideCard": "meeting-guide-card",

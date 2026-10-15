@@ -166,7 +166,12 @@ class EventEmails {
       idsToEmail.remove(log.userId);
     }
 
-    var lookedUpUsers = await firebaseAuthUtils.getUsers(idsToEmail.toList());
+    final lookedUpUsers =
+        (await firebaseAuthUtils.getUsers(idsToEmail.toList())).where((user) {
+      // Anonymous Firebase users have no email address (JS undefined).
+      final Object? email = user.email;
+      return email is String && email.trim().isNotEmpty;
+    }).toList();
     print('Looked up users: ${lookedUpUsers.map((e) => e.uid).toList()}');
     if (lookedUpUsers.isEmpty) {
       print('No looked up users found.');

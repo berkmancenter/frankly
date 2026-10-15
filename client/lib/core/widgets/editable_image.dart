@@ -1,3 +1,4 @@
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -35,7 +36,7 @@ class _EditableImageState extends State<EditableImage> {
       builder: (_, constraints) => Stack(
         children: [
           Positioned.fill(child: widget.child),
-          if (widget.allowEdit == true)
+          if (widget.allowEdit == true && Environment.mediaUploadsEnabled)
             Positioned.fill(
               child: Material(
                 color: Colors.transparent,

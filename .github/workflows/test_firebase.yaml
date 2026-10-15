@@ -23,9 +23,11 @@ jobs:
               - 'firebase/functions/**'              
             firestore:
               - 'firebase/firestore/**'
+            storage:
+              - 'firebase/storage/**'
 
       - name: Setup Node
-        if: steps.changes.outputs.functions == 'true' || steps.changes.outputs.firestore == 'true'
+        if: steps.changes.outputs.functions == 'true' || steps.changes.outputs.firestore == 'true' || steps.changes.outputs.storage == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -43,10 +45,19 @@ jobs:
         if: steps.changes.outputs.functions == 'true'
         run: npm ci
 
+      - name: Run JavaScript Function Tests
+        if: steps.changes.outputs.functions == 'true'
+        run: npm run test:js
+
       - name: Install Firestore NPM Dependencies
         if: steps.changes.outputs.firestore == 'true'
         run: npm ci
         working-directory: "firebase/firestore"
+
+      - name: Install Storage Rules Test Dependencies
+        if: steps.changes.outputs.storage == 'true'
+        run: npm ci
+        working-directory: "firebase/storage"
 
       - name: Set Up Flutter
         if: steps.changes.outputs.functions == 'true'
@@ -69,7 +80,7 @@ jobs:
         run: dart run build_runner build --output=build
 
       - name: Set up Java
-        if: steps.changes.outputs.functions == 'true' || steps.changes.outputs.firestore == 'true'
+        if: steps.changes.outputs.functions == 'true' || steps.changes.outputs.firestore == 'true' || steps.changes.outputs.storage == 'true'
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
@@ -85,13 +96,18 @@ jobs:
             ${{ runner.os }}-firebase-emulators-
 
       - name: Install Firebase Tools
-        if: steps.changes.outputs.firestore == 'true' || steps.changes.outputs.functions == 'true'
+        if: steps.changes.outputs.firestore == 'true' || steps.changes.outputs.functions == 'true' || steps.changes.outputs.storage == 'true'
         run: npm install -g firebase-tools
 
       - name: Test Rules
         if: steps.changes.outputs.firestore == 'true'
         run: firebase emulators:exec --only firestore --project fake-project-id 'npm run test'
         working-directory: "firebase/firestore"
+
+      - name: Test Storage Rules
+        if: steps.changes.outputs.storage == 'true'
+        run: firebase emulators:exec --only storage --project fake-project-id 'npm test'
+        working-directory: "firebase/storage"
 
       - name: Test Functions
         if: steps.changes.outputs.functions == 'true'

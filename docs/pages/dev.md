@@ -196,6 +196,11 @@ firebase/functions/.runtimeconfig.json.local.example
 
 Copy the example and fill in any required values.
 
+Set `FUNCTIONS_REGION` in `client/.env` when testing a non-default region. It
+defaults to `us-central1`, and the local callable URL is generated with the
+same region segment. Keep the Functions runtime configuration and the client
+build value aligned when moving from the emulator to a deployed environment.
+
 ---
 
 ### Running Everything with One Command
@@ -392,7 +397,7 @@ You can follow the official [documentation :octicons-link-external-24:](https://
 The Firebase Functions and/or Flutter client app connect to the following third party services, which must be set up and configured for local development.
 
 !!! warning "CSP Whitelist"
-When adding a new external service, you must also add its domains to the Content Security Policy in `firebase/functions/js/serve-index.js`. The CSP is only enforced in deployed environments (not locally), so missing entries will silently break features in staging/production. Be sure to include both `https://` and `wss://` schemes if the service uses WebSockets. Internal contributors can see the 'Managing External Connections' working note for the full maintenance guide and `Hosting > Content Security Policy` in `hosting.md` for the directive reference.
+When adding a new external service, you must also add its domains to the Content Security Policy in `firebase/functions/js/content-security-policy.js`. The CSP is only enforced in deployed environments (not locally), so missing entries will silently break features in staging/production. Be sure to include both `https://` and `wss://` schemes if the service uses WebSockets. Internal contributors can see the 'Managing External Connections' working note for the full maintenance guide and `Hosting > Content Security Policy` in `hosting.md` for the directive reference.
 
 ### Agora
 
@@ -587,6 +592,8 @@ The default debug platform is Web (Chrome), so please ensure it is selected as t
 You will need to create a **.env** file for client configuration. Copy `client/.env.local.example` to `client/.env` and update the missing secrets marked with `<value>` accordingly. The VSCode profiles assume the .env file lives in the `client` directory.
 
 You can also add an `EMULATORS` environment variable to override the default Emulators profile behavior of running `firestore, auth, functions, database`. Set the value to any desired combination of emulators.
+
+If you set `MEDIA_UPLOAD_PROVIDER=firebase` locally, include `storage` in `EMULATORS` (for example `firestore,auth,functions,database,storage`) so uploads go to the Storage emulator instead of the real bucket. `emulators.sh` reads the same setting (from the environment, or else from `client/.env`) and only starts the Storage emulator when it includes `storage`; otherwise local functions, such as the recording functions, keep using the real bucket.
 
 #### Manual instructions
 

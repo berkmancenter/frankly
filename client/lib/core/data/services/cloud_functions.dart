@@ -1,3 +1,4 @@
+import 'package:client/config/environment.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:client/core/data/services/same_origin_callables.dart';
 import 'package:client/core/utils/platform_utils.dart';
@@ -13,7 +14,8 @@ class CloudFunctions {
 
   Future<void> initialize() async {
     if (usingEmulator) {
-      FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
+      FirebaseFunctions.instanceFor(region: Environment.functionsRegion)
+          .useFunctionsEmulator('localhost', 5001);
     }
   }
 
@@ -36,7 +38,9 @@ class CloudFunctions {
         final result = await callable.call(data);
         return result ?? {};
       } else {
-        final callable = FirebaseFunctions.instance.httpsCallable(function);
+        final callable = FirebaseFunctions.instanceFor(
+          region: Environment.functionsRegion,
+        ).httpsCallable(function);
         final result = await callable.call(data);
         final resultData = result.data;
         if (resultData != null &&

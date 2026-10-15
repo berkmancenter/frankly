@@ -7,6 +7,7 @@ import 'package:node_http/node_http.dart' as http;
 import 'extend_cloud_task_scheduler.dart';
 import 'cloud_tasks_client.dart' as tasks;
 import 'emulator_utils.dart';
+import 'function_region.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:node_interop/util.dart';
 
@@ -27,9 +28,32 @@ class ScheduledFunctions {
     return projectId;
   }
 
+  String _configValueOrEmpty(String key) {
+    try {
+      final value = functions.config.get(key);
+      if (value == null) return '';
+      return value.toString().trim();
+    } catch (_) {
+      return '';
+    }
+  }
+
+  String get queueRegion => cloudTasksRegionOrDefault(
+        cloudTasksRegion: _configValueOrEmpty('functions.cloud_tasks_region'),
+        functionsRegion: _configValueOrEmpty('functions.region'),
+      );
+
+  /// Base URL Cloud Tasks calls back into. Follows `functions.region` so
+  /// tasks reach the functions where they are deployed, even when
+  /// `app.functions_url_prefix` still names a previous region.
+  String get callbackUrlPrefix => functionsUrlPrefixForRegion(
+        _configValueOrEmpty('app.functions_url_prefix'),
+        functionRegionOrDefault(_configValueOrEmpty('functions.region')),
+      );
+
   String get parentPath => client.queuePath(
         _projectId,
-        'us-east4',
+        queueRegion,
         'scheduled-functions',
       );
 
@@ -60,8 +84,12 @@ class ScheduledFunctions {
     String encodedJson,
     DateTime scheduledTime,
   ) async {
-    final urlPrefix =
-        functions.config.get('app.functions_url_prefix') as String;
+    final urlPrefix = callbackUrlPrefix;
+    if (urlPrefix.isEmpty) {
+      throw StateError(
+        'app.functions_url_prefix must be set in the functions config',
+      );
+    }
 
     if (isEmulator) {
       // Cloud Tasks is a real GCP service and can't dispatch HTTP callbacks

@@ -28,11 +28,17 @@ jobs:
               # The /api callable rewrites the VM parity test checks against the
               # client allowlist are here, so we need to test for drift if it changes.
               - 'firebase.json'
+              - 'scripts/**'
       - name: Set up Node.js
         if: steps.changes.outputs.client == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "22.23.1"
+
+      - name: Run Script Tests
+        if: steps.changes.outputs.client == 'true'
+        working-directory: ${{ github.workspace }}
+        run: npm run test:scripts
 
       - name: Set Up Flutter
         if: steps.changes.outputs.client == 'true'
@@ -65,15 +71,9 @@ jobs:
         if: steps.changes.outputs.client == 'true'
         run: flutter test test/lib/core/data/services/same_origin_callables_test.dart test/lib/core/data/services/same_origin_callables_usage_test.dart
 
-      - name: Update Product Version
-        if: steps.changes.outputs.client == 'true'  && steps.test.outcome == 'success'
-        run: |
-          sed -i 's/__VERSION__/${{ github.sha }}/g' ${{ github.workspace }}/client/web/index.html
-
-      - name: Update Google Auth Client ID
-        if: steps.changes.outputs.client == 'true'  && steps.test.outcome == 'success'
-        run: |
-          sed -i 's/__GOOGLE_ID__/${{ secrets.GOOGLE_SIGN_IN_ID }}/g' ${{ github.workspace }}/client/web/index.html
+      # __VERSION__ and __GOOGLE_ID__ in index.html are filled in by the
+      # functions deploy (ServeIndex serves every HTML page; Hosting ignores the
+      # built index.html), so there is nothing to substitute here.
 
       - name: Create .env file
         if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success'
@@ -88,12 +88,15 @@ jobs:
           envkey_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
           envkey_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
           envkey_FUNCTIONS_URL_PREFIX: ${{ secrets.FUNCTIONS_URL_PREFIX }}
+          envkey_FUNCTIONS_REGION: ${{ secrets.FUNCTIONS_REGION || 'us-central1' }}
           envkey_SHARE_LINK_URL: ${{ secrets.APP_STAGING_FULL_URL }}/share
           envkey_ENABLE_FAKE_PARTICIPANTS: true
           envkey_ENABLE_DEV_EVENT_SETTINGS: true
           envkey_ENABLE_DEV_ADMIN_SETTINGS: true
           envkey_ENABLE_TRACE_LOG: true
           envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
+          envkey_AGORA_AREA: ${{ secrets.AGORA_AREA || 'GLOBAL' }}
+          envkey_MEDIA_UPLOAD_PROVIDER: ${{ secrets.MEDIA_UPLOAD_PROVIDER || 'cloudinary' }}
           envkey_APP_NAME: Frankly
           envkey_APP_URL: https://app.frankly.org
           envkey_TERMS_URL: https://frankly.org/terms
@@ -115,6 +118,13 @@ jobs:
           envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
           envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
 
+      - name: Validate client configuration
+        # Fork PRs build without secrets and are never deployed, so only the
+        # build that goes to a preview channel is validated.
+        if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success' && github.event.pull_request.head.repo.full_name == github.repository
+        working-directory: ${{ github.workspace }}
+        run: node scripts/validate-client-config.mjs .env
+
       - name: Build App
         if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success'
         id: build_app
@@ -123,6 +133,11 @@ jobs:
       - name: Replace Service Worker with Cache Switch
         if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success'
         run: cp web_overrides/flutter_service_worker.js build/web/flutter_service_worker.js
+
+      - name: Render Firebase hosting config
+        if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' &&  github.event.pull_request.head.repo.full_name == github.repository
+        working-directory: ${{ github.workspace }}
+        run: node scripts/render-firebase-config.mjs --region "${{ secrets.FUNCTIONS_REGION || 'us-central1' }}" --in-place
 
       - name: Deploy to Preview Channel
         if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' &&  github.event.pull_request.head.repo.full_name == github.repository
