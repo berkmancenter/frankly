@@ -27,7 +27,7 @@ enum AgoraRoomState {
 /// Maps the AGORA_AREA build setting to an Agora area code. Unknown values
 /// fall back to global routing.
 int agoraAreaCode(String area) {
-  switch (area.toUpperCase()) {
+  switch (area.trim().toUpperCase()) {
     case 'EU':
       return AreaCode.areaCodeEu.value();
     case 'NA':
