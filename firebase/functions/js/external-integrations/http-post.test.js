@@ -85,6 +85,29 @@ test('does not follow redirects', async () => {
     )
 })
 
+test('closes the connection after a 2xx instead of reading a slow body', async () => {
+    let serverSawClose
+    const closed = new Promise((resolve) => (serverSawClose = resolve))
+    await withServer(
+        (req, res) => {
+            res.on('close', serverSawClose)
+            // Send the status, then trickle the body and never end it.
+            res.writeHead(200, { 'Content-Type': 'text/plain' })
+            res.write('partial')
+        },
+        async (base) => {
+            const started = Date.now()
+            const result = await postJson(base, { ...local, timeoutMs: 5000 })
+            assert.deepEqual(result, { status: 200, bodySnippet: '' })
+            assert.ok(Date.now() - started < 1000, 'resolved promptly')
+            const timeout = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('socket still open')), 2000).unref()
+            )
+            await Promise.race([closed, timeout])
+        }
+    )
+})
+
 test('times out a receiver that never answers', async () => {
     await withServer(
         () => {},

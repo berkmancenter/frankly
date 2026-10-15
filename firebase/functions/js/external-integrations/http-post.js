@@ -78,8 +78,13 @@ function postJson(
         req.on('response', (res) => {
             const status = res.statusCode
             if (status >= 200 && status < 300) {
-                res.resume()
+                // The body of a success response is ignored. Close the socket
+                // instead of draining it, so a receiver that trickles the body
+                // cannot keep the connection open. Errors raised by closing it
+                // early do not matter any more.
                 finish(resolve, { status, bodySnippet: '' })
+                res.on('error', () => {})
+                res.destroy()
                 return
             }
             const chunks = []
