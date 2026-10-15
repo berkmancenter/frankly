@@ -16,6 +16,15 @@ if [[ -z "$PROJECT_ID" ]]; then
   exit 1
 fi
 
+# The Storage emulator is opt-in: without it, local functions keep using the
+# real bucket. It starts when EMULATORS (from the environment, or else from
+# client/.env, the same setting the client uses) includes "storage".
+EMULATORS_SETTING="${EMULATORS:-$(grep -m1 '^EMULATORS=' "$CLIENT_ENV" | sed "s/^EMULATORS=//;s/['\"]//g" || true)}"
+only="firestore,functions,auth,pubsub,database"
+if [[ ",${EMULATORS_SETTING// /}," == *",storage,"* ]]; then
+  only="$only,storage"
+fi
+
 if [[ "${SKIP_DART_BUILD:-}" != "1" ]]; then
   dart run build_runner build --output=build
 fi
@@ -45,7 +54,7 @@ fi
 export FUNCTIONS_EMULATOR=true
 
 exec firebase emulators:start \
-  --only firestore,functions,auth,pubsub,database,storage \
+  --only "$only" \
   --project "$PROJECT_ID" \
   ${inspect_flag:+"${inspect_flag[@]}"} \
   ${DATA_DIR:+"--import=$DATA_DIR"}
