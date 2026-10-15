@@ -593,6 +593,8 @@ You will need to create a **.env** file for client configuration. Copy `client/.
 
 You can also add an `EMULATORS` environment variable to override the default Emulators profile behavior of running `firestore, auth, functions, database`. Set the value to any desired combination of emulators.
 
+If you set `MEDIA_UPLOAD_PROVIDER=firebase` locally, include `storage` in `EMULATORS` (for example `firestore,auth,functions,database,storage`) so uploads go to the Storage emulator instead of the real bucket.
+
 #### Manual instructions
 
 If you want to use emulators, ensure you start the emulators first. Then run the following commands in the `/client` directory.

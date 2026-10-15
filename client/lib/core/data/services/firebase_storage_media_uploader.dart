@@ -46,6 +46,8 @@ class UploadMediaType {
 /// Firefox). Labelling them `video/mp4` would misstate the content, so users
 /// are asked to convert to MP4 or WebM instead.
 class FirebaseStorageMediaUploader {
+  static bool usingEmulator = false;
+
   /// Extensions offered in the file picker. The real type is checked after.
   static const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
   static const videoExtensions = ['mp4', 'webm', 'mov'];

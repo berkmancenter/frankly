@@ -45,7 +45,7 @@ fi
 export FUNCTIONS_EMULATOR=true
 
 exec firebase emulators:start \
-  --only firestore,functions,auth,pubsub,database \
+  --only firestore,functions,auth,pubsub,database,storage \
   --project "$PROJECT_ID" \
   ${inspect_flag:+"${inspect_flag[@]}"} \
   ${DATA_DIR:+"--import=$DATA_DIR"}
