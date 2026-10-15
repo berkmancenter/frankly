@@ -7,21 +7,27 @@ const { RUN_ID_PATTERN } = require('./delivery')
 const DELIVERY_ID_PATTERN = /^dlv_[a-f0-9]{1,64}$/
 
 /**
- * Returns `{ deliveryId, runId, runAttempt }` for a valid task body, or
- * null.
+ * Returns `{ deliveryId, runId, runAttempt }` (plus `afterLease: true` for a
+ * task that waited for an in-flight attempt) for a valid task body, or null.
  */
 function parseDeliveryTaskRequest(body) {
-    const { deliveryId, runId, runAttempt } = body || {}
+    const { deliveryId, runId, runAttempt, afterLease } = body || {}
     if (typeof deliveryId !== 'string' || !DELIVERY_ID_PATTERN.test(deliveryId)) return null
     if (typeof runId !== 'string' || !RUN_ID_PATTERN.test(runId)) return null
-    if (!Number.isInteger(runAttempt) || runAttempt < 2) return null
-    return { deliveryId, runId, runAttempt }
+    // Attempt 1 is normally sent directly, but a task can wait for its lease.
+    if (!Number.isInteger(runAttempt) || runAttempt < 1) return null
+    if (afterLease !== undefined && afterLease !== true) return null
+    const request = { deliveryId, runId, runAttempt }
+    if (afterLease === true) request.afterLease = true
+    return request
 }
 
 /**
  * Runs one task request and returns `{ status, body }` for the response.
  *
- * - 400 for a malformed body: Cloud Tasks retrying it cannot help.
+ * - 200 with an error body for a malformed body. Cloud Tasks retries every
+ *   non-2xx answer, and task bodies only come from our own code, so a
+ *   malformed one is a bug: it is logged as an error and not retried.
  * - 200 when the attempt ran or was skipped as stale. Our own retry policy
  *   decides what happens next, so Cloud Tasks must not add retries.
  * - 500 when something unexpected failed (for example Firestore was not
@@ -31,7 +37,10 @@ function parseDeliveryTaskRequest(body) {
 async function handleDeliveryTask({ method, body, attemptDelivery, logger = console }) {
     if (method !== 'POST') return { status: 405, body: 'Method not allowed' }
     const request = parseDeliveryTaskRequest(body)
-    if (!request) return { status: 400, body: 'Invalid request' }
+    if (!request) {
+        logger.error('External integrations: ignored malformed delivery task:', body)
+        return { status: 200, body: { error: 'ignored malformed task' } }
+    }
     try {
         const result = await attemptDelivery(request)
         return {

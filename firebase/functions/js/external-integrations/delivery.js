@@ -28,6 +28,10 @@ const MODERATOR_STATUSES = ['owner', 'admin', 'moderator', 'mod']
 const newRunId = () => crypto.randomBytes(8).toString('hex')
 const RUN_ID_PATTERN = /^[a-f0-9]{16}$/
 
+// How long after a lease expires a task that found the delivery in flight
+// runs again.
+const LEASE_GRACE_MS = 5000
+
 function toDate(value) {
     if (value == null) return null
     if (value instanceof Date) return value
@@ -209,8 +213,14 @@ function createDeliveryService({
      * Claims and runs one attempt. `runId` and `runAttempt` must match the
      * delivery's current run, which makes stale or duplicated Cloud Tasks
      * no-ops.
+     *
+     * A claim sets a lease (`inFlightUntil`) that the final update clears. If
+     * the function stops between the two, the lease stays behind and the
+     * same attempt may be claimed again once it has expired. A task that
+     * finds the delivery in flight is scheduled again for just after the
+     * lease, once (`afterLease`), so such an attempt is not lost.
      */
-    async function attemptDelivery({ deliveryId, runId, runAttempt }) {
+    async function attemptDelivery({ deliveryId, runId, runAttempt, afterLease = false }) {
         const ref = firestore.doc(`${DELIVERIES}/${deliveryId}`)
         const claimedAt = now()
         const claim = await firestore.runTransaction(async (tx) => {
@@ -219,9 +229,14 @@ function createDeliveryService({
             const data = snapshot.data()
             if (data.status !== STATUS_PENDING) return { skipped: 'not-pending' }
             if (data.runId !== runId) return { skipped: 'stale-run' }
-            if ((data.runAttempts || 0) !== runAttempt - 1) return { skipped: 'stale-attempt' }
+            const runAttempts = data.runAttempts || 0
             const inFlightUntil = toDate(data.inFlightUntil)
-            if (inFlightUntil && inFlightUntil > claimedAt) return { skipped: 'in-flight' }
+            // This attempt was claimed but never recorded its result.
+            const unfinished = runAttempts === runAttempt && inFlightUntil != null
+            if (runAttempts !== runAttempt - 1 && !unfinished) return { skipped: 'stale-attempt' }
+            if (inFlightUntil && inFlightUntil > claimedAt) {
+                return { skipped: 'in-flight', inFlightUntil }
+            }
 
             const attempts = (data.attempts || 0) + 1
             tx.update(ref, {
@@ -233,6 +248,9 @@ function createDeliveryService({
             })
             return { delivery: { ...data, attempts, runAttempts: runAttempt } }
         })
+        if (claim.skipped === 'in-flight') {
+            return waitForLease({ deliveryId, runId, runAttempt, afterLease }, claim.inFlightUntil)
+        }
         if (claim.skipped) return claim
 
         const delivery = claim.delivery
@@ -277,6 +295,24 @@ function createDeliveryService({
 
         await ref.update(update)
         return { status: update.status, outcome }
+    }
+
+    // Schedules the same task again for just after the lease. A task that
+    // already waited once gives up instead, so this cannot loop: by then the
+    // attempt was claimed again by someone else, who owns it.
+    async function waitForLease({ deliveryId, runId, runAttempt, afterLease }, inFlightUntil) {
+        if (afterLease) {
+            logger.error(
+                `External integrations: ${deliveryId} attempt ${runAttempt} is still in flight after its lease; dropping this task`
+            )
+            return { skipped: 'in-flight' }
+        }
+        await enqueueFunctionCall({
+            functionName: TASK_FUNCTION_NAME,
+            payload: { deliveryId, runId, runAttempt, afterLease: true },
+            scheduleTime: new Date(inFlightUntil.getTime() + LEASE_GRACE_MS),
+        })
+        return { skipped: 'in-flight', requeued: true }
     }
 
     async function sendDelivery(delivery) {
@@ -454,5 +490,6 @@ module.exports = {
     EVENT_SETTINGS,
     TASK_FUNCTION_NAME,
     RUN_ID_PATTERN,
+    LEASE_GRACE_MS,
     createDeliveryService,
 }

@@ -8,6 +8,16 @@ const quiet = { error() {} }
 
 test('accepts a well-formed task body', () => {
     assert.deepEqual(parseDeliveryTaskRequest(valid), valid)
+    assert.deepEqual(parseDeliveryTaskRequest({ ...valid, afterLease: true }), {
+        ...valid,
+        afterLease: true,
+    })
+    // A task that waited for an in-flight first attempt.
+    assert.deepEqual(parseDeliveryTaskRequest({ ...valid, runAttempt: 1, afterLease: true }), {
+        ...valid,
+        runAttempt: 1,
+        afterLease: true,
+    })
 })
 
 test('rejects malformed task bodies', () => {
@@ -20,15 +30,18 @@ test('rejects malformed task bodies', () => {
         { ...valid, runId: '0123456789ABCDEF' },
         { ...valid, runId: '0123456789abcde' },
         { ...valid, runId: 12345 },
-        { ...valid, runAttempt: 1 },
+        { ...valid, runAttempt: 0 },
         { ...valid, runAttempt: '2' },
+        { ...valid, afterLease: 'yes' },
+        { ...valid, afterLease: false },
     ]) {
         assert.equal(parseDeliveryTaskRequest(body), null, JSON.stringify(body))
     }
 })
 
-test('answers 400 for a malformed body without attempting', async () => {
+test('answers 200 for a malformed body without attempting, and logs it', async () => {
     let called = false
+    const errors = []
     const result = await handleDeliveryTask({
         method: 'POST',
         body: { ...valid, runId: '' },
@@ -36,9 +49,12 @@ test('answers 400 for a malformed body without attempting', async () => {
             called = true
             return {}
         },
+        logger: { error: (...args) => errors.push(args) },
     })
-    assert.equal(result.status, 400)
+    // Cloud Tasks retries any non-2xx answer; a malformed task never heals.
+    assert.deepEqual(result, { status: 200, body: { error: 'ignored malformed task' } })
     assert.equal(called, false)
+    assert.equal(errors.length, 1)
 })
 
 test('answers 405 for other methods', async () => {

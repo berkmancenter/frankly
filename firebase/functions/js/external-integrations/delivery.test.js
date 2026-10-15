@@ -262,6 +262,106 @@ test('stale or duplicate tasks are ignored', async () => {
     assert.equal(ctx.requests.length, 2)
 })
 
+test('every finished attempt clears its lease', async () => {
+    const ctx = setup({
+        integrations: [{ id: 'int1', events: ['recording.ready'] }],
+        responses: [503],
+    })
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    const path = `external-integration-deliveries/${mp4Id()}`
+    assert.equal(ctx.firestore.get(path).status, 'pending')
+    assert.equal(ctx.firestore.get(path).inFlightUntil, null)
+
+    ctx.advance(60000)
+    await ctx.service.attemptDelivery(ctx.tasks[0].payload)
+    assert.equal(ctx.firestore.get(path).status, 'delivered')
+    assert.equal(ctx.firestore.get(path).inFlightUntil, null)
+})
+
+// A receiver call that never returns stands in for a function that stopped
+// between claiming an attempt and recording its result.
+function setupWithStoppedAttempt() {
+    const calls = []
+    const ctx = setup({
+        integrations: [{ id: 'int1', events: ['recording.ready'] }],
+        postImpl: async (url, options) => {
+            calls.push({ url, ...options })
+            if (calls.length === 1) return { status: 503, bodySnippet: '' }
+            if (calls.length === 2) return new Promise(() => {})
+            return { status: 200, bodySnippet: '' }
+        },
+    })
+    return { ...ctx, calls }
+}
+
+test('a task that finds the attempt in flight runs again after the lease', async () => {
+    const ctx = setupWithStoppedAttempt()
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    const task = ctx.tasks[0].payload
+    ctx.advance(60000)
+
+    // Attempt 2 is claimed and then stops.
+    ctx.service.attemptDelivery(task)
+    await new Promise((resolve) => setImmediate(resolve))
+    assert.equal(ctx.calls.length, 2)
+    const path = `external-integration-deliveries/${mp4Id()}`
+    const lease = ctx.firestore.get(path).inFlightUntil
+    assert.ok(lease)
+
+    // Cloud Tasks retries the same task while the lease is active.
+    assert.deepEqual(await ctx.service.attemptDelivery(task), {
+        skipped: 'in-flight',
+        requeued: true,
+    })
+    assert.equal(ctx.tasks.length, 2)
+    assert.deepEqual(ctx.tasks[1].payload, { ...task, afterLease: true })
+    assert.ok(ctx.tasks[1].scheduleTime > lease)
+    assert.equal(ctx.calls.length, 2)
+})
+
+test('an attempt that stopped after its claim is retried once its lease expires', async () => {
+    const ctx = setupWithStoppedAttempt()
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    const task = ctx.tasks[0].payload
+    ctx.advance(60000)
+    ctx.service.attemptDelivery(task)
+    await new Promise((resolve) => setImmediate(resolve))
+    await ctx.service.attemptDelivery(task)
+    const waiting = ctx.tasks[1]
+
+    // When the waiting task runs, the lease has expired: the attempt is
+    // claimed again and sent once, even if the task arrives twice.
+    ctx.advance(waiting.scheduleTime.getTime() - Date.parse('2026-03-01T12:01:00Z'))
+    const results = await Promise.all([
+        ctx.service.attemptDelivery(waiting.payload),
+        ctx.service.attemptDelivery(waiting.payload),
+    ])
+    assert.equal(ctx.calls.length, 3)
+    // The duplicate finds the new claim in flight and, having waited once
+    // already, drops out.
+    assert.deepEqual(results.map((r) => r.status || r.skipped).sort(), ['delivered', 'in-flight'])
+    const delivery = ctx.firestore.get(`external-integration-deliveries/${mp4Id()}`)
+    assert.equal(delivery.status, 'delivered')
+    assert.equal(delivery.runAttempts, 2)
+    assert.equal(delivery.inFlightUntil, null)
+    assert.equal(ctx.tasks.length, 2)
+})
+
+test('a task that waited for a lease does not wait again', async () => {
+    const ctx = setupWithStoppedAttempt()
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    const task = ctx.tasks[0].payload
+    ctx.advance(60000)
+    ctx.service.attemptDelivery(task)
+    await new Promise((resolve) => setImmediate(resolve))
+
+    assert.deepEqual(await ctx.service.attemptDelivery({ ...task, afterLease: true }), {
+        skipped: 'in-flight',
+    })
+    assert.equal(ctx.tasks.length, 1)
+    assert.equal(ctx.calls.length, 2)
+})
+
 test('a task without a run id is ignored', async () => {
     const ctx = setup({
         integrations: [{ id: 'int1', events: ['recording.ready'] }],
