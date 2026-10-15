@@ -4,6 +4,7 @@ import 'package:client/services.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/external_integrations/external_integration.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// Reads and changes external integrations (webhooks that receive recordings
 /// and transcripts). Configuration changes go through Cloud Functions; the
@@ -73,8 +74,12 @@ class ExternalIntegrationsService {
 
   /// Integrations that will receive this event's recordings. Empty when the
   /// feature is not used, so callers can hide their UI.
+  ///
+  /// Follows changes to both the community's integrations and the event's
+  /// settings. The settings are only listened to while the community has an
+  /// active integration.
   Stream<List<ExternalIntegration>> enabledIntegrationsForEvent(Event event) {
-    return activeIntegrations(event.communityId).asyncExpand(
+    return activeIntegrations(event.communityId).switchMap(
       (integrations) => integrations.isEmpty
           ? Stream.value(const <ExternalIntegration>[])
           : eventSettings(event).map(

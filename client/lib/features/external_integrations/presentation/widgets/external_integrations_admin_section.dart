@@ -49,8 +49,11 @@ class _ExternalIntegrationsAdminSectionState
       webhookUrl = endpoint?.webhookUrl;
     }
     if (!mounted) return;
+    // Not dismissible from outside: a save in progress may return a new
+    // secret that is shown only once.
     final secret = await showDialog<String?>(
       context: context,
+      barrierDismissible: false,
       builder: (_) => _IntegrationFormDialog(
         communityId: widget.communityId,
         integration: integration,
@@ -413,103 +416,110 @@ class _IntegrationFormDialogState extends State<_IntegrationFormDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return AlertDialog(
-      title: Text(
-        widget.integration == null ? l10n.addIntegration : l10n.editIntegration,
-      ),
-      content: SizedBox(
-        width: 480,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _field(_name, l10n.integrationDisplayName, maxLength: 80),
-              _field(
-                _logoUrl,
-                l10n.integrationLogoUrl,
-                keyboardType: TextInputType.url,
-              ),
-              _field(
-                _description,
-                l10n.integrationDescription,
-                maxLines: 2,
-                maxLength: 500,
-              ),
-              _field(
-                _webhookUrl,
-                l10n.integrationWebhookUrl,
-                keyboardType: TextInputType.url,
-              ),
-              _field(
-                _referenceLabel,
-                l10n.integrationReferenceLabel,
-                maxLength: 60,
-              ),
-              Text(
-                l10n.integrationEventsToSend,
-                style: context.theme.textTheme.titleSmall,
-              ),
-              for (final entry in {
-                ExternalIntegrationEventTypes.recordingReady:
-                    l10n.integrationEventRecordingReady,
-                ExternalIntegrationEventTypes.transcriptReady:
-                    l10n.integrationEventTranscriptReady,
-              }.entries)
-                CheckboxListTile(
-                  contentPadding: EdgeInsets.zero,
-                  dense: true,
-                  value: _events.contains(entry.key),
-                  title: Text(entry.value),
-                  onChanged: (checked) => setState(() {
-                    if (checked == true) {
-                      _events.add(entry.key);
-                    } else {
-                      _events.remove(entry.key);
-                    }
-                  }),
+    // While saving, back and Escape must not close the dialog: the response
+    // may carry the new secret, which is only shown once.
+    return PopScope(
+      canPop: !_saving,
+      child: AlertDialog(
+        title: Text(
+          widget.integration == null
+              ? l10n.addIntegration
+              : l10n.editIntegration,
+        ),
+        content: SizedBox(
+          width: 480,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _field(_name, l10n.integrationDisplayName, maxLength: 80),
+                _field(
+                  _logoUrl,
+                  l10n.integrationLogoUrl,
+                  keyboardType: TextInputType.url,
                 ),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                value: _enabledForNewEvents,
-                title: Text(l10n.integrationEnabledForNewEvents),
-                onChanged: (value) =>
-                    setState(() => _enabledForNewEvents = value),
-              ),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                value: _isActive,
-                title: Text(l10n.integrationActive),
-                onChanged: (value) => setState(() => _isActive = value),
-              ),
-              if (_error != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    _error!,
-                    style: TextStyle(color: context.theme.colorScheme.error),
+                _field(
+                  _description,
+                  l10n.integrationDescription,
+                  maxLines: 2,
+                  maxLength: 500,
+                ),
+                _field(
+                  _webhookUrl,
+                  l10n.integrationWebhookUrl,
+                  keyboardType: TextInputType.url,
+                ),
+                _field(
+                  _referenceLabel,
+                  l10n.integrationReferenceLabel,
+                  maxLength: 60,
+                ),
+                Text(
+                  l10n.integrationEventsToSend,
+                  style: context.theme.textTheme.titleSmall,
+                ),
+                for (final entry in {
+                  ExternalIntegrationEventTypes.recordingReady:
+                      l10n.integrationEventRecordingReady,
+                  ExternalIntegrationEventTypes.transcriptReady:
+                      l10n.integrationEventTranscriptReady,
+                }.entries)
+                  CheckboxListTile(
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    value: _events.contains(entry.key),
+                    title: Text(entry.value),
+                    onChanged: (checked) => setState(() {
+                      if (checked == true) {
+                        _events.add(entry.key);
+                      } else {
+                        _events.remove(entry.key);
+                      }
+                    }),
                   ),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  value: _enabledForNewEvents,
+                  title: Text(l10n.integrationEnabledForNewEvents),
+                  onChanged: (value) =>
+                      setState(() => _enabledForNewEvents = value),
                 ),
-            ],
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  value: _isActive,
+                  title: Text(l10n.integrationActive),
+                  onChanged: (value) => setState(() => _isActive = value),
+                ),
+                if (_error != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      _error!,
+                      style: TextStyle(color: context.theme.colorScheme.error),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
+        actions: [
+          TextButton(
+            onPressed: _saving ? null : () => Navigator.pop(context),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: _saving ? null : _save,
+            child: _saving
+                ? SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Text(l10n.save),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: _saving ? null : () => Navigator.pop(context),
-          child: Text(l10n.cancel),
-        ),
-        TextButton(
-          onPressed: _saving ? null : _save,
-          child: _saving
-              ? SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Text(l10n.save),
-        ),
-      ],
     );
   }
 }
