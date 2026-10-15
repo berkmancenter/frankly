@@ -157,7 +157,8 @@ class _ManipulateDiscussionThreadPageState
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: AppClickableWidget(
-                      onTap: () => _presenter.pickImage(),
+                      onTap: () =>
+                          alertOnError(context, () => _presenter.pickImage()),
                       isIcon: false,
                       child: Row(
                         children: [
