@@ -33,8 +33,8 @@ class TsTypeMapper {
       final fromJsonName = jsonKey != null
           ? _staticFunctionName(jsonKey.peek('fromJson'))
           : null;
-      final unknownEnumValueIsNull = jsonKey != null &&
-          jsonKey.peek('unknownEnumValue')?.isNull == true;
+      final unknownEnumValueIsNull =
+          jsonKey != null && jsonKey.peek('unknownEnumValue')?.isNull == true;
       final jsonName = jsonKey?.peek('name')?.stringValue;
 
       var zodExpr = _zodExprFor(
@@ -108,8 +108,7 @@ class TsTypeMapper {
         var expr = 'z.enum([$values])';
         if (unknownEnumValueIsNull) {
           // Unknown values should parse to null rather than throwing.
-          expr =
-              'z.enum([$values]).catch(undefined as any).nullable()';
+          expr = 'z.enum([$values]).catch(undefined as any).nullable()';
         }
         return FieldResult(expr);
       }
@@ -165,14 +164,14 @@ class TsTypeMapper {
   }
 
   ConstantReader? _jsonKeyAnnotation(ParameterElement param) {
-    final checker = const TypeChecker.fromUrl(
+    const checker = TypeChecker.fromUrl(
         'package:json_annotation/src/json_key.dart#JsonKey');
     final annotation = checker.firstAnnotationOf(param);
     return annotation == null ? null : ConstantReader(annotation);
   }
 
   ConstantReader? _defaultAnnotation(ParameterElement param) {
-    final checker = TypeChecker.fromUrl(
+    const checker = TypeChecker.fromUrl(
         'package:freezed_annotation/freezed_annotation.dart#Default');
     final annotation = checker.firstAnnotationOf(param);
     return annotation == null ? null : ConstantReader(annotation);
@@ -197,7 +196,8 @@ class TsTypeMapper {
     final enumElement = obj.type?.element;
     if (enumElement is EnumElement) {
       final index = obj.getField('index')?.toIntValue();
-      final constants = enumElement.fields.where((f) => f.isEnumConstant).toList();
+      final constants =
+          enumElement.fields.where((f) => f.isEnumConstant).toList();
       if (index != null && index < constants.length) {
         return "'${constants[index].name}'";
       }
