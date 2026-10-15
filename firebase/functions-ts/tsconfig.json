@@ -12,8 +12,9 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "types": ["node", "jest"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.test.ts", "node_modules", "lib"]
+  "exclude": ["src/test/*.test.ts", "node_modules", "lib"]
 }

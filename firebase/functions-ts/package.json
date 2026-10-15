@@ -6,8 +6,8 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json --watch",
     "lint": "eslint .",
     "test": "jest",
     "serve": "npm run build && firebase emulators:start --only functions"
@@ -23,9 +23,9 @@
     "@types/jest": "^29.5.12",
     "@types/node": "^24.0.0",
     "eslint": "^9.9.0",
-    "typescript-eslint": "^8.0.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.4",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.0.0"
   }
 }
