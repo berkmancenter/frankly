@@ -43,6 +43,7 @@
     "firebase/functions/js/external-integrations/signing.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
     "firebase/functions/js/external-integrations/payload.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
     "firebase/functions/js/external-integrations/retry.js": ["resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
+    "firebase/functions/js/external-integrations/http-post.js": ["resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
     "firebase/functions/js/external-integrations/cloud-tasks.js": ["resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
     "firebase/functions/lib/admin/partner_agreements/on_partner_agreements.dart": [
       "PartnerAgreementOnCreate",

@@ -6,6 +6,8 @@ const { deliveryIdFor } = require('./payload')
 const { verifySignature } = require('./signing')
 const { MAX_ATTEMPTS_PER_RUN } = require('./retry')
 const { FakeFirestore, FakeBucket } = require('./test-fakes')
+const { postJson } = require('./http-post')
+const { createSafeLookup } = require('./url-validation')
 
 const COMMUNITY = 'c1'
 const EVENT_PATH = `community/${COMMUNITY}/templates/t1/events/e1`
@@ -19,6 +21,9 @@ function setup({
     responses = [],
     lookupAddress = '93.184.216.34',
     enqueueError = null,
+    postImpl = null,
+    connectLookup = undefined,
+    configOverrides = {},
 } = {}) {
     const docs = {
         [EVENT_PATH]: {
@@ -71,11 +76,11 @@ function setup({
 
     let clock = new Date('2026-03-01T12:00:00Z').getTime()
     const requests = []
-    const fetchImpl = async (url, options) => {
+    const fakePost = async (url, options) => {
         requests.push({ url, ...options })
         const next = responses.length > 0 ? responses.shift() : 200
         if (next instanceof Error) throw next
-        return { status: next, text: async () => `status ${next}` }
+        return { status: next, bodySnippet: `status ${next}` }
     }
     const tasks = []
     const enqueueFunctionCall = async (task) => {
@@ -86,10 +91,16 @@ function setup({
     const service = createDeliveryService({
         firestore,
         bucket,
-        config: { allowedDomains: [], signedUrlTtlSeconds: 3600, requestTimeoutMs: 5000 },
+        config: {
+            allowedDomains: [],
+            signedUrlTtlSeconds: 3600,
+            requestTimeoutMs: 5000,
+            ...configOverrides,
+        },
         enqueueFunctionCall,
-        fetchImpl,
+        postImpl: postImpl || fakePost,
         lookup: async () => [{ address: lookupAddress }],
+        connectLookup,
         now: () => new Date(clock),
         logger: { warn() {}, error() {}, log() {} },
     })
@@ -143,8 +154,9 @@ test('sends a signed delivery per subscribed artifact and records success', asyn
 
     for (const request of ctx.requests) {
         assert.equal(request.url, 'https://hooks.example.com/int1')
-        assert.equal(request.method, 'POST')
-        assert.equal(request.redirect, 'manual')
+        assert.equal(request.allowHttp, false)
+        assert.equal(request.timeoutMs, 5000)
+        assert.equal(typeof request.lookup, 'function')
         const ok = verifySignature({
             secret: SECRET,
             timestamp: request.headers['X-Frankly-Timestamp'],
@@ -301,6 +313,61 @@ test('refuses to call a host that resolves to a private address', async () => {
     assert.equal(delivery.status, 'failed')
     assert.match(delivery.lastError, /private or internal/)
     assert.equal(ctx.requests.length, 0)
+})
+
+test('refuses to connect when the host resolves to a private address at connect time', async () => {
+    // The early check sees a public address, the connection lookup a private
+    // one (DNS rebinding). The real HTTP client must not connect.
+    const resolverCalls = []
+    const rebinding = (hostname, options, callback) => {
+        resolverCalls.push(hostname)
+        callback(null, [{ address: '10.0.0.7', family: 4 }])
+    }
+    const ctx = setup({
+        integrations: [{ id: 'int1', events: ['recording.ready'] }],
+        postImpl: postJson,
+        connectLookup: createSafeLookup(rebinding),
+    })
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    const delivery = ctx.firestore.get(`external-integration-deliveries/${mp4Id()}`)
+    assert.deepEqual(resolverCalls, ['hooks.example.com'])
+    assert.equal(delivery.status, 'failed')
+    assert.match(delivery.lastError, /private or internal/)
+    assert.equal(ctx.tasks.length, 0)
+})
+
+test('network errors are retried, blocked addresses are not', async () => {
+    const blocked = new Error('Webhook host resolves to a private or internal address')
+    blocked.retryable = false
+    const ctx = setup({
+        integrations: [{ id: 'int1', events: ['recording.ready'] }],
+        responses: [new Error('ECONNRESET'), blocked],
+    })
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    let delivery = ctx.firestore.get(`external-integration-deliveries/${mp4Id()}`)
+    assert.equal(delivery.status, 'pending')
+    assert.equal(ctx.tasks.length, 1)
+
+    ctx.advance(60000)
+    await ctx.service.attemptDelivery(ctx.tasks[0].payload)
+    delivery = ctx.firestore.get(`external-integration-deliveries/${mp4Id()}`)
+    assert.equal(delivery.status, 'failed')
+    assert.equal(ctx.tasks.length, 1)
+})
+
+test('local receivers in the emulator use http and plain DNS', async () => {
+    const ctx = setup({
+        integrations: [{ id: 'int1', events: ['recording.ready'] }],
+        configOverrides: { allowLocalTargets: true },
+    })
+    await ctx.firestore
+        .doc(`community/${COMMUNITY}/external-integration-endpoints/int1`)
+        .set({ webhookUrl: 'http://127.0.0.1:9999/hook' })
+    await ctx.service.queueSessionDeliveries({ sessionId: 's1', session: ctx.session() })
+    assert.equal(ctx.requests.length, 1)
+    assert.equal(ctx.requests[0].url, 'http://127.0.0.1:9999/hook')
+    assert.equal(ctx.requests[0].allowHttp, true)
+    assert.equal(ctx.requests[0].lookup, require('dns').lookup)
 })
 
 test('skips sending when the integration was switched off after queueing', async () => {

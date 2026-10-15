@@ -7,9 +7,11 @@
 // records its own errors on the delivery document.
 
 const crypto = require('crypto')
+const dns = require('dns')
 
 const { buildWebhookHeaders } = require('./signing')
-const { validateWebhookUrlForSend } = require('./url-validation')
+const { validateWebhookUrl, validateWebhookUrlForSend, safeLookup } = require('./url-validation')
+const { postJson } = require('./http-post')
 const { deliveryIdFor, deliverableArtifacts, buildPayload, contentTypeFor } = require('./payload')
 const { nextDeliveryState, truncateError, STATUS_PENDING, STATUS_FAILED } = require('./retry')
 
@@ -40,8 +42,10 @@ function nonRetryable(message) {
  * @param deps.bucket      Cloud Storage bucket holding the artifacts
  * @param deps.config      parsed external integrations config
  * @param deps.enqueueFunctionCall  Cloud Tasks scheduler (see cloud-tasks.js)
- * @param deps.fetchImpl   fetch implementation
- * @param deps.lookup      DNS lookup override (tests)
+ * @param deps.postImpl   HTTP POST implementation (see http-post.js)
+ * @param deps.lookup      DNS lookup override for the early URL check (tests)
+ * @param deps.connectLookup  DNS lookup used for the connection itself
+ *                         (default safeLookup; tests)
  * @param deps.now         clock
  */
 function createDeliveryService({
@@ -49,8 +53,9 @@ function createDeliveryService({
     bucket,
     config,
     enqueueFunctionCall,
-    fetchImpl = globalThis.fetch,
+    postImpl = postJson,
     lookup,
+    connectLookup = safeLookup,
     now = () => new Date(),
     logger = console,
 }) {
@@ -311,28 +316,32 @@ function createDeliveryService({
             now: sentAt.getTime(),
         })
 
+        // Local receivers (emulator only) may use http and loopback addresses.
+        // Every other URL connects through connectLookup, which refuses
+        // private addresses again at connect time.
+        const local =
+            config.allowLocalTargets === true &&
+            validateWebhookUrl(url, { allowLocalTargets: true }).local === true
+
         let response
         try {
-            response = await fetchImpl(url, {
-                method: 'POST',
+            response = await postImpl(url, {
                 headers,
                 body,
-                redirect: 'manual',
-                signal: AbortSignal.timeout(config.requestTimeoutMs),
+                timeoutMs: config.requestTimeoutMs,
+                lookup: local ? dns.lookup : connectLookup,
+                allowHttp: local,
             })
         } catch (err) {
-            return { ok: false, error: `Request failed: ${err && err.message}` }
+            const outcome = { ok: false, error: `Request failed: ${err && err.message}` }
+            if (err && err.retryable === false) outcome.retryable = false
+            return outcome
         }
 
         if (response.status >= 200 && response.status < 300) {
             return { ok: true, status: response.status }
         }
-        let text = ''
-        try {
-            text = (await response.text()).slice(0, 200)
-        } catch (_) {
-            // ignore unreadable bodies
-        }
+        const text = (response.bodySnippet || '').slice(0, 200)
         return {
             ok: false,
             status: response.status,

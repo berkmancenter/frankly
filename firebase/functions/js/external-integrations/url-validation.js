@@ -244,6 +244,57 @@ async function assertResolvesToPublicAddress(hostname, { lookup = defaultLookup 
     return ips
 }
 
+/**
+ * Builds a `lookup` function for `http(s).request` that refuses to connect
+ * when the host name resolves to any blocked address. The early check in
+ * `validateWebhookUrlForSend` runs its own DNS query, so without this a host
+ * could answer that check with a public address and the connection with a
+ * private one (DNS rebinding).
+ *
+ * Supports both callback forms Node uses: `options.all === true` (array of
+ * `{ address, family }`, used by `autoSelectFamily`) and the single-address
+ * form.
+ */
+function createSafeLookup(resolve = dns.lookup) {
+    return function safeLookup(hostname, options, callback) {
+        if (typeof options === 'function') {
+            callback = options
+            options = {}
+        } else if (typeof options === 'number') {
+            options = { family: options }
+        }
+        const wantAll = Boolean(options && options.all)
+        resolve(hostname, { ...options, all: true }, (err, addresses) => {
+            if (err) {
+                callback(err)
+                return
+            }
+            const list = (addresses || []).map((a) =>
+                typeof a === 'string' ? { address: a, family: net.isIP(a) } : a
+            )
+            if (list.length === 0) {
+                const notFound = new Error(`Webhook host could not be resolved: ${hostname}`)
+                notFound.code = 'ENOTFOUND'
+                callback(notFound)
+                return
+            }
+            if (list.some((a) => isBlockedAddress(a.address))) {
+                const blocked = urlError(
+                    'Webhook host resolves to a private or internal address',
+                    false
+                )
+                blocked.code = 'EBLOCKEDADDRESS'
+                callback(blocked)
+                return
+            }
+            if (wantAll) callback(null, list)
+            else callback(null, list[0].address, list[0].family)
+        })
+    }
+}
+
+const safeLookup = createSafeLookup()
+
 /** Full check used before every request: static rules plus DNS. */
 async function validateWebhookUrlForSend(
     rawUrl,
@@ -282,4 +333,6 @@ module.exports = {
     assertResolvesToPublicAddress,
     validateWebhookUrlForSend,
     validateLogoUrl,
+    createSafeLookup,
+    safeLookup,
 }
