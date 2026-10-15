@@ -25,20 +25,26 @@ class ExternalIntegrationDefaults {
       final settingsRef = firestore.document(
         '$eventPath/${EventExternalIntegrationSettings.kCollection}/${doc.documentID}',
       );
-      // Respect a choice the host already made.
-      final existing = await settingsRef.get();
-      if (existing.exists) continue;
-
-      await settingsRef.setData(
-        DocumentData.fromMap(
-          firestoreUtils.toFirestoreJson(
-            EventExternalIntegrationSettings(
-              integrationId: doc.documentID,
-              enabled: true,
-            ).toJson(),
+      // Respect a choice the host already made. Read and write in one
+      // transaction so a host saving the settings at the same moment is not
+      // overwritten.
+      final applied = await firestore.runTransaction<bool>((transaction) async {
+        final existing = await transaction.get(settingsRef);
+        if (existing.exists) return false;
+        transaction.set(
+          settingsRef,
+          DocumentData.fromMap(
+            firestoreUtils.toFirestoreJson(
+              EventExternalIntegrationSettings(
+                integrationId: doc.documentID,
+                enabled: true,
+              ).toJson(),
+            ),
           ),
-        ),
-      );
+        );
+        return true;
+      });
+      if (!applied) continue;
       enabledIds.add(doc.documentID);
     }
     return enabledIds;
