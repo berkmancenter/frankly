@@ -180,6 +180,16 @@ void _registerJsFunctions() {
       require('../js/agora-recording-webhook.js');
   functions['imageProxy'] = require('../js/image-proxy.js');
   functions['ServeIndex'] = require('../js/serve-index.js');
+  functions['upsertExternalIntegration'] =
+      require('../js/upsert-external-integration.js');
+  functions['rotateExternalIntegrationSecret'] =
+      require('../js/rotate-external-integration-secret.js');
+  functions['deleteExternalIntegration'] =
+      require('../js/delete-external-integration.js');
+  functions['resendExternalIntegrationDelivery'] =
+      require('../js/resend-external-integration-delivery.js');
+  functions['externalIntegrationDeliveryTask'] =
+      require('../js/external-integration-delivery-task.js');
 }
 
 void main() {

@@ -8,6 +8,7 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
+import 'package:client/features/external_integrations/presentation/widgets/recording_destination_notice.dart';
 import 'package:client/features/events/features/event_page/presentation/views/event_page_contract.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_page_meeting_agenda.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_page_provider.dart';
@@ -182,8 +183,13 @@ class EventPageState extends State<EventPage> implements EventPageView {
               context: context,
               builder: (context) => AlertDialog(
                 title: Text(context.l10n.thisEventIsBeingRecorded),
-                content: Text(
-                  context.l10n.hostWillReceiveDownloadableCopy,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(context.l10n.hostWillReceiveDownloadableCopy),
+                    RecordingDestinationNotice(event: event),
+                  ],
                 ),
                 actions: [
                   TextButton(

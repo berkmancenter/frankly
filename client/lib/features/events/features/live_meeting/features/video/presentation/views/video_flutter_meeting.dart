@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:client/features/external_integrations/presentation/widgets/recording_destination_notice.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart';
@@ -103,6 +104,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
 
   void _showRecordingAlert(BuildContext context) {
     final liveMeetingProvider = LiveMeetingProvider.read(context);
+    final event = EventProvider.read(context).event;
     showDialog(
       context: context,
       builder: (dialogContext) {
@@ -111,8 +113,13 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             dialogContext.l10n.thisEventIsNowBeingRecorded,
             softWrap: true,
           ),
-          content: Text(
-            dialogContext.l10n.hostBeganRecording,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(dialogContext.l10n.hostBeganRecording),
+              RecordingDestinationNotice(event: event),
+            ],
           ),
           actions: [
             TextButton(

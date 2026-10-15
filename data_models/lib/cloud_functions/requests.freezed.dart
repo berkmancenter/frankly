@@ -12697,3 +12697,1190 @@ abstract class _GetUserIdFromAgoraIdResponse
   _$$_GetUserIdFromAgoraIdResponseCopyWith<_$_GetUserIdFromAgoraIdResponse>
       get copyWith => throw _privateConstructorUsedError;
 }
+
+UpsertExternalIntegrationRequest _$UpsertExternalIntegrationRequestFromJson(
+    Map<String, dynamic> json) {
+  return _UpsertExternalIntegrationRequest.fromJson(json);
+}
+
+/// @nodoc
+mixin _$UpsertExternalIntegrationRequest {
+  String get communityId => throw _privateConstructorUsedError;
+
+  /// Omit to create a new integration.
+  String? get integrationId => throw _privateConstructorUsedError;
+  String get displayName => throw _privateConstructorUsedError;
+  String? get logoUrl => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  String? get externalReferenceLabel => throw _privateConstructorUsedError;
+  String get webhookUrl => throw _privateConstructorUsedError;
+  List<String> get events => throw _privateConstructorUsedError;
+  bool get enabledForNewEvents => throw _privateConstructorUsedError;
+  bool get isActive => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $UpsertExternalIntegrationRequestCopyWith<UpsertExternalIntegrationRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UpsertExternalIntegrationRequestCopyWith<$Res> {
+  factory $UpsertExternalIntegrationRequestCopyWith(
+          UpsertExternalIntegrationRequest value,
+          $Res Function(UpsertExternalIntegrationRequest) then) =
+      _$UpsertExternalIntegrationRequestCopyWithImpl<$Res,
+          UpsertExternalIntegrationRequest>;
+  @useResult
+  $Res call(
+      {String communityId,
+      String? integrationId,
+      String displayName,
+      String? logoUrl,
+      String? description,
+      String? externalReferenceLabel,
+      String webhookUrl,
+      List<String> events,
+      bool enabledForNewEvents,
+      bool isActive});
+}
+
+/// @nodoc
+class _$UpsertExternalIntegrationRequestCopyWithImpl<$Res,
+        $Val extends UpsertExternalIntegrationRequest>
+    implements $UpsertExternalIntegrationRequestCopyWith<$Res> {
+  _$UpsertExternalIntegrationRequestCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? communityId = null,
+    Object? integrationId = freezed,
+    Object? displayName = null,
+    Object? logoUrl = freezed,
+    Object? description = freezed,
+    Object? externalReferenceLabel = freezed,
+    Object? webhookUrl = null,
+    Object? events = null,
+    Object? enabledForNewEvents = null,
+    Object? isActive = null,
+  }) {
+    return _then(_value.copyWith(
+      communityId: null == communityId
+          ? _value.communityId
+          : communityId // ignore: cast_nullable_to_non_nullable
+              as String,
+      integrationId: freezed == integrationId
+          ? _value.integrationId
+          : integrationId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      displayName: null == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String,
+      logoUrl: freezed == logoUrl
+          ? _value.logoUrl
+          : logoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      externalReferenceLabel: freezed == externalReferenceLabel
+          ? _value.externalReferenceLabel
+          : externalReferenceLabel // ignore: cast_nullable_to_non_nullable
+              as String?,
+      webhookUrl: null == webhookUrl
+          ? _value.webhookUrl
+          : webhookUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      events: null == events
+          ? _value.events
+          : events // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      enabledForNewEvents: null == enabledForNewEvents
+          ? _value.enabledForNewEvents
+          : enabledForNewEvents // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_UpsertExternalIntegrationRequestCopyWith<$Res>
+    implements $UpsertExternalIntegrationRequestCopyWith<$Res> {
+  factory _$$_UpsertExternalIntegrationRequestCopyWith(
+          _$_UpsertExternalIntegrationRequest value,
+          $Res Function(_$_UpsertExternalIntegrationRequest) then) =
+      __$$_UpsertExternalIntegrationRequestCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String communityId,
+      String? integrationId,
+      String displayName,
+      String? logoUrl,
+      String? description,
+      String? externalReferenceLabel,
+      String webhookUrl,
+      List<String> events,
+      bool enabledForNewEvents,
+      bool isActive});
+}
+
+/// @nodoc
+class __$$_UpsertExternalIntegrationRequestCopyWithImpl<$Res>
+    extends _$UpsertExternalIntegrationRequestCopyWithImpl<$Res,
+        _$_UpsertExternalIntegrationRequest>
+    implements _$$_UpsertExternalIntegrationRequestCopyWith<$Res> {
+  __$$_UpsertExternalIntegrationRequestCopyWithImpl(
+      _$_UpsertExternalIntegrationRequest _value,
+      $Res Function(_$_UpsertExternalIntegrationRequest) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? communityId = null,
+    Object? integrationId = freezed,
+    Object? displayName = null,
+    Object? logoUrl = freezed,
+    Object? description = freezed,
+    Object? externalReferenceLabel = freezed,
+    Object? webhookUrl = null,
+    Object? events = null,
+    Object? enabledForNewEvents = null,
+    Object? isActive = null,
+  }) {
+    return _then(_$_UpsertExternalIntegrationRequest(
+      communityId: null == communityId
+          ? _value.communityId
+          : communityId // ignore: cast_nullable_to_non_nullable
+              as String,
+      integrationId: freezed == integrationId
+          ? _value.integrationId
+          : integrationId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      displayName: null == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String,
+      logoUrl: freezed == logoUrl
+          ? _value.logoUrl
+          : logoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      externalReferenceLabel: freezed == externalReferenceLabel
+          ? _value.externalReferenceLabel
+          : externalReferenceLabel // ignore: cast_nullable_to_non_nullable
+              as String?,
+      webhookUrl: null == webhookUrl
+          ? _value.webhookUrl
+          : webhookUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      events: null == events
+          ? _value.events
+          : events // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      enabledForNewEvents: null == enabledForNewEvents
+          ? _value.enabledForNewEvents
+          : enabledForNewEvents // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_UpsertExternalIntegrationRequest
+    implements _UpsertExternalIntegrationRequest {
+  _$_UpsertExternalIntegrationRequest(
+      {required this.communityId,
+      this.integrationId,
+      required this.displayName,
+      this.logoUrl,
+      this.description,
+      this.externalReferenceLabel,
+      required this.webhookUrl,
+      this.events = const [],
+      this.enabledForNewEvents = false,
+      this.isActive = true});
+
+  factory _$_UpsertExternalIntegrationRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_UpsertExternalIntegrationRequestFromJson(json);
+
+  @override
+  final String communityId;
+
+  /// Omit to create a new integration.
+  @override
+  final String? integrationId;
+  @override
+  final String displayName;
+  @override
+  final String? logoUrl;
+  @override
+  final String? description;
+  @override
+  final String? externalReferenceLabel;
+  @override
+  final String webhookUrl;
+  @override
+  @JsonKey()
+  final List<String> events;
+  @override
+  @JsonKey()
+  final bool enabledForNewEvents;
+  @override
+  @JsonKey()
+  final bool isActive;
+
+  @override
+  String toString() {
+    return 'UpsertExternalIntegrationRequest(communityId: $communityId, integrationId: $integrationId, displayName: $displayName, logoUrl: $logoUrl, description: $description, externalReferenceLabel: $externalReferenceLabel, webhookUrl: $webhookUrl, events: $events, enabledForNewEvents: $enabledForNewEvents, isActive: $isActive)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_UpsertExternalIntegrationRequest &&
+            (identical(other.communityId, communityId) ||
+                other.communityId == communityId) &&
+            (identical(other.integrationId, integrationId) ||
+                other.integrationId == integrationId) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            (identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.externalReferenceLabel, externalReferenceLabel) ||
+                other.externalReferenceLabel == externalReferenceLabel) &&
+            (identical(other.webhookUrl, webhookUrl) ||
+                other.webhookUrl == webhookUrl) &&
+            const DeepCollectionEquality().equals(other.events, events) &&
+            (identical(other.enabledForNewEvents, enabledForNewEvents) ||
+                other.enabledForNewEvents == enabledForNewEvents) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      communityId,
+      integrationId,
+      displayName,
+      logoUrl,
+      description,
+      externalReferenceLabel,
+      webhookUrl,
+      const DeepCollectionEquality().hash(events),
+      enabledForNewEvents,
+      isActive);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_UpsertExternalIntegrationRequestCopyWith<
+          _$_UpsertExternalIntegrationRequest>
+      get copyWith => __$$_UpsertExternalIntegrationRequestCopyWithImpl<
+          _$_UpsertExternalIntegrationRequest>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_UpsertExternalIntegrationRequestToJson(
+      this,
+    );
+  }
+}
+
+abstract class _UpsertExternalIntegrationRequest
+    implements UpsertExternalIntegrationRequest {
+  factory _UpsertExternalIntegrationRequest(
+      {required final String communityId,
+      final String? integrationId,
+      required final String displayName,
+      final String? logoUrl,
+      final String? description,
+      final String? externalReferenceLabel,
+      required final String webhookUrl,
+      final List<String> events,
+      final bool enabledForNewEvents,
+      final bool isActive}) = _$_UpsertExternalIntegrationRequest;
+
+  factory _UpsertExternalIntegrationRequest.fromJson(
+      Map<String, dynamic> json) = _$_UpsertExternalIntegrationRequest.fromJson;
+
+  @override
+  String get communityId;
+  @override
+
+  /// Omit to create a new integration.
+  String? get integrationId;
+  @override
+  String get displayName;
+  @override
+  String? get logoUrl;
+  @override
+  String? get description;
+  @override
+  String? get externalReferenceLabel;
+  @override
+  String get webhookUrl;
+  @override
+  List<String> get events;
+  @override
+  bool get enabledForNewEvents;
+  @override
+  bool get isActive;
+  @override
+  @JsonKey(ignore: true)
+  _$$_UpsertExternalIntegrationRequestCopyWith<
+          _$_UpsertExternalIntegrationRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+UpsertExternalIntegrationResponse _$UpsertExternalIntegrationResponseFromJson(
+    Map<String, dynamic> json) {
+  return _UpsertExternalIntegrationResponse.fromJson(json);
+}
+
+/// @nodoc
+mixin _$UpsertExternalIntegrationResponse {
+  String get integrationId => throw _privateConstructorUsedError;
+  String? get secret => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $UpsertExternalIntegrationResponseCopyWith<UpsertExternalIntegrationResponse>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UpsertExternalIntegrationResponseCopyWith<$Res> {
+  factory $UpsertExternalIntegrationResponseCopyWith(
+          UpsertExternalIntegrationResponse value,
+          $Res Function(UpsertExternalIntegrationResponse) then) =
+      _$UpsertExternalIntegrationResponseCopyWithImpl<$Res,
+          UpsertExternalIntegrationResponse>;
+  @useResult
+  $Res call({String integrationId, String? secret});
+}
+
+/// @nodoc
+class _$UpsertExternalIntegrationResponseCopyWithImpl<$Res,
+        $Val extends UpsertExternalIntegrationResponse>
+    implements $UpsertExternalIntegrationResponseCopyWith<$Res> {
+  _$UpsertExternalIntegrationResponseCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? integrationId = null,
+    Object? secret = freezed,
+  }) {
+    return _then(_value.copyWith(
+      integrationId: null == integrationId
+          ? _value.integrationId
+          : integrationId // ignore: cast_nullable_to_non_nullable
+              as String,
+      secret: freezed == secret
+          ? _value.secret
+          : secret // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_UpsertExternalIntegrationResponseCopyWith<$Res>
+    implements $UpsertExternalIntegrationResponseCopyWith<$Res> {
+  factory _$$_UpsertExternalIntegrationResponseCopyWith(
+          _$_UpsertExternalIntegrationResponse value,
+          $Res Function(_$_UpsertExternalIntegrationResponse) then) =
+      __$$_UpsertExternalIntegrationResponseCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String integrationId, String? secret});
+}
+
+/// @nodoc
+class __$$_UpsertExternalIntegrationResponseCopyWithImpl<$Res>
+    extends _$UpsertExternalIntegrationResponseCopyWithImpl<$Res,
+        _$_UpsertExternalIntegrationResponse>
+    implements _$$_UpsertExternalIntegrationResponseCopyWith<$Res> {
+  __$$_UpsertExternalIntegrationResponseCopyWithImpl(
+      _$_UpsertExternalIntegrationResponse _value,
+      $Res Function(_$_UpsertExternalIntegrationResponse) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? integrationId = null,
+    Object? secret = freezed,
+  }) {
+    return _then(_$_UpsertExternalIntegrationResponse(
+      integrationId: null == integrationId
+          ? _value.integrationId
+          : integrationId // ignore: cast_nullable_to_non_nullable
+              as String,
+      secret: freezed == secret
+          ? _value.secret
+          : secret // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_UpsertExternalIntegrationResponse
+    implements _UpsertExternalIntegrationResponse {
+  _$_UpsertExternalIntegrationResponse(
+      {required this.integrationId, this.secret});
+
+  factory _$_UpsertExternalIntegrationResponse.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_UpsertExternalIntegrationResponseFromJson(json);
+
+  @override
+  final String integrationId;
+  @override
+  final String? secret;
+
+  @override
+  String toString() {
+    return 'UpsertExternalIntegrationResponse(integrationId: $integrationId, secret: $secret)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_UpsertExternalIntegrationResponse &&
+            (identical(other.integrationId, integrationId) ||
+                other.integrationId == integrationId) &&
+            (identical(other.secret, secret) || other.secret == secret));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, integrationId, secret);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_UpsertExternalIntegrationResponseCopyWith<
+          _$_UpsertExternalIntegrationResponse>
+      get copyWith => __$$_UpsertExternalIntegrationResponseCopyWithImpl<
+          _$_UpsertExternalIntegrationResponse>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_UpsertExternalIntegrationResponseToJson(
+      this,
+    );
+  }
+}
+
+abstract class _UpsertExternalIntegrationResponse
+    implements UpsertExternalIntegrationResponse {
+  factory _UpsertExternalIntegrationResponse(
+      {required final String integrationId,
+      final String? secret}) = _$_UpsertExternalIntegrationResponse;
+
+  factory _UpsertExternalIntegrationResponse.fromJson(
+          Map<String, dynamic> json) =
+      _$_UpsertExternalIntegrationResponse.fromJson;
+
+  @override
+  String get integrationId;
+  @override
+  String? get secret;
+  @override
+  @JsonKey(ignore: true)
+  _$$_UpsertExternalIntegrationResponseCopyWith<
+          _$_UpsertExternalIntegrationResponse>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+RotateExternalIntegrationSecretRequest
+    _$RotateExternalIntegrationSecretRequestFromJson(
+        Map<String, dynamic> json) {
+  return _RotateExternalIntegrationSecretRequest.fromJson(json);
+}
+
+/// @nodoc
+mixin _$RotateExternalIntegrationSecretRequest {
+  String get communityId => throw _privateConstructorUsedError;
+  String get integrationId => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $RotateExternalIntegrationSecretRequestCopyWith<
+          RotateExternalIntegrationSecretRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $RotateExternalIntegrationSecretRequestCopyWith<$Res> {
+  factory $RotateExternalIntegrationSecretRequestCopyWith(
+          RotateExternalIntegrationSecretRequest value,
+          $Res Function(RotateExternalIntegrationSecretRequest) then) =
+      _$RotateExternalIntegrationSecretRequestCopyWithImpl<$Res,
+          RotateExternalIntegrationSecretRequest>;
+  @useResult
+  $Res call({String communityId, String integrationId});
+}
+
+/// @nodoc
+class _$RotateExternalIntegrationSecretRequestCopyWithImpl<$Res,
+        $Val extends RotateExternalIntegrationSecretRequest>
+    implements $RotateExternalIntegrationSecretRequestCopyWith<$Res> {
+  _$RotateExternalIntegrationSecretRequestCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? communityId = null,
+    Object? integrationId = null,
+  }) {
+    return _then(_value.copyWith(
+      communityId: null == communityId
+          ? _value.communityId
+          : communityId // ignore: cast_nullable_to_non_nullable
+              as String,
+      integrationId: null == integrationId
+          ? _value.integrationId
+          : integrationId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_RotateExternalIntegrationSecretRequestCopyWith<$Res>
+    implements $RotateExternalIntegrationSecretRequestCopyWith<$Res> {
+  factory _$$_RotateExternalIntegrationSecretRequestCopyWith(
+          _$_RotateExternalIntegrationSecretRequest value,
+          $Res Function(_$_RotateExternalIntegrationSecretRequest) then) =
+      __$$_RotateExternalIntegrationSecretRequestCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String communityId, String integrationId});
+}
+
+/// @nodoc
+class __$$_RotateExternalIntegrationSecretRequestCopyWithImpl<$Res>
+    extends _$RotateExternalIntegrationSecretRequestCopyWithImpl<$Res,
+        _$_RotateExternalIntegrationSecretRequest>
+    implements _$$_RotateExternalIntegrationSecretRequestCopyWith<$Res> {
+  __$$_RotateExternalIntegrationSecretRequestCopyWithImpl(
+      _$_RotateExternalIntegrationSecretRequest _value,
+      $Res Function(_$_RotateExternalIntegrationSecretRequest) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? communityId = null,
+    Object? integrationId = null,
+  }) {
+    return _then(_$_RotateExternalIntegrationSecretRequest(
+      communityId: null == communityId
+          ? _value.communityId
+          : communityId // ignore: cast_nullable_to_non_nullable
+              as String,
+      integrationId: null == integrationId
+          ? _value.integrationId
+          : integrationId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_RotateExternalIntegrationSecretRequest
+    implements _RotateExternalIntegrationSecretRequest {
+  _$_RotateExternalIntegrationSecretRequest(
+      {required this.communityId, required this.integrationId});
+
+  factory _$_RotateExternalIntegrationSecretRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_RotateExternalIntegrationSecretRequestFromJson(json);
+
+  @override
+  final String communityId;
+  @override
+  final String integrationId;
+
+  @override
+  String toString() {
+    return 'RotateExternalIntegrationSecretRequest(communityId: $communityId, integrationId: $integrationId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_RotateExternalIntegrationSecretRequest &&
+            (identical(other.communityId, communityId) ||
+                other.communityId == communityId) &&
+            (identical(other.integrationId, integrationId) ||
+                other.integrationId == integrationId));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, communityId, integrationId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_RotateExternalIntegrationSecretRequestCopyWith<
+          _$_RotateExternalIntegrationSecretRequest>
+      get copyWith => __$$_RotateExternalIntegrationSecretRequestCopyWithImpl<
+          _$_RotateExternalIntegrationSecretRequest>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_RotateExternalIntegrationSecretRequestToJson(
+      this,
+    );
+  }
+}
+
+abstract class _RotateExternalIntegrationSecretRequest
+    implements RotateExternalIntegrationSecretRequest {
+  factory _RotateExternalIntegrationSecretRequest(
+          {required final String communityId,
+          required final String integrationId}) =
+      _$_RotateExternalIntegrationSecretRequest;
+
+  factory _RotateExternalIntegrationSecretRequest.fromJson(
+          Map<String, dynamic> json) =
+      _$_RotateExternalIntegrationSecretRequest.fromJson;
+
+  @override
+  String get communityId;
+  @override
+  String get integrationId;
+  @override
+  @JsonKey(ignore: true)
+  _$$_RotateExternalIntegrationSecretRequestCopyWith<
+          _$_RotateExternalIntegrationSecretRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+RotateExternalIntegrationSecretResponse
+    _$RotateExternalIntegrationSecretResponseFromJson(
+        Map<String, dynamic> json) {
+  return _RotateExternalIntegrationSecretResponse.fromJson(json);
+}
+
+/// @nodoc
+mixin _$RotateExternalIntegrationSecretResponse {
+  String get secret => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $RotateExternalIntegrationSecretResponseCopyWith<
+          RotateExternalIntegrationSecretResponse>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $RotateExternalIntegrationSecretResponseCopyWith<$Res> {
+  factory $RotateExternalIntegrationSecretResponseCopyWith(
+          RotateExternalIntegrationSecretResponse value,
+          $Res Function(RotateExternalIntegrationSecretResponse) then) =
+      _$RotateExternalIntegrationSecretResponseCopyWithImpl<$Res,
+          RotateExternalIntegrationSecretResponse>;
+  @useResult
+  $Res call({String secret});
+}
+
+/// @nodoc
+class _$RotateExternalIntegrationSecretResponseCopyWithImpl<$Res,
+        $Val extends RotateExternalIntegrationSecretResponse>
+    implements $RotateExternalIntegrationSecretResponseCopyWith<$Res> {
+  _$RotateExternalIntegrationSecretResponseCopyWithImpl(
+      this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? secret = null,
+  }) {
+    return _then(_value.copyWith(
+      secret: null == secret
+          ? _value.secret
+          : secret // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_RotateExternalIntegrationSecretResponseCopyWith<$Res>
+    implements $RotateExternalIntegrationSecretResponseCopyWith<$Res> {
+  factory _$$_RotateExternalIntegrationSecretResponseCopyWith(
+          _$_RotateExternalIntegrationSecretResponse value,
+          $Res Function(_$_RotateExternalIntegrationSecretResponse) then) =
+      __$$_RotateExternalIntegrationSecretResponseCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String secret});
+}
+
+/// @nodoc
+class __$$_RotateExternalIntegrationSecretResponseCopyWithImpl<$Res>
+    extends _$RotateExternalIntegrationSecretResponseCopyWithImpl<$Res,
+        _$_RotateExternalIntegrationSecretResponse>
+    implements _$$_RotateExternalIntegrationSecretResponseCopyWith<$Res> {
+  __$$_RotateExternalIntegrationSecretResponseCopyWithImpl(
+      _$_RotateExternalIntegrationSecretResponse _value,
+      $Res Function(_$_RotateExternalIntegrationSecretResponse) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? secret = null,
+  }) {
+    return _then(_$_RotateExternalIntegrationSecretResponse(
+      secret: null == secret
+          ? _value.secret
+          : secret // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_RotateExternalIntegrationSecretResponse
+    implements _RotateExternalIntegrationSecretResponse {
+  _$_RotateExternalIntegrationSecretResponse({required this.secret});
+
+  factory _$_RotateExternalIntegrationSecretResponse.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_RotateExternalIntegrationSecretResponseFromJson(json);
+
+  @override
+  final String secret;
+
+  @override
+  String toString() {
+    return 'RotateExternalIntegrationSecretResponse(secret: $secret)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_RotateExternalIntegrationSecretResponse &&
+            (identical(other.secret, secret) || other.secret == secret));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, secret);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_RotateExternalIntegrationSecretResponseCopyWith<
+          _$_RotateExternalIntegrationSecretResponse>
+      get copyWith => __$$_RotateExternalIntegrationSecretResponseCopyWithImpl<
+          _$_RotateExternalIntegrationSecretResponse>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_RotateExternalIntegrationSecretResponseToJson(
+      this,
+    );
+  }
+}
+
+abstract class _RotateExternalIntegrationSecretResponse
+    implements RotateExternalIntegrationSecretResponse {
+  factory _RotateExternalIntegrationSecretResponse(
+          {required final String secret}) =
+      _$_RotateExternalIntegrationSecretResponse;
+
+  factory _RotateExternalIntegrationSecretResponse.fromJson(
+          Map<String, dynamic> json) =
+      _$_RotateExternalIntegrationSecretResponse.fromJson;
+
+  @override
+  String get secret;
+  @override
+  @JsonKey(ignore: true)
+  _$$_RotateExternalIntegrationSecretResponseCopyWith<
+          _$_RotateExternalIntegrationSecretResponse>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+DeleteExternalIntegrationRequest _$DeleteExternalIntegrationRequestFromJson(
+    Map<String, dynamic> json) {
+  return _DeleteExternalIntegrationRequest.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DeleteExternalIntegrationRequest {
+  String get communityId => throw _privateConstructorUsedError;
+  String get integrationId => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DeleteExternalIntegrationRequestCopyWith<DeleteExternalIntegrationRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DeleteExternalIntegrationRequestCopyWith<$Res> {
+  factory $DeleteExternalIntegrationRequestCopyWith(
+          DeleteExternalIntegrationRequest value,
+          $Res Function(DeleteExternalIntegrationRequest) then) =
+      _$DeleteExternalIntegrationRequestCopyWithImpl<$Res,
+          DeleteExternalIntegrationRequest>;
+  @useResult
+  $Res call({String communityId, String integrationId});
+}
+
+/// @nodoc
+class _$DeleteExternalIntegrationRequestCopyWithImpl<$Res,
+        $Val extends DeleteExternalIntegrationRequest>
+    implements $DeleteExternalIntegrationRequestCopyWith<$Res> {
+  _$DeleteExternalIntegrationRequestCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? communityId = null,
+    Object? integrationId = null,
+  }) {
+    return _then(_value.copyWith(
+      communityId: null == communityId
+          ? _value.communityId
+          : communityId // ignore: cast_nullable_to_non_nullable
+              as String,
+      integrationId: null == integrationId
+          ? _value.integrationId
+          : integrationId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_DeleteExternalIntegrationRequestCopyWith<$Res>
+    implements $DeleteExternalIntegrationRequestCopyWith<$Res> {
+  factory _$$_DeleteExternalIntegrationRequestCopyWith(
+          _$_DeleteExternalIntegrationRequest value,
+          $Res Function(_$_DeleteExternalIntegrationRequest) then) =
+      __$$_DeleteExternalIntegrationRequestCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String communityId, String integrationId});
+}
+
+/// @nodoc
+class __$$_DeleteExternalIntegrationRequestCopyWithImpl<$Res>
+    extends _$DeleteExternalIntegrationRequestCopyWithImpl<$Res,
+        _$_DeleteExternalIntegrationRequest>
+    implements _$$_DeleteExternalIntegrationRequestCopyWith<$Res> {
+  __$$_DeleteExternalIntegrationRequestCopyWithImpl(
+      _$_DeleteExternalIntegrationRequest _value,
+      $Res Function(_$_DeleteExternalIntegrationRequest) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? communityId = null,
+    Object? integrationId = null,
+  }) {
+    return _then(_$_DeleteExternalIntegrationRequest(
+      communityId: null == communityId
+          ? _value.communityId
+          : communityId // ignore: cast_nullable_to_non_nullable
+              as String,
+      integrationId: null == integrationId
+          ? _value.integrationId
+          : integrationId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_DeleteExternalIntegrationRequest
+    implements _DeleteExternalIntegrationRequest {
+  _$_DeleteExternalIntegrationRequest(
+      {required this.communityId, required this.integrationId});
+
+  factory _$_DeleteExternalIntegrationRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_DeleteExternalIntegrationRequestFromJson(json);
+
+  @override
+  final String communityId;
+  @override
+  final String integrationId;
+
+  @override
+  String toString() {
+    return 'DeleteExternalIntegrationRequest(communityId: $communityId, integrationId: $integrationId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_DeleteExternalIntegrationRequest &&
+            (identical(other.communityId, communityId) ||
+                other.communityId == communityId) &&
+            (identical(other.integrationId, integrationId) ||
+                other.integrationId == integrationId));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, communityId, integrationId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_DeleteExternalIntegrationRequestCopyWith<
+          _$_DeleteExternalIntegrationRequest>
+      get copyWith => __$$_DeleteExternalIntegrationRequestCopyWithImpl<
+          _$_DeleteExternalIntegrationRequest>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_DeleteExternalIntegrationRequestToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DeleteExternalIntegrationRequest
+    implements DeleteExternalIntegrationRequest {
+  factory _DeleteExternalIntegrationRequest(
+          {required final String communityId,
+          required final String integrationId}) =
+      _$_DeleteExternalIntegrationRequest;
+
+  factory _DeleteExternalIntegrationRequest.fromJson(
+      Map<String, dynamic> json) = _$_DeleteExternalIntegrationRequest.fromJson;
+
+  @override
+  String get communityId;
+  @override
+  String get integrationId;
+  @override
+  @JsonKey(ignore: true)
+  _$$_DeleteExternalIntegrationRequestCopyWith<
+          _$_DeleteExternalIntegrationRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+ResendExternalIntegrationDeliveryRequest
+    _$ResendExternalIntegrationDeliveryRequestFromJson(
+        Map<String, dynamic> json) {
+  return _ResendExternalIntegrationDeliveryRequest.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ResendExternalIntegrationDeliveryRequest {
+  String get deliveryId => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ResendExternalIntegrationDeliveryRequestCopyWith<
+          ResendExternalIntegrationDeliveryRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ResendExternalIntegrationDeliveryRequestCopyWith<$Res> {
+  factory $ResendExternalIntegrationDeliveryRequestCopyWith(
+          ResendExternalIntegrationDeliveryRequest value,
+          $Res Function(ResendExternalIntegrationDeliveryRequest) then) =
+      _$ResendExternalIntegrationDeliveryRequestCopyWithImpl<$Res,
+          ResendExternalIntegrationDeliveryRequest>;
+  @useResult
+  $Res call({String deliveryId});
+}
+
+/// @nodoc
+class _$ResendExternalIntegrationDeliveryRequestCopyWithImpl<$Res,
+        $Val extends ResendExternalIntegrationDeliveryRequest>
+    implements $ResendExternalIntegrationDeliveryRequestCopyWith<$Res> {
+  _$ResendExternalIntegrationDeliveryRequestCopyWithImpl(
+      this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? deliveryId = null,
+  }) {
+    return _then(_value.copyWith(
+      deliveryId: null == deliveryId
+          ? _value.deliveryId
+          : deliveryId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_ResendExternalIntegrationDeliveryRequestCopyWith<$Res>
+    implements $ResendExternalIntegrationDeliveryRequestCopyWith<$Res> {
+  factory _$$_ResendExternalIntegrationDeliveryRequestCopyWith(
+          _$_ResendExternalIntegrationDeliveryRequest value,
+          $Res Function(_$_ResendExternalIntegrationDeliveryRequest) then) =
+      __$$_ResendExternalIntegrationDeliveryRequestCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String deliveryId});
+}
+
+/// @nodoc
+class __$$_ResendExternalIntegrationDeliveryRequestCopyWithImpl<$Res>
+    extends _$ResendExternalIntegrationDeliveryRequestCopyWithImpl<$Res,
+        _$_ResendExternalIntegrationDeliveryRequest>
+    implements _$$_ResendExternalIntegrationDeliveryRequestCopyWith<$Res> {
+  __$$_ResendExternalIntegrationDeliveryRequestCopyWithImpl(
+      _$_ResendExternalIntegrationDeliveryRequest _value,
+      $Res Function(_$_ResendExternalIntegrationDeliveryRequest) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? deliveryId = null,
+  }) {
+    return _then(_$_ResendExternalIntegrationDeliveryRequest(
+      deliveryId: null == deliveryId
+          ? _value.deliveryId
+          : deliveryId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_ResendExternalIntegrationDeliveryRequest
+    implements _ResendExternalIntegrationDeliveryRequest {
+  _$_ResendExternalIntegrationDeliveryRequest({required this.deliveryId});
+
+  factory _$_ResendExternalIntegrationDeliveryRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_ResendExternalIntegrationDeliveryRequestFromJson(json);
+
+  @override
+  final String deliveryId;
+
+  @override
+  String toString() {
+    return 'ResendExternalIntegrationDeliveryRequest(deliveryId: $deliveryId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_ResendExternalIntegrationDeliveryRequest &&
+            (identical(other.deliveryId, deliveryId) ||
+                other.deliveryId == deliveryId));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, deliveryId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ResendExternalIntegrationDeliveryRequestCopyWith<
+          _$_ResendExternalIntegrationDeliveryRequest>
+      get copyWith => __$$_ResendExternalIntegrationDeliveryRequestCopyWithImpl<
+          _$_ResendExternalIntegrationDeliveryRequest>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ResendExternalIntegrationDeliveryRequestToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ResendExternalIntegrationDeliveryRequest
+    implements ResendExternalIntegrationDeliveryRequest {
+  factory _ResendExternalIntegrationDeliveryRequest(
+          {required final String deliveryId}) =
+      _$_ResendExternalIntegrationDeliveryRequest;
+
+  factory _ResendExternalIntegrationDeliveryRequest.fromJson(
+          Map<String, dynamic> json) =
+      _$_ResendExternalIntegrationDeliveryRequest.fromJson;
+
+  @override
+  String get deliveryId;
+  @override
+  @JsonKey(ignore: true)
+  _$$_ResendExternalIntegrationDeliveryRequestCopyWith<
+          _$_ResendExternalIntegrationDeliveryRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}

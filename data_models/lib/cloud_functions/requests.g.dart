@@ -1123,3 +1123,105 @@ Map<String, dynamic> _$$_GetUserIdFromAgoraIdResponseToJson(
     <String, dynamic>{
       'userId': instance.userId,
     };
+
+_$_UpsertExternalIntegrationRequest
+    _$$_UpsertExternalIntegrationRequestFromJson(Map<String, dynamic> json) =>
+        _$_UpsertExternalIntegrationRequest(
+          communityId: json['communityId'] as String,
+          integrationId: json['integrationId'] as String?,
+          displayName: json['displayName'] as String,
+          logoUrl: json['logoUrl'] as String?,
+          description: json['description'] as String?,
+          externalReferenceLabel: json['externalReferenceLabel'] as String?,
+          webhookUrl: json['webhookUrl'] as String,
+          events: (json['events'] as List<dynamic>?)
+                  ?.map((e) => e as String)
+                  .toList() ??
+              const [],
+          enabledForNewEvents: json['enabledForNewEvents'] as bool? ?? false,
+          isActive: json['isActive'] as bool? ?? true,
+        );
+
+Map<String, dynamic> _$$_UpsertExternalIntegrationRequestToJson(
+        _$_UpsertExternalIntegrationRequest instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'integrationId': instance.integrationId,
+      'displayName': instance.displayName,
+      'logoUrl': instance.logoUrl,
+      'description': instance.description,
+      'externalReferenceLabel': instance.externalReferenceLabel,
+      'webhookUrl': instance.webhookUrl,
+      'events': instance.events,
+      'enabledForNewEvents': instance.enabledForNewEvents,
+      'isActive': instance.isActive,
+    };
+
+_$_UpsertExternalIntegrationResponse
+    _$$_UpsertExternalIntegrationResponseFromJson(Map<String, dynamic> json) =>
+        _$_UpsertExternalIntegrationResponse(
+          integrationId: json['integrationId'] as String,
+          secret: json['secret'] as String?,
+        );
+
+Map<String, dynamic> _$$_UpsertExternalIntegrationResponseToJson(
+        _$_UpsertExternalIntegrationResponse instance) =>
+    <String, dynamic>{
+      'integrationId': instance.integrationId,
+      'secret': instance.secret,
+    };
+
+_$_RotateExternalIntegrationSecretRequest
+    _$$_RotateExternalIntegrationSecretRequestFromJson(
+            Map<String, dynamic> json) =>
+        _$_RotateExternalIntegrationSecretRequest(
+          communityId: json['communityId'] as String,
+          integrationId: json['integrationId'] as String,
+        );
+
+Map<String, dynamic> _$$_RotateExternalIntegrationSecretRequestToJson(
+        _$_RotateExternalIntegrationSecretRequest instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'integrationId': instance.integrationId,
+    };
+
+_$_RotateExternalIntegrationSecretResponse
+    _$$_RotateExternalIntegrationSecretResponseFromJson(
+            Map<String, dynamic> json) =>
+        _$_RotateExternalIntegrationSecretResponse(
+          secret: json['secret'] as String,
+        );
+
+Map<String, dynamic> _$$_RotateExternalIntegrationSecretResponseToJson(
+        _$_RotateExternalIntegrationSecretResponse instance) =>
+    <String, dynamic>{
+      'secret': instance.secret,
+    };
+
+_$_DeleteExternalIntegrationRequest
+    _$$_DeleteExternalIntegrationRequestFromJson(Map<String, dynamic> json) =>
+        _$_DeleteExternalIntegrationRequest(
+          communityId: json['communityId'] as String,
+          integrationId: json['integrationId'] as String,
+        );
+
+Map<String, dynamic> _$$_DeleteExternalIntegrationRequestToJson(
+        _$_DeleteExternalIntegrationRequest instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'integrationId': instance.integrationId,
+    };
+
+_$_ResendExternalIntegrationDeliveryRequest
+    _$$_ResendExternalIntegrationDeliveryRequestFromJson(
+            Map<String, dynamic> json) =>
+        _$_ResendExternalIntegrationDeliveryRequest(
+          deliveryId: json['deliveryId'] as String,
+        );
+
+Map<String, dynamic> _$$_ResendExternalIntegrationDeliveryRequestToJson(
+        _$_ResendExternalIntegrationDeliveryRequest instance) =>
+    <String, dynamic>{
+      'deliveryId': instance.deliveryId,
+    };
