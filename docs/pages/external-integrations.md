@@ -12,7 +12,7 @@ This page describes the contract so anyone can build a receiver.
 
 1. A community owner or admin adds an integration in **Admin → Settings → Integrations**: name, logo URL, short description, webhook URL (https only), which events to send, and whether it is on for new events by default.
 2. Frankly generates a signing secret and shows it **once**. Store it in your receiver. It can be rotated later; the old secret stops working right away.
-3. Event hosts see the integration (logo and name) in the event settings and can switch it on or off for their event. They can also enter an optional reference (for example a project ID in your tool). Frankly passes it to you untouched as `externalReference`.
+3. Event hosts see the integration (logo and name) in the event settings and can switch it on or off for their event. They can also enter an optional reference (for example a project ID in your tool). Frankly trims surrounding whitespace when the host saves it and otherwise passes it to you unchanged as `externalReference`.
 4. Participants are told in the recording notice that recordings from this event are sent to the integration.
 5. When a recording or transcript of the event is ready, Frankly sends one webhook per file. Delivery status is shown to admins in the event's data dialog, with a **Resend** button.
 
@@ -107,7 +107,7 @@ Redirects are not followed. Answer with any `2xx` status to confirm receipt.
 | `event.title` | string or null | Event title. |
 | `event.scheduledTime` | ISO 8601 or null | Scheduled start. |
 | `recordingSession.*` | | The recorded room. `roomType` is `main` or `breakout`. |
-| `externalReference` | string or null | The host's per-event value, passed through untouched. |
+| `externalReference` | string or null | The host's per-event value. Surrounding whitespace is trimmed when the host saves it; otherwise it is passed through unchanged. |
 | `artifact.key` | string | Frankly's artifact key on the session. |
 | `artifact.kind` | string | `recording` or `transcript`. |
 | `artifact.fileName` | string | File name without path. |
