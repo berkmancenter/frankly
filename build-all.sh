@@ -7,6 +7,7 @@ REPO_ROOT="$SCRIPT_DIR"
 CLIENT_DIR="$REPO_ROOT/client"
 DATA_MODELS_DIR="$REPO_ROOT/data_models"
 FUNCTIONS_DIR="$REPO_ROOT/firebase/functions"
+FUNCTIONS_TS_DIR="$REPO_ROOT/firebase/functions-ts"
 
 FVM_FLUTTER_BIN="$CLIENT_DIR/.fvm/flutter_sdk/bin/flutter"
 FVM_DART_BIN="$CLIENT_DIR/.fvm/flutter_sdk/bin/dart"
@@ -36,3 +37,7 @@ npm install
 cp "$REPO_ROOT/client/web/index.html" web/index.html
 "$FLUTTER_CMD" pub get
 "$DART_CMD" run build_runner build --output=build
+
+cd "$FUNCTIONS_TS_DIR"
+npm install
+mkdir -p web && cp "$REPO_ROOT/client/web/index.html" web/index.html

@@ -7,6 +7,7 @@ REPO_ROOT="$(cd -- "$SCRIPT_DIR" && pwd)"
 CLIENT_DIR="$REPO_ROOT/client"
 DATA_MODELS_DIR="$REPO_ROOT/data_models"
 FUNCTIONS_DIR="$REPO_ROOT/firebase/functions"
+FUNCTIONS_TS_DIR="$REPO_ROOT/firebase/functions-ts"
 
 FVM_FLUTTER_BIN="$CLIENT_DIR/.fvm/flutter_sdk/bin/flutter"
 FVM_DART_BIN="$CLIENT_DIR/.fvm/flutter_sdk/bin/dart"
@@ -25,6 +26,7 @@ mkdir -p "$STAMP_DIR"
 DATA_MODELS_STAMP="$STAMP_DIR/data_models_build.stamp"
 FUNCTIONS_STAMP="$STAMP_DIR/functions_build.stamp"
 SDK_FINGERPRINT_FILE="$STAMP_DIR/sdk_fingerprint.txt"
+NODE24_DIR="$STAMP_DIR/node-v24"
 
 EMULATOR_PID=""
 
@@ -81,6 +83,40 @@ need_npm_install() {
   [ ! -f "node_modules/.package-lock.stamp" ] || \
   [ "package.json" -nt "node_modules/.package-lock.stamp" ] || \
   { [ -f "package-lock.json" ] && [ "package-lock.json" -nt "node_modules/.package-lock.stamp" ]; }
+}
+
+ensure_node_v24() {
+  if command -v nvm >/dev/null 2>&1; then
+    log "NVM detected; using it to select Node v24."
+    # shellcheck disable=SC1090
+    . "${NVM_DIR:-$HOME/.nvm}/nvm.sh"
+    nvm install 24
+    nvm use 24 >/dev/null
+    return 0
+  fi
+
+  log "Warning: NVM is not installed; manual Node v24 download is being used instead."
+
+  local node_arch node_platform tarball_url tarball_path extract_dir node_bin
+  node_arch="$(uname -m)"
+  case "$node_arch" in
+    x86_64) node_arch="x64" ;;
+    arm64|aarch64) node_arch="arm64" ;;
+  esac
+
+  node_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
+  tarball_url="https://nodejs.org/dist/latest-v24.x/node-v24.0.0-${node_platform}-${node_arch}.tar.gz"
+  tarball_path="$NODE24_DIR/node-v24.tar.gz"
+  extract_dir="$NODE24_DIR/extracted"
+  node_bin="$extract_dir/node-v24.0.0-${node_platform}-${node_arch}/bin"
+
+  if [ ! -x "$node_bin/node" ]; then
+    mkdir -p "$extract_dir"
+    curl -fsSL "$tarball_url" -o "$tarball_path"
+    tar -xzf "$tarball_path" -C "$extract_dir"
+  fi
+
+  export PATH="$node_bin:$PATH"
 }
 
 mark_npm_install() {
@@ -153,6 +189,7 @@ trap cleanup EXIT INT TERM
 require_dir "$CLIENT_DIR"
 require_dir "$DATA_MODELS_DIR"
 require_dir "$FUNCTIONS_DIR"
+require_dir "$FUNCTIONS_TS_DIR"
 
 log "Repo root: $REPO_ROOT"
 
@@ -175,6 +212,21 @@ if need_flutter_pub_get; then
 else
   log "data_models dependencies unchanged; skipping flutter pub get."
 fi
+
+log "Checking functions-ts JS dependencies..."
+cd "$FUNCTIONS_TS_DIR"
+ensure_node_v24
+
+if need_npm_install; then
+  log "Running npm install in firebase/functions-ts..."
+  npm install
+  mark_npm_install
+else
+  log "Functions-ts node_modules unchanged; skipping npm install."
+fi
+
+log "Syncing index.html template for functions-ts ServeIndex..."
+mkdir -p web && cp "$REPO_ROOT/client/web/index.html" web/index.html
 
 if need_data_models_build; then
   log "Rebuilding data_models..."
