@@ -100,38 +100,14 @@ mark_functions_ts_build() {
   touch "$FUNCTIONS_TS_STAMP"
 }
 
-ensure_node_v24() {
-  if command -v nvm >/dev/null 2>&1; then
-    log "NVM detected; using it to select Node v24."
-    # shellcheck disable=SC1090
-    . "${NVM_DIR:-$HOME/.nvm}/nvm.sh"
-    nvm install 24
-    nvm use 24 >/dev/null
-    return 0
-  fi
-
-  log "Warning: NVM is not installed; manual Node v24 download is being used instead."
-
-  local node_arch node_platform tarball_url tarball_path extract_dir node_bin
-  node_arch="$(uname -m)"
-  case "$node_arch" in
-    x86_64) node_arch="x64" ;;
-    arm64|aarch64) node_arch="arm64" ;;
+check_node_v24() {
+  local node_version
+  node_version="$(node --version 2>/dev/null || true)"
+  case "$node_version" in
+    v24.*) return 0 ;;
   esac
 
-  node_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
-  tarball_url="https://nodejs.org/dist/latest-v24.x/node-v24.0.0-${node_platform}-${node_arch}.tar.gz"
-  tarball_path="$NODE24_DIR/node-v24.tar.gz"
-  extract_dir="$NODE24_DIR/extracted"
-  node_bin="$extract_dir/node-v24.0.0-${node_platform}-${node_arch}/bin"
-
-  if [ ! -x "$node_bin/node" ]; then
-    mkdir -p "$extract_dir"
-    curl -fsSL "$tarball_url" -o "$tarball_path"
-    tar -xzf "$tarball_path" -C "$extract_dir"
-  fi
-
-  export PATH="$node_bin:$PATH"
+  log "Warning: Node v24 is not installed (found: ${node_version:-none}). Please install Node v24."
 }
 
 mark_npm_install() {
@@ -230,7 +206,7 @@ fi
 
 log "Checking functions-ts JS dependencies..."
 cd "$FUNCTIONS_TS_DIR"
-ensure_node_v24
+check_node_v24
 
 if need_npm_install; then
   log "Running npm install in firebase/functions-ts..."
