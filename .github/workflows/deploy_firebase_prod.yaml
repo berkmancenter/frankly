@@ -39,6 +39,10 @@ jobs:
       - name: Sync index.html template for ServeIndex
         run: cp ../../client/web/index.html web/index.html
 
+      - name: Sync index.html template for functions-ts temp directory
+        working-directory: firebase/functions-ts
+        run: mkdir -p web && cp ../../client/web/index.html web/index.html
+
       - name: Build Functions
         run: dart run build_runner build --output=build
 

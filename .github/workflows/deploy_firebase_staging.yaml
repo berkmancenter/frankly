@@ -77,6 +77,11 @@ jobs:
         if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         run: cp ../../client/web/index.html web/index.html
 
+      - name: Sync index.html template for functions-ts temp directory
+        if: steps.changes.outputs.functions_ts == 'true' || github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        working-directory: firebase/functions-ts
+        run: mkdir -p web && cp ../../client/web/index.html web/index.html
+
       - name: Build Functions
         if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         run: dart run build_runner build --output=build
