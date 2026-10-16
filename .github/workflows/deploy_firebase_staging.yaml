@@ -34,6 +34,9 @@ jobs:
               - 'firebase/functions/js/**'
               - 'firebase/functions/lib/**'
               - 'client/web/index.html'
+            functions_ts:
+              - 'firebase/functions-ts/**'
+              - 'client/web/index.html'
             firestore:
               - 'firebase/firestore/**'
             shared:
@@ -70,13 +73,35 @@ jobs:
         if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         run: flutter pub get
 
-      - name: Sync index.html template for ServeIndex
-        if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
-        run: cp ../../client/web/index.html web/index.html
-
       - name: Build Functions
         if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         run: dart run build_runner build --output=build
+
+      # firebase/functions-ts (Node 24, Gen2) - ServeIndex's index.html template
+      # lives under its own web/ dir now (not the Dart codebase's), since the
+      # Dart side no longer serves it at all.
+      - name: Setup Node for functions-ts
+        if: steps.changes.outputs.functions_ts == 'true' || github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+          cache-dependency-path: ./firebase/functions-ts/package-lock.json
+
+      - name: Install functions-ts Dependencies
+        if: steps.changes.outputs.functions_ts == 'true' || github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        working-directory: firebase/functions-ts
+        run: npm ci
+
+      - name: Sync index.html template for functions-ts
+        if: steps.changes.outputs.functions_ts == 'true' || github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        working-directory: firebase/functions-ts
+        run: mkdir -p web && cp ../../client/web/index.html web/index.html
+
+      - name: Build functions-ts
+        if: steps.changes.outputs.functions_ts == 'true' || github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        working-directory: firebase/functions-ts
+        run: npm run build
 
       - name: Deploy Rules and Indexes
         if: steps.changes.outputs.firestore == 'true' || github.event_name== 'workflow_dispatch'
@@ -88,16 +113,16 @@ jobs:
           PROJECT_ID: ${{ secrets.APP_STAGING_PROJECT_ID }}
 
       - name: Build Deployment Command
-        if: steps.changes.outputs.functions == 'true' && github.event_name == 'push' && steps.changes.outputs.shared == 'false'
+        if: (steps.changes.outputs.functions == 'true' || steps.changes.outputs.functions_ts == 'true') && github.event_name == 'push' && steps.changes.outputs.shared == 'false'
         id: build-deployment-cmd
         uses: jencompgeek/firebase-function-mapper@main
         with:
           force: true
           mapping-file: ${{ github.workspace }}/.github/workflows/function-mapping.json
-          files: ${{ steps.changes.outputs.functions_files }}
+          files: ${{ steps.changes.outputs.functions_files }} ${{ steps.changes.outputs.functions_ts_files }}
 
       - name: Deploy Functions
-        if: steps.changes.outputs.functions == 'true' && github.event_name == 'push' && steps.changes.outputs.shared == 'false'
+        if: (steps.changes.outputs.functions == 'true' || steps.changes.outputs.functions_ts == 'true') && github.event_name == 'push' && steps.changes.outputs.shared == 'false'
         uses: w9jds/firebase-action@v13.22.1
         with:
           args: functions:config:set "${{ secrets.FIREBASE_CONFIG }}" ; ${{ steps.build-deployment-cmd.outputs.deploy-command}}
@@ -105,7 +130,12 @@ jobs:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
           PROJECT_ID: ${{ secrets.APP_STAGING_PROJECT_ID }}
 
-        # Updates to the data model or widely used utils should deploy all functions
+        # Updates to the data model or widely used utils should deploy all functions.
+        # NOTE: functions-ts function names aren't in any `groups` entry in
+        # function-mapping.json yet, so this path does not currently redeploy
+        # functions-ts on a "shared" change - harmless today since Wave 0's
+        # functions don't consume data_models at all, but revisit once a
+        # later wave adds that dependency.
       - name: Build Deployment Command for Workflow Dispatch or Shared Code Update
         if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         id: build-deployment-cmd-manual

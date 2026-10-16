@@ -270,6 +270,18 @@
         "firebase-debug.log",
         "firebase-debug.*.log"
       ]
+    },
+    {
+      "source": "firebase/functions-ts",
+      "codebase": "functions-ts",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "src",
+        "*.md",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
     }
   ],
   "database": {

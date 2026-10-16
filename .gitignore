@@ -4,3 +4,4 @@ logs/
 docs/output
 *.log
 .local/
+firebase/functions-ts/lib

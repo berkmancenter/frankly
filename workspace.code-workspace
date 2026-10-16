@@ -36,6 +36,10 @@
       "path": "./firebase/functions",
     },
     {
+      "name": "Functions (TS)",
+      "path": "./firebase/functions-ts",
+    },
+    {
       "name": "Models",
       "path": "./data_models",
     },

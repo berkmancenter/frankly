@@ -7,6 +7,7 @@ REPO_ROOT="$(cd -- "$SCRIPT_DIR" && pwd)"
 CLIENT_DIR="$REPO_ROOT/client"
 DATA_MODELS_DIR="$REPO_ROOT/data_models"
 FUNCTIONS_DIR="$REPO_ROOT/firebase/functions"
+FUNCTIONS_TS_DIR="$REPO_ROOT/firebase/functions-ts"
 
 FVM_FLUTTER_BIN="$CLIENT_DIR/.fvm/flutter_sdk/bin/flutter"
 FVM_DART_BIN="$CLIENT_DIR/.fvm/flutter_sdk/bin/dart"
@@ -25,6 +26,8 @@ mkdir -p "$STAMP_DIR"
 DATA_MODELS_STAMP="$STAMP_DIR/data_models_build.stamp"
 FUNCTIONS_STAMP="$STAMP_DIR/functions_build.stamp"
 SDK_FINGERPRINT_FILE="$STAMP_DIR/sdk_fingerprint.txt"
+FUNCTIONS_TS_STAMP="$STAMP_DIR/functions_ts_build.stamp"
+NODE24_DIR="$STAMP_DIR/node-v24"
 
 EMULATOR_PID=""
 
@@ -81,6 +84,30 @@ need_npm_install() {
   [ ! -f "node_modules/.package-lock.stamp" ] || \
   [ "package.json" -nt "node_modules/.package-lock.stamp" ] || \
   { [ -f "package-lock.json" ] && [ "package-lock.json" -nt "node_modules/.package-lock.stamp" ]; }
+}
+
+need_functions_ts_build() {
+  [ ! -f "$FUNCTIONS_TS_STAMP" ] || \
+  find \
+    "$FUNCTIONS_TS_DIR/src" \
+    "$FUNCTIONS_TS_DIR/tsconfig.json" \
+    "$FUNCTIONS_TS_DIR/package.json" \
+    "$FUNCTIONS_TS_DIR/package-lock.json" \
+    -type f -newer "$FUNCTIONS_TS_STAMP" 2>/dev/null | grep -q .
+}
+
+mark_functions_ts_build() {
+  touch "$FUNCTIONS_TS_STAMP"
+}
+
+check_node_v24() {
+  local node_version
+  node_version="$(node --version 2>/dev/null || true)"
+  case "$node_version" in
+    v24.*) return 0 ;;
+  esac
+
+  log "Warning: Node v24 is not installed (found: ${node_version:-none}). Please install Node v24."
 }
 
 mark_npm_install() {
@@ -153,6 +180,7 @@ trap cleanup EXIT INT TERM
 require_dir "$CLIENT_DIR"
 require_dir "$DATA_MODELS_DIR"
 require_dir "$FUNCTIONS_DIR"
+require_dir "$FUNCTIONS_TS_DIR"
 
 log "Repo root: $REPO_ROOT"
 
@@ -175,6 +203,32 @@ if need_flutter_pub_get; then
 else
   log "data_models dependencies unchanged; skipping flutter pub get."
 fi
+
+log "Checking functions-ts JS dependencies..."
+cd "$FUNCTIONS_TS_DIR"
+check_node_v24
+
+if need_npm_install; then
+  log "Running npm install in firebase/functions-ts..."
+  npm install
+  mark_npm_install
+else
+  log "Functions-ts node_modules unchanged; skipping npm install."
+fi
+
+# Build TS functions
+if need_functions_ts_build; then
+  log "Rebuilding firebase/functions-ts..."
+  npm run build
+  touch "$FUNCTIONS_TS_STAMP"
+else
+  log "firebase/functions-ts unchanged; skipping TypeScript build."
+fi
+
+log "Syncing index.html template for functions-ts ServeIndex..."
+mkdir -p web && cp "$REPO_ROOT/client/web/index.html" web/index.html
+
+cd "$DATA_MODELS_DIR"
 
 if need_data_models_build; then
   log "Rebuilding data_models..."
