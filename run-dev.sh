@@ -228,6 +228,8 @@ fi
 log "Syncing index.html template for functions-ts ServeIndex..."
 mkdir -p web && cp "$REPO_ROOT/client/web/index.html" web/index.html
 
+cd "$DATA_MODELS_DIR"
+
 if need_data_models_build; then
   log "Rebuilding data_models..."
   "$DART_CMD" run build_runner build --delete-conflicting-outputs
