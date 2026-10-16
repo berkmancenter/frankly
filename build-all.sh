@@ -40,4 +40,5 @@ cp "$REPO_ROOT/client/web/index.html" web/index.html
 
 cd "$FUNCTIONS_TS_DIR"
 npm install
+npm run build
 mkdir -p web && cp "$REPO_ROOT/client/web/index.html" web/index.html

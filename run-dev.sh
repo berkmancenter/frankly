@@ -85,6 +85,20 @@ need_npm_install() {
   { [ -f "package-lock.json" ] && [ "package-lock.json" -nt "node_modules/.package-lock.stamp" ]; }
 }
 
+need_functions_ts_build() {
+  [ ! -f "$FUNCTIONS_TS_STAMP" ] || \
+  find \
+    "$FUNCTIONS_TS_DIR/src" \
+    "$FUNCTIONS_TS_DIR/tsconfig.json" \
+    "$FUNCTIONS_TS_DIR/package.json" \
+    "$FUNCTIONS_TS_DIR/package-lock.json" \
+    -type f -newer "$FUNCTIONS_TS_STAMP" 2>/dev/null | grep -q .
+}
+
+mark_functions_ts_build() {
+  touch "$FUNCTIONS_TS_STAMP"
+}
+
 ensure_node_v24() {
   if command -v nvm >/dev/null 2>&1; then
     log "NVM detected; using it to select Node v24."
@@ -223,6 +237,15 @@ if need_npm_install; then
   mark_npm_install
 else
   log "Functions-ts node_modules unchanged; skipping npm install."
+fi
+
+# Build TS functions
+if need_functions_ts_build; then
+  log "Rebuilding firebase/functions-ts..."
+  npm run build
+  touch "$FUNCTIONS_TS_STAMP"
+else
+  log "firebase/functions-ts unchanged; skipping TypeScript build."
 fi
 
 log "Syncing index.html template for functions-ts ServeIndex..."
