@@ -108,7 +108,7 @@ class TsTypeMapper {
       var expr = zodExpr.tsLine;
 
       if (param.type.nullabilitySuffix == NullabilitySuffix.question) {
-        expr += '.nullable()';
+        expr += '.nullable().default(null)';
       }
 
       if (defaultAnnotation != null) {
