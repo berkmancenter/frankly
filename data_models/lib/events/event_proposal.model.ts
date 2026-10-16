@@ -3,22 +3,22 @@
 import { z } from 'zod';
 
 export const EventProposalVoteSchema = z.object({
-  voterUserId: z.string().nullable(),
-  inFavor: z.boolean().nullable(),
-  reason: z.string().nullable(),
+  voterUserId: z.string().nullable().default(null),
+  inFavor: z.boolean().nullable().default(null),
+  reason: z.string().nullable().default(null),
 });
 
 export type EventProposalVote = z.infer<typeof EventProposalVoteSchema>;
 
 export const EventProposalSchema = z.object({
-  id: z.string().nullable(),
+  id: z.string().nullable().default(null),
   type: z.enum(['kick']).default('kick'),
   status: z.enum(['open', 'accepted', 'rejected']).default('open'),
-  initiatingUserId: z.string().nullable(),
-  targetUserId: z.string().nullable(),
-  votes: z.array(z.lazy(() => EventProposalVoteSchema)).nullable(),
-  createdAt: z.coerce.date().nullable(),
-  closedAt: z.coerce.date().nullable(),
+  initiatingUserId: z.string().nullable().default(null),
+  targetUserId: z.string().nullable().default(null),
+  votes: z.array(z.lazy(() => EventProposalVoteSchema)).nullable().default(null),
+  createdAt: z.coerce.date().nullable().default(null),
+  closedAt: z.coerce.date().nullable().default(null),
 });
 
 export type EventProposal = z.infer<typeof EventProposalSchema>;

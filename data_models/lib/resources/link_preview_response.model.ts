@@ -3,10 +3,10 @@
 import { z } from 'zod';
 
 export const LinkPreviewResponseSchema = z.object({
-  title: z.string().nullable(),
-  description: z.string().nullable(),
-  image: z.string().nullable(),
-  url: z.string().nullable(),
+  title: z.string().nullable().default(null),
+  description: z.string().nullable().default(null),
+  image: z.string().nullable().default(null),
+  url: z.string().nullable().default(null),
 });
 
 export type LinkPreviewResponse = z.infer<typeof LinkPreviewResponseSchema>;

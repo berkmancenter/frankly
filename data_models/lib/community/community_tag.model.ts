@@ -3,9 +3,9 @@
 import { z } from 'zod';
 
 export const CommunityTagSchema = z.object({
-  taggedItemType: z.enum(['community', 'template', 'resource', 'profile']).nullable(),
+  taggedItemType: z.enum(['community', 'template', 'resource', 'profile']).nullable().default(null),
   definitionId: z.string(),
-  communityId: z.string().nullable(),
+  communityId: z.string().nullable().default(null),
   taggedItemId: z.string(),
 });
 

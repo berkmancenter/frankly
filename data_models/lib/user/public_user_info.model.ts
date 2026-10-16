@@ -5,18 +5,18 @@ import { z } from 'zod';
 export const PublicUserInfoSchema = z.object({
   id: z.string(),
   agoraId: z.number().int(),
-  displayName: z.string().nullable(),
-  imageUrl: z.string().nullable(),
-  about: z.string().nullable().default(''),
+  displayName: z.string().nullable().default(null),
+  imageUrl: z.string().nullable().default(null),
+  about: z.string().nullable().default(null).default(''),
   socialMediaItems: z.array(z.lazy(() => SocialMediaItemSchema)).default([]),
-  appRole: z.enum(['owner', 'user']).nullable().default('user'),
+  appRole: z.enum(['owner', 'user']).nullable().default(null).default('user'),
 });
 
 export type PublicUserInfo = z.infer<typeof PublicUserInfoSchema>;
 
 export const SocialMediaItemSchema = z.object({
-  url: z.string().nullable(),
-  socialMediaKey: z.enum(['instagram', 'twitter', 'facebook', 'linkedin']).nullable(),
+  url: z.string().nullable().default(null),
+  socialMediaKey: z.enum(['instagram', 'twitter', 'facebook', 'linkedin']).nullable().default(null),
 });
 
 export type SocialMediaItem = z.infer<typeof SocialMediaItemSchema>;

@@ -5,12 +5,12 @@ import { z } from 'zod';
 export const PartnerAgreementSchema = z.object({
   id: z.string(),
   allowPayments: z.boolean().default(false),
-  takeRate: z.number().nullable(),
-  initialUserId: z.string().nullable(),
-  communityId: z.string().nullable(),
-  stripeConnectedAccountId: z.string().nullable(),
+  takeRate: z.number().nullable().default(null),
+  initialUserId: z.string().nullable().default(null),
+  communityId: z.string().nullable().default(null),
+  stripeConnectedAccountId: z.string().nullable().default(null),
   stripeConnectedAccountActive: z.boolean().default(false),
-  planOverride: z.string().nullable(),
+  planOverride: z.string().nullable().default(null),
 });
 
 export type PartnerAgreement = z.infer<typeof PartnerAgreementSchema>;

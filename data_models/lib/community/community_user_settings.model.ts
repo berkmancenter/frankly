@@ -3,10 +3,10 @@
 import { z } from 'zod';
 
 export const CommunityUserSettingsSchema = z.object({
-  userId: z.string().nullable(),
-  communityId: z.string().nullable(),
-  notifyEvents: z.enum(['none', 'immediate']).nullable(),
-  notifyAnnouncements: z.enum(['none', 'immediate']).nullable(),
+  userId: z.string().nullable().default(null),
+  communityId: z.string().nullable().default(null),
+  notifyEvents: z.enum(['none', 'immediate']).nullable().default(null),
+  notifyAnnouncements: z.enum(['none', 'immediate']).nullable().default(null),
 });
 
 export type CommunityUserSettings = z.infer<typeof CommunityUserSettingsSchema>;

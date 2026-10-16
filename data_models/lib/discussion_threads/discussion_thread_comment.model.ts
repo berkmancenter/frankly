@@ -5,8 +5,8 @@ import { EmotionSchema } from '../user_input/emotion.model';
 
 export const DiscussionThreadCommentSchema = z.object({
   id: z.string(),
-  createdAt: z.coerce.date().nullable(),
-  replyToCommentId: z.string().nullable(),
+  createdAt: z.coerce.date().nullable().default(null),
+  replyToCommentId: z.string().nullable().default(null),
   creatorId: z.string(),
   comment: z.string(),
   isDeleted: z.boolean().default(false),

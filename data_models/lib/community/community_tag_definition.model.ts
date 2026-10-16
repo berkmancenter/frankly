@@ -5,7 +5,7 @@ import { z } from 'zod';
 export const CommunityTagDefinitionSchema = z.object({
   id: z.string(),
   title: z.string(),
-  searchKey: z.string().nullable(),
+  searchKey: z.string().nullable().default(null),
 });
 
 export type CommunityTagDefinition = z.infer<typeof CommunityTagDefinitionSchema>;

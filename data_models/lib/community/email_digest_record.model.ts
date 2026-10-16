@@ -3,11 +3,11 @@
 import { z } from 'zod';
 
 export const EmailDigestRecordSchema = z.object({
-  id: z.string().nullable(),
-  userId: z.string().nullable(),
-  communityId: z.string().nullable(),
+  id: z.string().nullable().default(null),
+  userId: z.string().nullable().default(null),
+  communityId: z.string().nullable().default(null),
   type: z.enum(['weekly']).catch('weekly').default('weekly'),
-  sentAt: z.coerce.date().nullable(),
+  sentAt: z.coerce.date().nullable().default(null),
 });
 
 export type EmailDigestRecord = z.infer<typeof EmailDigestRecordSchema>;

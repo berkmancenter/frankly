@@ -3,16 +3,16 @@
 import { z } from 'zod';
 
 export const ParticipantAgendaItemDetailsSchema = z.object({
-  userId: z.string().nullable(),
-  agendaItemId: z.string().nullable(),
-  meetingId: z.string().nullable(),
-  readyToAdvance: z.boolean().nullable(),
-  handRaisedTime: z.coerce.date().nullable(),
-  pollResponse: z.string().nullable(),
+  userId: z.string().nullable().default(null),
+  agendaItemId: z.string().nullable().default(null),
+  meetingId: z.string().nullable().default(null),
+  readyToAdvance: z.boolean().nullable().default(null),
+  handRaisedTime: z.coerce.date().nullable().default(null),
+  pollResponse: z.string().nullable().default(null),
   wordCloudResponses: z.array(z.string()).default([]),
   suggestions: z.array(z.lazy(() => MeetingUserSuggestionSchema)).default([]),
-  videoCurrentTime: z.number().nullable(),
-  videoDuration: z.number().nullable(),
+  videoCurrentTime: z.number().nullable().default(null),
+  videoDuration: z.number().nullable().default(null),
 });
 
 export type ParticipantAgendaItemDetails = z.infer<typeof ParticipantAgendaItemDetailsSchema>;
@@ -22,7 +22,7 @@ export const MeetingUserSuggestionSchema = z.object({
   suggestion: z.string(),
   likedByIds: z.array(z.string()).default([]),
   dislikedByIds: z.array(z.string()).default([]),
-  createdDate: z.coerce.date().nullable(),
+  createdDate: z.coerce.date().nullable().default(null),
 });
 
 export type MeetingUserSuggestion = z.infer<typeof MeetingUserSuggestionSchema>;

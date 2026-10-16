@@ -7,131 +7,131 @@ import { PrePostCardSchema } from './pre_post_card.model';
 export const EventSchema = z.object({
   id: z.string(),
   status: z.enum(['active', 'canceled']).catch('active'),
-  eventType: z.enum(['hosted', 'hostless', 'livestream']).nullable(),
+  eventType: z.enum(['hosted', 'hostless', 'livestream']).nullable().default(null),
   collectionPath: z.string(),
   communityId: z.string(),
   templateId: z.string(),
   creatorId: z.string(),
-  prerequisiteTemplateId: z.string().nullable(),
-  creatorDisplayName: z.string().nullable(),
-  createdDate: z.coerce.date().nullable(),
-  scheduledTime: z.coerce.date().nullable(),
-  scheduledTimeZone: z.string().nullable(),
-  title: z.string().nullable(),
-  description: z.string().nullable(),
-  image: z.string().nullable(),
+  prerequisiteTemplateId: z.string().nullable().default(null),
+  creatorDisplayName: z.string().nullable().default(null),
+  createdDate: z.coerce.date().nullable().default(null),
+  scheduledTime: z.coerce.date().nullable().default(null),
+  scheduledTimeZone: z.string().nullable().default(null),
+  title: z.string().nullable().default(null),
+  description: z.string().nullable().default(null),
+  image: z.string().nullable().default(null),
   isPublic: z.boolean().default(false),
-  minParticipants: z.number().int().nullable(),
-  maxParticipants: z.number().int().nullable(),
+  minParticipants: z.number().int().nullable().default(null),
+  maxParticipants: z.number().int().nullable().default(null),
   agendaItems: z.array(z.lazy(() => AgendaItemSchema)).default([]),
-  waitingRoomInfo: z.lazy(() => WaitingRoomInfoSchema).nullable(),
-  breakoutRoomDefinition: z.any() /* TODO: unsupported converter fromJsonMigration */.nullable(),
+  waitingRoomInfo: z.lazy(() => WaitingRoomInfoSchema).nullable().default(null),
+  breakoutRoomDefinition: z.any() /* TODO: unsupported converter fromJsonMigration */.nullable().default(null),
   isLocked: z.boolean().default(false),
-  liveStreamInfo: z.lazy(() => LiveStreamInfoSchema).nullable(),
-  preEventCardData: z.lazy(() => PrePostCardSchema).nullable(),
-  postEventCardData: z.lazy(() => PrePostCardSchema).nullable(),
-  eventSettings: z.lazy(() => EventSettingsSchema).nullable(),
+  liveStreamInfo: z.lazy(() => LiveStreamInfoSchema).nullable().default(null),
+  preEventCardData: z.lazy(() => PrePostCardSchema).nullable().default(null),
+  postEventCardData: z.lazy(() => PrePostCardSchema).nullable().default(null),
+  eventSettings: z.lazy(() => EventSettingsSchema).nullable().default(null),
   durationInMinutes: z.number().int().default(60),
-  externalCommunityId: z.string().nullable(),
-  externalCommunityStatus: z.string().nullable(),
-  participantCountEstimate: z.number().int().nullable(),
-  presentParticipantCountEstimate: z.number().int().nullable(),
-  registrationCount: z.number().int().nullable(),
+  externalCommunityId: z.string().nullable().default(null),
+  externalCommunityStatus: z.string().nullable().default(null),
+  participantCountEstimate: z.number().int().nullable().default(null),
+  presentParticipantCountEstimate: z.number().int().nullable().default(null),
+  registrationCount: z.number().int().nullable().default(null),
   breakoutMatchIdsToRecord: z.any() /* TODO: unhandled type dynamic */.default([]),
 });
 
 export type Event = z.infer<typeof EventSchema>;
 
 export const EventSettingsSchema = z.object({
-  reminderEmails: z.boolean().nullable(),
-  chat: z.boolean().nullable(),
-  showChatMessagesInRealTime: z.boolean().nullable(),
-  talkingTimer: z.boolean().nullable(),
-  defaultStageView: z.boolean().nullable(),
-  enableBreakoutsByCategory: z.boolean().nullable(),
-  allowMultiplePeopleOnStage: z.boolean().nullable(),
-  showSmartMatchingForBreakouts: z.boolean().nullable(),
-  alwaysRecord: z.boolean().nullable(),
-  alwaysTranscribe: z.boolean().nullable(),
-  enablePrerequisites: z.boolean().nullable(),
-  agendaPreview: z.boolean().nullable(),
+  reminderEmails: z.boolean().nullable().default(null),
+  chat: z.boolean().nullable().default(null),
+  showChatMessagesInRealTime: z.boolean().nullable().default(null),
+  talkingTimer: z.boolean().nullable().default(null),
+  defaultStageView: z.boolean().nullable().default(null),
+  enableBreakoutsByCategory: z.boolean().nullable().default(null),
+  allowMultiplePeopleOnStage: z.boolean().nullable().default(null),
+  showSmartMatchingForBreakouts: z.boolean().nullable().default(null),
+  alwaysRecord: z.boolean().nullable().default(null),
+  alwaysTranscribe: z.boolean().nullable().default(null),
+  enablePrerequisites: z.boolean().nullable().default(null),
+  agendaPreview: z.boolean().nullable().default(null),
 });
 
 export type EventSettings = z.infer<typeof EventSettingsSchema>;
 
 export const LiveStreamInfoSchema = z.object({
-  muxId: z.string().nullable(),
-  muxPlaybackId: z.string().nullable(),
-  muxStatus: z.string().nullable(),
-  latestAssetPlaybackId: z.string().nullable(),
-  liveStreamWaitingTextOverride: z.string().nullable(),
-  resetStream: z.boolean().nullable(),
+  muxId: z.string().nullable().default(null),
+  muxPlaybackId: z.string().nullable().default(null),
+  muxStatus: z.string().nullable().default(null),
+  latestAssetPlaybackId: z.string().nullable().default(null),
+  liveStreamWaitingTextOverride: z.string().nullable().default(null),
+  resetStream: z.boolean().nullable().default(null),
 });
 
 export type LiveStreamInfo = z.infer<typeof LiveStreamInfoSchema>;
 
 export const ParticipantSchema = z.object({
   id: z.string(),
-  communityId: z.string().nullable(),
-  externalCommunityId: z.string().nullable(),
-  templateId: z.string().nullable(),
-  lastUpdatedTime: z.coerce.date().nullable(),
-  createdDate: z.coerce.date().nullable(),
-  scheduledTime: z.coerce.date().nullable(),
-  status: z.enum(['active', 'canceled', 'banned']).nullable(),
+  communityId: z.string().nullable().default(null),
+  externalCommunityId: z.string().nullable().default(null),
+  templateId: z.string().nullable().default(null),
+  lastUpdatedTime: z.coerce.date().nullable().default(null),
+  createdDate: z.coerce.date().nullable().default(null),
+  scheduledTime: z.coerce.date().nullable().default(null),
+  status: z.enum(['active', 'canceled', 'banned']).nullable().default(null),
   isPresent: z.boolean().default(false),
-  availableForBreakoutSessionId: z.string().nullable(),
-  membershipStatus: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable(),
-  currentBreakoutRoomId: z.string().nullable(),
+  availableForBreakoutSessionId: z.string().nullable().default(null),
+  membershipStatus: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable().default(null),
+  currentBreakoutRoomId: z.string().nullable().default(null),
   muteOverride: z.boolean().default(false),
-  joinParameters: z.record(z.string(), z.string()).nullable(),
+  joinParameters: z.record(z.string(), z.string()).nullable().default(null),
   breakoutRoomSurveyQuestions: z.array(z.lazy(() => BreakoutQuestionSchema)).default([]),
-  mostRecentPresentTime: z.coerce.date().nullable(),
-  zipCode: z.string().nullable(),
-  email: z.string().nullable(),
-  name: z.string().nullable(),
+  mostRecentPresentTime: z.coerce.date().nullable().default(null),
+  zipCode: z.string().nullable().default(null),
+  email: z.string().nullable().default(null),
+  name: z.string().nullable().default(null),
 });
 
 export type Participant = z.infer<typeof ParticipantSchema>;
 
 export const PrivateLiveStreamInfoSchema = z.object({
-  streamServerUrl: z.string().nullable(),
-  streamKey: z.string().nullable(),
+  streamServerUrl: z.string().nullable().default(null),
+  streamKey: z.string().nullable().default(null),
 });
 
 export type PrivateLiveStreamInfo = z.infer<typeof PrivateLiveStreamInfoSchema>;
 
 export const EventEmailLogSchema = z.object({
-  userId: z.string().nullable(),
-  eventEmailType: z.enum(['initialSignUp', 'oneDayReminder', 'oneHourReminder', 'updated', 'canceled', 'ended']).nullable(),
-  createdDate: z.coerce.date().nullable(),
-  sendId: z.string().nullable(),
+  userId: z.string().nullable().default(null),
+  eventEmailType: z.enum(['initialSignUp', 'oneDayReminder', 'oneHourReminder', 'updated', 'canceled', 'ended']).nullable().default(null),
+  createdDate: z.coerce.date().nullable().default(null),
+  sendId: z.string().nullable().default(null),
 });
 
 export type EventEmailLog = z.infer<typeof EventEmailLogSchema>;
 
 export const AgendaItemSchema = z.object({
   id: z.string(),
-  priority: z.number().int().nullable(),
-  creatorId: z.string().nullable(),
-  title: z.string().nullable(),
-  content: z.string().nullable(),
+  priority: z.number().int().nullable().default(null),
+  creatorId: z.string().nullable().default(null),
+  title: z.string().nullable().default(null),
+  content: z.string().nullable().default(null),
   videoType: z.enum(['youtube', 'vimeo', 'url']).default('url'),
-  type: z.enum(['text', 'video', 'image', 'poll', 'wordCloud', 'userSuggestions']).nullable(),
-  videoUrl: z.string().nullable(),
-  imageUrl: z.string().nullable(),
-  pollAnswers: z.array(z.string()).nullable(),
-  timeInSeconds: z.number().int().nullable().default(300),
-  suggestionsButtonText: z.string().nullable(),
+  type: z.enum(['text', 'video', 'image', 'poll', 'wordCloud', 'userSuggestions']).nullable().default(null),
+  videoUrl: z.string().nullable().default(null),
+  imageUrl: z.string().nullable().default(null),
+  pollAnswers: z.array(z.string()).nullable().default(null),
+  timeInSeconds: z.number().int().nullable().default(null).default(300),
+  suggestionsButtonText: z.string().nullable().default(null),
 });
 
 export type AgendaItem = z.infer<typeof AgendaItemSchema>;
 
 export const SuggestedAgendaItemSchema = z.object({
-  id: z.string().nullable(),
-  creatorId: z.string().nullable(),
-  content: z.string().nullable(),
-  createdDate: z.coerce.date().nullable(),
+  id: z.string().nullable().default(null),
+  creatorId: z.string().nullable().default(null),
+  content: z.string().nullable().default(null),
+  createdDate: z.coerce.date().nullable().default(null),
   upvotedUserIds: z.array(z.string()).default([]),
   downvotedUserIds: z.array(z.string()).default([]),
 });
@@ -139,8 +139,8 @@ export const SuggestedAgendaItemSchema = z.object({
 export type SuggestedAgendaItem = z.infer<typeof SuggestedAgendaItemSchema>;
 
 export const BreakoutRoomDefinitionSchema = z.object({
-  creatorId: z.string().nullable(),
-  targetParticipants: z.number().int().nullable(),
+  creatorId: z.string().nullable().default(null),
+  targetParticipants: z.number().int().nullable().default(null),
   questions: z.array(z.lazy(() => SurveyQuestionSchema)).default([]),
   breakoutQuestions: z.array(z.lazy(() => BreakoutQuestionSchema)).default([]),
   categories: z.array(z.lazy(() => BreakoutCategorySchema)).default([]),
@@ -150,10 +150,10 @@ export const BreakoutRoomDefinitionSchema = z.object({
 export type BreakoutRoomDefinition = z.infer<typeof BreakoutRoomDefinitionSchema>;
 
 export const SurveyQuestionSchema = z.object({
-  answerOptions: z.array(z.string()).nullable(),
-  answerIndex: z.number().int().nullable(),
-  id: z.string().nullable(),
-  question: z.string().nullable(),
+  answerOptions: z.array(z.string()).nullable().default(null),
+  answerIndex: z.number().int().nullable().default(null),
+  id: z.string().nullable().default(null),
+  question: z.string().nullable().default(null),
 });
 
 export type SurveyQuestion = z.infer<typeof SurveyQuestionSchema>;
@@ -164,7 +164,7 @@ export const BreakoutQuestionSchema = z.object({
   type: z.enum(['multipleChoice', 'freeText']).catch('multipleChoice').default('multipleChoice'),
   answerOptionId: z.string().default(''),
   answers: z.array(z.lazy(() => BreakoutAnswerSchema)).default([]),
-  freeTextAnswer: z.string().nullable(),
+  freeTextAnswer: z.string().nullable().default(null),
 });
 
 export type BreakoutQuestion = z.infer<typeof BreakoutQuestionSchema>;
@@ -193,9 +193,9 @@ export type BreakoutCategory = z.infer<typeof BreakoutCategorySchema>;
 export const WaitingRoomInfoSchema = z.object({
   durationSeconds: z.number().int().default(0),
   waitingMediaBufferSeconds: z.number().int().default(0),
-  content: z.string().nullable(),
-  waitingMediaItem: z.lazy(() => MediaItemSchema).nullable(),
-  introMediaItem: z.lazy(() => MediaItemSchema).nullable(),
+  content: z.string().nullable().default(null),
+  waitingMediaItem: z.lazy(() => MediaItemSchema).nullable().default(null),
+  introMediaItem: z.lazy(() => MediaItemSchema).nullable().default(null),
   loopWaitingVideo: z.boolean().default(false),
 });
 

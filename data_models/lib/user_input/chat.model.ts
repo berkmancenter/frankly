@@ -3,15 +3,15 @@
 import { z } from 'zod';
 
 export const ChatMessageSchema = z.object({
-  id: z.string().nullable(),
-  collectionPath: z.string().nullable(),
-  message: z.string().nullable(),
-  emotionType: z.enum(['thumbsUp', 'heart', 'hundred', 'exclamation', 'plusOne', 'laughWithTears', 'heartEyes']).nullable(),
-  creatorId: z.string().nullable(),
-  createdDate: z.coerce.date().nullable(),
+  id: z.string().nullable().default(null),
+  collectionPath: z.string().nullable().default(null),
+  message: z.string().nullable().default(null),
+  emotionType: z.enum(['thumbsUp', 'heart', 'hundred', 'exclamation', 'plusOne', 'laughWithTears', 'heartEyes']).nullable().default(null),
+  creatorId: z.string().nullable().default(null),
+  createdDate: z.coerce.date().nullable().default(null),
   messageStatus: z.enum(['active', 'removed']).catch('active').default('active'),
-  membershipStatusSnapshot: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable(),
-  broadcast: z.boolean().nullable().default(false),
+  membershipStatusSnapshot: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable().default(null),
+  broadcast: z.boolean().nullable().default(null).default(false),
 });
 
 export type ChatMessage = z.infer<typeof ChatMessageSchema>;

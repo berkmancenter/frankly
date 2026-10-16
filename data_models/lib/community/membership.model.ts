@@ -5,8 +5,8 @@ import { z } from 'zod';
 export const MembershipSchema = z.object({
   userId: z.string(),
   communityId: z.string(),
-  status: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable(),
-  firstJoined: z.coerce.date().nullable(),
+  status: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable().default(null),
+  firstJoined: z.coerce.date().nullable().default(null),
   invisible: z.boolean().default(false),
 });
 

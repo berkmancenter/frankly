@@ -3,12 +3,12 @@
 import { z } from 'zod';
 
 export const PaymentRecordSchema = z.object({
-  id: z.string().nullable(),
-  authUid: z.string().nullable(),
-  communityId: z.string().nullable(),
-  amountInCents: z.number().int().nullable(),
-  createdDate: z.coerce.date().nullable(),
-  type: z.enum(['oneTimeDonation']).nullable(),
+  id: z.string().nullable().default(null),
+  authUid: z.string().nullable().default(null),
+  communityId: z.string().nullable().default(null),
+  amountInCents: z.number().int().nullable().default(null),
+  createdDate: z.coerce.date().nullable().default(null),
+  type: z.enum(['oneTimeDonation']).nullable().default(null),
 });
 
 export type PaymentRecord = z.infer<typeof PaymentRecordSchema>;

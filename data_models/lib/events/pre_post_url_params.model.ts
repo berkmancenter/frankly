@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { PrePostCardAttributeSchema } from './pre_post_card_attribute.model';
 
 export const PrePostUrlParamsSchema = z.object({
-  buttonText: z.string().nullable(),
-  surveyUrl: z.string().nullable(),
+  buttonText: z.string().nullable().default(null),
+  surveyUrl: z.string().nullable().default(null),
   attributes: z.array(z.lazy(() => PrePostCardAttributeSchema)).default([]),
 });
 

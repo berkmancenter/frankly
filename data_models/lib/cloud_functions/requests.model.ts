@@ -16,7 +16,7 @@ export type CreateEventRequest = z.infer<typeof CreateEventRequestSchema>;
 
 export const CreateAnnouncementRequestSchema = z.object({
   communityId: z.string(),
-  announcement: z.lazy(() => AnnouncementSchema).nullable(),
+  announcement: z.lazy(() => AnnouncementSchema).nullable().default(null),
 });
 
 export type CreateAnnouncementRequest = z.infer<typeof CreateAnnouncementRequestSchema>;
@@ -67,7 +67,7 @@ export const EmailEventReminderRequestSchema = z.object({
   communityId: z.string(),
   templateId: z.string(),
   eventId: z.string(),
-  eventEmailType: z.enum(['initialSignUp', 'oneDayReminder', 'oneHourReminder', 'updated', 'canceled', 'ended']).nullable(),
+  eventEmailType: z.enum(['initialSignUp', 'oneDayReminder', 'oneHourReminder', 'updated', 'canceled', 'ended']).nullable().default(null),
 });
 
 export type EmailEventReminderRequest = z.infer<typeof EmailEventReminderRequestSchema>;
@@ -107,7 +107,7 @@ export type EmailAttachment = z.infer<typeof EmailAttachmentSchema>;
 export const SendGridEmailMessageSchema = z.object({
   subject: z.string(),
   html: z.string(),
-  attachments: z.array(z.lazy(() => EmailAttachmentSchema)).nullable(),
+  attachments: z.array(z.lazy(() => EmailAttachmentSchema)).nullable().default(null),
 });
 
 export type SendGridEmailMessage = z.infer<typeof SendGridEmailMessageSchema>;
@@ -132,7 +132,7 @@ export type GetTwilioMeetingJoinInfoRequest = z.infer<typeof GetTwilioMeetingJoi
 
 export const GetMeetingJoinInfoRequestSchema = z.object({
   eventPath: z.string(),
-  externalCommunityId: z.string().nullable(),
+  externalCommunityId: z.string().nullable().default(null),
 });
 
 export type GetMeetingJoinInfoRequest = z.infer<typeof GetMeetingJoinInfoRequestSchema>;
@@ -157,8 +157,8 @@ export type GetInstantMeetingJoinInfoRequest = z.infer<typeof GetInstantMeetingJ
 
 export const GetUserAdminDetailsRequestSchema = z.object({
   userIds: z.array(z.string()),
-  communityId: z.string().nullable(),
-  eventPath: z.string().nullable(),
+  communityId: z.string().nullable().default(null),
+  eventPath: z.string().nullable().default(null),
 });
 
 export type GetUserAdminDetailsRequest = z.infer<typeof GetUserAdminDetailsRequestSchema>;
@@ -176,7 +176,7 @@ export const GetMeetingChatsSuggestionsDataRequestSchema = z.object({
 export type GetMeetingChatsSuggestionsDataRequest = z.infer<typeof GetMeetingChatsSuggestionsDataRequestSchema>;
 
 export const GetMeetingChatsSuggestionsDataResponseSchema = z.object({
-  chatsSuggestionsList: z.array(z.lazy(() => ChatSuggestionDataSchema)).nullable(),
+  chatsSuggestionsList: z.array(z.lazy(() => ChatSuggestionDataSchema)).nullable().default(null),
 });
 
 export type GetMeetingChatsSuggestionsDataResponse = z.infer<typeof GetMeetingChatsSuggestionsDataResponseSchema>;
@@ -188,7 +188,7 @@ export const GetMeetingPollDataRequestSchema = z.object({
 export type GetMeetingPollDataRequest = z.infer<typeof GetMeetingPollDataRequestSchema>;
 
 export const GetMeetingPollDataResponseSchema = z.object({
-  polls: z.array(z.lazy(() => PollDataSchema)).nullable(),
+  polls: z.array(z.lazy(() => PollDataSchema)).nullable().default(null),
 });
 
 export type GetMeetingPollDataResponse = z.infer<typeof GetMeetingPollDataResponseSchema>;
@@ -196,20 +196,20 @@ export type GetMeetingPollDataResponse = z.infer<typeof GetMeetingPollDataRespon
 export const GetMembersDataRequestSchema = z.object({
   communityId: z.string(),
   userIds: z.array(z.string()),
-  eventPath: z.string().nullable(),
+  eventPath: z.string().nullable().default(null),
 });
 
 export type GetMembersDataRequest = z.infer<typeof GetMembersDataRequestSchema>;
 
 export const GetMembersDataResponseSchema = z.object({
-  membersDetailsList: z.array(z.lazy(() => MemberDetailsSchema)).nullable(),
+  membersDetailsList: z.array(z.lazy(() => MemberDetailsSchema)).nullable().default(null),
 });
 
 export type GetMembersDataResponse = z.infer<typeof GetMembersDataResponseSchema>;
 
 export const UserAdminDetailsSchema = z.object({
-  userId: z.string().nullable(),
-  email: z.string().nullable(),
+  userId: z.string().nullable().default(null),
+  email: z.string().nullable().default(null),
 });
 
 export type UserAdminDetails = z.infer<typeof UserAdminDetailsSchema>;
@@ -247,7 +247,7 @@ export const GetBreakoutRoomAssignmentRequestSchema = z.object({
 export type GetBreakoutRoomAssignmentRequest = z.infer<typeof GetBreakoutRoomAssignmentRequestSchema>;
 
 export const GetBreakoutRoomAssignmentResponseSchema = z.object({
-  roomId: z.string().nullable(),
+  roomId: z.string().nullable().default(null),
 });
 
 export type GetBreakoutRoomAssignmentResponse = z.infer<typeof GetBreakoutRoomAssignmentResponseSchema>;
@@ -280,7 +280,7 @@ export type DownloadTwilioCompositionResponse = z.infer<typeof DownloadTwilioCom
 export const KickParticipantRequestSchema = z.object({
   userToKickId: z.string(),
   eventPath: z.string(),
-  breakoutRoomId: z.string().nullable(),
+  breakoutRoomId: z.string().nullable().default(null),
 });
 
 export type KickParticipantRequest = z.infer<typeof KickParticipantRequestSchema>;
@@ -289,7 +289,7 @@ export const ResolveJoinRequestRequestSchema = z.object({
   communityId: z.string(),
   userId: z.string(),
   approve: z.boolean(),
-  role: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable(),
+  role: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable().default(null),
 });
 
 export type ResolveJoinRequestRequest = z.infer<typeof ResolveJoinRequestRequestSchema>;
@@ -298,7 +298,7 @@ export const InitiateBreakoutsRequestSchema = z.object({
   eventPath: z.string(),
   targetParticipantsPerRoom: z.number().int(),
   breakoutSessionId: z.string(),
-  assignmentMethod: z.enum(['targetPerRoom', 'smartMatch']).nullable(),
+  assignmentMethod: z.enum(['targetPerRoom', 'smartMatch']).nullable().default(null),
   includeWaitingRoom: z.boolean().default(false),
   useHostedApi: z.boolean().default(false),
 });
@@ -316,7 +316,7 @@ export const ReassignBreakoutRoomRequestSchema = z.object({
   eventPath: z.string(),
   breakoutRoomSessionId: z.string(),
   userId: z.string(),
-  newRoomNumber: z.string().nullable(),
+  newRoomNumber: z.string().nullable().default(null),
 });
 
 export type ReassignBreakoutRoomRequest = z.infer<typeof ReassignBreakoutRoomRequestSchema>;
@@ -325,14 +325,14 @@ export const UpdateBreakoutRoomFlagStatusRequestSchema = z.object({
   eventPath: z.string(),
   breakoutSessionId: z.string(),
   roomId: z.string(),
-  flagStatus: z.enum(['unflagged', 'needsHelp']).nullable(),
+  flagStatus: z.enum(['unflagged', 'needsHelp']).nullable().default(null),
 });
 
 export type UpdateBreakoutRoomFlagStatusRequest = z.infer<typeof UpdateBreakoutRoomFlagStatusRequestSchema>;
 
 export const CreateCommunityRequestSchema = z.object({
-  community: z.lazy(() => CommunitySchema).nullable(),
-  agreementId: z.string().nullable(),
+  community: z.lazy(() => CommunitySchema).nullable().default(null),
+  agreementId: z.string().nullable().default(null),
 });
 
 export type CreateCommunityRequest = z.infer<typeof CreateCommunityRequestSchema>;
@@ -389,10 +389,10 @@ export type UnsubscribeFromCommunityNotificationsRequest = z.infer<typeof Unsubs
 
 export const CheckAdvanceMeetingGuideRequestSchema = z.object({
   eventPath: z.string(),
-  breakoutSessionId: z.string().nullable(),
-  breakoutRoomId: z.string().nullable(),
+  breakoutSessionId: z.string().nullable().default(null),
+  breakoutRoomId: z.string().nullable().default(null),
   presentIds: z.array(z.string()),
-  userReadyAgendaId: z.string().nullable(),
+  userReadyAgendaId: z.string().nullable().default(null),
   ready: z.boolean().default(true),
 });
 
@@ -406,8 +406,8 @@ export type CheckHostlessGoToBreakoutsRequest = z.infer<typeof CheckHostlessGoTo
 
 export const AdvanceMeetingGuideAfterDelayRequestSchema = z.object({
   eventPath: z.string(),
-  breakoutSessionId: z.string().nullable(),
-  breakoutRoomId: z.string().nullable(),
+  breakoutSessionId: z.string().nullable().default(null),
+  breakoutRoomId: z.string().nullable().default(null),
   agendaItemId: z.string(),
 });
 
@@ -429,8 +429,8 @@ export type ResetParticipantAgendaItemsRequest = z.infer<typeof ResetParticipant
 export const UpdateMembershipRequestSchema = z.object({
   userId: z.string(),
   communityId: z.string(),
-  status: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable(),
-  invisible: z.boolean().nullable(),
+  status: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable().default(null),
+  invisible: z.boolean().nullable().default(null),
 });
 
 export type UpdateMembershipRequest = z.infer<typeof UpdateMembershipRequestSchema>;
@@ -440,7 +440,7 @@ export const VoteToKickRequestSchema = z.object({
   eventPath: z.string(),
   liveMeetingPath: z.string(),
   inFavor: z.boolean(),
-  reason: z.string().nullable(),
+  reason: z.string().nullable().default(null),
 });
 
 export type VoteToKickRequest = z.infer<typeof VoteToKickRequestSchema>;

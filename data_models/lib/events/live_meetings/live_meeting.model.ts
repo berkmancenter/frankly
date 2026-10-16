@@ -3,40 +3,40 @@
 import { z } from 'zod';
 
 export const LiveMeetingSchema = z.object({
-  meetingId: z.string().nullable(),
+  meetingId: z.string().nullable().default(null),
   participants: z.array(z.lazy(() => LiveMeetingParticipantSchema)).default([]),
   events: z.array(z.lazy(() => LiveMeetingEventSchema)).default([]),
-  currentBreakoutSession: z.lazy(() => BreakoutRoomSessionSchema).nullable(),
+  currentBreakoutSession: z.lazy(() => BreakoutRoomSessionSchema).nullable().default(null),
   record: z.boolean().default(false),
   isMeetingCardMinimized: z.boolean().default(false),
   pinnedUserIds: z.array(z.string()).default([]),
-  recordingSessionId: z.string().nullable(),
-  pendingAdvanceAgendaItemId: z.string().nullable(),
-  pendingAdvanceTime: z.coerce.date().nullable(),
+  recordingSessionId: z.string().nullable().default(null),
+  pendingAdvanceAgendaItemId: z.string().nullable().default(null),
+  pendingAdvanceTime: z.coerce.date().nullable().default(null),
 });
 
 export type LiveMeeting = z.infer<typeof LiveMeetingSchema>;
 
 export const LiveMeetingParticipantSchema = z.object({
-  communityId: z.string().nullable(),
-  meetingId: z.string().nullable(),
-  externalCommunityId: z.string().nullable(),
+  communityId: z.string().nullable().default(null),
+  meetingId: z.string().nullable().default(null),
+  externalCommunityId: z.string().nullable().default(null),
 });
 
 export type LiveMeetingParticipant = z.infer<typeof LiveMeetingParticipantSchema>;
 
 export const LiveMeetingEventSchema = z.object({
-  event: z.enum(['startMeeting', 'agendaItemCompleted', 'agendaItemStarted', 'finishMeeting', 'startVideo']).nullable(),
-  timestamp: z.coerce.date().nullable(),
-  agendaItem: z.string().nullable(),
-  hostless: z.boolean().nullable().default(false),
+  event: z.enum(['startMeeting', 'agendaItemCompleted', 'agendaItemStarted', 'finishMeeting', 'startVideo']).nullable().default(null),
+  timestamp: z.coerce.date().nullable().default(null),
+  agendaItem: z.string().nullable().default(null),
+  hostless: z.boolean().nullable().default(null).default(false),
 });
 
 export type LiveMeetingEvent = z.infer<typeof LiveMeetingEventSchema>;
 
 export const LiveMeetingRatingSchema = z.object({
-  ratingId: z.string().nullable(),
-  rating: z.number().nullable(),
+  ratingId: z.string().nullable().default(null),
+  rating: z.number().nullable().default(null),
 });
 
 export type LiveMeetingRating = z.infer<typeof LiveMeetingRatingSchema>;
@@ -49,26 +49,26 @@ export const BreakoutRoomSchema = z.object({
   participantIds: z.array(z.string()).default([]),
   originalParticipantIdsAssignment: z.array(z.string()).default([]),
   flagStatus: z.enum(['unflagged', 'needsHelp']).catch('unflagged').default('unflagged'),
-  createdDate: z.coerce.date().nullable(),
+  createdDate: z.coerce.date().nullable().default(null),
   record: z.boolean().default(false),
-  recordingSessionId: z.string().nullable(),
-  diffusionStatement: z.string().nullable(),
+  recordingSessionId: z.string().nullable().default(null),
+  diffusionStatement: z.string().nullable().default(null),
 });
 
 export type BreakoutRoom = z.infer<typeof BreakoutRoomSchema>;
 
 export const BreakoutRoomSessionSchema = z.object({
   breakoutRoomSessionId: z.string(),
-  breakoutRoomStatus: z.enum(['pending', 'processingAssignments', 'active', 'inactive']).nullable(),
-  statusUpdatedTime: z.coerce.date().nullable(),
+  breakoutRoomStatus: z.enum(['pending', 'processingAssignments', 'active', 'inactive']).nullable().default(null),
+  statusUpdatedTime: z.coerce.date().nullable().default(null),
   assignmentMethod: z.enum(['targetPerRoom', 'smartMatch']),
   targetParticipantsPerRoom: z.number().int(),
   hasWaitingRoom: z.boolean(),
   useHostedApi: z.boolean().default(false),
-  maxRoomNumber: z.number().int().nullable(),
-  createdDate: z.coerce.date().nullable(),
-  scheduledTime: z.coerce.date().nullable(),
-  processingId: z.string().nullable(),
+  maxRoomNumber: z.number().int().nullable().default(null),
+  createdDate: z.coerce.date().nullable().default(null),
+  scheduledTime: z.coerce.date().nullable().default(null),
+  processingId: z.string().nullable().default(null),
 });
 
 export type BreakoutRoomSession = z.infer<typeof BreakoutRoomSessionSchema>;

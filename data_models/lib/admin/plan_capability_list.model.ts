@@ -3,19 +3,19 @@
 import { z } from 'zod';
 
 export const PlanCapabilityListSchema = z.object({
-  type: z.string().nullable(),
-  userHours: z.number().int().nullable(),
-  adminCount: z.number().int().nullable(),
-  facilitatorCount: z.number().int().nullable(),
-  takeRate: z.number().nullable(),
-  hasSmartMatching: z.boolean().nullable(),
-  hasLivestreams: z.boolean().nullable(),
-  hasCustomUrls: z.boolean().nullable(),
-  hasAdvancedBranding: z.boolean().nullable(),
-  hasBasicAnalytics: z.boolean().nullable(),
-  hasCustomAnalytics: z.boolean().nullable(),
-  hasIntegrations: z.boolean().nullable(),
-  hasPrePost: z.boolean().nullable(),
+  type: z.string().nullable().default(null),
+  userHours: z.number().int().nullable().default(null),
+  adminCount: z.number().int().nullable().default(null),
+  facilitatorCount: z.number().int().nullable().default(null),
+  takeRate: z.number().nullable().default(null),
+  hasSmartMatching: z.boolean().nullable().default(null),
+  hasLivestreams: z.boolean().nullable().default(null),
+  hasCustomUrls: z.boolean().nullable().default(null),
+  hasAdvancedBranding: z.boolean().nullable().default(null),
+  hasBasicAnalytics: z.boolean().nullable().default(null),
+  hasCustomAnalytics: z.boolean().nullable().default(null),
+  hasIntegrations: z.boolean().nullable().default(null),
+  hasPrePost: z.boolean().nullable().default(null),
 });
 
 export type PlanCapabilityList = z.infer<typeof PlanCapabilityListSchema>;

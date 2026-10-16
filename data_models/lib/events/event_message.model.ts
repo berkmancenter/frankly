@@ -4,9 +4,9 @@ import { z } from 'zod';
 
 export const EventMessageSchema = z.object({
   creatorId: z.string(),
-  docId: z.string().nullable(),
-  createdAt: z.coerce.date().nullable(),
-  createdAtMillis: z.number().int().nullable(),
+  docId: z.string().nullable().default(null),
+  createdAt: z.coerce.date().nullable().default(null),
+  createdAtMillis: z.number().int().nullable().default(null),
   message: z.string(),
 });
 

@@ -3,13 +3,13 @@
 import { z } from 'zod';
 
 export const AnnouncementSchema = z.object({
-  id: z.string().nullable(),
+  id: z.string().nullable().default(null),
   announcementStatus: z.enum(['active', 'removed']).catch('active').default('active'),
-  creatorId: z.string().nullable(),
-  creatorDisplayName: z.string().nullable(),
-  createdDate: z.coerce.date().nullable(),
-  title: z.string().nullable(),
-  message: z.string().nullable(),
+  creatorId: z.string().nullable().default(null),
+  creatorDisplayName: z.string().nullable().default(null),
+  createdDate: z.coerce.date().nullable().default(null),
+  title: z.string().nullable().default(null),
+  message: z.string().nullable().default(null),
 });
 
 export type Announcement = z.infer<typeof AnnouncementSchema>;

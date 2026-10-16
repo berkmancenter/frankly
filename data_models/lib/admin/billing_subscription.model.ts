@@ -5,10 +5,10 @@ import { z } from 'zod';
 export const BillingSubscriptionSchema = z.object({
   stripeSubscriptionId: z.string(),
   type: z.string(),
-  activeUntil: z.coerce.date().nullable(),
+  activeUntil: z.coerce.date().nullable().default(null),
   canceled: z.boolean(),
   willCancelAtPeriodEnd: z.boolean(),
-  appliedCommunityId: z.string().nullable(),
+  appliedCommunityId: z.string().nullable().default(null),
 });
 
 export type BillingSubscription = z.infer<typeof BillingSubscriptionSchema>;

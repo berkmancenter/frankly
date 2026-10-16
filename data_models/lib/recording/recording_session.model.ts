@@ -3,23 +3,23 @@
 import { z } from 'zod';
 
 export const RecordingSessionSchema = z.object({
-  sessionId: z.string().nullable(),
+  sessionId: z.string().nullable().default(null),
   communityId: z.string(),
   eventId: z.string(),
   roomId: z.string(),
   roomType: z.enum(['main', 'breakout']).catch('main'),
   status: z.enum(['starting', 'recording', 'stopping', 'stopped', 'failed']).catch('failed'),
   startedBy: z.string().default('system'),
-  startedAt: z.coerce.date().nullable(),
-  stoppedAt: z.coerce.date().nullable(),
-  breakoutSessionId: z.string().nullable(),
-  agoraResourceId: z.string().nullable(),
-  agoraSid: z.string().nullable(),
-  agoraRttAgentId: z.string().nullable(),
-  rttLanguage: z.string().nullable(),
-  gcsPrefix: z.string().nullable(),
-  chatPath: z.string().nullable(),
-  errorMessage: z.string().nullable(),
+  startedAt: z.coerce.date().nullable().default(null),
+  stoppedAt: z.coerce.date().nullable().default(null),
+  breakoutSessionId: z.string().nullable().default(null),
+  agoraResourceId: z.string().nullable().default(null),
+  agoraSid: z.string().nullable().default(null),
+  agoraRttAgentId: z.string().nullable().default(null),
+  rttLanguage: z.string().nullable().default(null),
+  gcsPrefix: z.string().nullable().default(null),
+  chatPath: z.string().nullable().default(null),
+  errorMessage: z.string().nullable().default(null),
   artifactPaths: z.record(z.string(), z.string()).default({}),
   participantIds: z.array(z.string()).default([]),
   uidToDisplayName: z.record(z.string(), z.string()).default({}),
@@ -28,14 +28,14 @@ export const RecordingSessionSchema = z.object({
 export type RecordingSession = z.infer<typeof RecordingSessionSchema>;
 
 export const TranscriptSegmentSchema = z.object({
-  segmentId: z.string().nullable(),
+  segmentId: z.string().nullable().default(null),
   text: z.string(),
   startMs: z.number().int(),
   durationMs: z.number().int(),
   speakerUid: z.string(),
   language: z.string(),
-  confidence: z.number().nullable(),
-  receivedAt: z.coerce.date().nullable(),
+  confidence: z.number().nullable().default(null),
+  receivedAt: z.coerce.date().nullable().default(null),
 });
 
 export type TranscriptSegment = z.infer<typeof TranscriptSegmentSchema>;

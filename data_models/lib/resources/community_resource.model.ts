@@ -4,10 +4,10 @@ import { z } from 'zod';
 
 export const CommunityResourceSchema = z.object({
   id: z.string(),
-  createdDate: z.coerce.date().nullable(),
-  title: z.string().nullable(),
-  url: z.string().nullable(),
-  image: z.string().nullable(),
+  createdDate: z.coerce.date().nullable().default(null),
+  title: z.string().nullable().default(null),
+  url: z.string().nullable().default(null),
+  image: z.string().nullable().default(null),
 });
 
 export type CommunityResource = z.infer<typeof CommunityResourceSchema>;

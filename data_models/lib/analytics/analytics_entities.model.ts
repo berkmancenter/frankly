@@ -78,7 +78,7 @@ export type AnalyticsPressCreateEventFromTemplateEvent = z.infer<typeof Analytic
 export const AnalyticsCreateEventEventSchema = z.object({
   communityId: z.string(),
   eventId: z.string(),
-  templateId: z.string().nullable(),
+  templateId: z.string().nullable().default(null),
 });
 
 export type AnalyticsCreateEventEvent = z.infer<typeof AnalyticsCreateEventEventSchema>;
@@ -87,7 +87,7 @@ export const AnalyticsScheduleEventEventSchema = z.object({
   communityId: z.string(),
   eventId: z.string(),
   daysFromNow: z.number().int(),
-  templateId: z.string().nullable(),
+  templateId: z.string().nullable().default(null),
 });
 
 export type AnalyticsScheduleEventEvent = z.infer<typeof AnalyticsScheduleEventEventSchema>;
@@ -95,7 +95,7 @@ export type AnalyticsScheduleEventEvent = z.infer<typeof AnalyticsScheduleEventE
 export const AnalyticsEditEventEventSchema = z.object({
   communityId: z.string(),
   eventId: z.string(),
-  templateId: z.string().nullable(),
+  templateId: z.string().nullable().default(null),
 });
 
 export type AnalyticsEditEventEvent = z.infer<typeof AnalyticsEditEventEventSchema>;
@@ -103,7 +103,7 @@ export type AnalyticsEditEventEvent = z.infer<typeof AnalyticsEditEventEventSche
 export const AnalyticsPressShareEventEventSchema = z.object({
   communityId: z.string(),
   eventId: z.string(),
-  templateId: z.string().nullable(),
+  templateId: z.string().nullable().default(null),
   shareType: z.enum(['facebook', 'twitter', 'linkedin', 'email', 'link']),
 });
 
@@ -113,7 +113,7 @@ export const AnalyticsEnterEventEventSchema = z.object({
   communityId: z.string(),
   eventId: z.string(),
   asHost: z.boolean(),
-  templateId: z.string().nullable(),
+  templateId: z.string().nullable().default(null),
 });
 
 export type AnalyticsEnterEventEvent = z.infer<typeof AnalyticsEnterEventEventSchema>;
@@ -123,7 +123,7 @@ export const AnalyticsCompleteEventEventSchema = z.object({
   eventId: z.string(),
   asHost: z.boolean(),
   duration: z.number().int(),
-  templateId: z.string().nullable(),
+  templateId: z.string().nullable().default(null),
 });
 
 export type AnalyticsCompleteEventEvent = z.infer<typeof AnalyticsCompleteEventEventSchema>;
@@ -132,7 +132,7 @@ export const AnalyticsRateEventEventSchema = z.object({
   communityId: z.string(),
   eventId: z.string(),
   rating: z.number(),
-  templateId: z.string().nullable(),
+  templateId: z.string().nullable().default(null),
 });
 
 export type AnalyticsRateEventEvent = z.infer<typeof AnalyticsRateEventEventSchema>;
@@ -141,7 +141,7 @@ export const AnalyticsPressEventHelpEventSchema = z.object({
   communityId: z.string(),
   eventId: z.string(),
   asHost: z.boolean(),
-  templateId: z.string().nullable(),
+  templateId: z.string().nullable().default(null),
 });
 
 export type AnalyticsPressEventHelpEvent = z.infer<typeof AnalyticsPressEventHelpEventSchema>;
@@ -149,7 +149,7 @@ export type AnalyticsPressEventHelpEvent = z.infer<typeof AnalyticsPressEventHel
 export const AnalyticsRsvpEventEventSchema = z.object({
   communityId: z.string(),
   eventId: z.string(),
-  templateId: z.string().nullable(),
+  templateId: z.string().nullable().default(null),
 });
 
 export type AnalyticsRsvpEventEvent = z.infer<typeof AnalyticsRsvpEventEventSchema>;
@@ -158,7 +158,7 @@ export const AnalyticsBreakoutRoomTransitionEventSchema = z.object({
   communityId: z.string(),
   eventId: z.string(),
   durationMs: z.number().int(),
-  templateId: z.string().nullable(),
+  templateId: z.string().nullable().default(null),
 });
 
 export type AnalyticsBreakoutRoomTransitionEvent = z.infer<typeof AnalyticsBreakoutRoomTransitionEventSchema>;
@@ -171,7 +171,7 @@ export const AnalyticsDonateEventSchema = z.object({
 export type AnalyticsDonateEvent = z.infer<typeof AnalyticsDonateEventSchema>;
 
 export const AnalyticsUpdateCommunitySubscriptionEventSchema = z.object({
-  communityId: z.string().nullable(),
+  communityId: z.string().nullable().default(null),
   planType: z.string(),
   subscriptionId: z.string(),
   isCanceled: z.boolean(),

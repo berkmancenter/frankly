@@ -6,18 +6,18 @@ import { ParticipantSchema } from '../events/event.model';
 
 export const MemberDetailsSchema = z.object({
   id: z.string(),
-  email: z.string().nullable(),
-  displayName: z.string().nullable(),
-  membership: z.lazy(() => MembershipSchema).nullable(),
-  memberEvent: z.lazy(() => MemberEventDataSchema).nullable(),
+  email: z.string().nullable().default(null),
+  displayName: z.string().nullable().default(null),
+  membership: z.lazy(() => MembershipSchema).nullable().default(null),
+  memberEvent: z.lazy(() => MemberEventDataSchema).nullable().default(null),
 });
 
 export type MemberDetails = z.infer<typeof MemberDetailsSchema>;
 
 export const MemberEventDataSchema = z.object({
-  templateId: z.string().nullable(),
-  eventId: z.string().nullable(),
-  participant: z.lazy(() => ParticipantSchema).nullable(),
+  templateId: z.string().nullable().default(null),
+  eventId: z.string().nullable().default(null),
+  participant: z.lazy(() => ParticipantSchema).nullable().default(null),
 });
 
 export type MemberEventData = z.infer<typeof MemberEventDataSchema>;

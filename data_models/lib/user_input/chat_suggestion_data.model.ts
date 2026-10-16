@@ -3,19 +3,19 @@
 import { z } from 'zod';
 
 export const ChatSuggestionDataSchema = z.object({
-  id: z.string().nullable(),
-  creatorId: z.string().nullable(),
-  creatorEmail: z.string().nullable(),
-  creatorName: z.string().nullable(),
-  createdDate: z.coerce.date().nullable(),
-  message: z.string().nullable(),
-  emotionType: z.enum(['thumbsUp', 'heart', 'hundred', 'exclamation', 'plusOne', 'laughWithTears', 'heartEyes']).nullable(),
-  upvotes: z.number().int().nullable(),
-  downvotes: z.number().int().nullable(),
+  id: z.string().nullable().default(null),
+  creatorId: z.string().nullable().default(null),
+  creatorEmail: z.string().nullable().default(null),
+  creatorName: z.string().nullable().default(null),
+  createdDate: z.coerce.date().nullable().default(null),
+  message: z.string().nullable().default(null),
+  emotionType: z.enum(['thumbsUp', 'heart', 'hundred', 'exclamation', 'plusOne', 'laughWithTears', 'heartEyes']).nullable().default(null),
+  upvotes: z.number().int().nullable().default(null),
+  downvotes: z.number().int().nullable().default(null),
   type: z.enum(['chat', 'suggestion']).catch('chat').default('chat'),
-  roomId: z.string().nullable(),
-  agendaItemId: z.string().nullable(),
-  deleted: z.boolean().nullable(),
+  roomId: z.string().nullable().default(null),
+  agendaItemId: z.string().nullable().default(null),
+  deleted: z.boolean().nullable().default(null),
 });
 
 export type ChatSuggestionData = z.infer<typeof ChatSuggestionDataSchema>;

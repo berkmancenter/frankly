@@ -3,15 +3,15 @@
 import { z } from 'zod';
 
 export const PollDataSchema = z.object({
-  id: z.string().nullable(),
-  userId: z.string().nullable(),
-  userEmail: z.string().nullable(),
-  userName: z.string().nullable(),
-  answeredDate: z.coerce.date().nullable(),
-  pollResponse: z.string().nullable(),
-  roomId: z.string().nullable(),
-  agendaItemId: z.string().nullable(),
-  pollQuestion: z.string().nullable(),
+  id: z.string().nullable().default(null),
+  userId: z.string().nullable().default(null),
+  userEmail: z.string().nullable().default(null),
+  userName: z.string().nullable().default(null),
+  answeredDate: z.coerce.date().nullable().default(null),
+  pollResponse: z.string().nullable().default(null),
+  roomId: z.string().nullable().default(null),
+  agendaItemId: z.string().nullable().default(null),
+  pollQuestion: z.string().nullable().default(null),
 });
 
 export type PollData = z.infer<typeof PollDataSchema>;
