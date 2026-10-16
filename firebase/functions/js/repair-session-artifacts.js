@@ -9,6 +9,8 @@ const {
     registerMp4s,
     registerVtts,
     mergeTranscript,
+    stoppedLongEnough,
+    transcriptState,
 } = require('./session-artifacts')
 
 const firestore = admin.firestore()
@@ -55,7 +57,7 @@ const repairSessionArtifacts = functions.https.onRequest((req, res) => {
 
             const gcsPrefix = session.gcsPrefix
             if (!gcsPrefix) {
-                res.status(200).json({ repaired: false, reason: 'No gcsPrefix on session' })
+                res.status(200).json({ repaired: false, reason: 'No gcsPrefix on session', transcript: 'none' })
                 return
             }
 
@@ -64,7 +66,7 @@ const repairSessionArtifacts = functions.https.onRequest((req, res) => {
             const hasVtt = keys.some((k) => k.startsWith('transcript_vtt_'))
             const hasTrx = keys.includes('complete_trx_0')
             if (hasMp4 && hasVtt && hasTrx) {
-                res.status(200).json({ repaired: false, reason: 'Nothing to repair' })
+                res.status(200).json({ repaired: false, reason: 'Nothing to repair', transcript: 'ready' })
                 return
             }
 
@@ -85,7 +87,10 @@ const repairSessionArtifacts = functions.https.onRequest((req, res) => {
                 await registerVtts(sessionDoc.ref, vttFiles)
                 vtts = vttFiles.length
             }
-            if (!hasTrx && vttFiles.length > 0) {
+            // Zero VTTs get a header-only CSV once late ones are unlikely.
+            const trxSettled =
+                session.agoraRttAgentId != null && stoppedLongEnough(session)
+            if (!hasTrx && (vttFiles.length > 0 || trxSettled)) {
                 await mergeTranscript({
                     bucket,
                     firestore,
@@ -104,7 +109,8 @@ const repairSessionArtifacts = functions.https.onRequest((req, res) => {
                 )
             }
 
-            res.status(200).json({ repaired, mp4s, vtts, merged })
+            const transcript = transcriptState({ session, hasTrx: hasTrx || merged })
+            res.status(200).json({ repaired, mp4s, vtts, merged, transcript })
         } catch (err) {
             console.error('Error repairing session artifacts:', err)
             res.status(500).json({ error: 'Failed to repair session artifacts' })

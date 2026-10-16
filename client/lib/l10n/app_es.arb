@@ -943,6 +943,7 @@
   "recordingStatusFile": "archivo",
   "recordingStatusFiles": "archivos",
   "recordingStatusInProgress": "Grabación en curso",
+  "recordingStatusNone": "(ninguno)",
   "recordingStatusParts": "({count} partes)",
   "recordingStatusPreparing": "(preparando...)",
   "recordingStatusProcessing": "Procesando grabaciones",

@@ -15,6 +15,8 @@ const {
 // 65s total.
 const MP4_RETRY_DELAYS_MS = [5000, 10000, 20000, 30000]
 const VTT_FLUSH_WAIT_MS = 15000
+// Wait this long after stop before treating zero VTTs as final.
+const TRX_SETTLE_MS = 60000
 
 const defaultSleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -88,7 +90,7 @@ async function resolveUidMap(firestore, rawUidMap) {
     return uidMap
 }
 
-// Merge VTTs to one CSV, register as complete_trx_0.
+// Merge VTTs to one CSV (header-only if none), register as complete_trx_0.
 async function mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4Files }) {
     const entries = vttFiles.map((f) => ({ key: f.name, path: f.name }))
     const { localeEntries, defaultEntries } = splitLocaleAndDefault(entries)
@@ -114,7 +116,7 @@ async function mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4F
             return cuesToCsv(parseVtt(buf.toString('utf-8')), uidMap)
         })
     )
-    const mergedCsv = mergeCsvContents(csvFragments)
+    const mergedCsv = mergeCsvContents(csvFragments) || `${cuesToCsv([], {})}\n`
 
     const mp4Name = mp4Files[0]?.name
     const outPath = mp4Name
@@ -126,9 +128,24 @@ async function mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4F
     return outPath
 }
 
+const stoppedLongEnough = (session, now = Date.now()) => {
+    const stoppedMs = session.stoppedAt?.toMillis?.()
+    return stoppedMs != null && now - stoppedMs >= TRX_SETTLE_MS
+}
+
+// Transcript state for the client: 'ready' | 'pending' | 'none'.
+function transcriptState({ session, hasTrx, now = Date.now() }) {
+    if (hasTrx) return 'ready'
+    if (session.agoraRttAgentId == null) return 'none'
+    return stoppedLongEnough(session, now) ? 'none' : 'pending'
+}
+
 module.exports = {
     MP4_RETRY_DELAYS_MS,
     VTT_FLUSH_WAIT_MS,
+    TRX_SETTLE_MS,
+    stoppedLongEnough,
+    transcriptState,
     sanitizePrefix,
     listSessionFiles,
     listUntilMp4,

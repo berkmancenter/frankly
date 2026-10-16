@@ -79,11 +79,12 @@ const produceSessions = functions
 
         // --- Register VTT transcript files ---
         let finalVttFiles = []
+        let vttListOk = true
+        const hasSTT = after.agoraRttAgentId != null
         try {
             let vttFiles = vttsOf(allFiles)
 
             // Wait for STT flush; MP4 wait counts toward it.
-            const hasSTT = after.agoraRttAgentId != null
             if (vttFiles.length === 0 && hasSTT) {
                 const remainingMs = Math.max(0, VTT_FLUSH_WAIT_MS - waitedMs)
                 if (remainingMs > 0) {
@@ -92,7 +93,12 @@ const produceSessions = functions
                     )
                     await sleep(remainingMs)
                 }
-                allFiles = await listFiles()
+                try {
+                    allFiles = await listFiles()
+                } catch (err) {
+                    vttListOk = false
+                    throw err
+                }
                 vttFiles = vttsOf(allFiles)
             }
 
@@ -111,9 +117,9 @@ const produceSessions = functions
             console.error(`Error registering VTT for session ${sessionId}:`, err)
         }
 
-        // --- Merge VTT fragments into one CSV transcript ---
+        // --- Merge VTT fragments into one CSV transcript (header-only if none) ---
         try {
-            if (finalVttFiles.length > 0) {
+            if (finalVttFiles.length > 0 || (hasSTT && vttListOk)) {
                 const outPath = await mergeTranscript({
                     bucket,
                     firestore,
