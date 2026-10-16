@@ -46,6 +46,11 @@ jobs:
         run: npm ci
         working-directory: "firebase/functions"
 
+      - name: Install Firestore NPM Dependencies
+        if: steps.changes.outputs.firestore == 'true'
+        run: npm ci
+        working-directory: "firebase/firestore"
+
       - name: Set Up Flutter
         if: steps.changes.outputs.functions == 'true'
         uses: subosito/flutter-action@v2

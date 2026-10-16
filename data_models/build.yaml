@@ -3,7 +3,7 @@ builders:
     import: "package:data_models/src/ts_codegen/ts_model_builder.dart"
     builder_factories: ["tsModelBuilder"]
     build_extensions: {".dart": [".model.ts"]}
-    auto_apply: dependents
+    auto_apply: none
     build_to: source
 
 targets:

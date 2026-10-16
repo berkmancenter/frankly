@@ -35,7 +35,7 @@ jobs:
               - 'firebase/functions/lib/**'
               - 'client/web/index.html'
             functions_ts:
-              - 'firebase/functions-ts/src/**'
+              - 'firebase/functions-ts/**'
               - 'client/web/index.html'
             firestore:
               - 'firebase/firestore/**'

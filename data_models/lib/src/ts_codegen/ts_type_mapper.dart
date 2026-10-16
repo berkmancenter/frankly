@@ -173,9 +173,6 @@ class TsTypeMapper {
           // `@JsonKey(unknownEnumValue: RecordingSessionStatus.failed)`,
           // matching json_serializable's generated fromJson behavior.
           expr = "z.enum([$values]).catch('$unknownEnumValueName')";
-        } else if (unknownEnumValueIsNull) {
-          // Unknown values should parse to null rather than throwing.
-          expr = 'z.enum([$values]).catch(undefined as any).nullable()';
         }
         return FieldResult(expr);
       }

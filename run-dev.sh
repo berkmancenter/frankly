@@ -26,6 +26,7 @@ mkdir -p "$STAMP_DIR"
 DATA_MODELS_STAMP="$STAMP_DIR/data_models_build.stamp"
 FUNCTIONS_STAMP="$STAMP_DIR/functions_build.stamp"
 SDK_FINGERPRINT_FILE="$STAMP_DIR/sdk_fingerprint.txt"
+FUNCTIONS_TS_STAMP="$STAMP_DIR/functions_ts_build.stamp"
 NODE24_DIR="$STAMP_DIR/node-v24"
 
 EMULATOR_PID=""
