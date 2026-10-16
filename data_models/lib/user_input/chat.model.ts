@@ -9,7 +9,7 @@ export const ChatMessageSchema = z.object({
   emotionType: z.enum(['thumbsUp', 'heart', 'hundred', 'exclamation', 'plusOne', 'laughWithTears', 'heartEyes']).nullable(),
   creatorId: z.string().nullable(),
   createdDate: z.coerce.date().nullable(),
-  messageStatus: z.enum(['active', 'removed']).default('active'),
+  messageStatus: z.enum(['active', 'removed']).catch('active').default('active'),
   membershipStatusSnapshot: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable(),
   broadcast: z.boolean().nullable().default(false),
 });

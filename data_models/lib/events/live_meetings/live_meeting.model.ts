@@ -48,7 +48,7 @@ export const BreakoutRoomSchema = z.object({
   creatorId: z.string(),
   participantIds: z.array(z.string()).default([]),
   originalParticipantIdsAssignment: z.array(z.string()).default([]),
-  flagStatus: z.enum(['unflagged', 'needsHelp']).default('unflagged'),
+  flagStatus: z.enum(['unflagged', 'needsHelp']).catch('unflagged').default('unflagged'),
   createdDate: z.coerce.date().nullable(),
   record: z.boolean().default(false),
   recordingSessionId: z.string().nullable(),

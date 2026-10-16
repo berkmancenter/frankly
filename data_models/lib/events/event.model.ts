@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 export const EventSchema = z.object({
   id: z.string(),
-  status: z.enum(['active', 'canceled']),
+  status: z.enum(['active', 'canceled']).catch('active'),
   eventType: z.enum(['hosted', 'hostless', 'livestream']).nullable(),
   collectionPath: z.string(),
   communityId: z.string(),
@@ -142,7 +142,7 @@ export const BreakoutRoomDefinitionSchema = z.object({
   questions: z.array(z.lazy(() => SurveyQuestionSchema) /* TODO: add import for SurveyQuestionSchema */).default([]),
   breakoutQuestions: z.array(z.lazy(() => BreakoutQuestionSchema) /* TODO: add import for BreakoutQuestionSchema */).default([]),
   categories: z.array(z.lazy(() => BreakoutCategorySchema) /* TODO: add import for BreakoutCategorySchema */).default([]),
-  assignmentMethod: z.enum(['targetPerRoom', 'smartMatch']).default('targetPerRoom'),
+  assignmentMethod: z.enum(['targetPerRoom', 'smartMatch']).catch('targetPerRoom').default('targetPerRoom'),
 });
 
 export type BreakoutRoomDefinition = z.infer<typeof BreakoutRoomDefinitionSchema>;
@@ -159,7 +159,7 @@ export type SurveyQuestion = z.infer<typeof SurveyQuestionSchema>;
 export const BreakoutQuestionSchema = z.object({
   id: z.string(),
   title: z.string(),
-  type: z.enum(['multipleChoice', 'freeText']).default('multipleChoice'),
+  type: z.enum(['multipleChoice', 'freeText']).catch('multipleChoice').default('multipleChoice'),
   answerOptionId: z.string().default(''),
   answers: z.array(z.lazy(() => BreakoutAnswerSchema) /* TODO: add import for BreakoutAnswerSchema */).default([]),
   freeTextAnswer: z.string().nullable(),

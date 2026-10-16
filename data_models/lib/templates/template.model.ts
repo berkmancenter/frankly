@@ -16,7 +16,7 @@ export const TemplateSchema = z.object({
   category: z.string().nullable(),
   eventSettings: z.lazy(() => EventSettingsSchema) /* TODO: add import for EventSettingsSchema */.nullable(),
   isOfficial: z.boolean().default(true),
-  status: z.enum(['active', 'removed']).default('active'),
+  status: z.enum(['active', 'removed']).catch('active').default('active'),
   agendaItems: z.array(z.lazy(() => AgendaItemSchema) /* TODO: add import for AgendaItemSchema */).default([]),
   preEventCardData: z.lazy(() => PrePostCardSchema) /* TODO: add import for PrePostCardSchema */.nullable(),
   postEventCardData: z.lazy(() => PrePostCardSchema) /* TODO: add import for PrePostCardSchema */.nullable(),

@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 export const AnnouncementSchema = z.object({
   id: z.string().nullable(),
-  announcementStatus: z.enum(['active', 'removed']).default('active'),
+  announcementStatus: z.enum(['active', 'removed']).catch('active').default('active'),
   creatorId: z.string().nullable(),
   creatorDisplayName: z.string().nullable(),
   createdDate: z.coerce.date().nullable(),

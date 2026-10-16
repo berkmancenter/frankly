@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -33,14 +34,21 @@ class TsTypeMapper {
       final fromJsonName = jsonKey != null
           ? _staticFunctionName(jsonKey.peek('fromJson'))
           : null;
-      final unknownEnumValueIsNull =
-          jsonKey != null && jsonKey.peek('unknownEnumValue')?.isNull == true;
+      final unknownEnumValueReader = jsonKey?.peek('unknownEnumValue');
+      final unknownEnumValueIsNull = unknownEnumValueReader?.isNull == true;
+      // A concrete fallback, e.g. `@JsonKey(unknownEnumValue: RecordingSessionStatus.failed)`,
+      // not just the `unknownEnumValue: null` case.
+      final unknownEnumValueName =
+          (unknownEnumValueReader != null && !unknownEnumValueReader.isNull)
+              ? _enumConstantName(unknownEnumValueReader.objectValue)
+              : null;
       final jsonName = jsonKey?.peek('name')?.stringValue;
 
       var zodExpr = _zodExprFor(
         param.type,
         fromJsonName: fromJsonName,
         unknownEnumValueIsNull: unknownEnumValueIsNull,
+        unknownEnumValueName: unknownEnumValueName,
       );
 
       var manualFollowUp = zodExpr.needsManualFollowUp;
@@ -84,6 +92,7 @@ class TsTypeMapper {
     DartType type, {
     String? fromJsonName,
     bool unknownEnumValueIsNull = false,
+    String? unknownEnumValueName,
   }) {
     if (fromJsonName != null) {
       if (_knownConverters.contains(fromJsonName)) {
@@ -106,7 +115,12 @@ class TsTypeMapper {
             .map((f) => "'${f.name}'")
             .join(', ');
         var expr = 'z.enum([$values])';
-        if (unknownEnumValueIsNull) {
+        if (unknownEnumValueName != null) {
+          // Unknown values should fall back to a concrete member, e.g.
+          // `@JsonKey(unknownEnumValue: RecordingSessionStatus.failed)`,
+          // matching json_serializable's generated fromJson behavior.
+          expr = "z.enum([$values]).catch('$unknownEnumValueName')";
+        } else if (unknownEnumValueIsNull) {
           // Unknown values should parse to null rather than throwing.
           expr = 'z.enum([$values]).catch(undefined as any).nullable()';
         }
@@ -184,6 +198,18 @@ class TsTypeMapper {
     return fn?.name;
   }
 
+  /// The member name of an enum constant `DartObject` (e.g. `'failed'` for
+  /// `RecordingSessionStatus.failed`), or null if `obj` isn't an enum value.
+  String? _enumConstantName(DartObject obj) {
+    final enumElement = obj.type?.element;
+    if (enumElement is! EnumElement) return null;
+    final index = obj.getField('index')?.toIntValue();
+    final constants =
+        enumElement.fields.where((f) => f.isEnumConstant).toList();
+    if (index == null || index >= constants.length) return null;
+    return constants[index].name;
+  }
+
   String? _renderDefault(ConstantReader reader) {
     final obj = reader.read('defaultValue').objectValue;
     if (obj.isNull) return 'null';
@@ -193,15 +219,8 @@ class TsTypeMapper {
     if (intVal != null) return '$intVal';
     final doubleVal = obj.toDoubleValue();
     if (doubleVal != null) return '$doubleVal';
-    final enumElement = obj.type?.element;
-    if (enumElement is EnumElement) {
-      final index = obj.getField('index')?.toIntValue();
-      final constants =
-          enumElement.fields.where((f) => f.isEnumConstant).toList();
-      if (index != null && index < constants.length) {
-        return "'${constants[index].name}'";
-      }
-    }
+    final enumName = _enumConstantName(obj);
+    if (enumName != null) return "'$enumName'";
     final stringVal = obj.toStringValue();
     if (stringVal != null) return "'$stringVal'";
     final listVal = obj.toListValue();
