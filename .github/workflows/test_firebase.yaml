@@ -93,7 +93,7 @@ jobs:
 
       - name: Test Functions
         if: steps.changes.outputs.functions == 'true'
-        run: CLOUD_RUNTIME_CONFIG=./test/test_config.json firebase emulators:exec --only functions --project fake-project-id 'npm run test'
+        run: CLOUD_RUNTIME_CONFIG=./test/test_config.json firebase emulators:exec --only functions,firestore --project fake-project-id 'npm run test'
         working-directory: "firebase/functions"
 
       # Test temp functions-ts separately
@@ -112,5 +112,5 @@ jobs:
 
       - name: Test functions-ts
         if: steps.changes.outputs.functions_ts == 'true'
-        run: CLOUD_RUNTIME_CONFIG=./test/test_config.json firebase emulators:exec --only functions --project fake-project-id 'npm run test'
+        run: CLOUD_RUNTIME_CONFIG=./test/test_config.json firebase emulators:exec --only functions,firestore --project fake-project-id 'npm run test'
         working-directory: "firebase/functions-ts"
