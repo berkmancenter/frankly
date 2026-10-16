@@ -15,7 +15,10 @@ import 'ts_type_mapper.dart';
 class TsAnalyticsGenerator {
   final _mapper = TsTypeMapper();
 
-  TsModelResult? generateForClass(ClassElement classElement) {
+  TsModelResult? generateForClass(
+    ClassElement classElement,
+    ImportTracker imports,
+  ) {
     if (!const TypeChecker.fromRuntime(JsonSerializable)
         .hasAnnotationOf(classElement)) {
       return null;
@@ -37,7 +40,7 @@ class TsAnalyticsGenerator {
     final fieldLines = <String>[];
 
     for (final param in params) {
-      final result = _mapper.fieldFor(param);
+      final result = _mapper.fieldFor(param, imports);
       fieldLines.add(result.tsLine);
       manualFollowUp = manualFollowUp || result.needsManualFollowUp;
     }

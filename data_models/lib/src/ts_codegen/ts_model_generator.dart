@@ -19,7 +19,10 @@ class TsModelResult {
 class TsModelGenerator {
   final _mapper = TsTypeMapper();
 
-  TsModelResult? generateForClass(ClassElement classElement) {
+  TsModelResult? generateForClass(
+    ClassElement classElement,
+    ImportTracker imports,
+  ) {
     if (!const TypeChecker.fromRuntime(Freezed).hasAnnotationOf(classElement)) {
       return null;
     }
@@ -34,7 +37,7 @@ class TsModelGenerator {
     final fieldLines = <String>[];
 
     for (final param in params) {
-      final result = _mapper.fieldFor(param);
+      final result = _mapper.fieldFor(param, imports);
       fieldLines.add(result.tsLine);
       manualFollowUp = manualFollowUp || result.needsManualFollowUp;
     }
