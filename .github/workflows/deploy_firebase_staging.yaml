@@ -151,7 +151,7 @@ jobs:
         if: steps.changes.outputs.functions_ts == 'true' || github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         uses: w9jds/firebase-action@v13.22.1
         with:
-          args: deploy --only functions:functions-ts --force
+          args: functions:config:set "${{ secrets.FIREBASE_CONFIG }}" ; deploy --only functions:functions-ts --force
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
           PROJECT_ID: ${{ secrets.APP_STAGING_PROJECT_ID }}
