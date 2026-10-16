@@ -1,6 +1,6 @@
 {
   "name": "functions-ts",
-  "description": "Cloud Functions v2 for Firebase (TypeScript, Node 24",
+  "description": "Cloud Functions v2 for Firebase (TypeScript, Node 24x)",
   "engines": {
     "node": "24"
   },
@@ -9,7 +9,7 @@
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json --watch",
     "lint": "eslint .",
-    "test": "jest",
+    "test": "tsc -p tsconfig.test.json && jest",
     "serve": "npm run build && firebase emulators:start --only functions"
   },
   "dependencies": {
