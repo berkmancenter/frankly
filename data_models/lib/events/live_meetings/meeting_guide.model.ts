@@ -10,7 +10,7 @@ export const ParticipantAgendaItemDetailsSchema = z.object({
   handRaisedTime: z.coerce.date().nullable(),
   pollResponse: z.string().nullable(),
   wordCloudResponses: z.array(z.string()).default([]),
-  suggestions: z.array(z.lazy(() => MeetingUserSuggestionSchema) /* TODO: add import for MeetingUserSuggestionSchema */).default([]),
+  suggestions: z.array(z.lazy(() => MeetingUserSuggestionSchema)).default([]),
   videoCurrentTime: z.number().nullable(),
   videoDuration: z.number().nullable(),
 });

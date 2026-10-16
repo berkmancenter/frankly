@@ -16,7 +16,7 @@ export const EventProposalSchema = z.object({
   status: z.enum(['open', 'accepted', 'rejected']).default('open'),
   initiatingUserId: z.string().nullable(),
   targetUserId: z.string().nullable(),
-  votes: z.array(z.lazy(() => EventProposalVoteSchema) /* TODO: add import for EventProposalVoteSchema */).nullable(),
+  votes: z.array(z.lazy(() => EventProposalVoteSchema)).nullable(),
   createdAt: z.coerce.date().nullable(),
   closedAt: z.coerce.date().nullable(),
 });

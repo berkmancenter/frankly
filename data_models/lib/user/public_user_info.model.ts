@@ -8,7 +8,7 @@ export const PublicUserInfoSchema = z.object({
   displayName: z.string().nullable(),
   imageUrl: z.string().nullable(),
   about: z.string().nullable().default(''),
-  socialMediaItems: z.array(z.lazy(() => SocialMediaItemSchema) /* TODO: add import for SocialMediaItemSchema */).default([]),
+  socialMediaItems: z.array(z.lazy(() => SocialMediaItemSchema)).default([]),
   appRole: z.enum(['owner', 'user']).nullable().default('user'),
 });
 

@@ -4,9 +4,9 @@ import { z } from 'zod';
 
 export const LiveMeetingSchema = z.object({
   meetingId: z.string().nullable(),
-  participants: z.array(z.lazy(() => LiveMeetingParticipantSchema) /* TODO: add import for LiveMeetingParticipantSchema */).default([]),
-  events: z.array(z.lazy(() => LiveMeetingEventSchema) /* TODO: add import for LiveMeetingEventSchema */).default([]),
-  currentBreakoutSession: z.lazy(() => BreakoutRoomSessionSchema) /* TODO: add import for BreakoutRoomSessionSchema */.nullable(),
+  participants: z.array(z.lazy(() => LiveMeetingParticipantSchema)).default([]),
+  events: z.array(z.lazy(() => LiveMeetingEventSchema)).default([]),
+  currentBreakoutSession: z.lazy(() => BreakoutRoomSessionSchema).nullable(),
   record: z.boolean().default(false),
   isMeetingCardMinimized: z.boolean().default(false),
   pinnedUserIds: z.array(z.string()).default([]),
