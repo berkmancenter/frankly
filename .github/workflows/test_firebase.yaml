@@ -117,5 +117,5 @@ jobs:
 
       - name: Test functions-ts
         if: steps.changes.outputs.functions_ts == 'true'
-        run: CLOUD_RUNTIME_CONFIG=./test/test_config.json firebase emulators:exec --only functions,firestore --project fake-project-id 'npm run test'
+        run: npm test
         working-directory: "firebase/functions-ts"
