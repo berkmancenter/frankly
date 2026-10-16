@@ -120,7 +120,7 @@ ensure_node_v24() {
   esac
 
   node_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
-  tarball_url="https://nodejs.org/dist/latest-v24.x/node-v24.0.0-${node_platform}-${node_arch}.tar.gz"
+  tarball_url="https://nodejs.org/dist/v24.0.0/node-v24.0.0-${node_platform}-${node_arch}.tar.gz"
   tarball_path="$NODE24_DIR/node-v24.tar.gz"
   extract_dir="$NODE24_DIR/extracted"
   node_bin="$extract_dir/node-v24.0.0-${node_platform}-${node_arch}/bin"
