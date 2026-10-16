@@ -1,22 +1,48 @@
 {
   "files": {
-    "firebase/functions/js/agora-recording-webhook.js": [
+    "firebase/functions-ts/src/agora_recording_webhook.ts": [
       "agoraRecordingWebhook"
     ],
-    "firebase/functions/js/download-recordings.js": ["downloadRecording"],
-    "firebase/functions/js/download-transcripts.js": ["downloadTranscripts"],
-    "firebase/functions/js/get-session-download-url.js": [
+    "firebase/functions-ts/src/download_recordings.ts": ["downloadRecording"],
+    "firebase/functions-ts/src/download_transcripts.ts": [
+      "downloadTranscripts"
+    ],
+    "firebase/functions-ts/src/get_session_download_url.ts": [
       "getSessionDownloadUrl"
     ],
-    "firebase/functions/js/get-session-download-url.js": [
-      "getSessionDownloadUrl"
-    ],
-    "firebase/functions/js/image-proxy.js": ["imageProxy"],
-    "firebase/functions/js/produce-sessions.js": ["produceSessions"],
-    "firebase/functions/js/repair-session-artifacts.js": [
+    "firebase/functions-ts/src/image_proxy.ts": ["imageProxy"],
+    "firebase/functions-ts/src/produce_sessions.ts": ["produceSessions"],
+    "firebase/functions-ts/src/repair_session_artifacts.ts": [
       "repairSessionArtifacts"
     ],
-    "firebase/functions/js/serve-index.js": ["ServeIndex"],
+    "firebase/functions-ts/src/serve_index.ts": ["ServeIndex"],
+    "firebase/functions-ts/src/config.ts": [
+      "ServeIndex",
+      "agoraRecordingWebhook",
+      "downloadRecording",
+      "downloadTranscripts",
+      "getSessionDownloadUrl",
+      "repairSessionArtifacts",
+      "produceSessions"
+    ],
+    "firebase/functions-ts/src/session_artifacts.ts": [
+      "repairSessionArtifacts",
+      "produceSessions"
+    ],
+    "firebase/functions-ts/src/transcript_merge.ts": [
+      "repairSessionArtifacts",
+      "produceSessions"
+    ],
+    "firebase/functions-ts/src/index.ts": [
+      "imageProxy",
+      "ServeIndex",
+      "agoraRecordingWebhook",
+      "downloadRecording",
+      "downloadTranscripts",
+      "getSessionDownloadUrl",
+      "repairSessionArtifacts",
+      "produceSessions"
+    ],
     "firebase/functions/lib/admin/partner_agreements/on_partner_agreements.dart": [
       "PartnerAgreementOnCreate",
       "PartnerAgreementOnUpdate"
