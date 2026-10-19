@@ -343,6 +343,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Part 1: Platform-specific">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        macOS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1029,6 +1057,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Part 1: Platform-specific">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        macOS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1461,51 +1517,98 @@
 <h2 id="tools-and-flutter-setup">Tools and Flutter Setup</h2>
 <div class="admonition warning">
 <p class="admonition-title">Important</p>
+<p>Frankly runs on Flutter <code>3.22.2</code>. <strong>Please use this version of Flutter in order to avoid any unexpected errors.</strong></p>
 </div>
-<p>Frankly runs on Flutter <code>3.22.2.</code> <strong>Please use this version of Flutter in order to avoid any unexpected errors.</strong></p>
 <p>This section covers setting up a new computer for Flutter development.</p>
 <h3 id="part-1-platform-specific">Part 1: Platform-specific</h3>
-<p>=== "macOS" 1. Download and install Google Chrome <a href="https://www.google.com/chrome/">here</a> if it’s not already pre-installed. This is used for live debugging on web. 2. Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app. 3. Optional, but recommended: Install Homebrew <a href="https://brew.sh/">here</a>. 4. Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
-<code>brew install git</code> 5. Clone the Frankly repo in a directory where you prefer your projects to live:
-<code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly</code> 6. Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter on your machine. You can choose iOS as your target platform. - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running <code>brew install cocoapods</code>, which should alleviate those errors. - <strong>Recommended</strong>: Install the Flutter SDK in your home folder under a directory called <code>dev</code> (or something similar). 7. Install VSCode <a href="https://code.visualstudio.com/download">here</a>. - <strong>Recommended</strong>: Install the <a href="https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension">Flutter VSCode extension</a> and use the extension to <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter">install Flutter via VSCode</a>. 8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path">here</a>), create or open ~/.zshenv and add this line:
-<code>export PATH=$HOME/dev/flutter/bin:$PATH</code>
-Restart terminal sessions to see the changes.
-=== "Linux" 1. Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
-<code>sudo apt-get update &amp;&amp; sudo apt-get upgrade &amp;&amp; sudo apt-get install -y chromium git</code>
-a. Set the path to chromium so flutter can find it:
-<code>export CHROME_EXECUTABLE=$(which chromium)</code> 2. Clone the Frankly repo in a directory where you prefer your projects to live:
-<code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly</code> 3. Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter dependencies on your machine. You can choose web as your target platform. 4. Install VSCode <a href="https://code.visualstudio.com/docs/setup/linux">here</a>.</p>
-<pre><code>    !!! info ""
-        You may need to download the binary for your specific architecture [here](https://code.visualstudio.com/Download)
-
-    - **Recommended**: Install the [Flutter VSCode extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk).
-    - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
-5. You will probably need to add both flutter and dart to your PATH. Run:
-    ```
-    export PATH="$PATH:$HOME/[path to flutter]/flutter/bin"
-    ```
-</code></pre>
+<h4 id="macos">macOS</h4>
+<ol>
+<li>Download and install Google Chrome <a href="https://www.google.com/chrome/">here</a> if it’s not already pre-installed. This is used for live debugging on web.</li>
+<li>Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.</li>
+<li>Optional, but recommended: Install Homebrew <a href="https://brew.sh/">here</a>.</li>
+<li>
+<p>Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:</p>
+<div class="highlight"><pre><span></span><code>brew install git
+</code></pre></div>
+</li>
+<li>
+<p>Clone the Frankly repo in a directory where you prefer your projects to live:</p>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly
+</code></pre></div>
+</li>
+<li>
+<p>Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter on your machine. You can choose iOS as your target platform.</p>
+<ul>
+<li>This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running <code>brew install cocoapods</code>, which should alleviate those errors.</li>
+<li><strong>Recommended</strong>: Install the Flutter SDK in your home folder under a directory called <code>dev</code> (or something similar).</li>
+</ul>
+</li>
+<li>Install VSCode <a href="https://code.visualstudio.com/download">here</a>.<ul>
+<li><strong>Recommended</strong>: Install the <a href="https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension">Flutter VSCode extension</a> and use the extension to <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter">install Flutter via VSCode</a>.</li>
+</ul>
+</li>
+<li>
+<p>Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path">here</a>), create or open <code>~/.zshenv</code> and add this line:</p>
+<div class="highlight"><pre><span></span><code>export PATH=$HOME/dev/flutter/bin:$PATH
+</code></pre></div>
+<p>Restart terminal sessions to see the changes.</p>
+</li>
+</ol>
+<h4 id="linux">Linux</h4>
+<ol>
+<li>
+<p>Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.</p>
+<div class="highlight"><pre><span></span><code>sudo apt-get update &amp;&amp; sudo apt-get upgrade &amp;&amp; sudo apt-get install -y chromium git
+</code></pre></div>
+<p>Set the path to chromium so flutter can find it:</p>
+<div class="highlight"><pre><span></span><code>export CHROME_EXECUTABLE=$(which chromium)
+</code></pre></div>
+</li>
+<li>
+<p>Clone the Frankly repo in a directory where you prefer your projects to live:</p>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly
+</code></pre></div>
+</li>
+<li>
+<p>Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter dependencies on your machine. You can choose web as your target platform.</p>
+</li>
+<li>
+<p>Install VSCode <a href="https://code.visualstudio.com/docs/setup/linux">here</a>.</p>
+<div class="admonition info">
+<p>You may need to download the binary for your specific architecture <a href="https://code.visualstudio.com/Download">here</a></p>
+</div>
+<ul>
+<li><strong>Recommended</strong>: Install the <a href="https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter">Flutter VSCode extension</a> and use the extension to <a href="https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk">install Flutter via VSCode</a>.</li>
+<li><strong>Recommended</strong>: Install the Flutter SDK in your home folder under a directory called <code>dev</code> (or something similar).</li>
+<li>You will probably need to add both flutter and dart to your PATH. Run:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>export PATH="$PATH:$HOME/[path to flutter]/flutter/bin"
+</code></pre></div>
+</li>
+</ol>
 <h3 id="part-2">Part 2</h3>
 <ol>
-<li>Install Node.js and npm. We strongly recommend that you do this via <code>nvm</code> (steps <a href="https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating">here</a>) since it is the easiest end cleanest way to do so.</li>
-<li>Once nvm is installed and sourced to your CLI profile, run:</li>
-</ol>
+<li>Install Node.js and npm. We strongly recommend that you do this via <code>nvm</code> (steps <a href="https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating">here</a>) since it is the easiest and cleanest way to do so.</li>
+<li>
+<p>Once nvm is installed and sourced to your CLI profile, run:</p>
 <div class="highlight"><pre><span></span><code>nvm install --lts
 </code></pre></div>
-<ol>
-<li>Install the <a href="https://www.npmjs.com/package/firebase-tools">Firebase CLI Tools</a>: Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI <a href="https://firebaseopensource.com/projects/firebase/firebase-tools/">here</a>.</li>
-</ol>
+</li>
+<li>
+<p>Install the <a href="https://www.npmjs.com/package/firebase-tools">Firebase CLI Tools</a>: Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI <a href="https://firebaseopensource.com/projects/firebase/firebase-tools/">here</a>.</p>
 <div class="highlight"><pre><span></span><code>npm install -g firebase-tools
 </code></pre></div>
-<pre><code>- You may run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following 2 commands before running `npm install` :
-   ```
-    sudo chown -R $USER /usr/local/bin/ &amp;&amp; sudo chown -R $USER /usr/local/lib/node_modules
-   ```
-
-    !!! info ""
-        For more information, you can read this Stack Overflow [post](https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules).
-</code></pre>
-<ol>
+<ul>
+<li>
+<p>You may run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following command before running <code>npm install</code>:</p>
+<div class="highlight"><pre><span></span><code>sudo chown -R $USER /usr/local/bin/ &amp;&amp; sudo chown -R $USER /usr/local/lib/node_modules
+</code></pre></div>
+<div class="admonition info">
+<p>For more information, you can read this Stack Overflow <a href="https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules">post</a>.</p>
+</div>
+</li>
+</ul>
+</li>
 <li>
 <p>Activate the Firebase CLI for Flutter by following these steps.</p>
 <p>a. <a href="https://console.firebase.google.com/">Sign into Firebase</a> using your Google account and create a new project. Use a name like "frankly-dev".</p>
@@ -1515,7 +1618,7 @@ a. Set the path to chromium so flutter can find it:
 <p>c. Install the FlutterFire CLI by running:</p>
 <div class="highlight"><pre><span></span><code>dart pub global activate flutterfire_cli
 </code></pre></div>
-<p>d. From your Flutter project directory (<code>client</code>), run the to start the app configuration workflow:</p>
+<p>d. From your Flutter project directory (<code>client</code>), run the following to start the app configuration workflow:</p>
 <div class="highlight"><pre><span></span><code>flutterfire configure
 </code></pre></div>
 <ul>
@@ -1525,8 +1628,9 @@ a. Set the path to chromium so flutter can find it:
 </ol>
 <!-- Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports. -->
 
-<div class="admonition question"></div>
+<div class="admonition question">
 <p>Please check <a href="../faq/"><strong>❓Troubleshooting / FAQ</strong></a> for suggested resolutions to common Flutter installation errors.</p>
+</div>
 <h2 id="git-configuration">Git Configuration</h2>
 <h3 id="global-gitignore">Global gitignore</h3>
 <p>macOS generates <code>.DS_Store</code> files in directories you browse. These are OS-level metadata files
