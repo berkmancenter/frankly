@@ -129,6 +129,22 @@ void main() {
             ),
           ),
         );
+    // Parent session doc, as written by assignToBreakouts.
+    await firestore
+        .document('$liveMeetingPath/breakout-room-sessions/b1')
+        .setData(
+          DocumentData.fromMap(
+            firestoreUtils.toFirestoreJson(
+              BreakoutRoomSession(
+                breakoutRoomSessionId: 'b1',
+                breakoutRoomStatus: BreakoutRoomStatus.active,
+                assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
+                targetParticipantsPerRoom: 2,
+                hasWaitingRoom: false,
+              ).toJson(),
+            ),
+          ),
+        );
     await firestore
         .document(
           '$liveMeetingPath/breakout-room-sessions/b1/breakout-rooms/room1',
