@@ -1,4 +1,5 @@
 import 'package:data_models/community/membership.dart';
+import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/community/update_membership.dart';
 import 'package:functions/utils/subscription_plan_util.dart';
@@ -62,6 +63,38 @@ void main() {
 
     expect(updatedMembership.status, equals(MembershipStatus.admin));
   });
+
+  test('Promotion works when an existing admin doc lacks invisible field',
+      () async {
+    // Legacy doc with no invisible field
+    await firestore
+        .document('memberships/legacyAdminId/community-membership/$communityId')
+        .setData(
+          DocumentData.fromMap({
+            Membership.kFieldUserId: 'legacyAdminId',
+            Membership.kFieldCommunityId: communityId,
+            Membership.kFieldStatus: 'admin',
+          }),
+        );
+
+    await UpdateMembership().action(
+      UpdateMembershipRequest(
+        communityId: communityId,
+        userId: memberId,
+        status: MembershipStatus.moderator,
+      ),
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
+    );
+
+    final membershipSnapshot = await firestore
+        .document('memberships/$memberId/community-membership/$communityId')
+        .get();
+    expect(
+      membershipSnapshot.data.getString(Membership.kFieldStatus),
+      equals('moderator'),
+    );
+  });
+
   test('Admin should be able to promote member to mod', () async {
     final membershipUpdater = UpdateMembership();
     final req = UpdateMembershipRequest(
