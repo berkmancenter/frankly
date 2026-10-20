@@ -5,63 +5,101 @@ Most components of Frankly can be run on your local machine. This section descri
 ## Tools and Flutter Setup
 
 !!! warning "Important"
-Frankly runs on Flutter `3.22.2.` **Please use this version of Flutter in order to avoid any unexpected errors.**
+    Frankly runs on Flutter `3.22.2`. **Please use this version of Flutter in order to avoid any unexpected errors.**
 
 This section covers setting up a new computer for Flutter development.
 
 ### Part 1: Platform-specific
 
-=== "macOS" 1. Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web. 2. Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app. 3. Optional, but recommended: Install Homebrew [here](https://brew.sh/). 4. Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
-`brew install git
-     ` 5. Clone the Frankly repo in a directory where you prefer your projects to live:
-`git clone https://github.com/berkmancenter/frankly && cd frankly
-     ` 6. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform. - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running `brew install cocoapods`, which should alleviate those errors. - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar). 7. Install VSCode [here](https://code.visualstudio.com/download). - **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter). 8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open ~/.zshenv and add this line:
-`export PATH=$HOME/dev/flutter/bin:$PATH
-       `
-Restart terminal sessions to see the changes.
-=== "Linux" 1. Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
-`sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
-     `
-a. Set the path to chromium so flutter can find it:
-`export CHROME_EXECUTABLE=$(which chromium)
-     ` 2. Clone the Frankly repo in a directory where you prefer your projects to live:
-`git clone https://github.com/berkmancenter/frankly && cd frankly
-     ` 3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform. 4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
+#### macOS
 
-        !!! info ""
-            You may need to download the binary for your specific architecture [here](https://code.visualstudio.com/Download)
+1. Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web.
+2. Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.
+3. Optional, but recommended: Install Homebrew [here](https://brew.sh/).
+4. Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
 
-        - **Recommended**: Install the [Flutter VSCode extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk).
-        - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
-    5. You will probably need to add both flutter and dart to your PATH. Run:
-        ```
-        export PATH="$PATH:$HOME/[path to flutter]/flutter/bin"
-        ```
+    ```
+    brew install git
+    ```
+
+5. Clone the Frankly repo in a directory where you prefer your projects to live:
+
+    ```
+    git clone https://github.com/berkmancenter/frankly && cd frankly
+    ```
+
+6. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform.
+    - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running `brew install cocoapods`, which should alleviate those errors.
+    - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
+7. Install VSCode [here](https://code.visualstudio.com/download).
+    - **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter).
+8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open `~/.zshenv` and add this line:
+
+    ```
+    export PATH=$HOME/dev/flutter/bin:$PATH
+    ```
+
+    Restart terminal sessions to see the changes.
+
+#### Linux
+
+1. Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
+
+    ```
+    sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
+    ```
+
+    Set the path to chromium so flutter can find it:
+
+    ```
+    export CHROME_EXECUTABLE=$(which chromium)
+    ```
+
+2. Clone the Frankly repo in a directory where you prefer your projects to live:
+
+    ```
+    git clone https://github.com/berkmancenter/frankly && cd frankly
+    ```
+
+3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform.
+4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
+
+    !!! info ""
+        You may need to download the binary for your specific architecture [here](https://code.visualstudio.com/Download)
+
+    - **Recommended**: Install the [Flutter VSCode extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk).
+    - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
+5. You will probably need to add both flutter and dart to your PATH. Run:
+
+    ```
+    export PATH="$PATH:$HOME/[path to flutter]/flutter/bin"
+    ```
 
 ### Part 2
 
-1. Install Node.js and npm. We strongly recommend that you do this via `nvm` (steps [here](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)) since it is the easiest end cleanest way to do so.
+1. Install Node.js and npm. We strongly recommend that you do this via `nvm` (steps [here](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)) since it is the easiest and cleanest way to do so.
 2. Once nvm is installed and sourced to your CLI profile, run:
 
-```
-nvm install --lts
-```
+    ```
+    nvm install --lts
+    ```
 
-1. Install the [Firebase CLI Tools](https://www.npmjs.com/package/firebase-tools): Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI [here](https://firebaseopensource.com/projects/firebase/firebase-tools/).
+3. Install the [Firebase CLI Tools](https://www.npmjs.com/package/firebase-tools): Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI [here](https://firebaseopensource.com/projects/firebase/firebase-tools/).
 
-```
-npm install -g firebase-tools
-```
+    ```
+    npm install -g firebase-tools
+    ```
 
-    - You may run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following 2 commands before running `npm install` :
-       ```
+    - You may run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following command before running `npm install`:
+
+        ```
         sudo chown -R $USER /usr/local/bin/ && sudo chown -R $USER /usr/local/lib/node_modules
-       ```
+        ```
 
         !!! info ""
             For more information, you can read this Stack Overflow [post](https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules).
 
-4.  Activate the Firebase CLI for Flutter by following these steps.
+4. Activate the Firebase CLI for Flutter by following these steps.
 
     a. [Sign into Firebase](https://console.firebase.google.com/) using your Google account and create a new project. Use a name like "frankly-dev".
 
@@ -77,7 +115,7 @@ npm install -g firebase-tools
     dart pub global activate flutterfire_cli
     ```
 
-    d. From your Flutter project directory (`client`), run the to start the app configuration workflow:
+    d. From your Flutter project directory (`client`), run the following to start the app configuration workflow:
 
     ```
     flutterfire configure
@@ -88,7 +126,7 @@ npm install -g firebase-tools
 <!-- Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports. -->
 
 !!! question ""
-Please check [**❓Troubleshooting / FAQ**](faq.md) for suggested resolutions to common Flutter installation errors.
+    Please check [**❓Troubleshooting / FAQ**](faq.md) for suggested resolutions to common Flutter installation errors.
 
 ## Git Configuration
 
@@ -133,7 +171,7 @@ The first step in running the app is to build the data_models package. Some code
 flutter pub get
 ```
 
-1. Run:
+2. Run:
 
 ```
 dart run build_runner build --delete-conflicting-outputs

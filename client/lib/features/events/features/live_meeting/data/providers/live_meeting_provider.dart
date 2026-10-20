@@ -879,6 +879,23 @@ class LiveMeetingProvider with ChangeNotifier {
     );
   }
 
+  /// Post-event email only; this runs for every participant who leaves.
+  @visibleForTesting
+  void sendPostEventEmailIfDue() {
+    final timeNow = clockService.now();
+    final pastThreshold = timeNow
+            .difference(eventProvider.event.scheduledTime ?? timeNow)
+            .inMinutes >
+        _postEventEmailThresholdInMinutes;
+    if (pastThreshold) {
+      unawaited(
+        cloudFunctionsEventService.eventEnded(
+          EventEndedRequest(eventPath: eventPath),
+        ),
+      );
+    }
+  }
+
   Future<void> leaveMeeting() async {
     if (_leftMeeting) return;
 
@@ -898,24 +915,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
       final postEventCardData = eventProvider.event.postEventCardData;
 
-      final timeNow = clockService.now();
-      final event = eventProvider.event;
-
-      // Call eventEnded whenever the event is past its scheduled time by the
-      // email threshold, OR whenever the event had recording enabled (to ensure
-      // the recording is always stopped regardless of email threshold).
-      final pastThreshold =
-          timeNow.difference(event.scheduledTime ?? timeNow).inMinutes >
-              _postEventEmailThresholdInMinutes;
-      final hadRecording = (event.eventSettings?.alwaysRecord ?? false) ||
-          liveMeeting?.record == true;
-      if (pastThreshold || hadRecording) {
-        unawaited(
-          cloudFunctionsEventService.eventEnded(
-            EventEndedRequest(eventPath: eventPath),
-          ),
-        );
-      }
+      sendPostEventEmailIfDue();
 
       if (prePostEnabled && postEventCardData != null) {
         if (postEventCardData.hasData) {
