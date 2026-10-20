@@ -25,9 +25,6 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_html/html.dart';
 
-/// Formats [date] in UTC for the registration CSV, e.g. `2025-05-17 04:08:21 UTC`.
-///
-/// Exports are shared across time zones, so the zone is fixed and stated.
 String registrationCsvDateTimeFormat({required DateTime date}) {
   return DateFormat("yyyy-MM-dd HH:mm:ss 'UTC'").format(date.toUtc());
 }
