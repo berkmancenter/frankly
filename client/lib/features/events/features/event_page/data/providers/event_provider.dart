@@ -9,6 +9,7 @@ import 'package:collection/collection.dart';
 import 'package:csv/csv.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/utils/firestore_utils.dart';
@@ -23,6 +24,13 @@ import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_html/html.dart';
+
+/// Formats [date] in UTC for the registration CSV, e.g. `2025-05-17 04:08:21 UTC`.
+///
+/// Exports are shared across time zones, so the zone is fixed and stated.
+String registrationCsvDateTimeFormat({required DateTime date}) {
+  return DateFormat("yyyy-MM-dd HH:mm:ss 'UTC'").format(date.toUtc());
+}
 
 class EventProvider with ChangeNotifier {
   final CommunityProvider communityProvider;
@@ -420,14 +428,16 @@ class EventProvider with ChangeNotifier {
       final createdDate =
           registrationData[i].memberEvent?.participant?.createdDate;
       row.add(
-        createdDate != null ? dateTimeFormat(date: createdDate.toLocal()) : '',
+        createdDate != null
+            ? registrationCsvDateTimeFormat(date: createdDate)
+            : '',
       );
       final mostRecentPresentTime = participantData
           .firstWhereOrNull((p) => p.id == registrationData[i].id)
           ?.mostRecentPresentTime;
       row.add(
         mostRecentPresentTime != null
-            ? dateTimeFormat(date: mostRecentPresentTime.toLocal())
+            ? registrationCsvDateTimeFormat(date: mostRecentPresentTime)
             : '',
       );
 
