@@ -80,8 +80,10 @@ jobs:
       # firebase/functions-ts (Node 24, Gen2) - ServeIndex's index.html template
       # lives under its own web/ dir now (not the Dart codebase's), since the
       # Dart side no longer serves it at all.
+      #
+      # This step always runs because every
+      # deploy step below needs Node 24 action.
       - name: Setup Node for functions-ts
-        if: steps.changes.outputs.functions_ts == 'true' || github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -121,21 +123,26 @@ jobs:
           mapping-file: ${{ github.workspace }}/.github/workflows/function-mapping.json
           files: ${{ steps.changes.outputs.functions_files }} ${{ steps.changes.outputs.functions_ts_files }}
 
+      # w9jds/setup-firebase (not w9jds/firebase-action) so firebase-tools runs
+      # under the job's own Node (set to 24 above)
+      - name: Setup Firebase CLI
+        if: (steps.changes.outputs.functions == 'true' || steps.changes.outputs.functions_ts == 'true') && github.event_name == 'push' && steps.changes.outputs.shared == 'false'
+        uses: w9jds/setup-firebase@main
+        with:
+          tools-version: 13.22.1
+          gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.APP_STAGING_PROJECT_ID }}
+
       - name: Deploy Functions
         if: (steps.changes.outputs.functions == 'true' || steps.changes.outputs.functions_ts == 'true') && github.event_name == 'push' && steps.changes.outputs.shared == 'false'
-        uses: w9jds/firebase-action@v13.22.1
-        with:
-          args: functions:config:set "${{ secrets.FIREBASE_CONFIG }}" ; ${{ steps.build-deployment-cmd.outputs.deploy-command}}
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-          PROJECT_ID: ${{ secrets.APP_STAGING_PROJECT_ID }}
+        run: |
+          firebase functions:config:set "${{ secrets.FIREBASE_CONFIG }}"
+          ${{ steps.build-deployment-cmd.outputs.deploy-command }}
 
         # Updates to the data model or widely used utils should deploy all functions.
-        # NOTE: functions-ts function names aren't in any `groups` entry in
-        # function-mapping.json yet, so this path does not currently redeploy
-        # functions-ts on a "shared" change - harmless today since Wave 0's
-        # functions don't consume data_models at all, but revisit once a
-        # later wave adds that dependency.
+        # functions-ts function names in `groups`/`files` entries are qualified
+        # as `functions-ts:<name>` (see function-mapping.json), so this path
+        # correctly resolves and deploys them alongside the Dart codebase.
       - name: Build Deployment Command for Workflow Dispatch or Shared Code Update
         if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         id: build-deployment-cmd-manual
@@ -146,11 +153,16 @@ jobs:
           names: ${{ inputs.function-names }}
           groups: ${{ inputs.groups}}
 
+      - name: Setup Firebase CLI for Workflow Dispatch or Shared Code Update
+        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        uses: w9jds/setup-firebase@main
+        with:
+          tools-version: 13.22.1
+          gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.APP_STAGING_PROJECT_ID }}
+
       - name: Deploy Functions for Workflow Dispatch or Shared Code Update
         if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
-        uses: w9jds/firebase-action@v13.22.1
-        with:
-          args: functions:config:set "${{ secrets.FIREBASE_CONFIG }}" ; ${{ steps.build-deployment-cmd-manual.outputs.deploy-command}}
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-          PROJECT_ID: ${{ secrets.APP_STAGING_PROJECT_ID }}
+        run: |
+          firebase functions:config:set "${{ secrets.FIREBASE_CONFIG }}"
+          ${{ steps.build-deployment-cmd-manual.outputs.deploy-command }}

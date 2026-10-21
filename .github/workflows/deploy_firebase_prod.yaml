@@ -36,9 +36,6 @@ jobs:
       - name: Install Dart Dependencies
         run: flutter pub get
 
-      - name: Sync index.html template for ServeIndex
-        run: cp ../../client/web/index.html web/index.html
-
       - name: Sync index.html template for functions-ts temp directory
         working-directory: firebase/functions-ts
         run: mkdir -p web && cp ../../client/web/index.html web/index.html
@@ -77,10 +74,17 @@ jobs:
           force: true
           mapping-file: ${{ github.workspace }}/.github/workflows/function-mapping.json
 
-      - name: Deploy Functions
-        uses: w9jds/firebase-action@v13.22.1
+      # w9jds/setup-firebase (not w9jds/firebase-action) so firebase-tools runs
+      # under the job's own Node (24, set up above for functions-ts) instead of
+      # firebase-action's Docker image, which is fixed to Node 20,
+      - name: Setup Firebase CLI
+        uses: w9jds/setup-firebase@main
         with:
-          args: functions:config:set "${{ secrets.FIREBASE_CONFIG }}" ; ${{ steps.build-deployment-cmd.outputs.deploy-command}}
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-          PROJECT_ID: ${{ secrets.APP_PROD_PROJECT_ID }}
+          tools-version: 13.22.1
+          gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.APP_PROD_PROJECT_ID }}
+
+      - name: Deploy Functions
+        run: |
+          firebase functions:config:set "${{ secrets.FIREBASE_CONFIG }}"
+          ${{ steps.build-deployment-cmd.outputs.deploy-command }}

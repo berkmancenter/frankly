@@ -1,47 +1,47 @@
 {
   "files": {
     "firebase/functions-ts/src/agora_recording_webhook.ts": [
-      "agoraRecordingWebhook"
+      "functions-ts:agoraRecordingWebhook"
     ],
-    "firebase/functions-ts/src/download_recordings.ts": ["downloadRecording"],
+    "firebase/functions-ts/src/download_recordings.ts": ["functions-ts:downloadRecording"],
     "firebase/functions-ts/src/download_transcripts.ts": [
-      "downloadTranscripts"
+      "functions-ts:downloadTranscripts"
     ],
     "firebase/functions-ts/src/get_session_download_url.ts": [
-      "getSessionDownloadUrl"
+      "functions-ts:getSessionDownloadUrl"
     ],
-    "firebase/functions-ts/src/image_proxy.ts": ["imageProxy"],
-    "firebase/functions-ts/src/produce_sessions.ts": ["produceSessions"],
+    "firebase/functions-ts/src/image_proxy.ts": ["functions-ts:imageProxy"],
+    "firebase/functions-ts/src/produce_sessions.ts": ["functions-ts:produceSessions"],
     "firebase/functions-ts/src/repair_session_artifacts.ts": [
-      "repairSessionArtifacts"
+      "functions-ts:repairSessionArtifacts"
     ],
-    "firebase/functions-ts/src/serve_index.ts": ["ServeIndex"],
+    "firebase/functions-ts/src/serve_index.ts": ["functions-ts:ServeIndex"],
     "firebase/functions-ts/src/config.ts": [
-      "ServeIndex",
-      "agoraRecordingWebhook",
-      "downloadRecording",
-      "downloadTranscripts",
-      "getSessionDownloadUrl",
-      "repairSessionArtifacts",
-      "produceSessions"
+      "functions-ts:ServeIndex",
+      "functions-ts:agoraRecordingWebhook",
+      "functions-ts:downloadRecording",
+      "functions-ts:downloadTranscripts",
+      "functions-ts:getSessionDownloadUrl",
+      "functions-ts:repairSessionArtifacts",
+      "functions-ts:produceSessions"
     ],
     "firebase/functions-ts/src/session_artifacts.ts": [
-      "repairSessionArtifacts",
-      "produceSessions"
+      "functions-ts:repairSessionArtifacts",
+      "functions-ts:produceSessions"
     ],
     "firebase/functions-ts/src/transcript_merge.ts": [
-      "repairSessionArtifacts",
-      "produceSessions"
+      "functions-ts:repairSessionArtifacts",
+      "functions-ts:produceSessions"
     ],
     "firebase/functions-ts/src/index.ts": [
-      "imageProxy",
-      "ServeIndex",
-      "agoraRecordingWebhook",
-      "downloadRecording",
-      "downloadTranscripts",
-      "getSessionDownloadUrl",
-      "repairSessionArtifacts",
-      "produceSessions"
+      "functions-ts:imageProxy",
+      "functions-ts:ServeIndex",
+      "functions-ts:agoraRecordingWebhook",
+      "functions-ts:downloadRecording",
+      "functions-ts:downloadTranscripts",
+      "functions-ts:getSessionDownloadUrl",
+      "functions-ts:repairSessionArtifacts",
+      "functions-ts:produceSessions"
     ],
     "firebase/functions/lib/admin/partner_agreements/on_partner_agreements.dart": [
       "PartnerAgreementOnCreate",
@@ -452,11 +452,11 @@
       "ExtendCloudTaskScheduler",
       "MuxWebhooks",
       "ShareLink",
-      "ServeIndex"
+      "functions-ts:ServeIndex"
     ],
     "helperdbpubsub": [
-      "downloadRecording",
-      "imageProxy",
+      "functions-ts:downloadRecording",
+      "functions-ts:imageProxy",
       "UpdatePresenceStatus",
       "TriggerEmailDigests",
       "UpdateLiveStreamParticipantCount"
