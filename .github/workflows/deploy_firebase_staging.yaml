@@ -129,7 +129,7 @@ jobs:
         if: (steps.changes.outputs.functions == 'true' || steps.changes.outputs.functions_ts == 'true') && github.event_name == 'push' && steps.changes.outputs.shared == 'false'
         uses: w9jds/setup-firebase@main
         with:
-          tools-version: 13.22.1
+          tools-version: 14.25.0
           gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
           project_id: ${{ secrets.APP_STAGING_PROJECT_ID }}
 
@@ -157,7 +157,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         uses: w9jds/setup-firebase@main
         with:
-          tools-version: 13.22.1
+          tools-version: 14.25.0
           gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
           project_id: ${{ secrets.APP_STAGING_PROJECT_ID }}
 

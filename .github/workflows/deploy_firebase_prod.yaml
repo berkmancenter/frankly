@@ -80,7 +80,7 @@ jobs:
       - name: Setup Firebase CLI
         uses: w9jds/setup-firebase@main
         with:
-          tools-version: 13.22.1
+          tools-version: 14.25.0
           gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
           project_id: ${{ secrets.APP_PROD_PROJECT_ID }}
 
