@@ -139,7 +139,7 @@ test("does not merge a transcript when no VTT files are found", async () => {
 });
 
 test("continues post-processing even if registering MP4s throws", async () => {
-  (sessionArtifacts.listSessionFiles as unknown as jest.Mock).mockImplementation(async () => ([{ name: "p/a.vtt" }]));
+  (sessionArtifacts.listSessionFiles as unknown as jest.Mock).mockImplementation(async () => ([{ name: "p/a.mp4" }, { name: "p/a.vtt" }]));
   (sessionArtifacts.registerMp4s as unknown as jest.Mock).mockImplementation(async () => { throw new Error("boom"); });
   (sessionArtifacts.registerVtts as unknown as jest.Mock).mockImplementation(async () => (undefined));
   (sessionArtifacts.mergeTranscript as unknown as jest.Mock).mockImplementation(async () => ("p/a.csv"));
