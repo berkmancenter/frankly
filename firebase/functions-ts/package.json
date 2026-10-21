@@ -10,7 +10,7 @@
     "build:watch": "tsc -p tsconfig.build.json --watch",
     "lint": "eslint .",
     "test": "tsc -p tsconfig.test.json && jest",
-    "serve": "npm run build && firebase emulators:start --only functions"
+    "serve": "npm run build && mkdir -p web && cp ../../client/web/index.html web/index.html && firebase emulators:start --only functions"
   },
   "dependencies": {
     "cors": "^2.8.5",
