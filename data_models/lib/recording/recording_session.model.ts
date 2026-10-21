@@ -9,7 +9,7 @@ export const RecordingSessionSchema = z.object({
   roomId: z.string(),
   roomType: z.enum(['main', 'breakout']).catch('main'),
   status: z.enum(['starting', 'recording', 'stopping', 'stopped', 'failed']).catch('failed'),
-  startedBy: z.string().default('system'),
+  startedBy: z.preprocess((val) => val ?? 'system', z.string()),
   startedAt: z.coerce.date().nullable().default(null),
   stoppedAt: z.coerce.date().nullable().default(null),
   breakoutSessionId: z.string().nullable().default(null),
@@ -20,9 +20,9 @@ export const RecordingSessionSchema = z.object({
   gcsPrefix: z.string().nullable().default(null),
   chatPath: z.string().nullable().default(null),
   errorMessage: z.string().nullable().default(null),
-  artifactPaths: z.record(z.string(), z.string()).default({}),
-  participantIds: z.array(z.string()).default([]),
-  uidToDisplayName: z.record(z.string(), z.string()).default({}),
+  artifactPaths: z.preprocess((val) => val ?? {}, z.record(z.string(), z.string())),
+  participantIds: z.preprocess((val) => val ?? [], z.array(z.string())),
+  uidToDisplayName: z.preprocess((val) => val ?? {}, z.record(z.string(), z.string())),
 });
 
 export type RecordingSession = z.infer<typeof RecordingSessionSchema>;

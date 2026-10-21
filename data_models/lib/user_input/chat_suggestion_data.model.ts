@@ -12,7 +12,7 @@ export const ChatSuggestionDataSchema = z.object({
   emotionType: z.enum(['thumbsUp', 'heart', 'hundred', 'exclamation', 'plusOne', 'laughWithTears', 'heartEyes']).nullable().default(null),
   upvotes: z.number().int().nullable().default(null),
   downvotes: z.number().int().nullable().default(null),
-  type: z.enum(['chat', 'suggestion']).catch('chat').default('chat'),
+  type: z.preprocess((val) => val ?? 'chat', z.enum(['chat', 'suggestion']).catch('chat')),
   roomId: z.string().nullable().default(null),
   agendaItemId: z.string().nullable().default(null),
   deleted: z.boolean().nullable().default(null),

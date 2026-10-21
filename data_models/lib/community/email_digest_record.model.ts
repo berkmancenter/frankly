@@ -6,7 +6,7 @@ export const EmailDigestRecordSchema = z.object({
   id: z.string().nullable().default(null),
   userId: z.string().nullable().default(null),
   communityId: z.string().nullable().default(null),
-  type: z.enum(['weekly']).catch('weekly').default('weekly'),
+  type: z.preprocess((val) => val ?? 'weekly', z.enum(['weekly']).catch('weekly')),
   sentAt: z.coerce.date().nullable().default(null),
 });
 

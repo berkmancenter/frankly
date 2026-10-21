@@ -7,9 +7,9 @@ export const PublicUserInfoSchema = z.object({
   agoraId: z.number().int(),
   displayName: z.string().nullable().default(null),
   imageUrl: z.string().nullable().default(null),
-  about: z.string().nullable().default(null).default(''),
-  socialMediaItems: z.array(z.lazy(() => SocialMediaItemSchema)).default([]),
-  appRole: z.enum(['owner', 'user']).nullable().default(null).default('user'),
+  about: z.preprocess((val) => val ?? '', z.string()),
+  socialMediaItems: z.preprocess((val) => val ?? [], z.array(z.lazy(() => SocialMediaItemSchema))),
+  appRole: z.preprocess((val) => val ?? 'user', z.enum(['owner', 'user'])),
 });
 
 export type PublicUserInfo = z.infer<typeof PublicUserInfoSchema>;

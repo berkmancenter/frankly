@@ -5,7 +5,7 @@ import { EventSettingsSchema } from '../events/event.model';
 
 export const CommunitySchema = z.object({
   id: z.string(),
-  displayIds: z.array(z.string()).default([]),
+  displayIds: z.preprocess((val) => val ?? [], z.array(z.string())),
   name: z.string().nullable().default(null),
   contactEmail: z.string().nullable().default(null),
   creatorId: z.string().nullable().default(null),
@@ -22,16 +22,16 @@ export const CommunitySchema = z.object({
   youtubeUrl: z.string().nullable().default(null),
   instagramUrl: z.string().nullable().default(null),
   tagLine: z.string().nullable().default(null),
-  enabledFeatureFlags: z.any() /* TODO: unsupported converter communityFeatureFlagsFromJson */.default([]),
-  internalFlags: z.any() /* TODO: unsupported converter communityInternalFlagsFromJson */.default([]),
+  enabledFeatureFlags: z.preprocess((val) => val ?? [], z.any() /* TODO: unsupported converter communityFeatureFlagsFromJson */),
+  internalFlags: z.preprocess((val) => val ?? [], z.any() /* TODO: unsupported converter communityInternalFlagsFromJson */),
   communitySettings: z.lazy(() => CommunitySettingsSchema).nullable().default(null),
   eventSettings: z.lazy(() => EventSettingsSchema).nullable().default(null),
   donationDialogText: z.string().nullable().default(null),
   ratingSurveyUrl: z.string().nullable().default(null),
   themeLightColor: z.string().nullable().default(null),
   themeDarkColor: z.string().nullable().default(null),
-  onboardingSteps: z.array(z.enum(['brandSpace', 'createTemplate', 'hostEvent', 'inviteSomeone', 'createStripeAccount'])).default([]),
-  isOnboardingOverviewEnabled: z.boolean().default(false),
+  onboardingSteps: z.preprocess((val) => val ?? [], z.array(z.enum(['brandSpace', 'createTemplate', 'hostEvent', 'inviteSomeone', 'createStripeAccount']))),
+  isOnboardingOverviewEnabled: z.preprocess((val) => val ?? false, z.boolean()),
 });
 
 export type Community = z.infer<typeof CommunitySchema>;
@@ -44,18 +44,18 @@ export const FeaturedSchema = z.object({
 export type Featured = z.infer<typeof FeaturedSchema>;
 
 export const CommunitySettingsSchema = z.object({
-  allowDonations: z.boolean().default(true),
-  allowUnofficialTemplates: z.boolean().default(false),
-  disableEmailDigests: z.boolean().default(false),
-  dontAllowMembersToCreateMeetings: z.boolean().default(true),
-  enableDiscussionThreads: z.boolean().default(true),
-  enableHostless: z.boolean().default(true),
+  allowDonations: z.preprocess((val) => val ?? true, z.boolean()),
+  allowUnofficialTemplates: z.preprocess((val) => val ?? false, z.boolean()),
+  disableEmailDigests: z.preprocess((val) => val ?? false, z.boolean()),
+  dontAllowMembersToCreateMeetings: z.preprocess((val) => val ?? true, z.boolean()),
+  enableDiscussionThreads: z.preprocess((val) => val ?? true, z.boolean()),
+  enableHostless: z.preprocess((val) => val ?? true, z.boolean()),
   featuredOrder: z.number().int().nullable().default(null),
-  multiplePeopleOnStage: z.boolean().default(false),
-  multipleVideoTypes: z.boolean().default(false),
-  requireApprovalToJoin: z.boolean().default(false),
-  enableUpdatedLiveMeetingMobile: z.boolean().default(false),
-  enableAVCheck: z.boolean().default(true),
+  multiplePeopleOnStage: z.preprocess((val) => val ?? false, z.boolean()),
+  multipleVideoTypes: z.preprocess((val) => val ?? false, z.boolean()),
+  requireApprovalToJoin: z.preprocess((val) => val ?? false, z.boolean()),
+  enableUpdatedLiveMeetingMobile: z.preprocess((val) => val ?? false, z.boolean()),
+  enableAVCheck: z.preprocess((val) => val ?? true, z.boolean()),
 });
 
 export type CommunitySettings = z.infer<typeof CommunitySettingsSchema>;

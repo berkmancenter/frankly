@@ -299,8 +299,8 @@ export const InitiateBreakoutsRequestSchema = z.object({
   targetParticipantsPerRoom: z.number().int(),
   breakoutSessionId: z.string(),
   assignmentMethod: z.enum(['targetPerRoom', 'smartMatch']).nullable().default(null),
-  includeWaitingRoom: z.boolean().default(false),
-  useHostedApi: z.boolean().default(false),
+  includeWaitingRoom: z.preprocess((val) => val ?? false, z.boolean()),
+  useHostedApi: z.preprocess((val) => val ?? false, z.boolean()),
 });
 
 export type InitiateBreakoutsRequest = z.infer<typeof InitiateBreakoutsRequestSchema>;
@@ -393,7 +393,7 @@ export const CheckAdvanceMeetingGuideRequestSchema = z.object({
   breakoutRoomId: z.string().nullable().default(null),
   presentIds: z.array(z.string()),
   userReadyAgendaId: z.string().nullable().default(null),
-  ready: z.boolean().default(true),
+  ready: z.preprocess((val) => val ?? true, z.boolean()),
 });
 
 export type CheckAdvanceMeetingGuideRequest = z.infer<typeof CheckAdvanceMeetingGuideRequestSchema>;

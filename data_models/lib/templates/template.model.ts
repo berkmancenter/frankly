@@ -17,9 +17,9 @@ export const TemplateSchema = z.object({
   description: z.string().nullable().default(null),
   category: z.string().nullable().default(null),
   eventSettings: z.lazy(() => EventSettingsSchema).nullable().default(null),
-  isOfficial: z.boolean().default(true),
-  status: z.enum(['active', 'removed']).catch('active').default('active'),
-  agendaItems: z.array(z.lazy(() => AgendaItemSchema)).default([]),
+  isOfficial: z.preprocess((val) => val ?? true, z.boolean()),
+  status: z.preprocess((val) => val ?? 'active', z.enum(['active', 'removed']).catch('active')),
+  agendaItems: z.preprocess((val) => val ?? [], z.array(z.lazy(() => AgendaItemSchema))),
   preEventCardData: z.lazy(() => PrePostCardSchema).nullable().default(null),
   postEventCardData: z.lazy(() => PrePostCardSchema).nullable().default(null),
 });

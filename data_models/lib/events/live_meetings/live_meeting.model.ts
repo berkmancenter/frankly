@@ -4,12 +4,12 @@ import { z } from 'zod';
 
 export const LiveMeetingSchema = z.object({
   meetingId: z.string().nullable().default(null),
-  participants: z.array(z.lazy(() => LiveMeetingParticipantSchema)).default([]),
-  events: z.array(z.lazy(() => LiveMeetingEventSchema)).default([]),
+  participants: z.preprocess((val) => val ?? [], z.array(z.lazy(() => LiveMeetingParticipantSchema))),
+  events: z.preprocess((val) => val ?? [], z.array(z.lazy(() => LiveMeetingEventSchema))),
   currentBreakoutSession: z.lazy(() => BreakoutRoomSessionSchema).nullable().default(null),
-  record: z.boolean().default(false),
-  isMeetingCardMinimized: z.boolean().default(false),
-  pinnedUserIds: z.array(z.string()).default([]),
+  record: z.preprocess((val) => val ?? false, z.boolean()),
+  isMeetingCardMinimized: z.preprocess((val) => val ?? false, z.boolean()),
+  pinnedUserIds: z.preprocess((val) => val ?? [], z.array(z.string())),
   recordingSessionId: z.string().nullable().default(null),
   pendingAdvanceAgendaItemId: z.string().nullable().default(null),
   pendingAdvanceTime: z.coerce.date().nullable().default(null),
@@ -29,7 +29,7 @@ export const LiveMeetingEventSchema = z.object({
   event: z.enum(['startMeeting', 'agendaItemCompleted', 'agendaItemStarted', 'finishMeeting', 'startVideo']).nullable().default(null),
   timestamp: z.coerce.date().nullable().default(null),
   agendaItem: z.string().nullable().default(null),
-  hostless: z.boolean().nullable().default(null).default(false),
+  hostless: z.preprocess((val) => val ?? false, z.boolean()),
 });
 
 export type LiveMeetingEvent = z.infer<typeof LiveMeetingEventSchema>;
@@ -46,11 +46,11 @@ export const BreakoutRoomSchema = z.object({
   roomName: z.string(),
   orderingPriority: z.number().int(),
   creatorId: z.string(),
-  participantIds: z.array(z.string()).default([]),
-  originalParticipantIdsAssignment: z.array(z.string()).default([]),
-  flagStatus: z.enum(['unflagged', 'needsHelp']).catch('unflagged').default('unflagged'),
+  participantIds: z.preprocess((val) => val ?? [], z.array(z.string())),
+  originalParticipantIdsAssignment: z.preprocess((val) => val ?? [], z.array(z.string())),
+  flagStatus: z.preprocess((val) => val ?? 'unflagged', z.enum(['unflagged', 'needsHelp']).catch('unflagged')),
   createdDate: z.coerce.date().nullable().default(null),
-  record: z.boolean().default(false),
+  record: z.preprocess((val) => val ?? false, z.boolean()),
   recordingSessionId: z.string().nullable().default(null),
   diffusionStatement: z.string().nullable().default(null),
 });
@@ -64,7 +64,7 @@ export const BreakoutRoomSessionSchema = z.object({
   assignmentMethod: z.enum(['targetPerRoom', 'smartMatch']),
   targetParticipantsPerRoom: z.number().int(),
   hasWaitingRoom: z.boolean(),
-  useHostedApi: z.boolean().default(false),
+  useHostedApi: z.preprocess((val) => val ?? false, z.boolean()),
   maxRoomNumber: z.number().int().nullable().default(null),
   createdDate: z.coerce.date().nullable().default(null),
   scheduledTime: z.coerce.date().nullable().default(null),

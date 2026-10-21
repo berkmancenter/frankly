@@ -4,12 +4,12 @@ import { z } from 'zod';
 
 export const PartnerAgreementSchema = z.object({
   id: z.string(),
-  allowPayments: z.boolean().default(false),
+  allowPayments: z.preprocess((val) => val ?? false, z.boolean()),
   takeRate: z.number().nullable().default(null),
   initialUserId: z.string().nullable().default(null),
   communityId: z.string().nullable().default(null),
   stripeConnectedAccountId: z.string().nullable().default(null),
-  stripeConnectedAccountActive: z.boolean().default(false),
+  stripeConnectedAccountActive: z.preprocess((val) => val ?? false, z.boolean()),
   planOverride: z.string().nullable().default(null),
 });
 

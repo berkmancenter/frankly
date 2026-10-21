@@ -7,13 +7,13 @@ export const DiscussionThreadSchema = z.object({
   id: z.string(),
   createdAt: z.coerce.date().nullable().default(null),
   creatorId: z.string(),
-  likedByIds: z.array(z.string()).default([]),
-  dislikedByIds: z.array(z.string()).default([]),
-  emotions: z.array(z.lazy(() => EmotionSchema)).default([]),
+  likedByIds: z.preprocess((val) => val ?? [], z.array(z.string())),
+  dislikedByIds: z.preprocess((val) => val ?? [], z.array(z.string())),
+  emotions: z.preprocess((val) => val ?? [], z.array(z.lazy(() => EmotionSchema))),
   content: z.string(),
   imageUrl: z.string().nullable().default(null),
-  isDeleted: z.boolean().default(false),
-  commentCount: z.number().int().default(0),
+  isDeleted: z.preprocess((val) => val ?? false, z.boolean()),
+  commentCount: z.preprocess((val) => val ?? 0, z.number().int()),
 });
 
 export type DiscussionThread = z.infer<typeof DiscussionThreadSchema>;

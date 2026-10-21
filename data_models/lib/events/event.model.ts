@@ -6,7 +6,7 @@ import { PrePostCardSchema } from './pre_post_card.model';
 
 export const EventSchema = z.object({
   id: z.string(),
-  status: z.enum(['active', 'canceled']).catch('active'),
+  status: z.preprocess((val) => val ?? 'active', z.enum(['active', 'canceled']).catch('active')),
   eventType: z.enum(['hosted', 'hostless', 'livestream']).nullable().default(null),
   collectionPath: z.string(),
   communityId: z.string(),
@@ -20,24 +20,24 @@ export const EventSchema = z.object({
   title: z.string().nullable().default(null),
   description: z.string().nullable().default(null),
   image: z.string().nullable().default(null),
-  isPublic: z.boolean().default(false),
+  isPublic: z.preprocess((val) => val ?? false, z.boolean()),
   minParticipants: z.number().int().nullable().default(null),
   maxParticipants: z.number().int().nullable().default(null),
-  agendaItems: z.array(z.lazy(() => AgendaItemSchema)).default([]),
+  agendaItems: z.preprocess((val) => val ?? [], z.array(z.lazy(() => AgendaItemSchema))),
   waitingRoomInfo: z.lazy(() => WaitingRoomInfoSchema).nullable().default(null),
   breakoutRoomDefinition: z.any() /* TODO: unsupported converter fromJsonMigration */.nullable().default(null),
-  isLocked: z.boolean().default(false),
+  isLocked: z.preprocess((val) => val ?? false, z.boolean()),
   liveStreamInfo: z.lazy(() => LiveStreamInfoSchema).nullable().default(null),
   preEventCardData: z.lazy(() => PrePostCardSchema).nullable().default(null),
   postEventCardData: z.lazy(() => PrePostCardSchema).nullable().default(null),
   eventSettings: z.lazy(() => EventSettingsSchema).nullable().default(null),
-  durationInMinutes: z.number().int().default(60),
+  durationInMinutes: z.preprocess((val) => val ?? 60, z.number().int()),
   externalCommunityId: z.string().nullable().default(null),
   externalCommunityStatus: z.string().nullable().default(null),
   participantCountEstimate: z.number().int().nullable().default(null),
   presentParticipantCountEstimate: z.number().int().nullable().default(null),
   registrationCount: z.number().int().nullable().default(null),
-  breakoutMatchIdsToRecord: z.any() /* TODO: unhandled type dynamic */.default([]),
+  breakoutMatchIdsToRecord: z.preprocess((val) => val ?? [], z.any() /* TODO: unhandled type dynamic */),
 });
 
 export type Event = z.infer<typeof EventSchema>;
@@ -79,13 +79,13 @@ export const ParticipantSchema = z.object({
   createdDate: z.coerce.date().nullable().default(null),
   scheduledTime: z.coerce.date().nullable().default(null),
   status: z.enum(['active', 'canceled', 'banned']).nullable().default(null),
-  isPresent: z.boolean().default(false),
+  isPresent: z.preprocess((val) => val ?? false, z.boolean()),
   availableForBreakoutSessionId: z.string().nullable().default(null),
   membershipStatus: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable().default(null),
   currentBreakoutRoomId: z.string().nullable().default(null),
-  muteOverride: z.boolean().default(false),
+  muteOverride: z.preprocess((val) => val ?? false, z.boolean()),
   joinParameters: z.record(z.string(), z.string()).nullable().default(null),
-  breakoutRoomSurveyQuestions: z.array(z.lazy(() => BreakoutQuestionSchema)).default([]),
+  breakoutRoomSurveyQuestions: z.preprocess((val) => val ?? [], z.array(z.lazy(() => BreakoutQuestionSchema))),
   mostRecentPresentTime: z.coerce.date().nullable().default(null),
   zipCode: z.string().nullable().default(null),
   email: z.string().nullable().default(null),
@@ -116,12 +116,12 @@ export const AgendaItemSchema = z.object({
   creatorId: z.string().nullable().default(null),
   title: z.string().nullable().default(null),
   content: z.string().nullable().default(null),
-  videoType: z.enum(['youtube', 'vimeo', 'url']).default('url'),
+  videoType: z.preprocess((val) => val ?? 'url', z.enum(['youtube', 'vimeo', 'url'])),
   type: z.enum(['text', 'video', 'image', 'poll', 'wordCloud', 'userSuggestions']).nullable().default(null),
   videoUrl: z.string().nullable().default(null),
   imageUrl: z.string().nullable().default(null),
   pollAnswers: z.array(z.string()).nullable().default(null),
-  timeInSeconds: z.number().int().nullable().default(null).default(300),
+  timeInSeconds: z.preprocess((val) => val ?? 300, z.number().int()),
   suggestionsButtonText: z.string().nullable().default(null),
 });
 
@@ -132,8 +132,8 @@ export const SuggestedAgendaItemSchema = z.object({
   creatorId: z.string().nullable().default(null),
   content: z.string().nullable().default(null),
   createdDate: z.coerce.date().nullable().default(null),
-  upvotedUserIds: z.array(z.string()).default([]),
-  downvotedUserIds: z.array(z.string()).default([]),
+  upvotedUserIds: z.preprocess((val) => val ?? [], z.array(z.string())),
+  downvotedUserIds: z.preprocess((val) => val ?? [], z.array(z.string())),
 });
 
 export type SuggestedAgendaItem = z.infer<typeof SuggestedAgendaItemSchema>;
@@ -141,10 +141,10 @@ export type SuggestedAgendaItem = z.infer<typeof SuggestedAgendaItemSchema>;
 export const BreakoutRoomDefinitionSchema = z.object({
   creatorId: z.string().nullable().default(null),
   targetParticipants: z.number().int().nullable().default(null),
-  questions: z.array(z.lazy(() => SurveyQuestionSchema)).default([]),
-  breakoutQuestions: z.array(z.lazy(() => BreakoutQuestionSchema)).default([]),
-  categories: z.array(z.lazy(() => BreakoutCategorySchema)).default([]),
-  assignmentMethod: z.enum(['targetPerRoom', 'smartMatch']).catch('targetPerRoom').default('targetPerRoom'),
+  questions: z.preprocess((val) => val ?? [], z.array(z.lazy(() => SurveyQuestionSchema))),
+  breakoutQuestions: z.preprocess((val) => val ?? [], z.array(z.lazy(() => BreakoutQuestionSchema))),
+  categories: z.preprocess((val) => val ?? [], z.array(z.lazy(() => BreakoutCategorySchema))),
+  assignmentMethod: z.preprocess((val) => val ?? 'targetPerRoom', z.enum(['targetPerRoom', 'smartMatch']).catch('targetPerRoom')),
 });
 
 export type BreakoutRoomDefinition = z.infer<typeof BreakoutRoomDefinitionSchema>;
@@ -161,9 +161,9 @@ export type SurveyQuestion = z.infer<typeof SurveyQuestionSchema>;
 export const BreakoutQuestionSchema = z.object({
   id: z.string(),
   title: z.string(),
-  type: z.enum(['multipleChoice', 'freeText']).catch('multipleChoice').default('multipleChoice'),
-  answerOptionId: z.string().default(''),
-  answers: z.array(z.lazy(() => BreakoutAnswerSchema)).default([]),
+  type: z.preprocess((val) => val ?? 'multipleChoice', z.enum(['multipleChoice', 'freeText']).catch('multipleChoice')),
+  answerOptionId: z.preprocess((val) => val ?? '', z.string()),
+  answers: z.preprocess((val) => val ?? [], z.array(z.lazy(() => BreakoutAnswerSchema))),
   freeTextAnswer: z.string().nullable().default(null),
 });
 
@@ -191,12 +191,12 @@ export const BreakoutCategorySchema = z.object({
 export type BreakoutCategory = z.infer<typeof BreakoutCategorySchema>;
 
 export const WaitingRoomInfoSchema = z.object({
-  durationSeconds: z.number().int().default(0),
-  waitingMediaBufferSeconds: z.number().int().default(0),
+  durationSeconds: z.preprocess((val) => val ?? 0, z.number().int()),
+  waitingMediaBufferSeconds: z.preprocess((val) => val ?? 0, z.number().int()),
   content: z.string().nullable().default(null),
   waitingMediaItem: z.lazy(() => MediaItemSchema).nullable().default(null),
   introMediaItem: z.lazy(() => MediaItemSchema).nullable().default(null),
-  loopWaitingVideo: z.boolean().default(false),
+  loopWaitingVideo: z.preprocess((val) => val ?? false, z.boolean()),
 });
 
 export type WaitingRoomInfo = z.infer<typeof WaitingRoomInfoSchema>;

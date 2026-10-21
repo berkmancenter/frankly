@@ -107,24 +107,52 @@ class TsTypeMapper {
 
       var expr = zodExpr.tsLine;
 
-      if (param.type.nullabilitySuffix == NullabilitySuffix.question) {
-        expr += '.nullable().default(null)';
-      }
+      // json_serializable's generated `fromJson` applies a field's default to
+      // BOTH a missing key and an explicit JSON `null`
+      // (`json['about'] as String? ?? ''`), not just a missing key. A
+      // `@JsonKey(defaultValue:)` override takes precedence over
+      // `@Default(...)` when both are present, matching json_serializable's
+      // own precedence - freezed's `@Default` is really just forwarded into
+      // the same `defaultValue` mechanism when no explicit override exists.
+      final jsonKeyDefaultReader = jsonKey?.peek('defaultValue');
+      final hasJsonKeyDefault =
+          jsonKeyDefaultReader != null && !jsonKeyDefaultReader.isNull;
+      // `jsonKeyDefaultReader` already wraps the *value* (JsonKey.defaultValue
+      // itself), whereas `defaultAnnotation` wraps the whole `@Default(...)`
+      // annotation object, whose value is one level deeper at its own
+      // `defaultValue` field - resolve both to the same shape before
+      // rendering.
+      final effectiveDefaultValue = hasJsonKeyDefault
+          ? jsonKeyDefaultReader.objectValue
+          : defaultAnnotation?.read('defaultValue').objectValue;
+      final hasEffectiveDefault = hasJsonKeyDefault || defaultAnnotation != null;
+      final renderedDefault =
+          effectiveDefaultValue != null ? _renderDefault(effectiveDefaultValue) : null;
 
-      if (defaultAnnotation != null) {
-        final rendered = _renderDefault(defaultAnnotation);
-        if (rendered != null) {
-          expr += '.default($rendered)';
-        } else {
-          manualFollowUp = true;
-          expr += " /* TODO: unmapped @Default value */";
+      if (renderedDefault != null) {
+        // zod's `.default()` only substitutes `undefined`, never `null` -
+        // preprocessing both to the default before validation matches Dart's
+        // `?? defaultValue` exactly, for nullable and non-nullable fields
+        // alike (e.g. a non-nullable `List<T>` with `@Default([])` must
+        // accept an explicit JSON `null`, not just a missing key).
+        expr = 'z.preprocess((val) => val ?? $renderedDefault, $expr)';
+      } else {
+        if (param.type.nullabilitySuffix == NullabilitySuffix.question) {
+          expr += '.nullable().default(null)';
         }
-      } else if (!param.isRequiredNamed &&
-          param.type.nullabilitySuffix != NullabilitySuffix.question) {
-        // Optional-but-non-nullable without @Default shouldn't occur given
-        // freezed conventions, but guard anyway.
-        manualFollowUp = true;
-        expr += " /* TODO: optional non-nullable field, verify */";
+        if (hasEffectiveDefault) {
+          // A default annotation is present but its value didn't map to a TS
+          // literal - flag for manual follow-up rather than silently
+          // dropping it.
+          manualFollowUp = true;
+          expr += " /* TODO: unmapped default value */";
+        } else if (!param.isRequiredNamed &&
+            param.type.nullabilitySuffix != NullabilitySuffix.question) {
+          // Optional-but-non-nullable without @Default shouldn't occur given
+          // freezed conventions, but guard anyway.
+          manualFollowUp = true;
+          expr += " /* TODO: optional non-nullable field, verify */";
+        }
       }
 
       final fieldName = jsonName ?? param.name;
@@ -264,8 +292,7 @@ class TsTypeMapper {
     return constants[index].name;
   }
 
-  String? _renderDefault(ConstantReader reader) {
-    final obj = reader.read('defaultValue').objectValue;
+  String? _renderDefault(DartObject obj) {
     if (obj.isNull) return 'null';
     final boolVal = obj.toBoolValue();
     if (boolVal != null) return '$boolVal';

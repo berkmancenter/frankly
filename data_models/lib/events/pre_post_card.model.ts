@@ -7,7 +7,7 @@ export const PrePostCardSchema = z.object({
   headline: z.string(),
   message: z.string(),
   type: z.enum(['preEvent', 'postEvent']),
-  prePostUrls: z.array(z.lazy(() => PrePostUrlParamsSchema)).default([]),
+  prePostUrls: z.preprocess((val) => val ?? [], z.array(z.lazy(() => PrePostUrlParamsSchema))),
 });
 
 export type PrePostCard = z.infer<typeof PrePostCardSchema>;

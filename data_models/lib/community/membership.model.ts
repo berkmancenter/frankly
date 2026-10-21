@@ -7,7 +7,7 @@ export const MembershipSchema = z.object({
   communityId: z.string(),
   status: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable().default(null),
   firstJoined: z.coerce.date().nullable().default(null),
-  invisible: z.boolean().default(false),
+  invisible: z.preprocess((val) => val ?? false, z.boolean()),
 });
 
 export type Membership = z.infer<typeof MembershipSchema>;

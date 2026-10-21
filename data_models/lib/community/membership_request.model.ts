@@ -5,7 +5,7 @@ import { z } from 'zod';
 export const MembershipRequestSchema = z.object({
   userId: z.string(),
   communityId: z.string(),
-  status: z.enum(['requested', 'approved', 'denied']).catch('requested').nullable().default(null).default('requested'),
+  status: z.preprocess((val) => val ?? 'requested', z.enum(['requested', 'approved', 'denied']).catch('requested')),
   role: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).catch('member').nullable().default(null),
 });
 

@@ -9,8 +9,8 @@ export const ParticipantAgendaItemDetailsSchema = z.object({
   readyToAdvance: z.boolean().nullable().default(null),
   handRaisedTime: z.coerce.date().nullable().default(null),
   pollResponse: z.string().nullable().default(null),
-  wordCloudResponses: z.array(z.string()).default([]),
-  suggestions: z.array(z.lazy(() => MeetingUserSuggestionSchema)).default([]),
+  wordCloudResponses: z.preprocess((val) => val ?? [], z.array(z.string())),
+  suggestions: z.preprocess((val) => val ?? [], z.array(z.lazy(() => MeetingUserSuggestionSchema))),
   videoCurrentTime: z.number().nullable().default(null),
   videoDuration: z.number().nullable().default(null),
 });
@@ -20,8 +20,8 @@ export type ParticipantAgendaItemDetails = z.infer<typeof ParticipantAgendaItemD
 export const MeetingUserSuggestionSchema = z.object({
   id: z.string(),
   suggestion: z.string(),
-  likedByIds: z.array(z.string()).default([]),
-  dislikedByIds: z.array(z.string()).default([]),
+  likedByIds: z.preprocess((val) => val ?? [], z.array(z.string())),
+  dislikedByIds: z.preprocess((val) => val ?? [], z.array(z.string())),
   createdDate: z.coerce.date().nullable().default(null),
 });
 

@@ -9,9 +9,9 @@ export const ChatMessageSchema = z.object({
   emotionType: z.enum(['thumbsUp', 'heart', 'hundred', 'exclamation', 'plusOne', 'laughWithTears', 'heartEyes']).nullable().default(null),
   creatorId: z.string().nullable().default(null),
   createdDate: z.coerce.date().nullable().default(null),
-  messageStatus: z.enum(['active', 'removed']).catch('active').default('active'),
+  messageStatus: z.preprocess((val) => val ?? 'active', z.enum(['active', 'removed']).catch('active')),
   membershipStatusSnapshot: z.enum(['owner', 'admin', 'moderator', 'facilitator', 'member', 'banned', 'nonmember', 'attendee']).nullable().default(null),
-  broadcast: z.boolean().nullable().default(null).default(false),
+  broadcast: z.preprocess((val) => val ?? false, z.boolean()),
 });
 
 export type ChatMessage = z.infer<typeof ChatMessageSchema>;

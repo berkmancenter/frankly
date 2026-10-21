@@ -12,8 +12,8 @@ export type EventProposalVote = z.infer<typeof EventProposalVoteSchema>;
 
 export const EventProposalSchema = z.object({
   id: z.string().nullable().default(null),
-  type: z.enum(['kick']).default('kick'),
-  status: z.enum(['open', 'accepted', 'rejected']).default('open'),
+  type: z.preprocess((val) => val ?? 'kick', z.enum(['kick'])),
+  status: z.preprocess((val) => val ?? 'open', z.enum(['open', 'accepted', 'rejected'])),
   initiatingUserId: z.string().nullable().default(null),
   targetUserId: z.string().nullable().default(null),
   votes: z.array(z.lazy(() => EventProposalVoteSchema)).nullable().default(null),

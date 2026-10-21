@@ -9,8 +9,8 @@ export const DiscussionThreadCommentSchema = z.object({
   replyToCommentId: z.string().nullable().default(null),
   creatorId: z.string(),
   comment: z.string(),
-  isDeleted: z.boolean().default(false),
-  emotions: z.array(z.lazy(() => EmotionSchema)).default([]),
+  isDeleted: z.preprocess((val) => val ?? false, z.boolean()),
+  emotions: z.preprocess((val) => val ?? [], z.array(z.lazy(() => EmotionSchema))),
 });
 
 export type DiscussionThreadComment = z.infer<typeof DiscussionThreadCommentSchema>;

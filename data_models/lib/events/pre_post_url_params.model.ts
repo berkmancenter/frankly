@@ -6,7 +6,7 @@ import { PrePostCardAttributeSchema } from './pre_post_card_attribute.model';
 export const PrePostUrlParamsSchema = z.object({
   buttonText: z.string().nullable().default(null),
   surveyUrl: z.string().nullable().default(null),
-  attributes: z.array(z.lazy(() => PrePostCardAttributeSchema)).default([]),
+  attributes: z.preprocess((val) => val ?? [], z.array(z.lazy(() => PrePostCardAttributeSchema))),
 });
 
 export type PrePostUrlParams = z.infer<typeof PrePostUrlParamsSchema>;
