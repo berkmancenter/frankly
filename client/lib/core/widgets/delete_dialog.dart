@@ -47,7 +47,7 @@ class DeleteDialog extends StatelessWidget {
 
     return AlertDialog(
       title: Text(title),
-      content: content == null || content.isEmpty ? null : Text(content),
+      content: (content == null || content.isEmpty) ? null : Text(content),
       actions: [
         TextButton(
           key: cancelButtonKey,
