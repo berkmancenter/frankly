@@ -5,6 +5,7 @@ import 'package:client/features/announcements/data/services/cloud_functions_anno
 import 'package:client/features/community/data/services/cloud_functions_community_service.dart';
 import 'package:client/features/events/data/services/cloud_functions_event_service.dart';
 import 'package:client/features/events/features/live_meeting/data/services/cloud_functions_live_meeting_service.dart';
+import 'package:client/features/external_integrations/data/services/external_integrations_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/core/data/services/analytics_service.dart';
 import 'package:client/core/data/services/clock_service.dart';
@@ -80,6 +81,8 @@ CloudFunctionsPaymentsService get cloudFunctionsPaymentsService =>
     services.get<CloudFunctionsPaymentsService>();
 
 CloudFunctions get cloudFunctions => services.get<CloudFunctions>();
+ExternalIntegrationsService get externalIntegrationsService =>
+    services.get<ExternalIntegrationsService>();
 
 FirestoreAgreementsService get firestoreAgreementsService =>
     services.get<FirestoreAgreementsService>();
@@ -153,6 +156,7 @@ void createServices() {
   services.registerSingleton(CloudFunctionsEventService());
   services.registerSingleton(CloudFunctionsLiveMeetingService());
   services.registerSingleton(CloudFunctionsPaymentsService());
+  services.registerSingleton(ExternalIntegrationsService());
 
   services.registerSingleton(ClockService());
   services.registerSingleton(UserDataService());

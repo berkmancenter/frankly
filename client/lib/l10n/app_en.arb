@@ -329,6 +329,7 @@
   "addCategory": "Add a category",
   "addComment": "Add comment",
   "addCommunityImages": "Add community images",
+  "addIntegration": "Add integration",
   "addNew": "+ Add New",
   "addOption": "Add option",
   "addPrerequisiteTemplate": "Add a prerequisite template",
@@ -494,6 +495,21 @@
   "deletePost": "Delete post",
   "deletePrerequisiteTemplate": "Delete prerequisite template",
   "deleteTitleAgendaItem": "Delete $title agenda item",
+  "deliveryAttempts": "{count} {count, plural, =1{attempt} other{attempts}}",
+  "@deliveryAttempts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deliveryKindRecording": "Recording",
+  "deliveryKindTranscript": "Transcript",
+  "deliveryResend": "Resend",
+  "deliveryResent": "Sent again",
+  "deliveryStatusDelivered": "Delivered",
+  "deliveryStatusFailed": "Failed",
+  "deliveryStatusPending": "Pending",
   "description": "Description",
   "devSettings": "Developer Settings",
   "discard": "Discard",
@@ -510,6 +526,7 @@
   "edit": "Edit",
   "editEvent": "Edit event",
   "editImage": "Edit Image",
+  "editIntegration": "Edit integration",
   "editItem": "Edit Item",
   "email": "Email",
   "emailAddressAlreadyInUse": "You already created an account tied to this email address. Use Sign in with Email and click Forgot Password if you don't know it. Or, Sign Up again using a different email.",
@@ -562,6 +579,9 @@
   "eventEnded": "Event Ended",
   "eventFull": "FULL",
   "eventHasNotStartedYet": "The event has not started yet. We'll see you soon!",
+  "eventIntegrationNeedsRecording": "Only events that are recorded send anything.",
+  "eventIntegrationReferenceHint": "Reference (optional)",
+  "eventIntegrationsTitle": "Send recordings to",
   "eventIsLocked": "This event is locked",
   "eventLocked": "This event is locked",
   "events": "Events",
@@ -571,6 +591,8 @@
   "eventTitle": "Event Title",
   "eventWasNotEntered": "Event was not entered.",
   "ex2": "Ex: 2",
+  "externalIntegrations": "Integrations",
+  "externalIntegrationsDescription": "Send this community's recordings and transcripts to other tools through signed webhooks.",
   "exTwo": "Ex: 2",
   "exceedsTwentyCharacterLimit": "Exceeds 20 characters limit",
   "explorePlans": "Explore Plans",
@@ -622,6 +644,36 @@
   "instagramUrl": "Instagram URL",
   "instantMeeting": "Instant Meeting",
   "insteadSuffix": " instead.",
+  "integrationActive": "Active",
+  "integrationCopySecret": "Copy secret",
+  "integrationDelete": "Delete integration",
+  "integrationDeleteConfirm": "Delete {name}? Recordings will no longer be sent to it.",
+  "@integrationDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "integrationDeliveries": "Sent to integrations",
+  "integrationDescription": "Short description",
+  "integrationDisplayName": "Name",
+  "integrationDone": "Done",
+  "integrationEnabledForNewEvents": "Turn on for new events by default",
+  "integrationEventRecordingReady": "A recording is ready",
+  "integrationEventsToSend": "Send when",
+  "integrationEventTranscriptReady": "A transcript is ready",
+  "integrationInactive": "Inactive",
+  "integrationLogoUrl": "Logo URL (https)",
+  "integrationNameRequired": "Name and webhook URL are required, and at least one event must be selected.",
+  "integrationReferenceLabel": "Label for the per-event reference (optional)",
+  "integrationRemoved": "Removed integration",
+  "integrationRotateSecret": "Rotate secret",
+  "integrationRotateSecretConfirm": "The current secret stops working right away. Update your receiver with the new one. Continue?",
+  "integrationSaved": "Integration saved",
+  "integrationSecretShownOnce": "Copy this secret now and store it in your receiver. It will not be shown again.",
+  "integrationSigningSecret": "Signing secret",
+  "integrationWebhookUrl": "Webhook URL (https)",
   "introBeforeBreakouts": "About {duration} of intro before breakout rooms",
   "introductionContent": "_Introduce yourselves!  Each take one minute to answer one of the following questions._\n\n* What's something you did recently that was a lot of fun?\n* Who is your favorite cartoon character and why?\n* What's one thing you wish to accomplish before you die?\n* What movie did you NOT like?\n",
   "introductions": "Introductions",
@@ -719,6 +771,7 @@
   "noChatDataForEvent": "No chat data for this event.",
   "noDevicesFound": "No devices found.",
   "noEventsFound": "No events found",
+  "noExternalIntegrations": "No integrations yet.",
   "noFollowRequestsCurrently": "No follow requests currently",
   "noItems": "No {name}",
   "noLetThemStay": "No, let them stay",
@@ -761,6 +814,7 @@
   "participantActions": "Participant Actions",
   "participantActionsForUserWithId": "Participant Actions for user with ID {userId}",
   "participantCount": "{count} participants",
+  "recordingsAreSentTo": "Recordings from this event are sent to",
   "registrationCountLabel": "{count} {count, plural, =1{Registration} other{Registrations}}",
   "@registrationCountLabel": {
     "placeholders": {

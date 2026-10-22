@@ -2,6 +2,7 @@ import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/admin/presentation/accept_take_rate_presenter.dart';
+import 'package:client/features/external_integrations/presentation/widgets/external_integrations_admin_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -655,6 +656,39 @@ class _SettingsTabState extends State<SettingsTab> {
                   ],
                 ),
                 SizedBox(height: 20),
+                if (Environment.enableExternalIntegrations) ...[
+                  SizedBox(height: 10),
+                  Divider(
+                    color: context.theme.colorScheme.onPrimaryContainer
+                        .withOpacity(0.5),
+                    height: 1,
+                  ),
+                  SizedBox(height: isMobile ? 5 : 30),
+                  _buildSettingsSection(
+                    isMobile: isMobile,
+                    helperText: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          context.l10n.externalIntegrations,
+                          style: context.theme.textTheme.titleLarge,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          context.l10n.externalIntegrationsDescription,
+                          style: context.theme.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                    toggles: [
+                      ExternalIntegrationsAdminSection(
+                        communityId: community.id,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                ],
                 if (Environment.enableDevAdminSettings)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

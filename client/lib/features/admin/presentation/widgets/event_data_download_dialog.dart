@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:client/features/external_integrations/presentation/widgets/external_integration_deliveries_list.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
@@ -523,6 +524,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                     '${context.l10n.transcriptsCsv}${_transcriptAnnotation(context, transcriptParts)}',
                   ),
                 ),
+              ExternalIntegrationDeliveriesList(event: widget.event),
             ],
           ),
         ),

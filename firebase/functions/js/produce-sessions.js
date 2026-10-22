@@ -11,6 +11,7 @@ const {
     registerVtts,
     mergeTranscript,
 } = require('./session-artifacts')
+const { deliverSessionArtifacts } = require('./external-integrations')
 
 const firestore = admin.firestore()
 const storage = admin.storage()
@@ -127,6 +128,10 @@ const produceSessions = functions
         } catch (err) {
             console.error(`Error merging transcript for session ${sessionId}:`, err)
         }
+
+        // --- Send ready artifacts to external integrations ---
+        // Runs last and never throws, so it cannot block artifact processing.
+        await deliverSessionArtifacts({ sessionId, sessionRef: ref })
 
         return null
     })

@@ -17,6 +17,35 @@
       "repairSessionArtifacts"
     ],
     "firebase/functions/js/serve-index.js": ["ServeIndex"],
+    "firebase/functions/js/upsert-external-integration.js": [
+      "upsertExternalIntegration"
+    ],
+    "firebase/functions/js/rotate-external-integration-secret.js": [
+      "rotateExternalIntegrationSecret"
+    ],
+    "firebase/functions/js/delete-external-integration.js": [
+      "deleteExternalIntegration"
+    ],
+    "firebase/functions/js/resend-external-integration-delivery.js": [
+      "resendExternalIntegrationDelivery"
+    ],
+    "firebase/functions/js/external-integration-delivery-task.js": [
+      "externalIntegrationDeliveryTask"
+    ],
+    "firebase/functions/lib/events/external_integration_defaults.dart": [
+      "EventOnCreate"
+    ],
+    "firebase/functions/js/external-integrations/index.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
+    "firebase/functions/js/external-integrations/config.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
+    "firebase/functions/js/external-integrations/url-validation.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
+    "firebase/functions/js/external-integrations/delivery.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
+    "firebase/functions/js/external-integrations/admin.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration"],
+    "firebase/functions/js/external-integrations/signing.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
+    "firebase/functions/js/external-integrations/payload.js": ["upsertExternalIntegration", "rotateExternalIntegrationSecret", "deleteExternalIntegration", "resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
+    "firebase/functions/js/external-integrations/retry.js": ["resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
+    "firebase/functions/js/external-integrations/task-handler.js": ["externalIntegrationDeliveryTask"],
+    "firebase/functions/js/external-integrations/http-post.js": ["resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
+    "firebase/functions/js/external-integrations/cloud-tasks.js": ["resendExternalIntegrationDelivery", "externalIntegrationDeliveryTask", "produceSessions", "repairSessionArtifacts"],
     "firebase/functions/lib/admin/partner_agreements/on_partner_agreements.dart": [
       "PartnerAgreementOnCreate",
       "PartnerAgreementOnUpdate"

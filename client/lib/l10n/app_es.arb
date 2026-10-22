@@ -397,6 +397,7 @@
   "addCategory": "Añadir una categoría",
   "addComment": "Añadir comentario",
   "addCommunityImages": "Añadir imágenes de comunidad",
+  "addIntegration": "Añadir integración",
   "addNew": "+ Añadir nuevo",
   "addOption": "Añadir opción",
   "addPrerequisiteTemplate": "Añadir una plantilla de requisitos previos",
@@ -562,6 +563,21 @@
   "deletePost": "Eliminar publicación",
   "deletePrerequisiteTemplate": "Eliminar plantilla de requisitos previos",
   "deleteTitleAgendaItem": "Eliminar $title elemento de agenda",
+  "deliveryAttempts": "{count} {count, plural, =1{intento} other{intentos}}",
+  "@deliveryAttempts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deliveryKindRecording": "Grabación",
+  "deliveryKindTranscript": "Transcripción",
+  "deliveryResend": "Reenviar",
+  "deliveryResent": "Enviado de nuevo",
+  "deliveryStatusDelivered": "Entregado",
+  "deliveryStatusFailed": "Fallido",
+  "deliveryStatusPending": "Pendiente",
   "description": "Descripción",
   "devSettings": "Configuración para desarrolladores",
   "discard": "Descartar",
@@ -578,6 +594,7 @@
   "edit": "Editar",
   "editEvent": "Editar evento",
   "editImage": "Editar imagen",
+  "editIntegration": "Editar integración",
   "editItem": "Editar elemento",
   "email": "Correo electrónico",
   "emailAddressAlreadyInUse": "Ya ha creado una cuenta vinculada a esta dirección de email. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente.",
@@ -630,6 +647,9 @@
   "eventEnded": "Evento finalizado",
   "eventFull": "LLENO",
   "eventHasNotStartedYet": "El evento aún no ha comenzado. ¡Nos vemos pronto!",
+  "eventIntegrationNeedsRecording": "Solo se envía algo en los eventos que se graban.",
+  "eventIntegrationReferenceHint": "Referencia (opcional)",
+  "eventIntegrationsTitle": "Enviar grabaciones a",
   "eventIsLocked": "Este evento está bloqueado",
   "eventLocked": "Este evento está bloqueado",
   "events": "Eventos",
@@ -639,6 +659,8 @@
   "eventTitle": "Título del evento",
   "eventWasNotEntered": "No se entró al evento.",
   "ex2": "Ej: 2",
+  "externalIntegrations": "Integraciones",
+  "externalIntegrationsDescription": "Envía las grabaciones y transcripciones de esta comunidad a otras herramientas mediante webhooks firmados.",
   "exTwo": "Ej: 2",
   "exceedsTwentyCharacterLimit": "Supera el límite de 20 caracteres",
   "explorePlans": "Explorar planes",
@@ -692,6 +714,36 @@
   "instagramUrl": "URL de Instagram",
   "instantMeeting": "Reunión instantánea",
   "insteadSuffix": " en cambio.",
+  "integrationActive": "Activa",
+  "integrationCopySecret": "Copiar secreto",
+  "integrationDelete": "Eliminar integración",
+  "integrationDeleteConfirm": "¿Eliminar {name}? Ya no se le enviarán grabaciones.",
+  "@integrationDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "integrationDeliveries": "Enviado a integraciones",
+  "integrationDescription": "Descripción breve",
+  "integrationDisplayName": "Nombre",
+  "integrationDone": "Listo",
+  "integrationEnabledForNewEvents": "Activar por defecto en los eventos nuevos",
+  "integrationEventRecordingReady": "Una grabación está lista",
+  "integrationEventsToSend": "Enviar cuando",
+  "integrationEventTranscriptReady": "Una transcripción está lista",
+  "integrationInactive": "Inactiva",
+  "integrationLogoUrl": "URL del logotipo (https)",
+  "integrationNameRequired": "El nombre y la URL del webhook son obligatorios, y hay que elegir al menos un evento.",
+  "integrationReferenceLabel": "Etiqueta de la referencia por evento (opcional)",
+  "integrationRemoved": "Integración eliminada",
+  "integrationRotateSecret": "Cambiar secreto",
+  "integrationRotateSecretConfirm": "El secreto actual dejará de funcionar de inmediato. Actualiza tu receptor con el nuevo. ¿Continuar?",
+  "integrationSaved": "Integración guardada",
+  "integrationSecretShownOnce": "Copia este secreto ahora y guárdalo en tu receptor. No se volverá a mostrar.",
+  "integrationSigningSecret": "Secreto de firma",
+  "integrationWebhookUrl": "URL del webhook (https)",
   "introBeforeBreakouts": "Aproximadamente {duration} de introducción antes de las salas de grupos",
   "introductionContent": "_¡Preséntense! Cada uno toma un minuto para responder una de las siguientes preguntas._\n\n* ¿Qué has hecho recientemente que fue muy divertido?\n* ¿Quién es tu personaje de dibujos animados favorito y por qué?\n* ¿Qué es algo que deseas lograr antes de morir?\n* ¿Qué película NO te gustó?\n",
   "introductions": "Introducciones",
@@ -789,6 +841,7 @@
   "noChatDataForEvent": "No hay datos de chat para este evento.",
   "noDevicesFound": "No se encontraron dispositivos",
   "noEventsFound": "No se encontraron eventos.",
+  "noExternalIntegrations": "Todavía no hay integraciones.",
   "noFollowRequestsCurrently": "No hay solicitudes de seguimiento actualmente",
   "noItems": "No hay {name}",
   "noLetThemStay": "No, déjalos quedarse",
@@ -831,6 +884,7 @@
   "participantActions": "Acciones del participante",
   "participantActionsForUserWithId": "Acciones del participante para el usuario con ID {userId}",
   "participantCount": "{count} participantes",
+  "recordingsAreSentTo": "Las grabaciones de este evento se envían a",
   "registrationCountLabel": "{count} {count, plural, =1{Registro} other{Registros}}",
   "@registrationCountLabel": {
     "placeholders": {
