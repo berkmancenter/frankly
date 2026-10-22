@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'dart:math';
 
 import 'package:client/core/utils/template_utils.dart';
@@ -773,6 +774,14 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
             templateActionType: TemplateActionType.duplicate,
           );
         } else if (value == 'removeTemplate') {
+          if (!isRemoved) {
+            final confirmed = await DeleteDialog(
+              title: context.l10n.removeTemplate,
+              content: context.l10n.confirmRemoveTemplate,
+              confirmText: context.l10n.remove,
+            ).show();
+            if (!confirmed || !mounted) return;
+          }
           await alertOnError(context, () async {
             final newStatus =
                 isRemoved ? TemplateStatus.active : TemplateStatus.removed;

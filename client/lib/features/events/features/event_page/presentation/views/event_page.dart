@@ -1,7 +1,7 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:client/styles/styles.dart';
@@ -258,12 +258,9 @@ class EventPageState extends State<EventPage> implements EventPageView {
   ) async {
     await showCustomDialog(
       builder: (context) {
-        return ConfirmDialog(
-          title: 'Are you sure you want to remove this message?',
-          cancelText: context.l10n.cancel,
-          onCancel: (context) {
-            Navigator.pop(context);
-          },
+        return DeleteDialog(
+          title: 'Delete Announcement',
+          content: 'Are you sure you want to remove this message?',
           onConfirm: (context) => alertOnError(context, () async {
             await _presenter.removeMessage(eventMessage);
             if (!context.mounted) return;

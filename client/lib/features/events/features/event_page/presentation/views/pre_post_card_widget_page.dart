@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +11,6 @@ import 'package:client/features/events/features/event_page/presentation/pre_post
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -82,10 +82,9 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
   Future<void> _showDeleteDialog() async {
     final title = _presenter.getTitle();
 
-    await ConfirmDialog(
+    await DeleteDialog(
       title: context.l10n.deleteAgendaItemName(title),
-      mainText: 'Are you sure want to delete?',
-      cancelText: context.l10n.cancel,
+      content: context.l10n.confirmDelete,
       onConfirm: (context) {
         Navigator.pop(context);
         widget.onDelete();

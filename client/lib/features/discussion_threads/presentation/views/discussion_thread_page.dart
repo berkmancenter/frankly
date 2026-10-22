@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
@@ -10,7 +11,6 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/discussion_threads/presentation/widgets/app_generic_state_widget.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
@@ -68,12 +68,9 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
   }
 
   Future<void> _showDeleteThreadDialog() async {
-    await ConfirmDialog(
+    await DeleteDialog(
       title: context.l10n.deletePost,
-      mainText: context.l10n.confirmDeletePost,
-      cancelText: context.l10n.no,
-      confirmText: context.l10n.yes,
-      onCancel: (context) => Navigator.pop(context),
+      content: context.l10n.confirmDeletePost,
       onConfirm: (context) async {
         await alertOnError(context, () => _presenter.deleteThread());
         _goToThreadsPage();

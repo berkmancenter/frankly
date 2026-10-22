@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/features/breakout_room_definition/presentation/widgets/breakout_room_definition_widget.dart';
@@ -13,7 +14,6 @@ import 'package:client/features/events/features/event_page/presentation/views/wa
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -211,12 +211,9 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   }
 
   Future<void> _showClearAgendaItemsDialog() async {
-    final delete = await ConfirmDialog(
+    final delete = await DeleteDialog(
       title: context.l10n.clearAgenda,
-      mainText: context.l10n.confirmRemoveAllAgendaItems,
-      cancelText: context.l10n.cancel,
-      confirmText: context.l10n.yesClear,
-      textAlign: TextAlign.start,
+      content: context.l10n.confirmRemoveAllAgendaItems,
     ).show(context: context);
 
     if (delete && mounted) {

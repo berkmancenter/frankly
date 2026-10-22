@@ -1,8 +1,8 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/discussion_threads/presentation/widgets/emotion_section.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
@@ -30,10 +30,9 @@ class DiscussionThreadCommentCard extends StatelessWidget {
   Future<void> _showDeleteCommentDialog(
     DiscussionThreadComment discussionThreadComment,
   ) async {
-    await ConfirmDialog(
+    await DeleteDialog(
       title: appLocalizationService.getLocalization().deleteComment,
-      mainText: appLocalizationService.getLocalization().confirmDeleteComment,
-      cancelText: appLocalizationService.getLocalization().cancel,
+      content: appLocalizationService.getLocalization().confirmDeleteComment,
       onConfirm: (context) {
         Navigator.pop(context);
         onDeleteComment(discussionThreadComment);
