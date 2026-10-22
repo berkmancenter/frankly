@@ -69,9 +69,10 @@ const _knownConverters = {
 
 class FieldResult {
   final String tsLine;
-  final bool needsManualFollowUp;
 
-  FieldResult(this.tsLine, {this.needsManualFollowUp = false});
+  FieldResult(
+    this.tsLine,
+  );
 }
 
 /// Best-effort Dart type -> zod schema mapper for the subset of patterns
@@ -103,8 +104,6 @@ class TsTypeMapper {
         unknownEnumValueName: unknownEnumValueName,
       );
 
-      var manualFollowUp = zodExpr.needsManualFollowUp;
-
       var expr = zodExpr.tsLine;
 
       // json_serializable's generated `fromJson` applies a field's default to
@@ -125,9 +124,11 @@ class TsTypeMapper {
       final effectiveDefaultValue = hasJsonKeyDefault
           ? jsonKeyDefaultReader.objectValue
           : defaultAnnotation?.read('defaultValue').objectValue;
-      final hasEffectiveDefault = hasJsonKeyDefault || defaultAnnotation != null;
-      final renderedDefault =
-          effectiveDefaultValue != null ? _renderDefault(effectiveDefaultValue) : null;
+      final hasEffectiveDefault =
+          hasJsonKeyDefault || defaultAnnotation != null;
+      final renderedDefault = effectiveDefaultValue != null
+          ? _renderDefault(effectiveDefaultValue)
+          : null;
 
       if (renderedDefault != null) {
         // zod's `.default()` only substitutes `undefined`, never `null` -
@@ -144,13 +145,11 @@ class TsTypeMapper {
           // A default annotation is present but its value didn't map to a TS
           // literal - flag for manual follow-up rather than silently
           // dropping it.
-          manualFollowUp = true;
           expr += " /* TODO: unmapped default value */";
         } else if (!param.isRequiredNamed &&
             param.type.nullabilitySuffix != NullabilitySuffix.question) {
           // Optional-but-non-nullable without @Default shouldn't occur given
           // freezed conventions, but guard anyway.
-          manualFollowUp = true;
           expr += " /* TODO: optional non-nullable field, verify */";
         }
       }
@@ -158,12 +157,11 @@ class TsTypeMapper {
       final fieldName = jsonName ?? param.name;
       return FieldResult(
         '  $fieldName: $expr,',
-        needsManualFollowUp: manualFollowUp,
       );
     } catch (e) {
+      // Fallback for fields that couldn't be codegen'd correctly
       return FieldResult(
         '  ${param.name}: z.any(), // TODO: codegen failed for this field: $e',
-        needsManualFollowUp: true,
       );
     }
   }
@@ -183,7 +181,6 @@ class TsTypeMapper {
       }
       return FieldResult(
         'z.any() /* TODO: unsupported converter $fromJsonName */',
-        needsManualFollowUp: true,
       );
     }
 
@@ -220,7 +217,6 @@ class TsTypeMapper {
         final inner = _zodExprFor(arg, imports);
         return FieldResult(
           'z.array(${inner.tsLine})',
-          needsManualFollowUp: inner.needsManualFollowUp,
         );
       }
 
@@ -229,7 +225,6 @@ class TsTypeMapper {
         final inner = _zodExprFor(valueArg, imports);
         return FieldResult(
           'z.record(z.string(), ${inner.tsLine})',
-          needsManualFollowUp: inner.needsManualFollowUp,
         );
       }
 
@@ -241,7 +236,6 @@ class TsTypeMapper {
         if (!imports.record(element)) {
           return FieldResult(
             'z.lazy(() => ${element.name}Schema) /* TODO: could not resolve import for ${element.name}Schema */',
-            needsManualFollowUp: true,
           );
         }
         return FieldResult('z.lazy(() => ${element.name}Schema)');
@@ -249,13 +243,11 @@ class TsTypeMapper {
 
       return FieldResult(
         'z.any() /* TODO: unhandled type ${type.getDisplayString(withNullability: false)} */',
-        needsManualFollowUp: true,
       );
     }
 
     return FieldResult(
       'z.any() /* TODO: unhandled type ${type.getDisplayString(withNullability: false)} */',
-      needsManualFollowUp: true,
     );
   }
 

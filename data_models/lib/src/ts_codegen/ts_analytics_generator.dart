@@ -15,7 +15,7 @@ import 'ts_type_mapper.dart';
 class TsAnalyticsGenerator {
   final _mapper = TsTypeMapper();
 
-  TsModelResult? generateForClass(
+  String? generateForClass(
     ClassElement classElement,
     ImportTracker imports,
   ) {
@@ -36,13 +36,11 @@ class TsAnalyticsGenerator {
     if (constructor.isEmpty) return null;
 
     final params = constructor.first.parameters;
-    var manualFollowUp = false;
     final fieldLines = <String>[];
 
     for (final param in params) {
       final result = _mapper.fieldFor(param, imports);
       fieldLines.add(result.tsLine);
-      manualFollowUp = manualFollowUp || result.needsManualFollowUp;
     }
 
     final className = classElement.name;
@@ -53,6 +51,6 @@ export const ${className}Schema = z.object({$body});
 export type $className = z.infer<typeof ${className}Schema>;
 ''';
 
-    return TsModelResult(ts, needsManualFollowUp: manualFollowUp);
+    return ts;
   }
 }

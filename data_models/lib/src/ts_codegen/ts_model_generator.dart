@@ -4,13 +4,6 @@ import 'package:source_gen/source_gen.dart';
 
 import 'ts_type_mapper.dart';
 
-class TsModelResult {
-  final String ts;
-  final bool needsManualFollowUp;
-
-  TsModelResult(this.ts, {required this.needsManualFollowUp});
-}
-
 /// Generates a zod schema + TS type for a single `@Freezed` class.
 ///
 /// Scoped to this package's actual usage: every `@Freezed` class here has
@@ -19,7 +12,7 @@ class TsModelResult {
 class TsModelGenerator {
   final _mapper = TsTypeMapper();
 
-  TsModelResult? generateForClass(
+  String? generateForClass(
     ClassElement classElement,
     ImportTracker imports,
   ) {
@@ -33,13 +26,11 @@ class TsModelGenerator {
     if (factory.isEmpty) return null;
 
     final params = factory.first.parameters;
-    var manualFollowUp = false;
     final fieldLines = <String>[];
 
     for (final param in params) {
       final result = _mapper.fieldFor(param, imports);
       fieldLines.add(result.tsLine);
-      manualFollowUp = manualFollowUp || result.needsManualFollowUp;
     }
 
     final className = classElement.name;
@@ -51,6 +42,6 @@ ${fieldLines.join('\n')}
 export type $className = z.infer<typeof ${className}Schema>;
 ''';
 
-    return TsModelResult(ts, needsManualFollowUp: manualFollowUp);
+    return ts;
   }
 }
