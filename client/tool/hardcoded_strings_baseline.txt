@@ -17,6 +17,8 @@ lib/features/admin/presentation/views/data_tab.dart	c63eb6720c6e	1	Private
 lib/features/admin/presentation/views/data_tab.dart	e525b9510ae3	1	NO TITLE
 lib/features/admin/presentation/views/data_tab.dart	fbcec861446a	1	Hosted
 lib/features/admin/presentation/views/settings_tab.dart	0543ed2dfee6	1	Linked Payee Account
+lib/features/admin/presentation/views/settings_tab.dart	464c4ffd019e	1	Edit
+lib/features/admin/presentation/views/settings_tab.dart	b6f6f3ad07b3	1	Set
 lib/features/admin/presentation/widgets/upgrade_tooltip.dart	ffaebc07151c	1	Upgrade for access
 lib/features/announcements/presentation/views/announcments.dart	028cd1c88345	1	Announcement
 lib/features/announcements/presentation/views/announcments.dart	931df5eca004	1	Are you sure you want to delete this announcement?
@@ -46,7 +48,9 @@ lib/features/community/presentation/widgets/event_card.dart	9d4e6fe6676d	1	Lives
 lib/features/community/presentation/widgets/event_card.dart	e7b77e0c5035	1	Scheduled event
 lib/features/community/utils/guard_utils.dart	df445685df6d	1	You must be a member of this space to participate. Would you like to join?
 lib/features/discussion_threads/presentation/views/discussion_thread_comment_card.dart	a27e86027934	1	Comment Deleted
+lib/features/discussion_threads/presentation/views/discussion_thread_page.dart	2b4244fb2663	1	comments
 lib/features/discussion_threads/presentation/views/discussion_thread_page.dart	4ea1885778d3	1	Newest First
+lib/features/discussion_threads/presentation/views/discussion_thread_page.dart	c44bb2fd5169	1	comment
 lib/features/discussion_threads/presentation/views/discussion_thread_preview_card.dart	c253f451bdd5	1	Reply
 lib/features/discussion_threads/presentation/views/manipulate_discussion_thread_page.dart	1aa4cb0bcca7	1	Image
 lib/features/events/features/create_event/presentation/views/create_event_dialog.dart	84360aa1414a	1	STEP OF

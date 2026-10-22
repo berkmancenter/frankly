@@ -173,8 +173,13 @@ class _StringVisitor extends RecursiveAstVisitor<void> {
       return;
     }
 
+    if (_isIgnored(literal)) {
+      return;
+    }
+
+    _recordInterpolations(literal);
     final value = _literalValue(literal);
-    if (!_containsLetter(value) || _isIgnored(literal)) {
+    if (!_containsLetter(value)) {
       return;
     }
 
@@ -187,6 +192,23 @@ class _StringVisitor extends RecursiveAstVisitor<void> {
         value: value,
       ),
     );
+  }
+
+  void _recordInterpolations(StringLiteral literal) {
+    switch (literal) {
+      case StringInterpolation(:final elements):
+        for (final element in elements) {
+          if (element is InterpolationExpression) {
+            _record(element.expression);
+          }
+        }
+      case AdjacentStrings(:final strings):
+        for (final string in strings) {
+          _recordInterpolations(string);
+        }
+      default:
+        break;
+    }
   }
 
   /// Collects the string literals an argument can evaluate to.

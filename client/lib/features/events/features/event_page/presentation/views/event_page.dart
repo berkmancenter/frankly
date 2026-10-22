@@ -242,8 +242,9 @@ class EventPageState extends State<EventPage> implements EventPageView {
       title: context.l10n.messageParticipants,
       isMobile: isMobile,
       labelText: context.l10n.message,
-      validator: (message) =>
-          message == null || message.isEmpty ? 'Message cannot be empty' : null,
+      validator: (message) => message == null || message.isEmpty
+          ? context.l10n.messageCannotBeEmpty
+          : null,
       positiveButtonText: context.l10n.send,
     );
 
