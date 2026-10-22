@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
@@ -120,9 +121,8 @@ class _CommunityResourcesState extends State<_CommunityResources> {
                           IconButton(
                             onPressed: () async {
                               final delete = await DeleteDialog(
-                                title: 'Delete Resource',
-                                content:
-                                    'Are you sure you want to delete this resource?',
+                                title: context.l10n.deleteResource,
+                                content: context.l10n.confirmDeleteResource,
                               ).show();
 
                               if (!delete || !mounted) return;

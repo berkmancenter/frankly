@@ -66,9 +66,8 @@ class _AnnouncementsState extends State<Announcements> {
               CustomInkWell(
                 onTap: () => alertOnError(context, () async {
                   final confirmedDelete = await DeleteDialog(
-                    title: 'Delete Announcement',
-                    content:
-                        'Are you sure you want to delete this announcement?',
+                    title: context.l10n.deleteAnnouncement,
+                    content: context.l10n.confirmDeleteAnnouncement,
                   ).show();
 
                   if (confirmedDelete && mounted) {

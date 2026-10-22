@@ -259,8 +259,8 @@ class EventPageState extends State<EventPage> implements EventPageView {
     await showCustomDialog(
       builder: (context) {
         return DeleteDialog(
-          title: 'Delete Announcement',
-          content: 'Are you sure you want to remove this message?',
+          title: context.l10n.deleteAnnouncement,
+          content: context.l10n.confirmRemoveMessage,
           onConfirm: (context) => alertOnError(context, () async {
             await _presenter.removeMessage(eventMessage);
             if (!context.mounted) return;
