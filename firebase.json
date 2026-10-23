@@ -31,6 +31,24 @@
             "value": "max-age=10"
           }
         ]
+      },
+      {
+        "source": "/@(flutter_service_worker|flutter_bootstrap|flutter|main.dart).js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/version.json",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
       }
     ],
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],

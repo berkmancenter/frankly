@@ -509,7 +509,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                         SizedBox(width: 8),
                         Text(
-                          context.l10n.record,
+                          context.l10n.recordingIndicator,
                           style: TextStyle(
                             color: context.theme.colorScheme.onPrimary,
                           ),
@@ -1084,8 +1084,10 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
       return ChatWidget(
         parentPath: context.watch<ChatModel>().parentPath,
         messageInputHint: context.l10n.saySomething,
-        allowBroadcast: context.watch<LiveMeetingProvider>().isInBreakout &&
+        allowBroadcast: (!context.watch<LiveMeetingProvider>().isInBreakout ||
+                context.watch<LiveMeetingProvider>().isInBreakoutWaitingRoom) &&
             context.watch<EventPermissionsProvider>().canBroadcastChat,
+        broadcastParentPath: EventProvider.read(context).event.fullPath,
       );
     } else if (selectedTab == TabType.suggestions) {
       return Padding(

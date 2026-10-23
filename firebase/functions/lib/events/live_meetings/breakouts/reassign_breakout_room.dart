@@ -6,9 +6,11 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../../on_call_function.dart';
 import '../../../utils/infra/firestore_utils.dart';
+import '../../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/utils/utils.dart';
 
@@ -180,6 +182,12 @@ class ReassignBreakoutRoom extends OnCallMethod<ReassignBreakoutRoomRequest> {
             firestoreUtils.toFirestoreJson(reassignedBreakoutRoom.toJson()),
           ),
         );
+        // New room has no diffusion statement; skip items that need one.
+        final resolvedFirstItemId = resolveAgendaItemsForDiffusionStatement(
+          event.agendaItems,
+          null,
+          showUnresolvedAsError: !isProductionEnvironment,
+        ).firstOrNull?.id;
         String? firstAgendaItemId;
         if (event.eventType == EventType.hosted) {
           final liveMeeting = await firestoreUtils.getFirestoreObject(
@@ -191,10 +199,9 @@ class ReassignBreakoutRoom extends OnCallMethod<ReassignBreakoutRoomRequest> {
               .lastOrNull
               ?.agendaItem;
 
-          firstAgendaItemId =
-              parentAgendaItemId ?? event.agendaItems.firstOrNull?.id;
+          firstAgendaItemId = parentAgendaItemId ?? resolvedFirstItemId;
         } else {
-          firstAgendaItemId = event.agendaItems.firstOrNull?.id;
+          firstAgendaItemId = resolvedFirstItemId;
         }
         final liveMeetingDoc =
             newDoc.collection('live-meetings').document(roomId);

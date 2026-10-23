@@ -209,10 +209,11 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       context,
       title: context.l10n.messageParticipants,
       isMobile: isMobile,
-      labelText: 'Message',
-      validator: (message) =>
-          message == null || message.isEmpty ? 'Message cannot be empty' : null,
-      positiveButtonText: 'Send',
+      labelText: context.l10n.message,
+      validator: (message) => message == null || message.isEmpty
+          ? context.l10n.messageCannotBeEmpty
+          : null,
+      positiveButtonText: context.l10n.send,
     );
 
     if (message != null && mounted) {
@@ -421,8 +422,10 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
             parentPath: context.watch<ChatModel>().parentPath,
             messageInputHint: 'Say something',
             allowBroadcast: liveMeetingProvider != null &&
-                !liveMeetingProvider.isInBreakout &&
+                (!liveMeetingProvider.isInBreakout ||
+                    liveMeetingProvider.isInBreakoutWaitingRoom) &&
                 context.watch<EventPermissionsProvider>().canBroadcastChat,
+            broadcastParentPath: EventProvider.read(context).event.fullPath,
           ),
         ),
       ),

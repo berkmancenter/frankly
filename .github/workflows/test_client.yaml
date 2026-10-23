@@ -63,7 +63,7 @@ jobs:
       # chrome run above skips.
       - name: Run VM Invariant Tests
         if: steps.changes.outputs.client == 'true'
-        run: flutter test test/lib/core/data/services/same_origin_callables_test.dart test/lib/core/data/services/same_origin_callables_usage_test.dart
+        run: flutter test test/lib/core/data/services/same_origin_callables_test.dart test/lib/core/data/services/same_origin_callables_usage_test.dart test/tool/check_hardcoded_strings_test.dart
 
       - name: Update Product Version
         if: steps.changes.outputs.client == 'true'  && steps.test.outcome == 'success'
@@ -119,6 +119,10 @@ jobs:
         if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success'
         id: build_app
         run: flutter build web --release --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
+
+      - name: Replace Service Worker with Cache Switch
+        if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success'
+        run: cp web_overrides/flutter_service_worker.js build/web/flutter_service_worker.js
 
       - name: Deploy to Preview Channel
         if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' &&  github.event.pull_request.head.repo.full_name == github.repository
