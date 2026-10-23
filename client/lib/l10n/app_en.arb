@@ -171,6 +171,20 @@
     }
   },
   "@enterWordCloudPrompt": {},
+  "@featureOnCommunityHomepage": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "@followCommunityNamed": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
   "@homeWithAppName": {
     "placeholders": {
       "appName": {
@@ -193,6 +207,23 @@
   "@kickOutUser": {
     "placeholders": {
       "displayName": {}
+    }
+  },
+  "@kickVoteConfirmation": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "@kickVoteStarted": {
+    "placeholders": {
+      "initiatorName": {
+        "type": "String"
+      },
+      "targetName": {
+        "type": "String"
+      }
     }
   },
   "@logIntoApp": {
@@ -510,6 +541,7 @@
   "addRoomNumber": "Add Room {number}",
   "addSomethingHere": "Add something here",
   "addTag": "Add tag",
+  "addTags": "Add Tags",
   "addToCalendar": "Add to calendar",
   "addUrlParameter": "Add URL Parameter",
   "addVideoOrImage": "Add video or image",
@@ -680,6 +712,7 @@
   "createNewAnnouncement": "Create New Announcement",
   "createPost": "Create post",
   "createTemplateFromEvent": "Create Template from Event",
+  "createYourFirstEvent": "Create your first event!",
   "currentParticipants": "Current\nParticipants",
   "custom": "Custom",
   "darkColorHex": "Dark Color HEX#",
@@ -718,6 +751,7 @@
   "editingEventNotice": "You are editing an event. \n",
   "editingFutureInstancesNotice": "If you want to edit future instances, ",
   "editProfile": "Edit Profile",
+  "editSettings": "Edit settings",
   "editTemplate": "Edit template",
   "editTheTemplate": "edit the template.",
   "editYourProfile": "Edit your profile",
@@ -745,6 +779,7 @@
   "enterMessageExampleAfter": "Enter message (e.g. \"Take this survey after the event\")",
   "enterMessageExampleBefore": "Enter message (e.g. \"Take this survey before the event\")",
   "enterQuestionWithNumber": "Enter Question {number}",
+  "enterReason": "Enter reason",
   "enterRoom": "Enter Room",
   "enterRoomNumber": "Ex: 2",
   "enterUrl": "Enter URL",
@@ -765,16 +800,22 @@
   "errorConnectingToRoom": "There was an error connecting to the room.",
   "errorLoadingAnnouncements": "There was an error while loading Announcements",
   "errorLoadingBreakoutRooms": "Something went wrong loading breakout rooms. Please refresh",
+  "errorLoadingChatMessages": "There was an error loading chat messages.",
   "errorLoadingCommunities": "Something went wrong loading communities. Please refresh.",
   "errorLoadingEmail": "Error loading email.",
+  "errorLoadingEventDetails": "There was an error loading event details.",
   "errorLoadingEvents": "Something went wrong loading events. Please refresh.",
+  "errorLoadingEventsRefresh": "Error loading events. Please refresh!",
+  "errorLoadingEventsShort": "There was an error loading events.",
   "errorLoadingMemberships": "Something went wrong loading memberships. Please refresh.",
+  "errorLoadingNotificationSettings": "Something went wrong loading notification settings. Please refresh.",
   "errorLoadingParticipants": "Something went wrong loading participants. Please refresh.",
   "errorLoadingProfileInfo": "There was an error loading profile info.",
   "errorLoadingRequests": "Something went wrong loading requests. Please refresh.",
   "errorLoadingTemplates": "There was an error loading templates.",
   "errorLoadingWordCloudResponses": "Error loading word cloud responses",
   "errorOccurred": "An error occurred",
+  "errorSettingUpEvent": "There was an error setting up your event. Please refresh.",
   "eventData": "Event Data",
   "eventDescription": "Event Description",
   "eventDetails": "Event Details",
@@ -801,6 +842,7 @@
   "fakeParticipantCount": "Fake Participant Count",
   "featuredTags": "Featured Tags",
   "featuredTemplatesAndEventsHint": "Featured Templates and Events will show up at the top of the Home page.",
+  "featureOnCommunityHomepage": "Feature on {communityName} homepage",
   "filter": "filter",
   "filterMemberListByName": "Filter member list by name",
   "findEventWithTemplate": "Find an event with this template.",
@@ -810,6 +852,7 @@
   "follow": "Follow",
   "followCommunityAccess": "Follow {communityName} for access to all events and resources.",
   "followCommunityButton": "Follow Community Button",
+  "followCommunityNamed": "Follow {communityName}",
   "followerRequest": "Follower Request",
   "followRequestSent": "Follow Request Sent",
   "forgotPasswordPrefix": "Forgot your password?",
@@ -836,6 +879,7 @@
   "hosted": "Hosted",
   "hostingOption": "Hosting option",
   "hostless": "Hostless",
+  "hostMessagesWillShowHere": "If the host sends a message, you'll see it here.",
   "hostSendingToBreakout": "Host is sending you to a breakout room. Join breakout room?",
   "hostWillReceiveDownloadableCopy": "The host will receive a downloadable copy of audio and video.",
   "howManyPeople": "How many people",
@@ -874,6 +918,9 @@
   "kick": "Kick",
   "kickOutUser": "Kick out {displayName}?",
   "keepItShortHint": "Keep it short! You don’t want people to spend time reading.",
+  "kickReasonHint": "e.g. They are trying to sabotage the event",
+  "kickVoteConfirmation": "Are you sure you want to start a vote to kick out {displayName}? Please only take this action if the participant is behaving inappropriately.",
+  "kickVoteStarted": "{initiatorName} started a vote to kick {targetName} out of the event. Do you want to kick them out? They will not be allowed back in.",
   "language": "Language",
   "languageSelector": "Language Selector",
   "lastSession": "Last session",
@@ -981,6 +1028,7 @@
   "noChatDataForEvent": "No chat data for this event.",
   "noDescriptionForEvent": "No description for this event",
   "noDevicesFound": "No devices found.",
+  "noEvents": "No events",
   "noEventsFound": "No events found",
   "noFollowRequestsCurrently": "No follow requests currently",
   "noItems": "No {name}",
@@ -1232,6 +1280,7 @@
   "selectVideoInput": "Select video input",
   "send": "Send",
   "sendMessage": "Send message",
+  "sendMessageToAllParticipantsInGroup": "Send a message to all the participants in the group",
   "setPayeeAccountDetails": "Set your payee account details",
   "settingAgendaPreview": "Agenda Preview",
   "settingAllowMembersToCreateEvents": "Allow members to create events",
@@ -1285,6 +1334,8 @@
   "socialTwitter": "Twitter URL",
   "someStillFinishingVideo": "Some people are still finishing the video.",
   "somethingWentWrong": "Something went wrong",
+  "somethingWentWrongLoadingCommunity": "Something went wrong loading this community.",
+  "somethingWentWrongLoadingEvents": "Something went wrong loading events.",
   "somethingWentWrongLoadingRoom": "Something went wrong loading room. Please refresh!",
   "somethingWentWrongLongPrefix": "We’re sorry, something went wrong.",
   "somethingWentWrongLongMiddle": "Refresh the page and try logging in to Frankly again.\n\nIf you continue having trouble, you can",
@@ -1426,12 +1477,14 @@
   "vimeoVideoLookupFailed": "Sorry, vimeo video lookup failed.",
   "waitingRoom": "Waiting Room",
   "waitingRoomImageVideo": "Waiting Room Image/Video",
+  "websiteUrl": "Website URL",
   "welcome": "Welcome to Frankly",
   "welcomeClickToEnterEvent": "Welcome! Click here to enter the event:",
   "welcomeName": "Welcome, {name}",
   "welcomeToApp": "Welcome to {appName}",
   "whatMessageToShowParticipantsAfter": "What message do you want to show participants after the event?",
   "whatMessageToShowParticipantsBefore": "What message do you want to show participants before the event?",
+  "whenNewEventsAreAdded": "When new events are added, you’ll see them here.",
   "whenNewItemsAdded": "When new {name} are added, you'll see them here.",
   "whenYouUpgrade": "when you upgrade",
   "wordCloud": "Word Cloud",
