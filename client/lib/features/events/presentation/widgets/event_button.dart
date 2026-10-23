@@ -32,6 +32,9 @@ class EventButton extends HookWidget {
       time: DateTime.fromMillisecondsSinceEpoch(
         (scheduledTime.millisecondsSinceEpoch),
       ),
+      endTime: scheduledTime.add(
+        Duration(minutes: event.durationInMinutes),
+      ),
     );
   }
 

@@ -128,6 +128,8 @@ _$_EventSettings _$$_EventSettingsFromJson(Map<String, dynamic> json) =>
       alwaysTranscribe: json['alwaysTranscribe'] as bool?,
       enablePrerequisites: json['enablePrerequisites'] as bool?,
       agendaPreview: json['agendaPreview'] as bool?,
+      autoEndMeeting: json['autoEndMeeting'] as bool?,
+      autoEndGracePeriodMinutes: json['autoEndGracePeriodMinutes'] as int?,
     );
 
 Map<String, dynamic> _$$_EventSettingsToJson(_$_EventSettings instance) =>
@@ -144,6 +146,8 @@ Map<String, dynamic> _$$_EventSettingsToJson(_$_EventSettings instance) =>
       'alwaysTranscribe': instance.alwaysTranscribe,
       'enablePrerequisites': instance.enablePrerequisites,
       'agendaPreview': instance.agendaPreview,
+      'autoEndMeeting': instance.autoEndMeeting,
+      'autoEndGracePeriodMinutes': instance.autoEndGracePeriodMinutes,
     };
 
 _$_LiveStreamInfo _$$_LiveStreamInfoFromJson(Map<String, dynamic> json) =>
