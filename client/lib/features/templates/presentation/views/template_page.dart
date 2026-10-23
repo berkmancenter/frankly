@@ -154,13 +154,13 @@ class _TemplatePageState extends State<TemplatePage>
         entryFrom: '_TemplatePageState._buildEvents',
         stream: Provider.of<TemplatePageProvider>(context).events,
         height: 100,
-        errorMessage: 'Something went wrong loading events.',
+        errorMessage: context.l10n.somethingWentWrongLoadingEvents,
         builder: (_, events) {
           if (events == null || events.isEmpty) {
             return EmptyPageContent(
               type: EmptyPageType.events,
-              titleText: 'No events',
-              subtitleText: 'When new events are added, you’ll see them here.',
+              titleText: context.l10n.noEvents,
+              subtitleText: context.l10n.whenNewEventsAreAdded,
               showContainer: false,
             );
           }
@@ -453,7 +453,7 @@ class _TemplatePageState extends State<TemplatePage>
           entryFrom: '_EventPageState._buildEvents',
           stream: templatePageProvider.events,
           height: 100,
-          errorMessage: 'Something went wrong loading events.',
+          errorMessage: context.l10n.somethingWentWrongLoadingEvents,
           builder: (_, events) {
             if (events == null || events.isEmpty) {
               return Align(
@@ -718,7 +718,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
           ),
         ),
       ),
-      toolTipText: 'Edit settings',
+      toolTipText: context.l10n.editSettings,
     );
   }
 
@@ -868,7 +868,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
           child: EditTemplateDrawer(),
         ),
       ),
-      toolTipText: 'Edit template',
+      toolTipText: context.l10n.editTemplate,
     );
   }
 

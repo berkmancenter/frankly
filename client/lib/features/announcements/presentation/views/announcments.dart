@@ -132,7 +132,7 @@ class _AnnouncementsState extends State<Announcements> {
     return CustomStreamBuilder<List<Announcement>>(
       stream: Provider.of<AnnouncementsProvider>(context).announcements,
       entryFrom: '_AnnouncementsState._buildAnnouncementsLoading',
-      errorMessage: 'There was an error loading announcements.',
+      errorMessage: context.l10n.errorLoadingAnnouncements,
       builder: (_, announcements) {
         return _buildAnnouncements(announcements!);
       },

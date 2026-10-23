@@ -179,7 +179,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
     return CustomStreamBuilder<List<Template>>(
       entryFrom: '_SelectTemplateState._buildTemplatesLoading',
       stream: Stream.fromFuture(provider.templatesFuture),
-      errorMessage: 'There was an error loading events.',
+      errorMessage: context.l10n.errorLoadingEventsShort,
       builder: (_, __) => _buildTemplates(),
     );
   }

@@ -96,7 +96,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
             child: CircleIconButton(
               onPressed: _createCommunityPressed,
               icon: Icons.add,
-              toolTipText: 'Start a community',
+              toolTipText: context.l10n.startCommunity,
             ),
           ),
           if (!responsiveLayoutService.isMobile(context)) ...[

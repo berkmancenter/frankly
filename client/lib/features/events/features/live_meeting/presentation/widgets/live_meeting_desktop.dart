@@ -53,7 +53,7 @@ class LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
       key: ObjectKey(liveMeetingProvider.getCurrentMeetingJoinInfo()),
       entryFrom: '_buildConferenceRoomWrapper.build',
       stream: liveMeetingProvider.getCurrentMeetingJoinInfo()!.asStream(),
-      loadingMessage: 'Loading room. Please wait...',
+      loadingMessage: context.l10n.loadingRoomPleaseWait,
       builder: (_, response) {
         if (liveMeetingProvider.activeUiState == MeetingUiState.breakoutRoom) {
           return RefreshKeyWidget(
@@ -94,6 +94,7 @@ class LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
         child = _buildMeetingLoading();
         break;
     }
+    // ignore: hardcoded_string -- widget key, not user-visible
     child = GlobalKeyedSubtree(label: 'primary-content', child: child);
 
     return Column(
@@ -503,7 +504,7 @@ class _RefreshableBreakoutRoomState extends State<RefreshableBreakoutRoom> {
       entryFrom: '_RefreshableBreakoutRoomState.build',
       stream: Provider.of<LiveMeetingProvider>(context)
           .breakoutRoomLiveMeetingStream,
-      loadingMessage: 'Loading breakout room. Please wait...',
+      loadingMessage: context.l10n.loadingBreakoutRoomPleaseWait,
       builder: (context, __) {
         if (liveMeetingProvider.currentBreakoutRoomId ==
             breakoutsWaitingRoomId) {

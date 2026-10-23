@@ -329,7 +329,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
             CircleIconButton(
               onPressed: _startCommunityTapped,
               icon: Icons.add,
-              toolTipText: 'Start a community',
+              toolTipText: context.l10n.startCommunity,
             ),
             SizedBox(width: 11),
             HeightConstrainedText(

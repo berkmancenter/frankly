@@ -86,8 +86,9 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
             ),
             textColor: context.theme.colorScheme.primary,
             communityId: dialogModel.communityProvider.communityId,
-            label:
-                'Feature on ${dialogModel.communityProvider.community.name} homepage',
+            label: context.l10n.featureOnCommunityHomepage(
+              dialogModel.communityProvider.community.name ?? '',
+            ),
             documentId: dialogModel.event.id,
             documentPath:
                 '${dialogModel.event.collectionPath}/${dialogModel.event.id}',

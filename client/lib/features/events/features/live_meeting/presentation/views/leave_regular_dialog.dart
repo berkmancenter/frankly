@@ -175,14 +175,14 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
 
     return CommunityMembershipButton(
       community,
-      text: 'Follow ${community.name}',
+      text: context.l10n.followCommunityNamed(community.name ?? ''),
     );
   }
 
   Widget _buildMinimizeButton() {
     return ActionButton(
       type: ActionButtonType.filled,
-      tooltipText: 'Hide Agenda Item',
+      tooltipText: context.l10n.hideAgendaItem,
       minWidth: 0,
       height: 0,
       onPressed: widget.onMinimizeCard,

@@ -711,8 +711,9 @@ class LiveMeetingProvider with ChangeNotifier {
             userDataService.getMembership(communityProvider.communityId).isMod;
         final shouldJoin = !(isMod || isHost) ||
             await ConfirmDialog(
-              mainText:
-                  appLocalizationService.getLocalization().participateInBreakoutAssignments,
+              mainText: appLocalizationService
+                  .getLocalization()
+                  .participateInBreakoutAssignments,
               confirmText: appLocalizationService.getLocalization().yesJoin,
               cancelText: appLocalizationService.getLocalization().noSkip,
             ).show();
@@ -1130,8 +1131,7 @@ class LiveMeetingProvider with ChangeNotifier {
     final l10n = appLocalizationService.getLocalization();
     final confirmed = await ConfirmDialog(
       title: l10n.endBreakoutRooms,
-      subText:
-          l10n.endBreakoutRoomsConfirm,
+      subText: l10n.endBreakoutRoomsConfirm,
       cancelText: l10n.cancel,
     ).show();
     if (confirmed) {
@@ -1181,12 +1181,10 @@ class LiveMeetingProvider with ChangeNotifier {
       context: context,
       builder: (context) => ConfirmTextInputDialog(
         title: l10n.proposeToRemoveUser,
-        subText:
-            'Are you sure you want to start a vote to kick out ${user.displayName}? Please'
-            ' only take this action if the participant is behaving inappropriately.',
-        textLabel: 'Enter reason',
-        textHint: 'e.g. They are trying to sabotage the event',
-        cancelText: 'No, cancel',
+        subText: l10n.kickVoteConfirmation(user.displayName ?? ''),
+        textLabel: l10n.enterReason,
+        textHint: l10n.kickReasonHint,
+        cancelText: l10n.noCancel,
         confirmText: l10n.yesPollParticipants,
       ),
     );

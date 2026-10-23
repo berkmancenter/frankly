@@ -730,6 +730,7 @@ class FirestoreEventService {
             (doc.data() ?? {})..['id'] = doc.id,
           ),
           errorMessage:
+              // ignore: hardcoded_string -- developer-facing log text
               'Error parsing event: ${doc.reference.path}/${doc.reference.id}',
         ),
     ];

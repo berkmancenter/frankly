@@ -169,20 +169,20 @@ class _StreamLoadingWrapper extends StatelessWidget {
       child: CustomStreamBuilder(
         entryFrom: 'MeetingDialogState._buildLoading1',
         stream: eventProvider.eventStream,
-        errorMessage: 'There was an error loading event details.',
+        errorMessage: context.l10n.errorLoadingEventDetails,
         builder: (_, __) => CustomStreamBuilder(
           entryFrom: 'MeetingDialogState._buildLoading2',
           stream: eventProvider.selfParticipantStream,
-          errorMessage: 'There was an error loading event details.',
+          errorMessage: context.l10n.errorLoadingEventDetails,
           builder: (_, __) => CustomStreamBuilder(
             entryFrom: 'MeetingDialogState._buildLoading3',
             stream: eventProvider.eventParticipantsStream,
-            errorMessage: 'There was an error loading event details.',
+            errorMessage: context.l10n.errorLoadingEventDetails,
             builder: (_, __) => CustomStreamBuilder(
               entryFrom: 'MeetingDialogState._buildLoading4',
               stream:
                   Provider.of<LiveMeetingProvider>(context).liveMeetingStream,
-              errorMessage: 'There was an error loading event details.',
+              errorMessage: context.l10n.errorLoadingEventDetails,
               builder: (context, __) => child,
             ),
           ),
@@ -238,7 +238,7 @@ class _ConferenceRoomWrapper extends StatelessWidget {
               ],
             ),
           ),
-          loadingMessage: 'Loading room. Please wait...',
+          loadingMessage: context.l10n.loadingRoomPleaseWait,
           buildWhileLoading: true,
           builder: (_, response) {
             if (response == null) {

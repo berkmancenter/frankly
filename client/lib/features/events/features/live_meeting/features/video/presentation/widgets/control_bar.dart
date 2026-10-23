@@ -98,7 +98,9 @@ class _ControlBarState extends State<ControlBar> {
 
     return _IconButton(
       onTap: enabled ? handleVideoToggle : () async {},
-      text: _conferenceRoom.videoIsStreaming ? context.l10n.stopVideo : context.l10n.startVideo,
+      text: _conferenceRoom.videoIsStreaming
+          ? context.l10n.stopVideo
+          : context.l10n.startVideo,
       icon: _conferenceRoom.videoIsStreaming
           ? Icons.videocam_outlined
           : Icons.videocam_off_outlined,
@@ -167,7 +169,9 @@ class _ControlBarState extends State<ControlBar> {
                     toastType: ToastType.success,
                   );
                 },
-          text: _conferenceRoom.audioIsStreaming ? context.l10n.mute : context.l10n.unmute,
+          text: _conferenceRoom.audioIsStreaming
+              ? context.l10n.mute
+              : context.l10n.unmute,
           icon: _conferenceRoom.audioIsStreaming
               ? Icons.mic_outlined
               : Icons.mic_off_outlined,
@@ -269,7 +273,7 @@ class _ChatAndEmojisInputState extends State<ChatAndEmojisInput> {
               child: CustomPointerInterceptor(
                 child: ChatInput(
                   controller: _controller,
-                  messageInputHint: 'Say something',
+                  messageInputHint: context.l10n.saySomething,
                   shouldGuardCommunityMember: false,
                 ),
               ),

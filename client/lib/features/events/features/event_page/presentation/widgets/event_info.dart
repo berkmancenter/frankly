@@ -361,7 +361,7 @@ class _EventInfoState extends State<EventInfo> {
           ),
         ),
       ),
-      toolTipText: 'Event Settings',
+      toolTipText: context.l10n.eventSettings,
       icon: CupertinoIcons.gear_alt,
     );
   }
@@ -883,7 +883,7 @@ class _EventInfoState extends State<EventInfo> {
                       if (_canEditEvent)
                         CircleIconButton(
                           onPressed: widget.onMessagePressed,
-                          toolTipText: 'Message',
+                          toolTipText: context.l10n.message,
                           icon: CupertinoIcons.paperplane,
                           color: context.theme.colorScheme.surfaceContainer,
                           iconColor: context.theme.colorScheme.onSurface,

@@ -355,7 +355,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       entryFrom: '_EventPageState._buildEvents',
       stream: eventProvider.upcomingEventsStream,
       height: 100,
-      errorMessage: 'Something went wrong loading events.',
+      errorMessage: context.l10n.somethingWentWrongLoadingEvents,
       builder: (_, __) {
         final events = eventProvider.upcomingEvents;
         if (events.isEmpty) {
@@ -392,12 +392,12 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       child: EmptyPageContent(
         type: EmptyPageType.announcements,
         subtitleText: canEditEvent
-            ? 'Send a message to all the participants in the group'
-            : 'If the host sends a message, you\'ll see it here.',
+            ? context.l10n.sendMessageToAllParticipantsInGroup
+            : context.l10n.hostMessagesWillShowHere,
         onButtonPress: canEditEvent ? _showSendMessageDialog : null,
         showContainer: false,
         buttonType: ActionButtonType.outline,
-        buttonText: 'Message participants',
+        buttonText: context.l10n.messageParticipants,
       ),
     );
   }
@@ -420,7 +420,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           ),
           child: ChatWidget(
             parentPath: context.watch<ChatModel>().parentPath,
-            messageInputHint: 'Say something',
+            messageInputHint: context.l10n.saySomething,
             allowBroadcast: liveMeetingProvider != null &&
                 (!liveMeetingProvider.isInBreakout ||
                     liveMeetingProvider.isInBreakoutWaitingRoom) &&

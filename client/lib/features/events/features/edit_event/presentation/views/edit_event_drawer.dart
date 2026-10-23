@@ -221,7 +221,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
   Widget _buildIsPublicSection() {
     return CustomSwitchTile(
       val: _model.event.isPublic,
-      text: 'Public',
+      text: context.l10n.publicVisibility,
       style: context.theme.textTheme.bodyLarge,
       onUpdate: (value) => _presenter.updateIsPublic(value),
     );

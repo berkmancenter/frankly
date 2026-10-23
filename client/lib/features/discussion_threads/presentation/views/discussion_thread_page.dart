@@ -287,7 +287,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
           children: [
             AppClickableWidget(
               onTap: () => _goToThreadsPage(),
-              tooltipMessage: 'Back',
+              tooltipMessage: context.l10n.back,
               child: ProxiedImage(
                 null,
                 asset: AppAsset.kArrowBackPng,
