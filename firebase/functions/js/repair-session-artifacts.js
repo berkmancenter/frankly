@@ -70,8 +70,7 @@ const repairSessionArtifacts = functions.https.onRequest((req, res) => {
                 )
             }
 
-            const hasTrx = Boolean(session.artifactPaths?.complete_trx_0) || merged
-            const transcript = transcriptState({ session, hasTrx })
+            const transcript = transcriptState({ session, hasTrx: result.hasTrx })
             res.status(200).json({ ...result, transcript })
         } catch (err) {
             console.error('Error repairing session artifacts:', err)

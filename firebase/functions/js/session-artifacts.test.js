@@ -277,6 +277,7 @@ test('reconcileArtifacts registers late MP4s and re-merges late VTTs', async () 
         mp4s: 1,
         vtts: 1,
         merged: true,
+        hasTrx: true,
         mp4Total: 2,
         vttTotal: 2,
     })
@@ -307,6 +308,43 @@ test('reconcileArtifacts keeps registered keys when listing is empty', async () 
     )
     assert.equal(result.repaired, false)
     assert.deepEqual(ref.updates, [])
+})
+
+const settledAgent = {
+    agoraRttAgentId: 'a',
+    stoppedAt: { toMillis: () => Date.now() - TRX_SETTLE_MS },
+}
+
+test('reconcileArtifacts registers an existing unregistered CSV instead of overwriting', async () => {
+    const { result, ref, bucket } = await reconcile(
+        { ...settledAgent, artifactPaths: { complete_mp4_0: 'p/a.mp4' } },
+        ['p/a.mp4', 'p/a.csv']
+    )
+    assert.equal(result.merged, false)
+    assert.equal(result.hasTrx, true)
+    assert.deepEqual(ref.updates, [{ 'artifactPaths.complete_trx_0': 'p/a.csv' }])
+    assert.deepEqual(bucket.saved, {})
+})
+
+test('reconcileArtifacts reports no transcript when the registered CSV is gone', async () => {
+    const { result } = await reconcile(
+        {
+            agoraRttAgentId: 'a',
+            artifactPaths: { complete_mp4_0: 'p/a.mp4', complete_trx_0: 'p/a.csv' },
+            mergedVtts: [],
+        },
+        ['p/a.mp4']
+    )
+    assert.equal(result.merged, false)
+    assert.equal(result.hasTrx, false)
+})
+
+test('reconcileArtifacts reports hasTrx when the registered CSV exists', async () => {
+    const { result } = await reconcile(
+        { artifactPaths: { complete_mp4_0: 'p/a.mp4', complete_trx_0: 'p/a.csv' }, mergedVtts: [] },
+        ['p/a.mp4', 'p/a.csv']
+    )
+    assert.equal(result.hasTrx, true)
 })
 
 test('registerMp4s deletes stale higher indexes when deleteField is given', async () => {

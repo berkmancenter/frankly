@@ -121,6 +121,12 @@ async function resolveUidMap(firestore, rawUidMap) {
     return uidMap
 }
 
+// CSV path next to the first MP4, else under gcsPrefix.
+const trxOutPath = (session, mp4Files) =>
+    mp4Files[0]?.name
+        ? mp4Files[0].name.replace(/\.mp4$/i, '.csv')
+        : `${session.gcsPrefix}/transcript_0.csv`
+
 // Merge VTTs to one CSV (header-only if none), register as complete_trx_0.
 async function mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4Files }) {
     const entries = vttFiles.map((f) => ({ key: f.name, path: f.name }))
@@ -149,10 +155,7 @@ async function mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4F
     )
     const mergedCsv = mergeCsvContents(csvFragments) || `${cuesToCsv([], {})}\n`
 
-    const mp4Name = mp4Files[0]?.name
-    const outPath = mp4Name
-        ? mp4Name.replace(/\.mp4$/i, '.csv')
-        : `${session.gcsPrefix}/transcript_0.csv`
+    const outPath = trxOutPath(session, mp4Files)
 
     await bucket.file(outPath).save(mergedCsv, { contentType: 'text/csv' })
     await ref.update({
@@ -194,6 +197,7 @@ async function reconcileArtifacts({
     let vtts = 0
     let rewrote = false
     let merged = false
+    let adopted = false
 
     // Never wipe registered keys because a listing came back empty.
     if (mp4Files.length > 0 && !sameSet(mp4Diff)) {
@@ -211,18 +215,27 @@ async function reconcileArtifacts({
     const trxPath = session.artifactPaths?.[TRX_KEY]
     const hasTrx = Boolean(trxPath && allFiles.some((f) => f.name === trxPath))
     const trxSettled = session.agoraRttAgentId != null && stoppedLongEnough(session, now)
+    const outPath = trxOutPath(session, mp4Files)
+    // Register an unregistered CSV rather than overwrite it.
+    if (vttFiles.length === 0 && !hasTrx && allFiles.some((f) => f.name === outPath)) {
+        await ref.update({ [`artifactPaths.${TRX_KEY}`]: outPath })
+        adopted = true
+    }
     const needsMerge =
-        vttFiles.length > 0 ? !hasTrx || transcriptStale(session, vttFiles) : !hasTrx && trxSettled
+        vttFiles.length > 0
+            ? !hasTrx || transcriptStale(session, vttFiles)
+            : !hasTrx && !adopted && trxSettled
     if (needsMerge) {
         await mergeTranscript({ bucket, firestore, ref, session, vttFiles, mp4Files })
         merged = true
     }
 
     return {
-        repaired: rewrote || merged,
+        repaired: rewrote || merged || adopted,
         mp4s,
         vtts,
         merged,
+        hasTrx: hasTrx || merged || adopted,
         mp4Total: mp4Files.length,
         vttTotal: vttFiles.length,
     }
