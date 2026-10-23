@@ -72,7 +72,6 @@ import 'package:functions/admin/payments/stripe_webhooks.dart';
 import 'package:functions/community/trigger_email_digests.dart';
 import 'package:functions/events/live_meetings/update_live_stream_participant_count.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:node_interop/node.dart';
 import 'package:uuid/uuid.dart';
 
 final _onCallFunctions = <CloudFunction>[
@@ -168,20 +167,6 @@ void _registerServices() {
   GetIt.instance.registerSingleton(const Uuid());
 }
 
-void _registerJsFunctions() {
-  functions['downloadRecording'] = require('../js/download-recordings.js');
-  functions['downloadTranscripts'] = require('../js/download-transcripts.js');
-  functions['getSessionDownloadUrl'] =
-      require('../js/get-session-download-url.js');
-  functions['produceSessions'] = require('../js/produce-sessions.js');
-  functions['repairSessionArtifacts'] =
-      require('../js/repair-session-artifacts.js');
-  functions['agoraRecordingWebhook'] =
-      require('../js/agora-recording-webhook.js');
-  functions['imageProxy'] = require('../js/image-proxy.js');
-  functions['ServeIndex'] = require('../js/serve-index.js');
-}
-
 void main() {
   _registerServices();
 
@@ -193,5 +178,7 @@ void main() {
     function.register(functions);
   }
 
-  _registerJsFunctions();
+  // The js/*.js functions previously registered here
+  // have moved to the `functions-ts` codebase (see firebase.json) as part of
+  // the Node 24/Functions v2 rewrite.
 }

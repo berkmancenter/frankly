@@ -20,7 +20,9 @@ jobs:
         with:
           filters: |
             functions:
-              - 'firebase/functions/**'              
+              - 'firebase/functions/**'
+            functions_ts:
+              - 'firebase/functions-ts/**'              
             firestore:
               - 'firebase/firestore/**'
 
@@ -42,6 +44,7 @@ jobs:
       - name: Install Functions NPM Dependencies
         if: steps.changes.outputs.functions == 'true'
         run: npm ci
+        working-directory: "firebase/functions"
 
       - name: Install Firestore NPM Dependencies
         if: steps.changes.outputs.firestore == 'true'
@@ -95,4 +98,24 @@ jobs:
 
       - name: Test Functions
         if: steps.changes.outputs.functions == 'true'
-        run: CLOUD_RUNTIME_CONFIG=./test/test_config.json firebase emulators:exec --only firestore --project fake-project-id 'npm run test'
+        run: CLOUD_RUNTIME_CONFIG=./test/test_config.json firebase emulators:exec --only functions,firestore --project fake-project-id 'npm run test'
+        working-directory: "firebase/functions"
+
+      # Test temp functions-ts separately
+      - name: Install Node 24
+        if: steps.changes.outputs.functions_ts == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+          cache-dependency-path: ./firebase/functions-ts/package-lock.json
+
+      - name: Install functions-ts NPM Dependencies
+        if: steps.changes.outputs.functions_ts == 'true'
+        run: npm ci
+        working-directory: "firebase/functions-ts"
+
+      - name: Test functions-ts
+        if: steps.changes.outputs.functions_ts == 'true'
+        run: npm test
+        working-directory: "firebase/functions-ts"

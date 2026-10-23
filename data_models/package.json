@@ -1,0 +1,12 @@
+{
+  "name": "data_models-ts-codegen",
+  "private": true,
+  "description": "IDE/typecheck-only Node project for the generated lib/**/*.model.ts files (see lib/src/ts_codegen). This package is never run or built - it only exists so editors and `tsc` can resolve zod and other TS deps for the generated output. The real Dart package is data_models itself.",
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "zod": "^3.23.8"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

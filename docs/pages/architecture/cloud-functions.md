@@ -1,6 +1,8 @@
 # Cloud Functions
 
-Dart functions compiled to Node.js via `build_node_compilers` (dart2js), plus a few native JS functions for recording and SSR. All share the `data_models` package for type definitions.
+Dart functions compiled to Node.js via `build_node_compilers` (dart2js), being converted over time to run on Firebase Functions V2 in TypeScript (`firebase/functions-ts`, `codebase: "functions-ts"`) - everything else still runs as Gen1 Dart (`firebase/functions`, `codebase: "default"`). All share the `data_models` package for type definitions; at build time, these models are also transpiled to TypeScript via codegen.
+
+A function marked **(TS)** below has already been ported; everything unmarked is still Dart/Gen1. This marker is a temporary migration-tracking aid - once every function in this doc is (TS) and the Dart codebase is removed, the markers will be dropped.
 
 ## On-Call Functions (Client-Callable)
 
@@ -89,7 +91,7 @@ allowlist fall back to the default cross-origin host.
 | OnCommunityMembership               | Membership paths                   | Membership side effects                                                |
 | OnPartnerAgreements                 | Partner paths                      | Partner configuration                                                  |
 | OnTemplate                          | Template paths                     | Template setup                                                         |
-| produceSessions (JS)                | `recording-sessions/{id}` onUpdate | Downloads and processes recording when status=stopped                  |
+| produceSessions (TS)                | `recording-sessions/{id}` onUpdate | Downloads and processes recording when status=stopped                  |
 | UpdatePresenceStatus                | RTDB `status/{uid}`                | Writes Firestore offline status when RTDB detects disconnect           |
 
 ## Scheduled Functions
@@ -101,17 +103,22 @@ allowlist fall back to the default cross-origin host.
 
 ## HTTP/Webhooks
 
-| Function                          | Source               | Purpose                                |
-| --------------------------------- | -------------------- | -------------------------------------- |
-| CalendarFeedIcs / CalendarFeedRss | Client request       | Serves .ics/.rss calendar feeds        |
-| ShareLink                         | Client request       | Generates share link preview pages     |
-| ServeIndex (JS)                   | All unmatched routes | SSR index.html for SPA                 |
-| StripeWebhooks                    | Stripe               | Payment event processing               |
-| StripeConnectedAccountWebhooks    | Stripe Connect       | Connected account events               |
-| MuxWebhooks                       | Mux                  | Video streaming status events          |
-| agoraRecordingWebhook (JS)        | Agora                | Cloud recording status callbacks       |
-| ExtendCloudTaskScheduler          | Cloud Tasks          | Re-schedules tasks beyond 28-day limit |
-| EmailEventReminder                | Cloud Tasks          | Sends reminder at scheduled time       |
+| Function                          | Source               | Purpose                                         |
+| --------------------------------- | -------------------- | ----------------------------------------------- |
+| CalendarFeedIcs / CalendarFeedRss | Client request       | Serves .ics/.rss calendar feeds                 |
+| ShareLink                         | Client request       | Generates share link preview pages              |
+| ServeIndex (TS)                   | All unmatched routes | SSR index.html for SPA                          |
+| StripeWebhooks                    | Stripe               | Payment event processing                        |
+| StripeConnectedAccountWebhooks    | Stripe Connect       | Connected account events                        |
+| MuxWebhooks                       | Mux                  | Video streaming status events                   |
+| agoraRecordingWebhook (TS)        | Agora                | Cloud recording status callbacks                |
+| ExtendCloudTaskScheduler          | Cloud Tasks          | Re-schedules tasks beyond 28-day limit          |
+| EmailEventReminder                | Cloud Tasks          | Sends reminder at scheduled time                |
+| imageProxy (TS)                   | Client request       | Proxies external images (CSP/CORS)              |
+| downloadRecording (TS)            | Client request       | Signed URLs for a session's MP4s                |
+| downloadTranscripts (TS)          | Client request       | Signed URLs for merged transcript CSVs          |
+| getSessionDownloadUrl (TS)        | Client request       | Signed URLs for a session's artifacts           |
+| repairSessionArtifacts (TS)       | Client request       | Re-registers artifacts `produceSessions` missed |
 
 ## The "Check" Pattern
 
