@@ -3,7 +3,6 @@ const admin = require('firebase-admin')
 
 const {
     VTT_FLUSH_WAIT_MS,
-    TRX_SETTLE_MS,
     listSessionFiles,
     listUntilMp4,
     mp4sOf,
@@ -11,7 +10,6 @@ const {
     registerMp4s,
     registerVtts,
     mergeTranscript,
-    reconcileArtifacts,
 } = require('./session-artifacts')
 
 const firestore = admin.firestore()
@@ -70,9 +68,7 @@ const produceSessions = functions
             } else {
                 await registerMp4s(ref, finalMp4Files)
                 console.log(
-                    `Registered ${
-                        finalMp4Files.length
-                    } MP4(s) for session ${sessionId} after ${waitedMs}ms: ${finalMp4Files
+                    `Registered ${finalMp4Files.length} MP4(s) for session ${sessionId} after ${waitedMs}ms: ${finalMp4Files
                         .map((f) => f.name)
                         .join(', ')}`
                 )
@@ -83,11 +79,11 @@ const produceSessions = functions
 
         // --- Register VTT transcript files ---
         let finalVttFiles = []
-        const hasSTT = after.agoraRttAgentId != null
         try {
             let vttFiles = vttsOf(allFiles)
 
             // Wait for STT flush; MP4 wait counts toward it.
+            const hasSTT = after.agoraRttAgentId != null
             if (vttFiles.length === 0 && hasSTT) {
                 const remainingMs = Math.max(0, VTT_FLUSH_WAIT_MS - waitedMs)
                 if (remainingMs > 0) {
@@ -116,7 +112,6 @@ const produceSessions = functions
         }
 
         // --- Merge VTT fragments into one CSV transcript ---
-        // Zero VTTs: header-only CSV is left to the late pass, after the settle window.
         try {
             if (finalVttFiles.length > 0) {
                 const outPath = await mergeTranscript({
@@ -131,35 +126,6 @@ const produceSessions = functions
             }
         } catch (err) {
             console.error(`Error merging transcript for session ${sessionId}:`, err)
-        }
-
-        // --- Late pass: pick up fragments that landed after the first merge ---
-        if (hasSTT || finalMp4Files.length > 0) {
-            try {
-                // No VTTs yet: wait out the settle window so the empty CSV is final.
-                const stoppedMs = after.stoppedAt?.toMillis?.() ?? Date.now()
-                const settleLeftMs = TRX_SETTLE_MS - (Date.now() - stoppedMs)
-                const lateWaitMs =
-                    hasSTT && finalVttFiles.length === 0
-                        ? Math.max(VTT_FLUSH_WAIT_MS, settleLeftMs + 1000)
-                        : VTT_FLUSH_WAIT_MS
-                await sleep(lateWaitMs)
-                const fresh = (await ref.get()).data()
-                const result = await reconcileArtifacts({
-                    bucket,
-                    firestore,
-                    ref,
-                    session: fresh,
-                    deleteField: admin.firestore.FieldValue.delete(),
-                })
-                if (result.repaired) {
-                    console.log(
-                        `Late reconcile for session ${sessionId}: ${JSON.stringify(result)}`
-                    )
-                }
-            } catch (err) {
-                console.error(`Error in late reconcile for session ${sessionId}:`, err)
-            }
         }
 
         return null
