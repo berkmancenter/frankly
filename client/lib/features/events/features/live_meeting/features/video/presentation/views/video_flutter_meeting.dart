@@ -269,7 +269,7 @@ class _RecordingBadgePill extends StatelessWidget {
             ),
             SizedBox(width: 8),
             Text(
-              'Recording',
+              context.l10n.recordingIndicator,
               style: TextStyle(
                 color: context.theme.colorScheme.onPrimary,
               ),
