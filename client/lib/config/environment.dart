@@ -62,6 +62,8 @@ class Environment {
   static const subscriptionServicesAgreementUrl =
       String.fromEnvironment('SUBSCRIPTION_SERVICES_AGREEMENT_URL');
   static const logoUrl = String.fromEnvironment('LOGO_URL');
+  static const bypassEmailVerification =
+      bool.fromEnvironment('BYPASS_EMAIL_VERIFICATION');
 
   // SAAS connection properties
   static const cloudinaryDefaultPreset =

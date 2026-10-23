@@ -35,8 +35,8 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   Widget _buildBreakoutsSection() {
     final eventProvider = EventProvider.watch(context);
     final event = eventProvider.event;
-    if (event.eventType == EventType.hosted ||
-        event.eventType == EventType.hostless ||
+    // Show the breakouts section if the event is not a livestream or if a breakout room definition exists (for a livestream)
+    if (event.eventType != EventType.livestream ||
         event.breakoutRoomDefinition != null) {
       return Container(
         padding: const EdgeInsets.all(20),
@@ -89,9 +89,6 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
     final templateProvider = Provider.of<TemplateProvider>(context);
 
     final canEdit = context.watch<EventPermissionsProvider>().canEditEvent;
-
-    final allowBreakoutsDefinition =
-        !EventProvider.watch(context).event.isLiveStream;
 
     return MeetingAgendaWrapper(
       allowButtonForUserSubmittedAgenda:
@@ -151,7 +148,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
             ),
             SizedBox(height: 20),
           ],
-          if (canEdit && allowBreakoutsDefinition) ...[
+          if (canEdit) ...[
             _buildBreakoutsSection(),
             SizedBox(height: 20),
           ],

@@ -8,7 +8,7 @@ import 'dart:convert' as _i129;
 import 'dart:typed_data' as _i96;
 import 'dart:ui' as _i44;
 
-import 'package:agora_rtc_engine/agora_rtc_engine.dart' as _i10;
+import 'package:agora_rtc_engine/agora_rtc_engine.dart' as _i14;
 import 'package:client/core/data/services/clock_service.dart' as _i71;
 import 'package:client/core/data/services/firestore_database.dart' as _i98;
 import 'package:client/core/data/services/logging_service.dart' as _i107;
@@ -20,7 +20,7 @@ import 'package:client/core/data/services/shared_preferences_service.dart'
 import 'package:client/core/utils/dialogs.dart' as _i70;
 import 'package:client/core/utils/extensions.dart' as _i35;
 import 'package:client/core/utils/firestore_utils.dart' as _i41;
-import 'package:client/core/utils/media_device_service.dart' as _i14;
+import 'package:client/core/utils/media_device_service.dart' as _i13;
 import 'package:client/core/utils/toast_utils.dart' as _i69;
 import 'package:client/core/widgets/navbar/nav_bar/nav_bar_contract.dart'
     as _i111;
@@ -78,7 +78,7 @@ import 'package:client/features/events/features/event_page/data/providers/event_
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart'
     as _i79;
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart'
-    as _i11;
+    as _i10;
 import 'package:client/features/events/features/event_page/presentation/event_settings_presenter.dart'
     as _i83;
 import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart'
@@ -100,7 +100,7 @@ import 'package:client/features/events/features/event_page/presentation/views/su
 import 'package:client/features/events/features/event_page/presentation/widgets/event_tabs.dart'
     as _i87;
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart'
-    as _i12;
+    as _i11;
 import 'package:client/features/events/features/live_meeting/data/services/cloud_functions_live_meeting_service.dart'
     as _i75;
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_image_data.dart'
@@ -152,7 +152,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart'
     as _i27;
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart'
-    as _i13;
+    as _i12;
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/networking_status_contract.dart'
     as _i112;
 import 'package:client/features/templates/data/providers/template_page_provider.dart'
@@ -330,8 +330,9 @@ class _FakeDuration_9 extends _i1.SmartFake implements Duration {
         );
 }
 
-class _FakeRtcEngine_10 extends _i1.SmartFake implements _i10.RtcEngine {
-  _FakeRtcEngine_10(
+class _FakeEventProvider_10 extends _i1.SmartFake
+    implements _i10.EventProvider {
+  _FakeEventProvider_10(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -340,9 +341,9 @@ class _FakeRtcEngine_10 extends _i1.SmartFake implements _i10.RtcEngine {
         );
 }
 
-class _FakeEventProvider_11 extends _i1.SmartFake
-    implements _i11.EventProvider {
-  _FakeEventProvider_11(
+class _FakeLiveMeetingProvider_11 extends _i1.SmartFake
+    implements _i11.LiveMeetingProvider {
+  _FakeLiveMeetingProvider_11(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -351,9 +352,9 @@ class _FakeEventProvider_11 extends _i1.SmartFake
         );
 }
 
-class _FakeLiveMeetingProvider_12 extends _i1.SmartFake
-    implements _i12.LiveMeetingProvider {
-  _FakeLiveMeetingProvider_12(
+class _FakeConferenceRoom_12 extends _i1.SmartFake
+    implements _i12.ConferenceRoom {
+  _FakeConferenceRoom_12(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -362,9 +363,9 @@ class _FakeLiveMeetingProvider_12 extends _i1.SmartFake
         );
 }
 
-class _FakeConferenceRoom_13 extends _i1.SmartFake
-    implements _i13.ConferenceRoom {
-  _FakeConferenceRoom_13(
+class _FakeMediaDeviceService_13 extends _i1.SmartFake
+    implements _i13.MediaDeviceService {
+  _FakeMediaDeviceService_13(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -373,9 +374,8 @@ class _FakeConferenceRoom_13 extends _i1.SmartFake
         );
 }
 
-class _FakeMediaDeviceService_14 extends _i1.SmartFake
-    implements _i14.MediaDeviceService {
-  _FakeMediaDeviceService_14(
+class _FakeRtcEngine_14 extends _i1.SmartFake implements _i14.RtcEngine {
+  _FakeRtcEngine_14(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1120,7 +1120,7 @@ class _FakeEventSettings_80 extends _i1.SmartFake implements _i2.EventSettings {
 }
 
 class _FakeConferenceRoomNotifier_81 extends _i1.SmartFake
-    implements _i12.ConferenceRoomNotifier {
+    implements _i11.ConferenceRoomNotifier {
   _FakeConferenceRoomNotifier_81(
     Object parent,
     Invocation parentInvocation,
@@ -2181,6 +2181,24 @@ class MockAgendaProvider extends _i1.Mock implements _i9.AgendaProvider {
       ) as _i40.Future<void>);
 
   @override
+  _i40.Future<bool> confirmReadyToMoveOn({
+    required String? currentAgendaItemId,
+    bool? userIsReady = true,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #confirmReadyToMoveOn,
+          [],
+          {
+            #currentAgendaItemId: currentAgendaItemId,
+            #userIsReady: userIsReady,
+          },
+        ),
+        returnValue: _i40.Future<bool>.value(false),
+        returnValueForMissingStub: _i40.Future<bool>.value(false),
+      ) as _i40.Future<bool>);
+
+  @override
   _i40.Future<void> toggleMoveForward({
     required String? currentAgendaItemId,
     bool? userIsReady = true,
@@ -2278,28 +2296,6 @@ class MockAgendaProviderParams extends _i1.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockAgoraRoom extends _i1.Mock implements _i27.AgoraRoom {
   @override
-  _i10.RtcEngine get engine => (super.noSuchMethod(
-        Invocation.getter(#engine),
-        returnValue: _FakeRtcEngine_10(
-          this,
-          Invocation.getter(#engine),
-        ),
-        returnValueForMissingStub: _FakeRtcEngine_10(
-          this,
-          Invocation.getter(#engine),
-        ),
-      ) as _i10.RtcEngine);
-
-  @override
-  set engine(_i10.RtcEngine? _engine) => super.noSuchMethod(
-        Invocation.setter(
-          #engine,
-          _engine,
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
   String get channelName => (super.noSuchMethod(
         Invocation.getter(#channelName),
         returnValue: _i56.dummyValue<String>(
@@ -2326,56 +2322,69 @@ class MockAgoraRoom extends _i1.Mock implements _i27.AgoraRoom {
       ) as String);
 
   @override
-  _i11.EventProvider get eventProvider => (super.noSuchMethod(
+  _i10.EventProvider get eventProvider => (super.noSuchMethod(
         Invocation.getter(#eventProvider),
-        returnValue: _FakeEventProvider_11(
+        returnValue: _FakeEventProvider_10(
           this,
           Invocation.getter(#eventProvider),
         ),
-        returnValueForMissingStub: _FakeEventProvider_11(
+        returnValueForMissingStub: _FakeEventProvider_10(
           this,
           Invocation.getter(#eventProvider),
         ),
-      ) as _i11.EventProvider);
+      ) as _i10.EventProvider);
 
   @override
-  _i12.LiveMeetingProvider get liveMeetingProvider => (super.noSuchMethod(
+  _i11.LiveMeetingProvider get liveMeetingProvider => (super.noSuchMethod(
         Invocation.getter(#liveMeetingProvider),
-        returnValue: _FakeLiveMeetingProvider_12(
+        returnValue: _FakeLiveMeetingProvider_11(
           this,
           Invocation.getter(#liveMeetingProvider),
         ),
-        returnValueForMissingStub: _FakeLiveMeetingProvider_12(
+        returnValueForMissingStub: _FakeLiveMeetingProvider_11(
           this,
           Invocation.getter(#liveMeetingProvider),
         ),
-      ) as _i12.LiveMeetingProvider);
+      ) as _i11.LiveMeetingProvider);
 
   @override
-  _i13.ConferenceRoom get conferenceRoom => (super.noSuchMethod(
+  _i12.ConferenceRoom get conferenceRoom => (super.noSuchMethod(
         Invocation.getter(#conferenceRoom),
-        returnValue: _FakeConferenceRoom_13(
+        returnValue: _FakeConferenceRoom_12(
           this,
           Invocation.getter(#conferenceRoom),
         ),
-        returnValueForMissingStub: _FakeConferenceRoom_13(
+        returnValueForMissingStub: _FakeConferenceRoom_12(
           this,
           Invocation.getter(#conferenceRoom),
         ),
-      ) as _i13.ConferenceRoom);
+      ) as _i12.ConferenceRoom);
 
   @override
-  _i14.MediaDeviceService get mediaDeviceService => (super.noSuchMethod(
+  _i13.MediaDeviceService get mediaDeviceService => (super.noSuchMethod(
         Invocation.getter(#mediaDeviceService),
-        returnValue: _FakeMediaDeviceService_14(
+        returnValue: _FakeMediaDeviceService_13(
           this,
           Invocation.getter(#mediaDeviceService),
         ),
-        returnValueForMissingStub: _FakeMediaDeviceService_14(
+        returnValueForMissingStub: _FakeMediaDeviceService_13(
           this,
           Invocation.getter(#mediaDeviceService),
         ),
-      ) as _i14.MediaDeviceService);
+      ) as _i13.MediaDeviceService);
+
+  @override
+  _i14.RtcEngine get engine => (super.noSuchMethod(
+        Invocation.getter(#engine),
+        returnValue: _FakeRtcEngine_14(
+          this,
+          Invocation.getter(#engine),
+        ),
+        returnValueForMissingStub: _FakeRtcEngine_14(
+          this,
+          Invocation.getter(#engine),
+        ),
+      ) as _i14.RtcEngine);
 
   @override
   _i27.AgoraRoomState get state => (super.noSuchMethod(
@@ -2425,6 +2434,15 @@ class MockAgoraRoom extends _i1.Mock implements _i27.AgoraRoom {
       ) as _i40.Future<void>);
 
   @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
   void dispose() => super.noSuchMethod(
         Invocation.method(
           #dispose,
@@ -2447,15 +2465,6 @@ class MockAgoraRoom extends _i1.Mock implements _i27.AgoraRoom {
         Invocation.method(
           #removeListener,
           [listener],
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  void notifyListeners() => super.noSuchMethod(
-        Invocation.method(
-          #notifyListeners,
-          [],
         ),
         returnValueForMissingStub: null,
       );
@@ -2493,14 +2502,14 @@ class MockAgoraParticipant extends _i1.Mock implements _i27.AgoraParticipant {
       ) as bool);
 
   @override
-  _i10.QualityType get networkQualityLevel => (super.noSuchMethod(
+  _i14.QualityType get networkQualityLevel => (super.noSuchMethod(
         Invocation.getter(#networkQualityLevel),
-        returnValue: _i10.QualityType.qualityUnknown,
-        returnValueForMissingStub: _i10.QualityType.qualityUnknown,
-      ) as _i10.QualityType);
+        returnValue: _i14.QualityType.qualityUnknown,
+        returnValueForMissingStub: _i14.QualityType.qualityUnknown,
+      ) as _i14.QualityType);
 
   @override
-  set networkQualityLevel(_i10.QualityType? _networkQualityLevel) =>
+  set networkQualityLevel(_i14.QualityType? _networkQualityLevel) =>
       super.noSuchMethod(
         Invocation.setter(
           #networkQualityLevel,
@@ -2613,17 +2622,17 @@ class MockAgoraParticipant extends _i1.Mock implements _i27.AgoraParticipant {
       ) as String);
 
   @override
-  _i14.MediaDeviceService get mediaDeviceService => (super.noSuchMethod(
+  _i13.MediaDeviceService get mediaDeviceService => (super.noSuchMethod(
         Invocation.getter(#mediaDeviceService),
-        returnValue: _FakeMediaDeviceService_14(
+        returnValue: _FakeMediaDeviceService_13(
           this,
           Invocation.getter(#mediaDeviceService),
         ),
-        returnValueForMissingStub: _FakeMediaDeviceService_14(
+        returnValueForMissingStub: _FakeMediaDeviceService_13(
           this,
           Invocation.getter(#mediaDeviceService),
         ),
-      ) as _i14.MediaDeviceService);
+      ) as _i13.MediaDeviceService);
 
   @override
   bool get hasListeners => (super.noSuchMethod(
@@ -5464,19 +5473,19 @@ class MockCommunitySettings extends _i1.Mock implements _i25.CommunitySettings {
 /// A class which mocks [ConferenceRoom].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockConferenceRoom extends _i1.Mock implements _i13.ConferenceRoom {
+class MockConferenceRoom extends _i1.Mock implements _i12.ConferenceRoom {
   @override
-  _i12.LiveMeetingProvider get liveMeetingProvider => (super.noSuchMethod(
+  _i11.LiveMeetingProvider get liveMeetingProvider => (super.noSuchMethod(
         Invocation.getter(#liveMeetingProvider),
-        returnValue: _FakeLiveMeetingProvider_12(
+        returnValue: _FakeLiveMeetingProvider_11(
           this,
           Invocation.getter(#liveMeetingProvider),
         ),
-        returnValueForMissingStub: _FakeLiveMeetingProvider_12(
+        returnValueForMissingStub: _FakeLiveMeetingProvider_11(
           this,
           Invocation.getter(#liveMeetingProvider),
         ),
-      ) as _i12.LiveMeetingProvider);
+      ) as _i11.LiveMeetingProvider);
 
   @override
   _i9.AgendaProvider get agendaProvider => (super.noSuchMethod(
@@ -5877,6 +5886,13 @@ class MockEvent extends _i1.Mock implements _i2.Event {
       ) as bool);
 
   @override
+  int get effectiveMaxParticipants => (super.noSuchMethod(
+        Invocation.getter(#effectiveMaxParticipants),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
+
+  @override
   bool get hasPreEventData => (super.noSuchMethod(
         Invocation.getter(#hasPreEventData),
         returnValue: false,
@@ -6061,6 +6077,16 @@ class MockEvent extends _i1.Mock implements _i2.Event {
       ) as Duration);
 
   @override
+  bool isActive(DateTime? now) => (super.noSuchMethod(
+        Invocation.method(
+          #isActive,
+          [now],
+        ),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   Map<String, dynamic> toJson() => (super.noSuchMethod(
         Invocation.method(
           #toJson,
@@ -6076,17 +6102,17 @@ class MockEvent extends _i1.Mock implements _i2.Event {
 /// See the documentation for Mockito's code generation for more information.
 class MockEventPageProvider extends _i1.Mock implements _i29.EventPageProvider {
   @override
-  _i11.EventProvider get eventProvider => (super.noSuchMethod(
+  _i10.EventProvider get eventProvider => (super.noSuchMethod(
         Invocation.getter(#eventProvider),
-        returnValue: _FakeEventProvider_11(
+        returnValue: _FakeEventProvider_10(
           this,
           Invocation.getter(#eventProvider),
         ),
-        returnValueForMissingStub: _FakeEventProvider_11(
+        returnValueForMissingStub: _FakeEventProvider_10(
           this,
           Invocation.getter(#eventProvider),
         ),
-      ) as _i11.EventProvider);
+      ) as _i10.EventProvider);
 
   @override
   _i24.CommunityProvider get communityProvider => (super.noSuchMethod(
@@ -6264,17 +6290,17 @@ class MockEventPageProvider extends _i1.Mock implements _i29.EventPageProvider {
 class MockEventPermissionsProvider extends _i1.Mock
     implements _i79.EventPermissionsProvider {
   @override
-  _i11.EventProvider get eventProvider => (super.noSuchMethod(
+  _i10.EventProvider get eventProvider => (super.noSuchMethod(
         Invocation.getter(#eventProvider),
-        returnValue: _FakeEventProvider_11(
+        returnValue: _FakeEventProvider_10(
           this,
           Invocation.getter(#eventProvider),
         ),
-        returnValueForMissingStub: _FakeEventProvider_11(
+        returnValueForMissingStub: _FakeEventProvider_10(
           this,
           Invocation.getter(#eventProvider),
         ),
-      ) as _i11.EventProvider);
+      ) as _i10.EventProvider);
 
   @override
   _i24.CommunityProvider get communityProvider => (super.noSuchMethod(
@@ -6409,6 +6435,13 @@ class MockEventPermissionsProvider extends _i1.Mock
       ) as bool);
 
   @override
+  bool get allHostsCanBroadcast => (super.noSuchMethod(
+        Invocation.getter(#allHostsCanBroadcast),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get canBroadcastChat => (super.noSuchMethod(
         Invocation.getter(#canBroadcastChat),
         returnValue: false,
@@ -6444,6 +6477,16 @@ class MockEventPermissionsProvider extends _i1.Mock
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  bool isAuthorizedBroadcast(_i77.ChatMessage? message) => (super.noSuchMethod(
+        Invocation.method(
+          #isAuthorizedBroadcast,
+          [message],
+        ),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
 
   @override
   bool canMuteParticipantInParticipantWidget(String? userId) =>
@@ -6539,7 +6582,7 @@ class MockEventPermissionsProvider extends _i1.Mock
 /// A class which mocks [EventProvider].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockEventProvider extends _i1.Mock implements _i11.EventProvider {
+class MockEventProvider extends _i1.Mock implements _i10.EventProvider {
   @override
   _i24.CommunityProvider get communityProvider => (super.noSuchMethod(
         Invocation.getter(#communityProvider),
@@ -6925,6 +6968,7 @@ class MockEventProvider extends _i1.Mock implements _i11.EventProvider {
     required List<_i82.PollData>? pollData,
     required String? eventId,
     required List<_i20.BreakoutRoom>? breakoutRooms,
+    required List<_i2.AgendaItem>? agendaItems,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -6935,6 +6979,7 @@ class MockEventProvider extends _i1.Mock implements _i11.EventProvider {
             #pollData: pollData,
             #eventId: eventId,
             #breakoutRooms: breakoutRooms,
+            #agendaItems: agendaItems,
           },
         ),
         returnValue: _i40.Future<void>.value(),
@@ -11077,6 +11122,28 @@ class MockFirestoreMeetingGuideService extends _i1.Mock
       ) as _i40.Future<void>);
 
   @override
+  _i40.Future<void> setReadyToAdvance({
+    required String? agendaItemId,
+    required String? userId,
+    required String? liveMeetingPath,
+    required bool? ready,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setReadyToAdvance,
+          [],
+          {
+            #agendaItemId: agendaItemId,
+            #userId: userId,
+            #liveMeetingPath: liveMeetingPath,
+            #ready: ready,
+          },
+        ),
+        returnValue: _i40.Future<void>.value(),
+        returnValueForMissingStub: _i40.Future<void>.value(),
+      ) as _i40.Future<void>);
+
+  @override
   _i40.Future<void> addWordCloudResponse({
     required String? agendaItemId,
     required String? userId,
@@ -11667,7 +11734,7 @@ class MockCommunityProvider extends _i1.Mock implements _i24.CommunityProvider {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLiveMeetingProvider extends _i1.Mock
-    implements _i12.LiveMeetingProvider {
+    implements _i11.LiveMeetingProvider {
   @override
   _i24.CommunityProvider get communityProvider => (super.noSuchMethod(
         Invocation.getter(#communityProvider),
@@ -11682,17 +11749,17 @@ class MockLiveMeetingProvider extends _i1.Mock
       ) as _i24.CommunityProvider);
 
   @override
-  _i11.EventProvider get eventProvider => (super.noSuchMethod(
+  _i10.EventProvider get eventProvider => (super.noSuchMethod(
         Invocation.getter(#eventProvider),
-        returnValue: _FakeEventProvider_11(
+        returnValue: _FakeEventProvider_10(
           this,
           Invocation.getter(#eventProvider),
         ),
-        returnValueForMissingStub: _FakeEventProvider_11(
+        returnValueForMissingStub: _FakeEventProvider_10(
           this,
           Invocation.getter(#eventProvider),
         ),
-      ) as _i11.EventProvider);
+      ) as _i10.EventProvider);
 
   @override
   _i28.NavBarProvider get navBarProvider => (super.noSuchMethod(
@@ -11787,7 +11854,7 @@ class MockLiveMeetingProvider extends _i1.Mock
       );
 
   @override
-  _i12.ConferenceRoomNotifier get conferenceRoomNotifier => (super.noSuchMethod(
+  _i11.ConferenceRoomNotifier get conferenceRoomNotifier => (super.noSuchMethod(
         Invocation.getter(#conferenceRoomNotifier),
         returnValue: _FakeConferenceRoomNotifier_81(
           this,
@@ -11797,7 +11864,7 @@ class MockLiveMeetingProvider extends _i1.Mock
           this,
           Invocation.getter(#conferenceRoomNotifier),
         ),
-      ) as _i12.ConferenceRoomNotifier);
+      ) as _i11.ConferenceRoomNotifier);
 
   @override
   bool get clickedEnterMeeting => (super.noSuchMethod(
@@ -11816,11 +11883,11 @@ class MockLiveMeetingProvider extends _i1.Mock
       );
 
   @override
-  _i12.MeetingUiState get activeUiState => (super.noSuchMethod(
+  _i11.MeetingUiState get activeUiState => (super.noSuchMethod(
         Invocation.getter(#activeUiState),
-        returnValue: _i12.MeetingUiState.leftMeeting,
-        returnValueForMissingStub: _i12.MeetingUiState.leftMeeting,
-      ) as _i12.MeetingUiState);
+        returnValue: _i11.MeetingUiState.leftMeeting,
+        returnValueForMissingStub: _i11.MeetingUiState.leftMeeting,
+      ) as _i11.MeetingUiState);
 
   @override
   bool get showGuideCard => (super.noSuchMethod(
@@ -11851,6 +11918,13 @@ class MockLiveMeetingProvider extends _i1.Mock
       ) as bool);
 
   @override
+  bool get isInBreakoutWaitingRoom => (super.noSuchMethod(
+        Invocation.getter(#isInBreakoutWaitingRoom),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get breakoutsActive => (super.noSuchMethod(
         Invocation.getter(#breakoutsActive),
         returnValue: false,
@@ -11860,6 +11934,13 @@ class MockLiveMeetingProvider extends _i1.Mock
   @override
   bool get userLeftBreakouts => (super.noSuchMethod(
         Invocation.getter(#userLeftBreakouts),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get breakoutTransitionTimedOut => (super.noSuchMethod(
+        Invocation.getter(#breakoutTransitionTimedOut),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
@@ -11954,7 +12035,7 @@ class MockLiveMeetingProvider extends _i1.Mock
       ) as String);
 
   @override
-  set conferenceRoom(_i13.ConferenceRoom? value) => super.noSuchMethod(
+  set conferenceRoom(_i12.ConferenceRoom? value) => super.noSuchMethod(
         Invocation.setter(
           #conferenceRoom,
           value,
@@ -11992,7 +12073,17 @@ class MockLiveMeetingProvider extends _i1.Mock
       ) as bool);
 
   @override
-  void updateLiveMeetingViewType(_i12.LiveMeetingViewType? type) =>
+  _i40.Future<void> forcePresenceHeartbeat() => (super.noSuchMethod(
+        Invocation.method(
+          #forcePresenceHeartbeat,
+          [],
+        ),
+        returnValue: _i40.Future<void>.value(),
+        returnValueForMissingStub: _i40.Future<void>.value(),
+      ) as _i40.Future<void>);
+
+  @override
+  void updateLiveMeetingViewType(_i11.LiveMeetingViewType? type) =>
       super.noSuchMethod(
         Invocation.method(
           #updateLiveMeetingViewType,
@@ -12136,7 +12227,7 @@ class MockLiveMeetingProvider extends _i1.Mock
 
   @override
   void setMeetingProviderParticipants(
-    List<_i12.MeetingProviderParticipant>? participants, {
+    List<_i11.MeetingProviderParticipant>? participants, {
     bool? notify = true,
   }) =>
       super.noSuchMethod(
@@ -12942,17 +13033,17 @@ class MockMeetingGuideCardStore extends _i1.Mock
       ) as _i24.CommunityProvider);
 
   @override
-  _i12.LiveMeetingProvider get liveMeetingProvider => (super.noSuchMethod(
+  _i11.LiveMeetingProvider get liveMeetingProvider => (super.noSuchMethod(
         Invocation.getter(#liveMeetingProvider),
-        returnValue: _FakeLiveMeetingProvider_12(
+        returnValue: _FakeLiveMeetingProvider_11(
           this,
           Invocation.getter(#liveMeetingProvider),
         ),
-        returnValueForMissingStub: _FakeLiveMeetingProvider_12(
+        returnValueForMissingStub: _FakeLiveMeetingProvider_11(
           this,
           Invocation.getter(#liveMeetingProvider),
         ),
-      ) as _i12.LiveMeetingProvider);
+      ) as _i11.LiveMeetingProvider);
 
   @override
   _i9.AgendaProvider get agendaProvider => (super.noSuchMethod(
@@ -13060,6 +13151,24 @@ class MockMeetingGuideCardStore extends _i1.Mock
       ) as DateTime?);
 
   @override
+  _i40.Future<bool> setDesiredReady({
+    required String? agendaItemId,
+    required bool? ready,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setDesiredReady,
+          [],
+          {
+            #agendaItemId: agendaItemId,
+            #ready: ready,
+          },
+        ),
+        returnValue: _i40.Future<bool>.value(false),
+        returnValueForMissingStub: _i40.Future<bool>.value(false),
+      ) as _i40.Future<bool>);
+
+  @override
   bool isReadyToAdvance(
     List<_i46.ParticipantAgendaItemDetails>? participantAgendaItemDetailsList,
     String? userId,
@@ -13075,6 +13184,28 @@ class MockMeetingGuideCardStore extends _i1.Mock
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
+
+  @override
+  int optimisticReadyCount({
+    required String? agendaItemId,
+    required String? currentUserId,
+    required List<_i46.ParticipantAgendaItemDetails>? details,
+    required Set<String>? presentParticipantIds,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #optimisticReadyCount,
+          [],
+          {
+            #agendaItemId: agendaItemId,
+            #currentUserId: currentUserId,
+            #details: details,
+            #presentParticipantIds: presentParticipantIds,
+          },
+        ),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
 
   @override
   _i40.Future<void> goToPreviousAgendaItem() => (super.noSuchMethod(

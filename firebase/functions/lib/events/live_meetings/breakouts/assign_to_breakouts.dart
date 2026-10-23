@@ -251,6 +251,30 @@ class AssignToBreakouts {
             participant.id: question.freeTextAnswer!,
     };
 
+    // Attach the participant's email alongside their free-text response, if available.
+    final participantEmailLookup = <String, String>{
+      for (final participant in unmatchedParticipants)
+        for (final question in participant.breakoutRoomSurveyQuestions)
+          if (question.type == BreakoutQuestionType.freeText &&
+              question.freeTextAnswer != null &&
+              question.freeTextAnswer!.isNotEmpty &&
+              participant.email != null &&
+              participant.email!.isNotEmpty)
+            participant.id: participant.email!,
+    };
+
+    // Attach the participant's name alongside their free-text response, if available.
+    final participantNameLookup = <String, String>{
+      for (final participant in unmatchedParticipants)
+        for (final question in participant.breakoutRoomSurveyQuestions)
+          if (question.type == BreakoutQuestionType.freeText &&
+              question.freeTextAnswer != null &&
+              question.freeTextAnswer!.isNotEmpty &&
+              participant.name != null &&
+              participant.name!.isNotEmpty)
+            participant.id: participant.name!,
+    };
+
     final nonNullSurveyResponsesLength = participantSurveyResponsesLookup
         .entries
         .where((e) => e.value.isNotEmpty)
@@ -274,6 +298,8 @@ class AssignToBreakouts {
           participantSurveyResponsesLookup: participantSurveyResponsesLookup,
           participantFreeTextResponsesLookup:
               participantFreeTextResponsesLookup,
+          participantEmailLookup: participantEmailLookup,
+          participantNameLookup: participantNameLookup,
           targetParticipantsPerRoom: targetParticipantsPerRoom,
         );
         smartMatches = smartMatchApiResult.groups;
@@ -499,6 +525,8 @@ class AssignToBreakouts {
           Participant.kFieldIsPresent,
           Participant.kAvailableForBreakoutSessionId,
           Participant.kFieldBreakoutRoomSurveyQuestions,
+          Participant.kFieldEmail,
+          Participant.kFieldName,
           'joinParameters.participant_id',
           'joinParameters.match_id',
           'joinParameters.eventId',
@@ -938,31 +966,52 @@ class SmartMatchApiResult {
 
 /// Builds the request payload for the hosted Frankly Match API.
 ///
-/// Each participant contributes a `binaryAnswerMask` (if they answered the
-/// boolean survey questions), a `freeTextResponse` (if they answered the
-/// event's free-text registration question), or both.
+/// If at least three participants have a non-empty free-text response, the request uses
+/// the `textGroupMatch` algorithm and omits all `binaryAnswerMask` fields. Otherwise,
+/// it uses `binaryGroupMatch` and includes `binaryAnswerMask` (and `freeTextResponse` when available).
 @visibleForTesting
 Map<String, dynamic> buildFranklyMatchApiPayload({
   required Map<String, String> participantSurveyResponsesLookup,
   required Map<String, String> participantFreeTextResponsesLookup,
+  required Map<String, String> participantEmailLookup,
+  required Map<String, String> participantNameLookup,
   required int targetParticipantsPerRoom,
 }) {
+  // Sanity check: also ensure no empty free-text responses when using text group match
+  final useTextGroupMatch = participantFreeTextResponsesLookup.length >= 3 &&
+      participantFreeTextResponsesLookup.values
+          .every((response) => response.isNotEmpty);
   final participantIds = {
     ...participantSurveyResponsesLookup.keys,
     ...participantFreeTextResponsesLookup.keys,
   };
+  String? algorithm;
+
+  if (useTextGroupMatch) {
+    algorithm = 'textGroupMatch';
+  } else if (participantSurveyResponsesLookup.isNotEmpty) {
+    algorithm = 'binaryGroupMatch';
+  } else {
+    throw Exception(
+      'No suitable algorithm found for the given participant responses.',
+    );
+  }
+
   return {
-    // The algorithm parameter should become dynamic once more options
-    // are added to the API.
-    'algorithm': 'binaryGroupMatch',
+    'algorithm': algorithm,
     'targetGroupSize': targetParticipantsPerRoom,
     'participants': {
       for (final id in participantIds)
         id: {
-          if (participantSurveyResponsesLookup.containsKey(id))
+          if (!useTextGroupMatch &&
+              participantSurveyResponsesLookup.containsKey(id))
             'binaryAnswerMask': participantSurveyResponsesLookup[id],
           if (participantFreeTextResponsesLookup.containsKey(id))
             'freeTextResponse': participantFreeTextResponsesLookup[id],
+          if (participantEmailLookup.containsKey(id))
+            'email': participantEmailLookup[id],
+          if (participantNameLookup.containsKey(id))
+            'name': participantNameLookup[id],
         },
     },
   };
@@ -972,6 +1021,8 @@ Map<String, dynamic> buildFranklyMatchApiPayload({
 Future<SmartMatchApiResult> createFranklyMatchApiGroups({
   required Map<String, String> participantSurveyResponsesLookup,
   required Map<String, String> participantFreeTextResponsesLookup,
+  required Map<String, String> participantEmailLookup,
+  required Map<String, String> participantNameLookup,
   required int targetParticipantsPerRoom,
 }) async {
   final apiKey = functions.config.get('frankly_match.api_key') as String;
@@ -981,6 +1032,8 @@ Future<SmartMatchApiResult> createFranklyMatchApiGroups({
   final payload = buildFranklyMatchApiPayload(
     participantSurveyResponsesLookup: participantSurveyResponsesLookup,
     participantFreeTextResponsesLookup: participantFreeTextResponsesLookup,
+    participantEmailLookup: participantEmailLookup,
+    participantNameLookup: participantNameLookup,
     targetParticipantsPerRoom: targetParticipantsPerRoom,
   );
   print(

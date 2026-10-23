@@ -42,11 +42,17 @@ class _DataTabState extends State<DataTab> {
   //   -1    = error / failed
   final Map<String, int?> _recordingParts = {};
   final Map<String, ValueNotifier<int?>> _recordingNotifiers = {};
+  final Map<String, int?> _transcriptParts = {};
+  final Map<String, ValueNotifier<int?>> _transcriptNotifiers = {};
   final Map<String, StreamSubscription?> _sessionSubscriptions = {};
 
-  // Tracks sessions where we've already attempted VTT artifact repair
-  // to avoid repeated calls to repairSessionArtifacts.
-  final Set<String> _repairedSessionIds = {};
+  final Map<String, List<RecordingSession>> _sessionsByEvent = {};
+
+  // Last (or scheduled) repair time per session.
+  final Map<String, DateTime> _repairAt = {};
+
+  // Sessions the server reported will never have a transcript.
+  final Set<String> _noTranscript = {};
 
   late StreamSubscription<List<Event>> _eventsSubscription;
 
@@ -61,7 +67,10 @@ class _DataTabState extends State<DataTab> {
       if (!mounted) return;
       for (final event in events) {
         final isPast = event.scheduledTime?.isBefore(DateTime.now()) ?? false;
-        if (isPast && (event.eventSettings?.alwaysRecord ?? false)) {
+        final settings = event.eventSettings;
+        if (isPast &&
+            ((settings?.alwaysRecord ?? false) ||
+                (settings?.alwaysTranscribe ?? false))) {
           _maybeStartRecordingCheck(event);
         }
       }
@@ -78,6 +87,9 @@ class _DataTabState extends State<DataTab> {
     for (final notifier in _recordingNotifiers.values) {
       notifier.dispose();
     }
+    for (final notifier in _transcriptNotifiers.values) {
+      notifier.dispose();
+    }
     _eventsSubscription.cancel();
     _allEvents.dispose();
     super.dispose();
@@ -89,6 +101,8 @@ class _DataTabState extends State<DataTab> {
     if (_recordingParts.containsKey(event.id)) return;
     _recordingParts[event.id] = null; // null = loading
     (_recordingNotifiers[event.id] ??= ValueNotifier(null)).value = null;
+    _transcriptParts[event.id] = null;
+    (_transcriptNotifiers[event.id] ??= ValueNotifier(null)).value = null;
     _subscribeToSessions(event);
   }
 
@@ -109,6 +123,7 @@ class _DataTabState extends State<DataTab> {
               ),
             )
             .toList();
+        _sessionsByEvent[event.id] = sessions;
 
         int status;
         if (sessions.isEmpty) {
@@ -120,10 +135,14 @@ class _DataTabState extends State<DataTab> {
         )) {
           status = -2; // recording in progress
         } else {
-          // Count total artifact files across all sessions.
+          // Count mp4 parts across all sessions (skip transcript artifacts).
           final fileCount = sessions.fold<int>(
             0,
-            (sum, s) => sum + s.artifactPaths.length,
+            (sum, s) =>
+                sum +
+                s.artifactPaths.keys
+                    .where((k) => k.startsWith(RecordingSession.kArtifactMp4))
+                    .length,
           );
           status = fileCount > 0 ? fileCount : 0;
         }
@@ -131,47 +150,100 @@ class _DataTabState extends State<DataTab> {
         setState(() => _recordingParts[event.id] = status);
         _recordingNotifiers[event.id]?.value = status;
 
-        // Check for sessions where STT was enabled (they will exist in storage) but
-        // VTT artifacts were never registered to the session doc. This happens when
-        // Agora's STT agent takes longer than the produceSessions flush window to
-        // write files to GCS.
-        _maybeRepairMissingVtts(sessions);
+        _updateTranscriptStatus(event.id);
+
+        _maybeRepairMissingArtifacts(sessions);
       },
       onError: (_) {
         if (!mounted) return;
-        setState(() => _recordingParts[event.id] = -1);
+        setState(() {
+          _recordingParts[event.id] = -1;
+          _transcriptParts[event.id] = -1;
+        });
         _recordingNotifiers[event.id]?.value = -1;
+        _transcriptNotifiers[event.id]?.value = -1;
       },
     );
   }
 
-  /// Call repairSessionArtifacts for any stopped session that has STT enabled
-  /// (agoraRttAgentId set) but no transcript_vtt_* artifacts registered.
-  /// Only attempt each session once to avoid repeated calls on every
-  /// Firestore snapshot.
-  void _maybeRepairMissingVtts(List<RecordingSession> sessions) {
+  // Transcript status: null loading, -1 failed, -2 none, 0 preparing, N parts.
+  void _updateTranscriptStatus(String eventId) {
+    final sessions = _sessionsByEvent[eventId];
+    if (sessions == null) return;
+    final trxCount = sessions.fold<int>(
+      0,
+      (sum, s) =>
+          sum +
+          s.artifactPaths.keys
+              .where((k) => k.startsWith(RecordingSession.kArtifactTrx))
+              .length,
+    );
+    final settledNone = sessions.isNotEmpty &&
+        sessions.every(
+          (s) =>
+              s.status == RecordingSessionStatus.failed ||
+              (s.status == RecordingSessionStatus.stopped &&
+                  (s.agoraRttAgentId == null ||
+                      _noTranscript.contains(s.sessionId))),
+        );
+    final status = trxCount == 0 && settledNone ? -2 : trxCount;
+    setState(() => _transcriptParts[eventId] = status);
+    _transcriptNotifiers[eventId]?.value = status;
+  }
+
+  // Past produceSessions' 65s MP4 backoff.
+  static const _repairDelay = Duration(seconds: 90);
+  static const _repairCooldown = Duration(seconds: 30);
+
+  /// Repair stopped sessions missing MP4s or transcripts. Idempotent.
+  /// [all] also checks sessions that have keys, for late GCS files.
+  void _maybeRepairMissingArtifacts(
+    List<RecordingSession> sessions, {
+    bool all = false,
+  }) {
+    final now = DateTime.now();
     for (final session in sessions) {
       final id = session.sessionId;
       if (id == null) continue;
-      if (_repairedSessionIds.contains(id)) continue;
+      final last = _repairAt[id];
+      if (last != null && now.isBefore(last.add(_repairCooldown))) continue;
       if (session.status != RecordingSessionStatus.stopped) continue;
-      if (session.agoraRttAgentId == null) continue;
 
-      final hasVtt = session.artifactPaths.keys
-          .any((k) => k.startsWith('transcript_vtt_'));
-      if (hasVtt) continue;
+      final keys = session.artifactPaths.keys;
+      final missingMp4 = session.agoraSid != null &&
+          !keys.any((k) => k.startsWith(RecordingSession.kArtifactMp4));
+      final missingTrx = session.agoraRttAgentId != null &&
+          !keys.any((k) => k.startsWith(RecordingSession.kArtifactTrx));
+      if (!all && !missingMp4 && !missingTrx) continue;
 
-      _repairedSessionIds.add(id);
-      _callRepairSessionArtifacts(id);
+      final sinceStop = session.stoppedAt == null
+          ? Duration.zero
+          : now.difference(session.stoppedAt!);
+      final wait = _repairDelay - sinceStop;
+      if (wait.isNegative) {
+        _repairAt[id] = now;
+        _callRepairSessionArtifacts(session);
+      } else {
+        _repairAt[id] = now.add(wait);
+        Future.delayed(wait, () {
+          if (mounted) _callRepairSessionArtifacts(session);
+        });
+      }
     }
   }
 
-  Future<void> _callRepairSessionArtifacts(String sessionId) async {
+  void _repairEventArtifacts(Event event) {
+    final sessions = _sessionsByEvent[event.id];
+    if (sessions != null) _maybeRepairMissingArtifacts(sessions, all: true);
+  }
+
+  Future<void> _callRepairSessionArtifacts(RecordingSession session) async {
+    final sessionId = session.sessionId!;
     try {
       final idToken =
           await UserService().firebaseAuth.currentUser?.getIdToken();
       if (idToken == null) return;
-      await http.post(
+      final response = await http.post(
         Uri.parse(
           '${Environment.functionsUrlPrefix}/repairSessionArtifacts',
         ),
@@ -181,8 +253,14 @@ class _DataTabState extends State<DataTab> {
         },
         body: jsonEncode({'sessionId': sessionId}),
       );
-      // The Firestore listener will pick up the updated artifactPaths
-      // automatically -- no need to handle the response.
+      // New artifactPaths arrive via the Firestore listener; only the
+      // settled "no transcript" state has to come from the response.
+      if (response.statusCode != 200 || !mounted) return;
+      final body = jsonDecode(response.body);
+      if (body is Map && body['transcript'] == 'none') {
+        _noTranscript.add(sessionId);
+        _updateTranscriptStatus(session.eventId);
+      }
     } catch (e) {
       // Non-critical: if repair fails, the user can still download
       // whatever artifacts were originally registered.
@@ -369,6 +447,9 @@ class _DataTabState extends State<DataTab> {
                         hasTranscript: hasTranscript,
                         recordingParts: _recordingParts,
                         recordingNotifiers: _recordingNotifiers,
+                        transcriptParts: _transcriptParts,
+                        transcriptNotifiers: _transcriptNotifiers,
+                        onOpen: () => _repairEventArtifacts(event),
                       ),
                     ],
                   ),
@@ -386,6 +467,9 @@ class _DataTabState extends State<DataTab> {
                       hasTranscript: hasTranscript,
                       recordingParts: _recordingParts,
                       recordingNotifiers: _recordingNotifiers,
+                      transcriptParts: _transcriptParts,
+                      transcriptNotifiers: _transcriptNotifiers,
+                      onOpen: () => _repairEventArtifacts(event),
                     ),
                   ],
                 ),
@@ -483,7 +567,13 @@ class _DataTabState extends State<DataTab> {
                         icon: Icon(Icons.arrow_back_rounded),
                       ),
                       Text(
-                        '${_currentStartIndex + 1} - ${events.length > 5 ? min(_currentStartIndex + 5, events.length) : events.length} of ${events.length}',
+                        context.l10n.adminEventPagination(
+                          _currentStartIndex + 1,
+                          events.length > 5
+                              ? min(_currentStartIndex + 5, events.length)
+                              : events.length,
+                          events.length,
+                        ),
                         style: context.theme.textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -525,7 +615,10 @@ class _DownloadDataButton extends StatelessWidget {
     required this.hasTranscript,
     required this.recordingParts,
     required this.recordingNotifiers,
+    required this.transcriptParts,
+    required this.transcriptNotifiers,
     required this.eventInPast,
+    required this.onOpen,
   });
 
   final Event event;
@@ -534,7 +627,10 @@ class _DownloadDataButton extends StatelessWidget {
   final bool hasTranscript;
   final Map<String, int?> recordingParts;
   final Map<String, ValueNotifier<int?>> recordingNotifiers;
+  final Map<String, int?> transcriptParts;
+  final Map<String, ValueNotifier<int?>> transcriptNotifiers;
   final bool eventInPast;
+  final VoidCallback onOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -552,6 +648,7 @@ class _DownloadDataButton extends StatelessWidget {
       borderSide: BorderSide(color: Theme.of(context).primaryColor),
       textColor: Theme.of(context).primaryColor,
       onPressed: () async {
+        onOpen();
         await showDialog<void>(
           context: context,
           builder: (dialogContext) => EventDataDownloadDialog(
@@ -561,6 +658,8 @@ class _DownloadDataButton extends StatelessWidget {
             hasTranscript: hasTranscript,
             recordingParts: recordingParts,
             recordingNotifier: recordingNotifiers[event.id],
+            transcriptParts: transcriptParts,
+            transcriptNotifier: transcriptNotifiers[event.id],
             eventInPast: eventInPast,
             communityProvider: communityProvider,
           ),

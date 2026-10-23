@@ -203,6 +203,35 @@ class MeetingGuideCardPresenter {
         _meetingGuideCardStore.isHoldingPendingAdvanceTransition;
   }
 
+  /// Whether [currentAgendaItemId] is the final agenda item. The backend finishes
+  /// the meeting immediately for the last item (no scheduled advance), so the
+  /// "moving onto the next agenda item" countdown must not be shown for it.
+  bool isLastAgendaItem(String? currentAgendaItemId) {
+    if (currentAgendaItemId == null) return false;
+    final items = _agendaProvider.resolvedAgendaItems;
+    return items.isNotEmpty && items.last.id == currentAgendaItemId;
+  }
+
+  /// Whether the advance countdown should display for the current user, accounting
+  /// for the user's optimistic ready vote and all fully-written ready votes.
+  bool isPendingAdvanceOptimistic({
+    required String? currentAgendaItemId,
+    required List<ParticipantAgendaItemDetails>? itemDetails,
+    required Set<String> presentParticipantIds,
+  }) {
+    // No next item to move onto: the meeting finishes immediately, so never
+    // show the advance countdown/ring for the last agenda item.
+    if (isLastAgendaItem(currentAgendaItemId)) return false;
+    if (isPendingAdvance(currentAgendaItemId)) return true;
+    final optimisticCount = _meetingGuideCardStore.optimisticReadyCount(
+      agendaItemId: currentAgendaItemId,
+      currentUserId: getUserId(),
+      details: itemDetails,
+      presentParticipantIds: presentParticipantIds,
+    );
+    return optimisticCount >= getReadyThreshold(presentParticipantIds);
+  }
+
   /// The server-computed time at which the pending advance will actually occur.
   DateTime? getPendingAdvanceTime(String? currentAgendaItemId) {
     // If the pending agenda item ID doesn't match the current agenda item ID, return null.

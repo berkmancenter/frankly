@@ -96,7 +96,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           ),
           SizedBox(height: 20),
           Text(
-            'Waiting Room Image/Video',
+            context.l10n.waitingRoomImageVideo,
             style: AppTextStyle.subhead
                 .copyWith(color: context.theme.colorScheme.primary),
           ),
@@ -173,7 +173,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           SizedBox(height: 20),
           if (_presenter.enableIntroVideo) ...[
             Text(
-              'Intro Image/Video',
+              context.l10n.introImageVideo,
               style: AppTextStyle.subhead
                   .copyWith(color: context.theme.colorScheme.primary),
             ),

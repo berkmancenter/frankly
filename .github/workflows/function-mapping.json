@@ -17,6 +17,14 @@
       "repairSessionArtifacts"
     ],
     "firebase/functions/js/serve-index.js": ["ServeIndex"],
+    "firebase/functions/js/session-artifacts.js": [
+      "produceSessions",
+      "repairSessionArtifacts"
+    ],
+    "firebase/functions/js/transcript-merge.js": [
+      "produceSessions",
+      "repairSessionArtifacts"
+    ],
     "firebase/functions/lib/admin/partner_agreements/on_partner_agreements.dart": [
       "PartnerAgreementOnCreate",
       "PartnerAgreementOnUpdate"
@@ -117,6 +125,12 @@
     ],
     "firebase/functions/lib/events/create_event.dart": ["createEvent"],
     "firebase/functions/lib/events/event_ended.dart": ["eventEnded"],
+    "firebase/functions/lib/events/live_meetings/agora_stt_api.dart": [
+      "eventEnded",
+      "LiveMeetingOnWrite",
+      "GetMeetingJoinInfo",
+      "GetBreakoutRoomJoinInfo"
+    ],
     "firebase/functions/lib/events/join_event.dart": ["joinEvent"],
     "firebase/functions/lib/events/notifications/email_event_reminder.dart": [
       "EmailEventReminder"
@@ -152,7 +166,9 @@
       "GetBreakoutRoomJoinInfo",
       "GetMeetingJoinInfo",
       "KickParticipant",
-      "VoteToKick"
+      "VoteToKick",
+      "eventEnded",
+      "LiveMeetingOnWrite"
     ],
     "firebase/functions/lib/events/live_meetings/create_live_stream.dart": [
       "CreateLiveStream"
@@ -204,14 +220,13 @@
       "AdvanceMeetingGuideAfterDelay"
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/advance_meeting_guide_after_delay_server.dart": [
-      "AdvanceMeetingGuideAfterDelayServer"
+      "AdvanceMeetingGuideAfterDelayServer",
+      "AdvanceMeetingGuideAfterDelay",
+      "ParticipantAgendaItemDetailsOnWrite"
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/assign_to_breakouts.dart": [
       "CheckAssignToBreakouts",
       "InitiateBreakouts"
-    ],
-    "firebase/functions/lib/events/live_meetings/breakouts/check_advance_meeting_guide.dart": [
-      "CheckAdvanceMeetingGuide"
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/check_assign_to_breakouts.dart": [
       "CheckAssignToBreakouts"
@@ -228,6 +243,19 @@
     "firebase/functions/lib/events/live_meetings/breakouts/initiate_breakouts.dart": [
       "InitiateBreakouts"
     ],
+    "firebase/functions/lib/events/live_meetings/breakouts/on_participant_agenda_item_details.dart": [
+      "ParticipantAgendaItemDetailsOnWrite"
+    ],
+    "firebase/functions/lib/events/live_meetings/breakouts/on_live_meeting.dart": [
+      "LiveMeetingOnWrite"
+    ],
+    "firebase/functions/lib/events/live_meetings/breakouts/stop_breakout_session_recordings.dart": [
+      "LiveMeetingOnWrite",
+      "eventEnded"
+    ],
+    "firebase/functions/lib/events/live_meetings/breakouts/check_advance_meeting_guide.dart": [
+      "ParticipantAgendaItemDetailsOnWrite"
+    ],
     "firebase/functions/lib/events/live_meetings/breakouts/reassign_breakout_room.dart": [
       "ReassignBreakoutRoom"
     ],
@@ -242,6 +270,8 @@
       "EventOnUpdate",
       "EventOnCreate",
       "EventParticipantOnWrite",
+      "ParticipantAgendaItemDetailsOnWrite",
+      "LiveMeetingOnWrite",
       "DiscussionThreadOnDelete",
       "DiscussionThreadCommentOnCreate",
       "DiscussionThreadCommentOnDelete",
@@ -262,6 +292,8 @@
       "EventOnUpdate",
       "EventOnCreate",
       "EventParticipantOnWrite",
+      "ParticipantAgendaItemDetailsOnWrite",
+      "LiveMeetingOnWrite",
       "DiscussionThreadOnDelete",
       "CommunityMembershipOnCreate",
       "PartnerAgreementOnCreate",
@@ -393,6 +425,7 @@
       "TemplateOnCreate"
     ],
     "request": [
+      "AdvanceMeetingGuideAfterDelay",
       "CalendarFeedIcs",
       "CalendarFeedRss",
       "CheckAssignToBreakoutsServer",
@@ -400,7 +433,8 @@
       "EmailEventReminder",
       "ExtendCloudTaskScheduler",
       "MuxWebhooks",
-      "ShareLink"
+      "ShareLink",
+      "ServeIndex"
     ],
     "helperdbpubsub": [
       "downloadRecording",
@@ -410,7 +444,6 @@
       "UpdateLiveStreamParticipantCount"
     ],
     "oncall1": [
-      "CheckAdvanceMeetingGuide",
       "CheckAssignToBreakouts",
       "CheckHostlessGoToBreakouts",
       "sendAnnouncement",
@@ -461,6 +494,21 @@
       "createStripeConnectedAccount",
       "createDonationCheckoutSession",
       "CreateSubscriptionCheckoutSession"
+    ],
+    "onfirestore": [
+      "EventOnCreate",
+      "EventOnUpdate",
+      "EventParticipantOnWrite",
+      "ParticipantAgendaItemDetailsOnWrite",
+      "DiscussionThreadOnDelete",
+      "DiscussionThreadCommentOnCreate",
+      "DiscussionThreadCommentOnUpdate",
+      "DiscussionThreadCommentOnDelete",
+      "CommunityOnCreate",
+      "CommunityMembershipOnCreate",
+      "PartnerAgreementOnCreate",
+      "PartnerAgreementOnUpdate",
+      "TemplateOnCreate"
     ]
   }
 }

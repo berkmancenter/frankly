@@ -80,6 +80,41 @@ class FirestoreMeetingGuideService {
         );
   }
 
+  /// Firestore SDK gives free local-cache optimism, offline
+  /// queueing, and automatic retry.
+  Future<void> setReadyToAdvance({
+    required String agendaItemId,
+    required String userId,
+    required String liveMeetingPath,
+    required bool ready,
+  }) async {
+    final meetingId = liveMeetingPath.split('/').last;
+
+    final documentPath = _getAgendaItemsDocumentPath(
+      liveMeetingPath: liveMeetingPath,
+      agendaItemId: agendaItemId,
+      userId: userId,
+    );
+
+    await firestoreDatabase.firestore.doc(documentPath).set(
+          jsonSubset(
+            [
+              ParticipantAgendaItemDetails.kFieldUserId,
+              ParticipantAgendaItemDetails.kFieldAgendaItemId,
+              ParticipantAgendaItemDetails.kFieldMeetingId,
+              ParticipantAgendaItemDetails.kFieldReadyToAdvance,
+            ],
+            ParticipantAgendaItemDetails(
+              userId: userId,
+              agendaItemId: agendaItemId,
+              readyToAdvance: ready,
+              meetingId: meetingId,
+            ).toJson(),
+          ),
+          SetOptions(merge: true),
+        );
+  }
+
   Future<void> addWordCloudResponse({
     required String agendaItemId,
     required String userId,
@@ -328,8 +363,6 @@ class FirestoreMeetingGuideService {
   static ParticipantAgendaItemDetails _convertSuggestedAgendaItem(
     Map<String, dynamic> data,
   ) {
-    print('item details');
-    print(data);
     return ParticipantAgendaItemDetails.fromJson(fromFirestoreJson(data));
   }
 }

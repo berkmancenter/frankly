@@ -29,8 +29,11 @@ jobs:
         run: flutter pub get
 
       - name: Update Product Version
+        env:
+          VERSION: ${{ github.ref_name }}
+        # Literal replace so ref name can't reach shell or regex.
         run: |
-          sed -i 's/__VERSION__/${{ github.ref_name }}/g' ${{ github.workspace }}/client/web/index.html
+          perl -pi -e 's/__VERSION__/$ENV{VERSION}/g' "${{ github.workspace }}/client/web/index.html"
 
       - name: Update Google Auth Client ID
         run: |
@@ -75,11 +78,16 @@ jobs:
           envkey_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
           envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
+          envkey_BYPASS_EMAIL_VERIFICATION: ${{ secrets.BYPASS_EMAIL_VERIFICATION }}
 
       - name: Build the Flutter App
         run: flutter build web --release --source-maps --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 
+      - name: Replace Service Worker with Cache Switch
+        run: cp web_overrides/flutter_service_worker.js build/web/flutter_service_worker.js
+
       - name: Upload sourcemaps to Sentry
+        continue-on-error: true
         env:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}

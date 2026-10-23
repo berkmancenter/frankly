@@ -101,7 +101,16 @@ class AudioVideoErrorDisplay extends StatelessWidget {
         .toLowerCase()
         .contains('Invalid constraints'.toLowerCase())) {
       errorText = l10n.avErrorConstraints;
-    } else if (errorText.contains('TimeoutException')) {
+    } else if ([
+      'TimeoutException',
+      // A throttled/backgrounded tab gets an empty gateway body from the Agora
+      // SDK, which surfaces as a JSON.parse FormatException. It's a network
+      // condition, not a code fault, so show the network message rather than a
+      // raw JS error string.
+      'FormatException',
+      'JSON.parse',
+      'unexpected end of data',
+    ].any((token) => errorText.contains(token))) {
       errorText = l10n.avErrorNetwork;
     }
 

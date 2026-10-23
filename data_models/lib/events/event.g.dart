@@ -199,6 +199,8 @@ _$_Participant _$$_ParticipantFromJson(Map<String, dynamic> json) =>
       mostRecentPresentTime:
           dateTimeFromTimestamp(json['mostRecentPresentTime']),
       zipCode: json['zipCode'] as String?,
+      email: json['email'] as String?,
+      name: json['name'] as String?,
     );
 
 Map<String, dynamic> _$$_ParticipantToJson(_$_Participant instance) =>
@@ -222,6 +224,8 @@ Map<String, dynamic> _$$_ParticipantToJson(_$_Participant instance) =>
       'mostRecentPresentTime':
           serverTimestampOrNull(instance.mostRecentPresentTime),
       'zipCode': instance.zipCode,
+      'email': instance.email,
+      'name': instance.name,
     };
 
 const _$ParticipantStatusEnumMap = {

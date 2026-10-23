@@ -89,7 +89,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         context,
         title: context.l10n.addComment,
         isMobile: isMobile,
-        labelText: 'Comment',
+        labelText: context.l10n.comment,
         validator: (text) => text == null || text.isEmpty
             ? context.l10n.commentCannotBeEmpty
             : null,
@@ -339,7 +339,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                         PopupMenuItem(
                           value: DiscussionThreadOptionType.update,
                           child: Text(
-                            'Update Post',
+                            context.l10n.updatePost,
                             style: AppTextStyle.bodyMedium.copyWith(
                               color: context.theme.colorScheme.primary,
                             ),
@@ -348,7 +348,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                         PopupMenuItem(
                           value: DiscussionThreadOptionType.delete,
                           child: Text(
-                            'Delete Post',
+                            context.l10n.deletePost,
                             style: AppTextStyle.bodyMedium.copyWith(
                               color: context.theme.colorScheme.primary,
                             ),
@@ -474,7 +474,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
               context,
               title: context.l10n.addComment,
               isMobile: isMobile,
-              labelText: 'Comment',
+              labelText: context.l10n.comment,
               validator: (text) => text == null || text.isEmpty
                   ? context.l10n.commentCannotBeEmpty
                   : null,
@@ -503,7 +503,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
             ),
             SizedBox(width: 10),
             Text(
-              'Reply',
+              context.l10n.reply,
               style: AppTextStyle.bodyMedium,
             ),
           ],

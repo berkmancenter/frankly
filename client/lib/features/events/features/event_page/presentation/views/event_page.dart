@@ -152,10 +152,14 @@ class EventPageState extends State<EventPage> implements EventPageView {
           final eventPageProvider = context.read<EventPageProvider>();
           final event = eventPageProvider.eventProvider.event;
 
+          // Don't confirm joining an event that's already in progress.
+          final showConfirmDialog =
+              showConfirm && !event.isActive(clockService.now());
+
           JoinEventResults joinResults = await alertOnError<JoinEventResults>(
                 context,
                 () => eventPageProvider.joinEvent(
-                  showConfirm: showConfirm,
+                  showConfirm: showConfirmDialog,
                   joinCommunity: joinCommunity,
                 ),
               ) ??
@@ -237,10 +241,11 @@ class EventPageState extends State<EventPage> implements EventPageView {
       context,
       title: context.l10n.messageParticipants,
       isMobile: isMobile,
-      labelText: 'Message',
-      validator: (message) =>
-          message == null || message.isEmpty ? 'Message cannot be empty' : null,
-      positiveButtonText: 'Send',
+      labelText: context.l10n.message,
+      validator: (message) => message == null || message.isEmpty
+          ? context.l10n.messageCannotBeEmpty
+          : null,
+      positiveButtonText: context.l10n.send,
     );
 
     if (!mounted) return;
@@ -386,20 +391,20 @@ class EventPageState extends State<EventPage> implements EventPageView {
             Expanded(
               child: RichText(
                 text: TextSpan(
-                  text: 'You are editing an event. \n',
+                  text: context.l10n.editingEventNotice,
                   style: context.theme.textTheme.titleMedium!.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                     fontSize: 16,
                   ),
                   children: [
                     TextSpan(
-                      text: 'If you want to edit future instances, ',
+                      text: context.l10n.editingFutureInstancesNotice,
                       style: context.theme.textTheme.bodyMedium!.copyWith(
                         color: context.theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     TextSpan(
-                      text: 'edit the template.',
+                      text: context.l10n.editTheTemplate,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => routerDelegate.beamTo(
                               CommunityPageRoutes(

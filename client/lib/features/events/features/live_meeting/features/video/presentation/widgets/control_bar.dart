@@ -62,6 +62,11 @@ class _ControlBarState extends State<ControlBar> {
                 shouldShowVideoPreview:
                     !(defaultTargetPlatform == TargetPlatform.iOS ||
                         defaultTargetPlatform == TargetPlatform.android),
+                hostedEvent:
+                    Provider.of<LiveMeetingProvider>(context, listen: false)
+                        .eventProvider
+                        .event
+                        .isHosted,
                 isMirrorCheck: true,
               );
             },
@@ -115,7 +120,6 @@ class _ControlBarState extends State<ControlBar> {
                   shouldShowVideoPreview:
                       !(defaultTargetPlatform == TargetPlatform.iOS ||
                           defaultTargetPlatform == TargetPlatform.android),
-                  isMirrorCheck: true,
                 );
               },
             ),

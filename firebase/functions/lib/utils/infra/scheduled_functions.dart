@@ -71,11 +71,18 @@ class ScheduledFunctions {
       print(
         'Emulator detected: calling $functionName directly instead of via Cloud Tasks',
       );
+      // The emulator serves functions under the project id it was started with
+      // (`--project`, exposed as GCLOUD_PROJECT). The configured
+      // `app.functions_url_prefix` may reference a different project id, which
+      // would make the direct callback 404 and silently drop the scheduled
+      // call. Rewrite the project segment so the callback always targets the
+      // running emulator.
+      final effectiveUrlPrefix = _emulatorUrlPrefix(urlPrefix);
       final delay = scheduledTime.difference(DateTime.now());
       Timer(delay.isNegative ? Duration.zero : delay, () async {
         try {
           final result = await http.post(
-            Uri.parse('$urlPrefix/$functionName'),
+            Uri.parse('$effectiveUrlPrefix/$functionName'),
             headers: {'Content-Type': 'application/json'},
             body: encodedJson,
           );
@@ -107,6 +114,30 @@ class ScheduledFunctions {
 
     await promiseToFuture(client.createTask(createTaskRequest));
   }
+}
+
+/// Rewrites the configured functions URL prefix so its project-id path segment
+/// matches the project the emulator is actually running as. When the two
+/// disagree the direct callback 404s and the scheduled call is silently lost.
+/// Falls back to the original prefix when the emulator project id is unknown or
+/// the prefix has an unexpected shape.
+String _emulatorUrlPrefix(String urlPrefix) {
+  final projectId = emulatorProjectId;
+  if (projectId == null) return urlPrefix;
+  final uri = Uri.tryParse(urlPrefix);
+  if (uri == null || uri.scheme.isEmpty || uri.pathSegments.length < 2) {
+    return urlPrefix;
+  }
+  final segments = uri.pathSegments;
+  if (segments.first == projectId) return urlPrefix;
+  // Rebuild the string explicitly rather than via Uri.replace: when compiled to
+  // JS, Uri.replace(pathSegments:) can drop the scheme, producing a URL the
+  // node http client rejects ("Protocol ':' not supported").
+  final origin = uri.hasPort
+      ? '${uri.scheme}://${uri.host}:${uri.port}'
+      : '${uri.scheme}://${uri.host}';
+  final rewrittenSegments = [projectId, ...segments.skip(1)];
+  return '$origin/${rewrittenSegments.join('/')}';
 }
 
 T printAndReturn<T>(T value) {
