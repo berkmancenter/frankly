@@ -1,17 +1,42 @@
+import 'package:client/core/localization/app_localization_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/networking_status.dart';
+import 'package:get_it/get_it.dart';
 
 void main() {
+  late AppLocalizations l10n;
+
+  setUpAll(() async {
+    GetIt.instance.registerSingleton(AppLocalizationService());
+    l10n = await AppLocalizations.delegate.load(const Locale('en'));
+    GetIt.instance<AppLocalizationService>().setLocalization(l10n);
+  });
+
+  tearDownAll(() async {
+    await GetIt.instance.reset();
+  });
+
+  Future<void> pumpStatus(WidgetTester tester, Widget widget) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en'),
+        home: widget,
+      ),
+    );
+  }
+
   group('NetworkStatusAlert', () {
     testWidgets('mobile', (tester) async {
       onDismiss() {}
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: NetworkStatusAlert(isMobile: true, onDismiss: onDismiss),
-        ),
+      await pumpStatus(
+        tester,
+        NetworkStatusAlert(isMobile: true, onDismiss: onDismiss),
       );
 
       expect(
@@ -36,10 +61,9 @@ void main() {
     testWidgets('desktop', (tester) async {
       onDismiss() {}
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: NetworkStatusAlert(isMobile: false, onDismiss: onDismiss),
-        ),
+      await pumpStatus(
+        tester,
+        NetworkStatusAlert(isMobile: false, onDismiss: onDismiss),
       );
 
       expect(
@@ -67,9 +91,7 @@ void main() {
 
   group('LowBandwidth', () {
     testWidgets('regular', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(home: LowBandwidth()),
-      );
+      await pumpStatus(tester, LowBandwidth());
 
       expect(
         find.descendant(
@@ -82,7 +104,7 @@ void main() {
         find.descendant(
           of: find.byType(Row),
           matching: find.byWidgetPredicate(
-            (widget) => widget is Text && widget.data == 'Low Bandwidth',
+            (widget) => widget is Text && widget.data == l10n.lowBandwidth,
           ),
         ),
         findsOneWidget,
@@ -94,11 +116,7 @@ void main() {
     testWidgets('regular', (tester) async {
       onDismiss() {}
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ExplanationText(onDismiss: onDismiss),
-        ),
-      );
+      await pumpStatus(tester, ExplanationText(onDismiss: onDismiss));
 
       expect(
         find.descendant(
@@ -108,8 +126,7 @@ void main() {
             matching: find.byWidgetPredicate(
               (widget) =>
                   widget is Text &&
-                  widget.data ==
-                      'Try turning off your camera for a smoother experience',
+                  widget.data == l10n.lowBandwidthExplanation,
             ),
           ),
         ),

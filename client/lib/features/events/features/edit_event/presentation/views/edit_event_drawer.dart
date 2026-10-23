@@ -175,7 +175,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
     return Row(
       children: [
         Text(
-          'Image',
+          context.l10n.image,
           style: context.theme.textTheme.bodyLarge!
               .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),
