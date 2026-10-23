@@ -11,7 +11,8 @@ void main() {
   late File fixture;
 
   setUp(() {
-    temporaryDirectory = Directory.systemTemp.createTempSync('hardcoded_strings_');
+    temporaryDirectory =
+        Directory.systemTemp.createTempSync('hardcoded_strings_');
     fixture = File('${temporaryDirectory.path}/fixture.dart');
   });
 
@@ -39,6 +40,37 @@ void main() {
         .toList();
   }
 
+  test('reports user-facing parameters of ConfirmTextInputDialog', () {
+    expect(
+      scan(
+        r'''void build() {
+  ConfirmTextInputDialog(
+    title: l10n.title,
+    subText: 'Are you sure ${user.displayName}?',
+    textLabel: 'Enter reason',
+    textHint: 'e.g. sabotage',
+    cancelText: 'No, cancel',
+  );
+}''',
+        expectedExitCode: 1,
+      ),
+      ['Are you sure ?', 'Enter reason', 'e.g. sabotage', 'No, cancel'],
+    );
+  });
+
+  test('reports display-text named arguments on any widget', () {
+    expect(
+      scan(
+        r'''void build() {
+  CustomWidget(errorMessage: 'Oops', loadingMessage: 'Wait', toolTipText: 'Hi', key: 'abc');
+  CustomWidget(titleText: l10n.title, label: '123');
+}''',
+        expectedExitCode: 1,
+      ),
+      ['Oops', 'Wait', 'Hi'],
+    );
+  });
+
   test('reports both conditional branches inside interpolation', () {
     expect(
       scan(
@@ -49,7 +81,8 @@ void main() {
     );
   });
 
-  test('walks nested, parenthesized and null-coalescing interpolation values', () {
+  test('walks nested, parenthesized and null-coalescing interpolation values',
+      () {
     expect(
       scan(
         r'''void build() {
@@ -62,7 +95,8 @@ void main() {
     );
   });
 
-  test('preserves adjacent-string grouping while checking interpolation values', () {
+  test('preserves adjacent-string grouping while checking interpolation values',
+      () {
     expect(
       scan(
         r'''void build() {
