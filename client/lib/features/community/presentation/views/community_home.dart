@@ -261,7 +261,7 @@ class _CommunityHomeState extends State<CommunityHome> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: HeightConstrainedText(
-                  'Upcoming Events',
+                  context.l10n.upcomingEvents,
                   style: AppTextStyle.headline4.copyWith(
                     color: context.theme.colorScheme.secondary,
                   ),
@@ -291,7 +291,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                         ),
                         alignment: Alignment.center,
                         child: HeightConstrainedText(
-                          'See More Events',
+                          context.l10n.seeMoreEvents,
                           style: AppTextStyle.eyebrowSmall,
                         ),
                       ),

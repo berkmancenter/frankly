@@ -398,7 +398,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
           type: ActionButtonType.outline,
           color: context.theme.colorScheme.error,
           textColor: context.theme.colorScheme.error,
-          text: 'Cancel event',
+          text: context.l10n.cancelEvent,
           onPressed: () =>
               alertOnError(context, () => _presenter.cancelEvent()),
         ),

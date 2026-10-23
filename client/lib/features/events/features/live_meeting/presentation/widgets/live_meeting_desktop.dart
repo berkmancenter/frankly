@@ -456,7 +456,7 @@ class RefreshableBreakoutRoom extends StatefulWidget {
 class _RefreshableBreakoutRoomState extends State<RefreshableBreakoutRoom> {
   Widget _buildWaitingRoomTextWidget() {
     return HeightConstrainedText(
-      'You are in the waiting room.',
+      context.l10n.youAreInWaitingRoom,
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Theme.of(context).primaryColor,
@@ -534,7 +534,7 @@ class EnterMeetingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 HeightConstrainedText(
-                  'Welcome! Click here to enter the event:',
+                  context.l10n.welcomeClickToEnterEvent,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
@@ -662,7 +662,7 @@ class BreakoutStatusInformation extends StatelessWidget {
           ),
           SizedBox(width: 10),
           ActionButton(
-            text: 'JOIN',
+            text: context.l10n.joinUppercase,
             height: 45,
             onPressed: () async {
               final event = context.read<EventProvider>().event;

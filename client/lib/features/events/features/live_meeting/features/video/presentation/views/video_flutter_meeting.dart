@@ -552,7 +552,7 @@ class _GetHelpButtonState extends State<GetHelpButton> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
               child: HeightConstrainedText(
-                'Need Help?',
+                context.l10n.needHelpButton,
                 style: TextStyle(
                   fontWeight: FontWeight.w300,
                   color: Theme.of(context).isDark

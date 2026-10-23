@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -75,7 +76,7 @@ class EventButton extends HookWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       HeightConstrainedText(
-                        event.title ?? 'Scheduled event',
+                        event.title ?? context.l10n.scheduledEvent,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: context.theme.textTheme.titleMedium,
@@ -83,7 +84,7 @@ class EventButton extends HookWidget {
                       SizedBox(height: 10.0),
                       if (_isLiveStream)
                         HeightConstrainedText(
-                          'Livestream',
+                          context.l10n.livestream,
                           style: context.theme.textTheme.bodySmall!.copyWith(
                             color: context.theme.colorScheme.onSurfaceVariant,
                           ),

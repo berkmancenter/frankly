@@ -363,12 +363,16 @@ class EventProvider with ChangeNotifier {
 
   Future<void> cancelParticipation({required String participantId}) async {
     final participantIsUser = userService.currentUserId == participantId;
-    final identifier = participantIsUser ? 'your' : 'this user\'s';
     final cancelParticipation = await ConfirmDialog(
       title: appLocalizationService.getLocalization().cancel,
-      mainText:
-          'Are you sure you want to cancel $identifier participation in this event?',
-      confirmText: 'Yes, cancel',
+      mainText: participantIsUser
+          ? appLocalizationService
+              .getLocalization()
+              .confirmCancelYourParticipation
+          : appLocalizationService
+              .getLocalization()
+              .confirmCancelUserParticipation,
+      confirmText: appLocalizationService.getLocalization().yesCancel,
       cancelText: appLocalizationService.getLocalization().no,
     ).show();
     if (cancelParticipation) {

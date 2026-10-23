@@ -188,7 +188,7 @@ class _SideBarState extends State<SideBar> {
                 height: 20,
               ),
             ),
-            text: '${Environment.appName} Home',
+            text: context.l10n.homeWithAppName(Environment.appName),
             onPressed: () => routerDelegate.beamTo(HomeLocation()),
           ),
           ActionButton(

@@ -68,7 +68,7 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           HeightConstrainedText(
-                            "That's it!",
+                            context.l10n.thatsIt,
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: responsiveLayoutService.getDynamicSize(
@@ -135,7 +135,7 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   HeightConstrainedText(
-                    "That's it!",
+                    context.l10n.thatsIt,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 18,

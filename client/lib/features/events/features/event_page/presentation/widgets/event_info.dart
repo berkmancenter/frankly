@@ -265,8 +265,7 @@ class _EventInfoState extends State<EventInfo> {
   Future<void> _showRefreshTemplateDialog() async {
     await ConfirmDialog(
       title: context.l10n.confirmRefreshTemplate,
-      subText: 'Your event will be reset to the original template. '
-          'The list of attendees will not be affected.',
+      subText: context.l10n.resetEventToTemplateWarning,
       confirmText: context.l10n.yesRefresh,
       onConfirm: (context) async {
         await alertOnError(context, () async {
@@ -592,7 +591,7 @@ class _EventInfoState extends State<EventInfo> {
         size: 20,
         color: context.theme.colorScheme.onSurfaceVariant,
       ),
-      text: 'Cancel event',
+      text: context.l10n.cancelEvent,
       textStyle: context.theme.textTheme.bodyMedium!.copyWith(
         color: context.theme.colorScheme.onSurfaceVariant,
       ),
@@ -944,7 +943,7 @@ class _EventInfoState extends State<EventInfo> {
         appAsset = AppAsset.kHostlessPng;
         break;
       case EventType.livestream:
-        type = 'Livestream';
+        type = context.l10n.livestream;
         appAsset = AppAsset.kPlayScreenPng;
         break;
     }

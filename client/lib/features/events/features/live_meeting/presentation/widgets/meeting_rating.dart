@@ -48,12 +48,12 @@ class MeetingRating extends StatefulWidget {
                   children: [
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
-                      text: 'No thanks',
+                      text: innerContext.l10n.noThanks,
                       type: ActionButtonType.text,
                     ),
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
-                      text: 'Next',
+                      text: innerContext.l10n.next,
                     ),
                   ],
                 ),
@@ -164,7 +164,7 @@ class _MeetingRatingState extends State<MeetingRating> {
           Padding(
             padding: const EdgeInsets.only(top: 7, bottom: 15),
             child: HeightConstrainedText(
-              'You left the event.',
+              context.l10n.youLeftTheEvent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: context.theme.colorScheme.onSurface,
@@ -195,7 +195,8 @@ class _MeetingRatingState extends State<MeetingRating> {
                   padding: const EdgeInsets.only(top: 15),
                   color: Colors.transparent,
                   child: HeightConstrainedText(
-                    'Please take a moment to provide feedback for ${CommunityProvider.read(context).community.name}.',
+                    context.l10n.pleaseProvideFeedbackFor(
+                        CommunityProvider.read(context).community.name ?? ''),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
@@ -213,8 +214,10 @@ class _MeetingRatingState extends State<MeetingRating> {
                         hoverColor: Colors.transparent,
                         onTap: () => launch(ratingSurveyUrl),
                         child: HeightConstrainedText(
-                          'Please provide additional feedback for '
-                          '${CommunityProvider.read(context).community.name} here.',
+                          context.l10n.pleaseProvideAdditionalFeedbackFor(
+                            CommunityProvider.read(context).community.name ??
+                                '',
+                          ),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.blueAccent,

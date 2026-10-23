@@ -119,7 +119,7 @@ class _AdminPanelState extends State<AdminPanel> {
           children: [
             Expanded(
               child: HeightConstrainedText(
-                'Breakouts',
+                context.l10n.breakouts,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
@@ -158,7 +158,7 @@ class _AdminPanelState extends State<AdminPanel> {
       pageSize: 40,
       emptyBuilder: (_) => HeightConstrainedText(context.l10n.noOneIsHereYet),
       errorBuilder: (_, __, ___) => HeightConstrainedText(
-        'Something went wrong loading participants. Please refreh.',
+        context.l10n.errorLoadingParticipants,
       ),
     );
   }
@@ -181,7 +181,7 @@ class _AdminPanelState extends State<AdminPanel> {
         children: [
           Expanded(
             child: HeightConstrainedText(
-              'Participants$participantSuffix',
+              '${context.l10n.participants}$participantSuffix',
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
@@ -294,7 +294,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
               ),
               alignment: Alignment.center,
               child: HeightConstrainedText(
-                'All rooms',
+                context.l10n.allRooms,
                 style: TextStyle(
                   color: _showOnlyAlertedRooms
                       ? context.theme.colorScheme.onPrimary
@@ -316,7 +316,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
               ),
               alignment: Alignment.center,
               child: HeightConstrainedText(
-                'Alerts only',
+                context.l10n.alertsOnly,
                 style: TextStyle(
                   color: !_showOnlyAlertedRooms
                       ? context.theme.colorScheme.onPrimary
@@ -351,7 +351,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
           itemBuilder: (_, index) {
             if (snapshot.hasError) {
               return HeightConstrainedText(
-                'Something went wrong loading breakout rooms. Please refresh',
+                context.l10n.errorLoadingBreakoutRooms,
               );
             } else if (snapshot.docs.isEmpty) {
               return HeightConstrainedText(context.l10n.noRoomsFound);
@@ -561,7 +561,7 @@ class _MeetingControlsMenuState extends State<_MeetingControlsMenu> {
             );
           },
           child: HeightConstrainedText(
-            isLocked ? 'Unlock Meeting' : 'Lock Meeting',
+            isLocked ? context.l10n.unlockMeeting : context.l10n.lockMeeting,
             style: TextStyle(
               fontSize: 12,
               color: Theme.of(context).primaryColor,
@@ -574,14 +574,14 @@ class _MeetingControlsMenuState extends State<_MeetingControlsMenu> {
           value: () => alertOnError(context, () async {
             final confirmed = await ConfirmDialog(
               mainText:
-                  'This will delete all existing meeting data. Are you sure you want to reset?',
+                  context.l10n.resetMeetingConfirm,
               cancelText: context.l10n.cancel,
             ).show(context: context);
             if (!confirmed) return;
             await agendaProvider.resetMeeting();
           }),
           child: HeightConstrainedText(
-            'Reset Guide',
+            context.l10n.resetGuide,
             style: TextStyle(
               fontSize: 12,
               color: Theme.of(context).primaryColor,
@@ -683,7 +683,7 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
         PopupMenuItem<Function()>(
           value: () => widget.providerParticipant?.mute(),
           child: HeightConstrainedText(
-            'Mute',
+            context.l10n.mute,
             style: TextStyle(
               fontSize: 12,
               color: Theme.of(context).primaryColor,
@@ -720,7 +720,7 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
           );
         }),
         child: HeightConstrainedText(
-          'Kick',
+          context.l10n.kick,
           style: TextStyle(
             fontSize: 12,
             color: Theme.of(context).primaryColor,
@@ -1027,12 +1027,12 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                 if (!localContext.mounted) return;
                 await ConfirmDialog(
                   title: localContext.l10n.participantReassigned,
-                  mainText: 'Reassigned to Room ${newBreakoutRoom.roomName}',
-                  confirmText: 'Continue',
+                  mainText: localContext.l10n.reassignedToRoom(newBreakoutRoom.roomName),
+                  confirmText: localContext.l10n.continueButton,
                 ).show(context: localContext);
               }
             }),
-            text: 'Reassign',
+            text: context.l10n.reassign,
           ),
           if (!local)
             _ParticipantMenu(

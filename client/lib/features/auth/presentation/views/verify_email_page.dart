@@ -915,7 +915,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                           horizontal: 24,
                         ),
                         text: _resendCooldownRemainingSeconds > 0
-                            ? '${context.l10n.resendVerificationEmail} (${_resendCooldownRemainingSeconds}s)'
+                            ? context.l10n.resendCooldownLabel(context.l10n.resendVerificationEmail, _resendCooldownRemainingSeconds)
                             : context.l10n.resendVerificationEmail,
                       ),
                     ],

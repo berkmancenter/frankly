@@ -87,7 +87,7 @@ class _NewEventCardState extends State<NewEventCard> {
       children: [
         Flexible(
           child: HeightConstrainedText(
-            'Create an event ${isMobile ? '' : '\n'}from this template',
+            context.l10n.createEventFromThisTemplate(isMobile ? '' : '\n'),
             style: AppTextStyle.headline4,
           ),
         ),
@@ -134,7 +134,7 @@ class _NewEventCardState extends State<NewEventCard> {
             );
           }
         },
-        text: 'Create event',
+        text: context.l10n.createEventButton,
       ),
     );
   }

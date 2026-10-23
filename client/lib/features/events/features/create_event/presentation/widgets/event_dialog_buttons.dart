@@ -56,8 +56,8 @@ class NextOrSubmitButton extends StatelessWidget {
               })
             : dialogModel.goNext(),
         text: dialogModel.isFinalPage
-            ? (dialogModel.isEdit ? 'Update Event' : 'Create Event')
-            : 'Next',
+            ? (dialogModel.isEdit ? context.l10n.updateEvent : context.l10n.createEvent)
+            : context.l10n.next,
       ),
     );
   }

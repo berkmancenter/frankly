@@ -350,9 +350,9 @@ class _VideoOverlayWidget extends StatelessWidget {
                               builder: (_, isLoading, snapshot) =>
                                   HeightConstrainedText(
                                 isLoading
-                                    ? 'Loading...'
+                                    ? context.l10n.loadingEllipsis
                                     : snapshot.data?.displayName ??
-                                        'Participant',
+                                        context.l10n.participant,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyle.body.copyWith(
                                   color: context.theme.colorScheme.onPrimary,
@@ -486,7 +486,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
                     setState(() => _isPinnedLocal = !isPinned);
                   }),
           child: HeightConstrainedText(
-            isPinned ? 'Unpin' : 'Pin',
+            isPinned ? context.l10n.unpin : context.l10n.pin,
             style: AppTextStyle.bodyMedium
                 .copyWith(color: context.theme.colorScheme.primary),
           ),
@@ -498,7 +498,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             () => liveMeetingProvider.mute(userId: userId),
           ),
           child: HeightConstrainedText(
-            'Mute',
+            context.l10n.mute,
             style: AppTextStyle.bodyMedium
                 .copyWith(color: context.theme.colorScheme.primary),
           ),
@@ -510,7 +510,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             () => liveMeetingProvider.confirmProposeKick(context, userId),
           ),
           child: HeightConstrainedText(
-            'Propose to remove user',
+            context.l10n.proposeToRemoveUserAction,
             style: AppTextStyle.bodyMedium
                 .copyWith(color: context.theme.colorScheme.error),
           ),
@@ -530,7 +530,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           ),
         ),
         child: HeightConstrainedText(
-          isCurrentUser ? 'Edit Profile' : 'View Profile',
+          isCurrentUser ? context.l10n.editProfile : context.l10n.viewProfile,
           style: AppTextStyle.bodyMedium
               .copyWith(color: context.theme.colorScheme.primary),
         ),

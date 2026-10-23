@@ -64,7 +64,7 @@ class _EventsTabState extends State<EventsTab> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: HeightConstrainedText(
-            'UPCOMING',
+            context.l10n.upcomingHeader,
             textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.titleSmall,
           ),
@@ -85,7 +85,7 @@ class _EventsTabState extends State<EventsTab> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: HeightConstrainedText(
-            'HISTORY',
+            context.l10n.historyHeader,
             textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.titleSmall,
           ),

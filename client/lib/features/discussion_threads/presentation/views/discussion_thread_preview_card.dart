@@ -316,7 +316,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                   SizedBox(width: 10),
                 ],
                 HeightConstrainedText(
-                  'Reply',
+                  context.l10n.reply,
                   style: AppTextStyle.bodyMedium.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                   ),

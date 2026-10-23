@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -36,7 +37,7 @@ class PrerequisiteBadge extends StatelessWidget {
             ),
             SizedBox(width: 10),
             HeightConstrainedText(
-              'Prerequisite Required',
+              context.l10n.prerequisiteRequired,
               style: (textStyle ?? AppTextStyle.subhead)
                   .copyWith(color: context.theme.colorScheme.onErrorContainer),
             ),

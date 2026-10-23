@@ -111,7 +111,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HeightConstrainedText(
-                    'Waiting Room',
+                    context.l10n.waitingRoom,
                     style: context.theme.textTheme.titleLarge!.copyWith(
                       color: context.theme.colorScheme.onSurfaceVariant,
                     ),
@@ -136,7 +136,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HeightConstrainedText(
-                    'Livestream',
+                    context.l10n.livestream,
                     style: context.theme.textTheme.titleLarge!.copyWith(
                       color: context.theme.colorScheme.onSurfaceVariant,
                     ),

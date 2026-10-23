@@ -84,7 +84,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
 
     await ConfirmDialog(
       title: context.l10n.deleteAgendaItemName(title),
-      mainText: 'Are you sure want to delete?',
+      mainText: context.l10n.confirmDelete,
       cancelText: context.l10n.cancel,
       onConfirm: (context) {
         Navigator.pop(context);
@@ -346,7 +346,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeightConstrainedText(
-                'URL Preview',
+                context.l10n.urlPreview,
                 style: context.theme.textTheme.bodyMedium,
               ),
               SizedBox(height: 4),
@@ -364,7 +364,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             child: ActionButton(
               onPressed: () => _presenter.addNewURLParamRow(urlIndex),
               icon: Icon(Icons.add),
-              text: 'Add URL Parameter',
+              text: context.l10n.addUrlParameter,
             ),
           ),
       ],
@@ -409,7 +409,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HeightConstrainedText(
-                  'URL Preview',
+                  context.l10n.urlPreview,
                   style: context.theme.textTheme.bodyMedium,
                 ),
                 SizedBox(height: 4),
@@ -439,7 +439,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                       child: ActionButton(
                         onPressed: () => _presenter.addNewURLParamRow(urlIndex),
                         icon: Icon(Icons.add),
-                        text: 'Add URL Parameter',
+                        text: context.l10n.addUrlParameter,
                       ),
                     ),
                 ],

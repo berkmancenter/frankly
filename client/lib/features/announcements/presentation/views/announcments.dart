@@ -57,7 +57,7 @@ class _AnnouncementsState extends State<Announcements> {
           children: [
             Expanded(
               child: HeightConstrainedText(
-                announcement.title ?? 'Announcement',
+                announcement.title ?? context.l10n.announcement,
                 style: context.theme.textTheme.titleSmall,
               ),
             ),
@@ -66,8 +66,7 @@ class _AnnouncementsState extends State<Announcements> {
               CustomInkWell(
                 onTap: () => alertOnError(context, () async {
                   final confirmedDelete = await ConfirmDialog(
-                    mainText:
-                        'Are you sure you want to delete this announcement?',
+                    mainText: context.l10n.deleteAnnouncementConfirm,
                     cancelText: context.l10n.no,
                   ).show();
 
@@ -146,7 +145,7 @@ class _AnnouncementsState extends State<Announcements> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         HeightConstrainedText(
-          'Announcements',
+          context.l10n.announcements,
           style: Theme.of(context).textTheme.titleSmall,
         ),
         if (Provider.of<CommunityPermissionsProvider>(context)

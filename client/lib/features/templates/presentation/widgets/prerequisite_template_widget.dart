@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
@@ -26,7 +27,7 @@ class PrerequisiteTemplateWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeightConstrainedText(
-          'Attend this first:',
+          context.l10n.attendThisFirst,
           style: AppTextStyle.headline4,
         ),
         SizedBox(height: 10),
@@ -71,7 +72,7 @@ class PrerequisiteTemplateWidget extends StatelessWidget {
                               style: AppTextStyle.headline4,
                             ),
                             HeightConstrainedText(
-                              'Find an event with this template.',
+                              context.l10n.findEventWithTemplate,
                             ),
                           ],
                         ),

@@ -228,7 +228,7 @@ class _ConferenceRoomWrapper extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 HeightConstrainedText(
-                  'There was an error connecting to the room.',
+                  context.l10n.errorConnectingToRoom,
                 ),
                 SizedBox(height: 24),
                 ActionButton(

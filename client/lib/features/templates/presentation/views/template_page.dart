@@ -343,14 +343,14 @@ class _TemplatePageState extends State<TemplatePage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeightConstrainedText(
-          'Description',
+          context.l10n.description,
           style: AppTextStyle.headlineSmall.copyWith(
             fontSize: 16,
           ),
         ),
         SizedBox(height: 10),
         HeightConstrainedText(
-          template.description ?? 'No description for this event',
+          template.description ?? context.l10n.noDescriptionForEvent,
           style: AppTextStyle.body,
         ),
       ],
@@ -392,7 +392,7 @@ class _TemplatePageState extends State<TemplatePage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeightConstrainedText(
-              'More from ${community.name}',
+              context.l10n.moreFromName(community.name ?? ''),
               style: AppTextStyle.headlineSmall.copyWith(
                 fontSize: 16,
               ),
@@ -433,7 +433,7 @@ class _TemplatePageState extends State<TemplatePage>
         Row(
           children: [
             HeightConstrainedText(
-              'Upcoming Events',
+              context.l10n.upcomingEvents,
               style: AppTextStyle.headlineSmall.copyWith(
                 fontSize: 16,
               ),
@@ -443,7 +443,7 @@ class _TemplatePageState extends State<TemplatePage>
               CustomInkWell(
                 onTap: () => tabController.currentTab = 3,
                 child: HeightConstrainedText(
-                  'See all',
+                  context.l10n.seeAll,
                   style: AppTextStyle.bodyMedium,
                 ),
               ),
@@ -461,7 +461,7 @@ class _TemplatePageState extends State<TemplatePage>
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: HeightConstrainedText(
-                    'No upcoming events.',
+                    context.l10n.noUpcomingEvents,
                     style: AppTextStyle.body,
                   ),
                 ),
@@ -668,11 +668,11 @@ class _TemplatePageState extends State<TemplatePage>
       child: CustomStreamBuilder<Template?>(
         entryFrom: '_TemplatePageState.build',
         stream: context.watch<TemplatePageProvider>().templateStream,
-        errorMessage: 'There was an error loading templates.',
+        errorMessage: context.l10n.errorLoadingTemplates,
         builder: (_, template) {
           if (template == null) {
             return HeightConstrainedText(
-              'There was an error loading templates.',
+              context.l10n.errorLoadingTemplates,
             );
           }
           return _buildTemplateContents(template);

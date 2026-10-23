@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -35,7 +36,7 @@ class _SelectParticipantsNumberState extends State<SelectParticipantsNumber> {
       children: [
         Center(
           child: HeightConstrainedText(
-            'How many people',
+            context.l10n.howManyPeople,
             style: AppTextStyle.headline1,
           ),
         ),

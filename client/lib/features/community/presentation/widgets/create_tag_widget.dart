@@ -93,7 +93,10 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
           SizedBox(width: 5),
         ],
         HeightConstrainedText(
-          widget.titleText ?? (widget.isFeaturedTag ? 'Featured Tags' : 'Tags'),
+          widget.titleText ??
+              (widget.isFeaturedTag
+                  ? context.l10n.featuredTags
+                  : context.l10n.tags),
           style: AppTextStyle.body,
         ),
         SizedBox(width: 15),
@@ -134,7 +137,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeightConstrainedText(
-          'Add a new tag',
+          context.l10n.addNewTag,
         ),
         Row(
           children: [

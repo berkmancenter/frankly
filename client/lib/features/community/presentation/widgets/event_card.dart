@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/templates/presentation/widgets/prerequisite_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
@@ -148,7 +149,7 @@ class EventCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     HeightConstrainedText(
-                      event.title ?? 'Scheduled event',
+                      event.title ?? context.l10n.scheduledEvent,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: context.theme.textTheme.titleMedium!.copyWith(
@@ -166,7 +167,7 @@ class EventCard extends StatelessWidget {
                     else ...[
                       if (event.isLiveStream)
                         HeightConstrainedText(
-                          'Livestream',
+                          context.l10n.livestream,
                           style: context.theme.textTheme.bodySmall!.copyWith(
                             color: context.theme.colorScheme.onSurface
                                 .withOpacity(0.75),

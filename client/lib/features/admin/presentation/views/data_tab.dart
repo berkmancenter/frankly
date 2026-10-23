@@ -287,7 +287,9 @@ class _DataTabState extends State<DataTab> {
                   : Icons.lock_outline,
             ),
             Text(
-              event.isPublic == true ? 'Public' : 'Private',
+              event.isPublic == true
+                  ? l10n.publicVisibility
+                  : l10n.privateVisibility,
               style: labelLargeStyle,
             ),
           ],
@@ -305,10 +307,10 @@ class _DataTabState extends State<DataTab> {
             SizedBox(width: 4),
             Text(
               event.isLiveStream
-                  ? 'Livestream'
+                  ? l10n.livestream
                   : event.isHosted
-                      ? 'Hosted'
-                      : 'Hostless',
+                      ? l10n.hosted
+                      : l10n.hostless,
               style: labelLargeStyle,
             ),
           ],
@@ -353,7 +355,7 @@ class _DataTabState extends State<DataTab> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(
-                        event.title ?? 'NO TITLE',
+                        event.title ?? l10n.noTitle,
                         style: titleLargeStyle,
                       ),
                       SizedBox(
