@@ -1,6 +1,7 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const cors = require('cors')({ origin: true })
+const { regionalFunctions } = require('./function-region')
 
 const firestore = admin.firestore()
 const storage = admin.storage()
@@ -12,7 +13,7 @@ const eventPathRegex = /^community\/[^\/]+\/templates\/[^\/]+\/events\/[^\/]+$/
 
 // Returns one signed URL per recording-session's merged transcript CSV
 // (complete_trx_<n>, written by produce-sessions.js)
-const downloadTranscripts = functions.https.onRequest((req, res) => {
+const downloadTranscripts = regionalFunctions().https.onRequest((req, res) => {
     cors(req, res, async () => {
         try {
             const authToken = req.headers.authorization?.split('Bearer ')[1]

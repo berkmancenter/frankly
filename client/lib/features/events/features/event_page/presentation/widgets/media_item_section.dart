@@ -2,6 +2,7 @@ import 'package:client/features/events/features/live_meeting/features/live_strea
 import 'package:dotted_border/dotted_border.dart' as dotted_border;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -24,20 +25,22 @@ class MediaItemSection extends StatelessWidget {
   }) : super(key: key);
 
   Future<void> _showMediaPickerDialog(BuildContext context) async {
-    final mediaUrl =
-        await GetIt.instance<MediaHelperService>().pickMediaViaCloudinary(
-      uploadPreset: MediaHelperService.defaultMediaPreset,
-    );
-
-    if (mediaUrl != null) {
-      final isVideo = MediaHelperService.allowedVideoFormats
-          .any((ext) => mediaUrl.endsWith(ext));
-      final mediaItem = MediaItem(
-        url: mediaUrl,
-        type: isVideo ? MediaType.video : MediaType.image,
+    await alertOnError(context, () async {
+      final mediaUrl =
+          await GetIt.instance<MediaHelperService>().pickMediaViaCloudinary(
+        uploadPreset: MediaHelperService.defaultMediaPreset,
       );
-      onUpdate(mediaItem);
-    }
+
+      if (mediaUrl != null) {
+        final isVideo = MediaHelperService.allowedVideoFormats
+            .any((ext) => MediaHelperService.urlHasExtension(mediaUrl, ext));
+        final mediaItem = MediaItem(
+          url: mediaUrl,
+          type: isVideo ? MediaType.video : MediaType.image,
+        );
+        onUpdate(mediaItem);
+      }
+    });
   }
 
   @override

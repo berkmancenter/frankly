@@ -1,6 +1,7 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const cors = require('cors')({ origin: true })
+const { regionalFunctions } = require('./function-region')
 
 const firestore = admin.firestore()
 const storage = admin.storage()
@@ -9,7 +10,7 @@ const bucketName = functions.config().agora.storage_bucket_name
 // Signed URLs expire after 15 minutes
 const signedUrlExpiration = 15 * 60 * 1000
 
-const getSessionDownloadUrl = functions.https.onRequest((req, res) => {
+const getSessionDownloadUrl = regionalFunctions().https.onRequest((req, res) => {
     cors(req, res, async () => {
         try {
             const authToken = req.headers.authorization?.split('Bearer ')[1]

@@ -8,6 +8,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_video_model.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_video_presenter.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/vimeo_video_widget.dart';
+import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
@@ -217,12 +218,14 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
     return ActionButton(
       text: text,
       onPressed: () async {
-        final url =
-            await GetIt.instance<MediaHelperService>().pickVideoViaCloudinary();
-        if (url != null) {
-          _updateTextInController(url);
-          _presenter.updateVideoUrl(url);
-        }
+        await alertOnError(context, () async {
+          final url = await GetIt.instance<MediaHelperService>()
+              .pickVideoViaCloudinary();
+          if (url != null) {
+            _updateTextInController(url);
+            _presenter.updateVideoUrl(url);
+          }
+        });
       },
     );
   }

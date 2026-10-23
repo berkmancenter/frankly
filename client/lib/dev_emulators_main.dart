@@ -1,6 +1,7 @@
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
 import 'package:client/core/data/services/cloud_functions.dart';
+import 'package:client/core/data/services/firebase_storage_media_uploader.dart';
 import 'package:client/core/data/services/firestore_database.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
@@ -29,6 +30,10 @@ void main() async {
       case ('database'):
         loggingService.log('Enabling Realtime Database emulator');
         UserDataService.usingEmulator = true;
+        break;
+      case ('storage'):
+        loggingService.log('Enabling Storage emulator');
+        FirebaseStorageMediaUploader.usingEmulator = true;
         break;
       default:
         loggingService.log(

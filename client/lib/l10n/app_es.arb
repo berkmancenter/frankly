@@ -220,6 +220,20 @@
       }
     }
   },
+  "@mediaUploadImageTooLarge": {
+    "placeholders": {
+      "maxMegabytes": {
+        "type": "int"
+      }
+    }
+  },
+  "@mediaUploadVideoTooLarge": {
+    "placeholders": {
+      "maxMegabytes": {
+        "type": "int"
+      }
+    }
+  },
   "@meetingEndWithFollowMessage": {
     "placeholders": {
       "name": {
@@ -803,6 +817,13 @@
   "matchingQuestions": "Preguntas de emparejamiento",
   "maximum": "Máximo",
   "meantToUseExistingAccount": "¿Querías usar una cuenta existente en su lugar?",
+  "mediaUploadFileUnreadable": "No se pudo leer el archivo seleccionado.",
+  "mediaUploadImageTooLarge": "Las imágenes pueden ocupar como máximo {maxMegabytes} MB.",
+  "mediaUploadQuickTimeNotSupported": "No se pueden subir videos MOV. Convierta el video a MP4 o WebM e inténtelo de nuevo.",
+  "mediaUploadsDisabled": "La carga de archivos multimedia está desactivada en este sitio.",
+  "mediaUploadSignInRequired": "Inicie sesión para subir imágenes y videos.",
+  "mediaUploadUnsupportedType": "Este tipo de archivo no es compatible. Las imágenes pueden ser JPEG, PNG, GIF o WebP, y los videos, MP4 o WebM.",
+  "mediaUploadVideoTooLarge": "Los videos pueden ocupar como máximo {maxMegabytes} MB.",
   "meetingEndMessage": "Esta reunión ha terminado. Puede cerrar esta ventana.",
   "meetingEndWithFollowMessage": "Esta reunión ha terminado. Puede cerrar esta ventana o visitar {name} para continuar la conversación.",
   "meetingGuideCard": "tarjeta-guía-reunión",

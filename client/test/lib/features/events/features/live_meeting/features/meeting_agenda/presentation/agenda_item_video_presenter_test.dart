@@ -60,6 +60,22 @@ void main() {
       model.agendaItemVideoData.url = 'url.mp4.mp3';
       expect(presenter.isValidVideo(), isFalse);
     });
+
+    test('true for webm', () {
+      model.agendaItemVideoData.url = 'url.webm';
+      expect(presenter.isValidVideo(), isTrue);
+    });
+
+    test('true for Firebase Storage webm URL', () {
+      model.agendaItemVideoData.url =
+          'https://firebasestorage.googleapis.com/v0/b/x/o/media%2Fu%2F1-ab.webm?alt=media&token=t';
+      expect(presenter.isValidVideo(), isTrue);
+    });
+
+    test('false for mov', () {
+      model.agendaItemVideoData.url = 'url.mov';
+      expect(presenter.isValidVideo(), isFalse);
+    });
   });
 
   test('getVideoUrl', () {

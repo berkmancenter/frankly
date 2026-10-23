@@ -24,6 +24,9 @@ jobs:
           filters: |
             client:
               - 'client/**'
+              - 'firebase.json'
+              - 'scripts/render-firebase-config.mjs'
+              - 'scripts/validate-client-config.mjs'
 
       - name: Set Up Flutter
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
@@ -52,15 +55,9 @@ jobs:
           sentry-cli releases new -p $SENTRY_PROJECT $(sentry-cli releases propose-version)
           echo "CURRENT_RELEASE=$(sentry-cli releases propose-version)" >> "$GITHUB_ENV"
 
-      - name: Update Product Version
-        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
-        run: |
-          sed -i 's/__VERSION__/${{ github.sha }}/g' ${{ github.workspace }}/client/web/index.html
-
-      - name: Update Google Auth Client ID
-        if: steps.changes.outputs.client == 'true'  || github.event_name== 'workflow_dispatch'
-        run: |
-          sed -i 's/__GOOGLE_ID__/${{ secrets.GOOGLE_SIGN_IN_ID }}/g' ${{ github.workspace }}/client/web/index.html
+      # __VERSION__ and __GOOGLE_ID__ in index.html are filled in by the
+      # functions deploy (ServeIndex serves every HTML page; Hosting ignores the
+      # built index.html), so there is nothing to substitute here.
 
       - name: Create .env file
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
@@ -75,12 +72,15 @@ jobs:
           envkey_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
           envkey_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
           envkey_FUNCTIONS_URL_PREFIX: ${{ secrets.FUNCTIONS_URL_PREFIX }}
+          envkey_FUNCTIONS_REGION: ${{ secrets.FUNCTIONS_REGION || 'us-central1' }}
           envkey_SHARE_LINK_URL: ${{ secrets.APP_STAGING_FULL_URL }}/share
           envkey_ENABLE_FAKE_PARTICIPANTS: true
           envkey_ENABLE_DEV_EVENT_SETTINGS: true
           envkey_ENABLE_DEV_ADMIN_SETTINGS: true
           envkey_ENABLE_TRACE_LOG: true
           envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
+          envkey_AGORA_AREA: ${{ secrets.AGORA_AREA || 'GLOBAL' }}
+          envkey_MEDIA_UPLOAD_PROVIDER: ${{ secrets.MEDIA_UPLOAD_PROVIDER || 'cloudinary' }}
           envkey_SENTRY_RELEASE: ${{ env.CURRENT_RELEASE }}
           envkey_SENTRY_ENVIRONMENT: staging
           envkey_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
@@ -108,6 +108,11 @@ jobs:
           envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
           envkey_BYPASS_EMAIL_VERIFICATION: ${{ secrets.BYPASS_EMAIL_VERIFICATION }}
 
+      - name: Validate client configuration
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        working-directory: ${{ github.workspace }}
+        run: node scripts/validate-client-config.mjs .env
+
       - name: Build the Flutter App
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
         run: flutter build web --release --source-maps --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
@@ -115,6 +120,11 @@ jobs:
       - name: Replace Service Worker with Cache Switch
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
         run: cp web_overrides/flutter_service_worker.js build/web/flutter_service_worker.js
+
+      - name: Render Firebase hosting config
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        working-directory: ${{ github.workspace }}
+        run: node scripts/render-firebase-config.mjs --region "${{ secrets.FUNCTIONS_REGION || 'us-central1' }}" --in-place
 
       - name: Upload sourcemaps to Sentry
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'

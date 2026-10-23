@@ -17,6 +17,7 @@
       "repairSessionArtifacts"
     ],
     "firebase/functions/js/serve-index.js": ["ServeIndex"],
+    "firebase/functions/js/content-security-policy.js": ["ServeIndex"],
     "firebase/functions/lib/admin/partner_agreements/on_partner_agreements.dart": [
       "PartnerAgreementOnCreate",
       "PartnerAgreementOnUpdate"
@@ -195,6 +196,9 @@
     ],
     "firebase/functions/lib/events/live_meetings/update_presence_status.dart": [
       "UpdatePresenceStatus"
+    ],
+    "firebase/functions/lib/events/live_meetings/cleanup_stale_participants.dart": [
+      "CleanupStaleParticipants"
     ],
     "firebase/functions/lib/events/live_meetings/mux_webhooks.dart": [
       "MuxWebhooks"

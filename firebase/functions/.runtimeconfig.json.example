@@ -1,5 +1,7 @@
 {
   "functions": {
+    "region": "us-central1",
+    "cloud_tasks_region": "us-east4",
     "on_firestore": {
       "min_instances": "0"
     },
@@ -13,6 +15,8 @@
     "domain": "localhost:5000",
     "legal_entity_name": "the <a href=https://asml.cyber.harvard.edu>Applied Social Media Lab</a> at the <a href=https://cyber.harvard.edu>Berkman Klein Center for Internet & Society<a>",
     "banner_image_url": "https://res.cloudinary.com/dh0vegjku/image/upload/v1725488218/frankly_assets/Frankly-Open-Graph_l1b9ui.png",
+    "cloudinary_enabled": "true",
+    "media_upload_provider": "cloudinary",
     "privacy_policy_url": "https://frankly.org/privacy",
     "mailing_address": "1557 Massachusetts Ave, Cambridge, MA 02138",
     "alt_email_domain": "cyber.harvard.edu",
@@ -35,7 +39,8 @@
     "app_certificate": "<value>",
     "storage_secret_key": "<value>",
     "storage_access_key": "<value>",
-    "storage_bucket_name": "<value>"
+    "storage_bucket_name": "<value>",
+    "recording_region": ""
   },
   "frankly_match": {
     "api_url": "<value>",

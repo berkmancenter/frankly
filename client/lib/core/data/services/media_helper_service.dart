@@ -2,12 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:client/config/environment.dart';
+import 'package:client/core/data/services/firebase_storage_media_uploader.dart';
+import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/services.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js.dart' as js;
 import 'package:universal_html/js_util.dart' as js_util;
 
 class MediaHelperService {
+  final FirebaseStorageMediaUploader _firebaseUploader;
+
+  MediaHelperService({FirebaseStorageMediaUploader? firebaseUploader})
+      : _firebaseUploader = firebaseUploader ?? FirebaseStorageMediaUploader();
+
   static const defaultMediaPreset = Environment.cloudinaryDefaultPreset;
 
   static const imageFormatDescription = 'image';
@@ -17,6 +24,14 @@ class MediaHelperService {
     'mp4',
     'webm',
   ];
+
+  /// Whether [url]'s path ends with [extension], ignoring any query string, so
+  /// Firebase Storage download URLs (`.../file.mp4?alt=media&token=...`) are
+  /// recognised as well as Cloudinary ones.
+  static bool urlHasExtension(String url, String extension) {
+    final path = Uri.tryParse(url)?.path ?? url;
+    return path.toLowerCase().endsWith(extension.toLowerCase());
+  }
 
   /// Cloudinary will automatically transform videos to mp4 if we replace the extension to .mp4.
   ///
@@ -62,6 +77,21 @@ class MediaHelperService {
     bool cropping = false,
     double? croppingAspectRatio,
   }) {
+    if (!Environment.mediaUploadsEnabled) {
+      return Future.error(
+        VisibleException(
+          appLocalizationService.getLocalization().mediaUploadsDisabled,
+        ),
+      );
+    }
+
+    if (Environment.useFirebaseStorageUploads) {
+      return _firebaseUploader.pickAndUpload(
+        allowImages: clientAllowedFormats.contains(imageFormatDescription),
+        allowVideos: clientAllowedFormats.any(allowedVideoFormats.contains),
+      );
+    }
+
     final completer = Completer<String?>();
 
     final parameters = {

@@ -5,6 +5,8 @@ import 'package:client/styles/material_theme.dart';
 import 'package:client/styles/text_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:client/core/data/services/firebase_storage_media_uploader.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
@@ -55,6 +57,7 @@ Future<void> reportError(dynamic error, dynamic stackTrace) async {
 }
 
 var _databaseEmulatorConfigured = false;
+var _storageEmulatorConfigured = false;
 
 Future<void> runClient({FirebaseOptions? firebaseOptions}) async {
   setURLPathStrategy();
@@ -69,6 +72,12 @@ Future<void> runClient({FirebaseOptions? firebaseOptions}) async {
   if (UserDataService.usingEmulator && !_databaseEmulatorConfigured) {
     FirebaseDatabase.instance.useDatabaseEmulator('localhost', 9000);
     _databaseEmulatorConfigured = true;
+  }
+
+  if (FirebaseStorageMediaUploader.usingEmulator &&
+      !_storageEmulatorConfigured) {
+    await FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
+    _storageEmulatorConfigured = true;
   }
 
   if (enableSentry) {

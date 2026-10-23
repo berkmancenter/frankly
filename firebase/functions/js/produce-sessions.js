@@ -1,5 +1,6 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
+const { regionalFunctions } = require('./function-region')
 
 const {
     VTT_FLUSH_WAIT_MS,
@@ -19,7 +20,7 @@ const bucketName = functions.config().agora.storage_bucket_name
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 // On stop, register MP4/VTT artifacts and merge the transcript.
-const produceSessions = functions
+const produceSessions = regionalFunctions()
     .runWith({ timeoutSeconds: 300 })
     .firestore.document('recording-sessions/{sessionId}')
     .onUpdate(async (change, context) => {
