@@ -22,6 +22,7 @@ import 'package:client/styles/app_asset.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/providers/agora_room.dart';
@@ -120,7 +121,12 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
         videoViewController = VideoViewController.remote(
           rtcEngine: conferenceRoom.room!.engine,
           canvas: VideoCanvas(uid: widget.participant.agoraUid),
-          connection: RtcConnection(channelId: conferenceRoom.roomName),
+          connection: RtcConnection(
+            channelId: conferenceRoom.roomName,
+            // The uid passed to joinChannel. The local participant's
+            // agoraUid is 0, so it cannot be used here.
+            localUid: uidToInt(userService.currentUserId!),
+          ),
         );
       } else {
         videoViewController = VideoViewController(
