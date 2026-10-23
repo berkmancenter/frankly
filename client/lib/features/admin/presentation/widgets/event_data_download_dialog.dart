@@ -487,12 +487,6 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                     () => registrantListSelected = value ?? false,
                   ),
                   title: Text(context.l10n.registrationDataDownload),
-                  subtitle: Text(
-                    context.l10n.timesShownInLocalTimezone,
-                    style: context.theme.textTheme.bodySmall?.copyWith(
-                      color: context.theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
                 ),
               CheckboxListTile(
                 value: chatDataSelected,
