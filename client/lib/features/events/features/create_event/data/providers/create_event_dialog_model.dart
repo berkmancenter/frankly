@@ -197,7 +197,9 @@ class CreateEventDialogModel with ChangeNotifier {
     _event = _event.copyWith(
       communityId: communityProvider.communityId,
       templateId: selectedTemplate?.id ?? defaultTemplateId,
-      title: _event.title ?? selectedTemplate?.title ?? 'My Custom Event',
+      title: _event.title ??
+          selectedTemplate?.title ??
+          appLocalizationService.getLocalization().myCustomEvent,
       description: _event.description ?? selectedTemplate?.description ?? '',
       image:
           _event.image ?? selectedTemplate?.image ?? generateRandomImageUrl(),

@@ -185,7 +185,7 @@ class _ReassignBreakoutRoomDialogState
                               ),
                               SizedBox(height: 6),
                               HeightConstrainedText(
-                                'Add Room $expectedNewRoomNum',
+                                context.l10n.addRoomNumber(expectedNewRoomNum.toString()),
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,

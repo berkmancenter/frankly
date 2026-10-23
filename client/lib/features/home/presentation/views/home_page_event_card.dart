@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/presentation/widgets/carousel/time_indicator.dart';
@@ -109,13 +110,13 @@ class _HomePageEventCardState extends State<HomePageEventCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               HeightConstrainedText(
-                widget.event.title ?? 'Upcoming Event',
+                widget.event.title ?? context.l10n.upcomingEvent,
                 style: AppTextStyle.bodyMedium.copyWith(fontSize: 18),
                 maxLines: responsiveLayoutService.isMobile(context) ? 3 : 2,
               ),
               if (widget.event.isLiveStream)
                 HeightConstrainedText(
-                  'Livestream',
+                  context.l10n.livestream,
                   style: AppTextStyle.eyebrowSmall.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                   ),

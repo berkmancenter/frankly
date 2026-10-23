@@ -83,7 +83,7 @@ class _AgendaItemUserSuggestionsState extends State<AgendaItemUserSuggestions>
           ),
           SizedBox(height: 20),
           HeightConstrainedText(
-            'Let participants suggest agenda items and then upvote or downvote.',
+            context.l10n.agendaSuggestionsDescription,
             style: context.theme.textTheme.bodyMedium!
                 .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
           ),

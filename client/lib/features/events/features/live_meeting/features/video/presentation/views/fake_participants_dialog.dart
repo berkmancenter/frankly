@@ -48,7 +48,7 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
         ),
         ActionButton(
           onPressed: () => Navigator.of(context).pop(_textController.text),
-          text: 'Save',
+          text: context.l10n.save,
         ),
       ],
     );

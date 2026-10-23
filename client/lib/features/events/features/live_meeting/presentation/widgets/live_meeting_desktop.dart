@@ -53,7 +53,7 @@ class LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
       key: ObjectKey(liveMeetingProvider.getCurrentMeetingJoinInfo()),
       entryFrom: '_buildConferenceRoomWrapper.build',
       stream: liveMeetingProvider.getCurrentMeetingJoinInfo()!.asStream(),
-      loadingMessage: 'Loading room. Please wait...',
+      loadingMessage: context.l10n.loadingRoomPleaseWait,
       builder: (_, response) {
         if (liveMeetingProvider.activeUiState == MeetingUiState.breakoutRoom) {
           return RefreshKeyWidget(
@@ -94,6 +94,7 @@ class LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
         child = _buildMeetingLoading();
         break;
     }
+    // ignore: hardcoded_string -- widget key, not user-visible
     child = GlobalKeyedSubtree(label: 'primary-content', child: child);
 
     return Column(
@@ -456,7 +457,7 @@ class RefreshableBreakoutRoom extends StatefulWidget {
 class _RefreshableBreakoutRoomState extends State<RefreshableBreakoutRoom> {
   Widget _buildWaitingRoomTextWidget() {
     return HeightConstrainedText(
-      'You are in the waiting room.',
+      context.l10n.youAreInWaitingRoom,
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Theme.of(context).primaryColor,
@@ -503,7 +504,7 @@ class _RefreshableBreakoutRoomState extends State<RefreshableBreakoutRoom> {
       entryFrom: '_RefreshableBreakoutRoomState.build',
       stream: Provider.of<LiveMeetingProvider>(context)
           .breakoutRoomLiveMeetingStream,
-      loadingMessage: 'Loading breakout room. Please wait...',
+      loadingMessage: context.l10n.loadingBreakoutRoomPleaseWait,
       builder: (context, __) {
         if (liveMeetingProvider.currentBreakoutRoomId ==
             breakoutsWaitingRoomId) {
@@ -534,7 +535,7 @@ class EnterMeetingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 HeightConstrainedText(
-                  'Welcome! Click here to enter the event:',
+                  context.l10n.welcomeClickToEnterEvent,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
@@ -662,7 +663,7 @@ class BreakoutStatusInformation extends StatelessWidget {
           ),
           SizedBox(width: 10),
           ActionButton(
-            text: 'JOIN',
+            text: context.l10n.joinUppercase,
             height: 45,
             onPressed: () async {
               final event = context.read<EventProvider>().event;

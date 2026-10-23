@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -186,7 +187,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
           Container(
             alignment: Alignment.bottomRight,
             child: ActionButton(
-              text: 'Post',
+              text: context.l10n.postAction,
               onPressed: createResourcePresenter.resource.url != null
                   ? () => alertOnError(context, () async {
                         await createResourcePresenter.submit();

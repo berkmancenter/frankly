@@ -34,7 +34,7 @@ class _SubscriptionsTabState extends State<SubscriptionsTab> {
       return Padding(
         padding: EdgeInsets.all(20),
         child: HeightConstrainedText(
-          'You are not the billing manager for any communities',
+          context.l10n.notBillingManager,
         ),
       );
     }
@@ -53,7 +53,7 @@ class _SubscriptionsTabState extends State<SubscriptionsTab> {
             shrinkWrap: true,
             children: [
               HeightConstrainedText(
-                'Communities',
+                context.l10n.communities,
                 textAlign: TextAlign.start,
                 style: AppTextStyle.headline4,
               ),
@@ -68,7 +68,7 @@ class _SubscriptionsTabState extends State<SubscriptionsTab> {
                       SizedBox(width: 10),
                       Expanded(
                         child: HeightConstrainedText(
-                          communities[i].name ?? 'Unnamed Community',
+                          communities[i].name ?? context.l10n.unnamedCommunity,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

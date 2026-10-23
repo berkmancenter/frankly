@@ -71,7 +71,7 @@ class _SidebarNavigationListItemState extends State<SidebarNavigationListItem> {
         Flexible(
           child: ActionButton(
             type: ActionButtonType.text,
-            text: widget.community.name ?? 'Unnamed Community',
+            text: widget.community.name ?? context.l10n.unnamedCommunity,
             onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.communityHome),
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),

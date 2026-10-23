@@ -20,8 +20,7 @@ Future<T?> guardCommunityMember<T>(
 
       final joinCommunity = await ConfirmDialog(
         title: context.l10n.joinCommunity(community.name ?? ''),
-        mainText:
-            'You must be a member of this space to participate. Would you like to join?',
+        mainText: context.l10n.joinSpacePrompt,
         confirmText: context.l10n.yesJoinCommunity,
         cancelText: context.l10n.cancel,
       ).show();

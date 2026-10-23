@@ -28,7 +28,7 @@ class _SelectTitlePageState extends State<SelectTitlePage> {
       children: [
         Center(
           child: HeightConstrainedText(
-            'Enter a title',
+            context.l10n.enterATitle,
             style: AppTextStyle.headline1,
           ),
         ),

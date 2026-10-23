@@ -42,7 +42,7 @@ class _EmailUnsubscribePageState extends State<EmailUnsubscribePage> {
             ? Column(
                 children: [
                   HeightConstrainedText(
-                    'This will unsubscribe from ${Environment.appName} updates:',
+                    buildContext.l10n.thisWillUnsubscribeFromUpdates(Environment.appName),
                   ),
                   ActionButton(
                     text: buildContext.l10n.unsubscribeNow,
@@ -55,7 +55,7 @@ class _EmailUnsubscribePageState extends State<EmailUnsubscribePage> {
                 stream: localUnsubscribeFuture.asStream(),
                 builder: (_, __) {
                   return HeightConstrainedText(
-                    'You have unsubscribed from ${Environment.appName} updates.',
+                    buildContext.l10n.youHaveUnsubscribedFromUpdates(Environment.appName),
                   );
                 },
               ),
