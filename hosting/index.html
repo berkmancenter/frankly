@@ -9,28 +9,25 @@
       
       
       
-        <link rel="prev" href="../faq/">
+        <link rel="prev" href="../dev/">
       
       
-        <link rel="next" href="../architecture/cloud-functions/">
-      
-      
-        
+        <link rel="next" href="../e2e/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
     
     
       
-        <title>Deploying Your Own Instance of Frankly - Frankly</title>
+        <title>Hosting - Frankly</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.8608ea7d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -38,7 +35,7 @@
   
   
   
-  <style>:root{--md-annotation-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M11%209h2V7h-2m1%2013c-4.41%200-8-3.59-8-8s3.59-8%208-8%208%203.59%208%208-3.59%208-8%208m0-18A10%2010%200%200%200%202%2012a10%2010%200%200%200%2010%2010%2010%2010%200%200%200%2010-10A10%2010%200%200%200%2012%202m-1%2015h2v-6h-2z%22/%3E%3C/svg%3E');}</style>
+  <style>:root{--md-annotation-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"/></svg>');}</style>
 
 
     
@@ -59,6 +56,7 @@
     
       
 
+    
     
     
   </head>
@@ -114,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Deploying Your Own Instance of Frankly
+              Hosting
             
           </span>
         </div>
@@ -126,13 +124,11 @@
     
     
     
-      
-      
-        <label class="md-header__button md-icon" for="__search">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        </label>
-        <div class="md-search" data-md-component="search" role="dialog">
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
@@ -166,14 +162,13 @@
     </div>
   </div>
 </div>
-      
     
     
       <div class="md-header__source">
         <a href="https://github.com/berkmancenter/frankly" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -219,7 +214,7 @@
       <a href="https://github.com/berkmancenter/frankly" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -239,16 +234,10 @@
       <a href=".." class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    🐣 Introduction
-  
-
+    Home
     
   </span>
-  
   
 
       </a>
@@ -266,70 +255,10 @@
       <a href="../dev/" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    ⚙️ Running Local Development Version
-  
-
+    Development
     
   </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../e2e/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    🧰 End-to-End Testing with Playwright
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../faq/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ❓ Troubleshooting and FAQ
-  
-
-    
-  </span>
-  
   
 
       </a>
@@ -356,16 +285,10 @@
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
-  
   <span class="md-ellipsis">
-    
-  
-    Deploying Your Own Instance of Frankly
-  
-
+    Hosting
     
   </span>
-  
   
 
           <span class="md-nav__icon md-icon"></span>
@@ -374,16 +297,10 @@
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Deploying Your Own Instance of Frankly
-  
-
+    Hosting
     
   </span>
-  
   
 
       </a>
@@ -406,9 +323,7 @@
         <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Prerequisites
-      
+      Prerequisites
     </span>
   </a>
   
@@ -417,9 +332,7 @@
         <li class="md-nav__item">
   <a href="#1-create-firebase-projects" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        1. Create Firebase Projects
-      
+      1. Create Firebase Projects
     </span>
   </a>
   
@@ -428,9 +341,7 @@
         <li class="md-nav__item">
   <a href="#2-update-firebaserc" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        2. Update .firebaserc
-      
+      2. Update .firebaserc
     </span>
   </a>
   
@@ -439,9 +350,7 @@
         <li class="md-nav__item">
   <a href="#3-initialize-core-firebase-services" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        3. Initialize Core Firebase Services
-      
+      3. Initialize Core Firebase Services
     </span>
   </a>
   
@@ -451,9 +360,7 @@
           <li class="md-nav__item">
   <a href="#firestore" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Firestore
-      
+      Firestore
     </span>
   </a>
   
@@ -462,9 +369,7 @@
           <li class="md-nav__item">
   <a href="#realtime-database" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Realtime Database
-      
+      Realtime Database
     </span>
   </a>
   
@@ -473,9 +378,7 @@
           <li class="md-nav__item">
   <a href="#firebase-authentication" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Firebase Authentication
-      
+      Firebase Authentication
     </span>
   </a>
   
@@ -489,9 +392,7 @@
         <li class="md-nav__item">
   <a href="#4-configure-firebase-hosting" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        4. Configure Firebase Hosting
-      
+      4. Configure Firebase Hosting
     </span>
   </a>
   
@@ -501,9 +402,7 @@
           <li class="md-nav__item">
   <a href="#same-origin-callable-routing-api" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Same-origin callable routing (/api/*)
-      
+      Same-origin callable routing (/api/*)
     </span>
   </a>
   
@@ -512,9 +411,7 @@
           <li class="md-nav__item">
   <a href="#content-security-policy-csp" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Content Security Policy (CSP)
-      
+      Content Security Policy (CSP)
     </span>
   </a>
   
@@ -523,9 +420,7 @@
           <li class="md-nav__item">
   <a href="#adding-a-new-third-party-script" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Adding a new third-party script
-      
+      Adding a new third-party script
     </span>
   </a>
   
@@ -534,9 +429,7 @@
           <li class="md-nav__item">
   <a href="#template-sync" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Template sync
-      
+      Template sync
     </span>
   </a>
   
@@ -550,9 +443,7 @@
         <li class="md-nav__item">
   <a href="#5-configure-firebase-functions" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        5. Configure Firebase Functions
-      
+      5. Configure Firebase Functions
     </span>
   </a>
   
@@ -562,9 +453,7 @@
           <li class="md-nav__item">
   <a href="#install-dependencies-and-build-functions" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Install dependencies and build functions
-      
+      Install dependencies and build functions
     </span>
   </a>
   
@@ -573,9 +462,7 @@
           <li class="md-nav__item">
   <a href="#deploy-functions" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Deploy functions
-      
+      Deploy functions
     </span>
   </a>
   
@@ -584,9 +471,7 @@
           <li class="md-nav__item">
   <a href="#inspect-current-runtime-config" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Inspect current runtime config
-      
+      Inspect current runtime config
     </span>
   </a>
   
@@ -600,9 +485,7 @@
         <li class="md-nav__item">
   <a href="#6-create-required-cloud-tasks-queue" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        6. Create Required Cloud Tasks Queue
-      
+      6. Create Required Cloud Tasks Queue
     </span>
   </a>
   
@@ -611,9 +494,7 @@
         <li class="md-nav__item">
   <a href="#7-deploy-rules-and-indexes" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        7. Deploy Rules and Indexes
-      
+      7. Deploy Rules and Indexes
     </span>
   </a>
   
@@ -622,9 +503,7 @@
         <li class="md-nav__item">
   <a href="#8-set-functions-runtime-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        8. Set Functions Runtime Configuration
-      
+      8. Set Functions Runtime Configuration
     </span>
   </a>
   
@@ -634,9 +513,7 @@
           <li class="md-nav__item">
   <a href="#what-these-values-are-for" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        What these values are for
-      
+      What these values are for
     </span>
   </a>
   
@@ -650,9 +527,7 @@
         <li class="md-nav__item">
   <a href="#9-configure-the-flutter-client" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        9. Configure the Flutter Client
-      
+      9. Configure the Flutter Client
     </span>
   </a>
   
@@ -662,9 +537,7 @@
           <li class="md-nav__item">
   <a href="#required-values-in-clientenv" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Required values in client/.env
-      
+      Required values in client/.env
     </span>
   </a>
   
@@ -673,9 +546,7 @@
           <li class="md-nav__item">
   <a href="#google-sign-in-client-id" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Google Sign-In Client ID
-      
+      Google Sign-In Client ID
     </span>
   </a>
   
@@ -689,9 +560,7 @@
         <li class="md-nav__item">
   <a href="#10-optional-third-party-integrations" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        10. Optional Third-Party Integrations
-      
+      10. Optional Third-Party Integrations
     </span>
   </a>
   
@@ -701,9 +570,7 @@
           <li class="md-nav__item">
   <a href="#agora" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Agora
-      
+      Agora
     </span>
   </a>
   
@@ -712,9 +579,7 @@
           <li class="md-nav__item">
   <a href="#mux" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Mux
-      
+      Mux
     </span>
   </a>
   
@@ -723,9 +588,7 @@
           <li class="md-nav__item">
   <a href="#cloudinary" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Cloudinary
-      
+      Cloudinary
     </span>
   </a>
   
@@ -734,9 +597,7 @@
           <li class="md-nav__item">
   <a href="#stripe" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Stripe
-      
+      Stripe
     </span>
   </a>
   
@@ -745,9 +606,7 @@
           <li class="md-nav__item">
   <a href="#sendgrid" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        SendGrid
-      
+      SendGrid
     </span>
   </a>
   
@@ -756,9 +615,7 @@
           <li class="md-nav__item">
   <a href="#email-authentication-dns-records" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Email Authentication DNS Records
-      
+      Email Authentication DNS Records
     </span>
   </a>
   
@@ -767,9 +624,7 @@
           <li class="md-nav__item">
   <a href="#dnssec" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        DNSSEC
-      
+      DNSSEC
     </span>
   </a>
   
@@ -783,9 +638,7 @@
         <li class="md-nav__item">
   <a href="#11-build-and-deploy" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        11. Build and Deploy
-      
+      11. Build and Deploy
     </span>
   </a>
   
@@ -795,9 +648,7 @@
           <li class="md-nav__item">
   <a href="#step-1-select-the-target-project" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Step 1: Select the target project
-      
+      Step 1: Select the target project
     </span>
   </a>
   
@@ -806,9 +657,7 @@
           <li class="md-nav__item">
   <a href="#step-2-deploy-rules-and-indexes" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Step 2: Deploy rules and indexes
-      
+      Step 2: Deploy rules and indexes
     </span>
   </a>
   
@@ -817,9 +666,7 @@
           <li class="md-nav__item">
   <a href="#step-3-build-and-deploy-functions" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Step 3: Build and deploy functions
-      
+      Step 3: Build and deploy functions
     </span>
   </a>
   
@@ -828,9 +675,7 @@
           <li class="md-nav__item">
   <a href="#step-4-build-the-flutter-client" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Step 4: Build the Flutter client
-      
+      Step 4: Build the Flutter client
     </span>
   </a>
   
@@ -839,9 +684,7 @@
           <li class="md-nav__item">
   <a href="#step-5-deploy-hosting" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Step 5: Deploy hosting
-      
+      Step 5: Deploy hosting
     </span>
   </a>
   
@@ -855,9 +698,7 @@
         <li class="md-nav__item">
   <a href="#12-post-deployment-verification-checklist" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        12. Post-Deployment Verification Checklist
-      
+      12. Post-Deployment Verification Checklist
     </span>
   </a>
   
@@ -867,9 +708,7 @@
           <li class="md-nav__item">
   <a href="#core-platform" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Core platform
-      
+      Core platform
     </span>
   </a>
   
@@ -878,9 +717,7 @@
           <li class="md-nav__item">
   <a href="#video-events" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Video / events
-      
+      Video / events
     </span>
   </a>
   
@@ -889,9 +726,7 @@
           <li class="md-nav__item">
   <a href="#livestreaming" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Livestreaming
-      
+      Livestreaming
     </span>
   </a>
   
@@ -900,9 +735,7 @@
           <li class="md-nav__item">
   <a href="#media-and-messaging" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Media and messaging
-      
+      Media and messaging
     </span>
   </a>
   
@@ -911,9 +744,7 @@
           <li class="md-nav__item">
   <a href="#infrastructure" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Infrastructure
-      
+      Infrastructure
     </span>
   </a>
   
@@ -927,9 +758,7 @@
         <li class="md-nav__item">
   <a href="#13-recommended-environment-rollout-process" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        13. Recommended Environment Rollout Process
-      
+      13. Recommended Environment Rollout Process
     </span>
   </a>
   
@@ -938,9 +767,7 @@
         <li class="md-nav__item">
   <a href="#14-common-pitfalls" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        14. Common Pitfalls
-      
+      14. Common Pitfalls
     </span>
   </a>
   
@@ -950,9 +777,7 @@
           <li class="md-nav__item">
   <a href="#functions-deploy-but-fail-at-runtime" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Functions deploy but fail at runtime
-      
+      Functions deploy but fail at runtime
     </span>
   </a>
   
@@ -961,9 +786,7 @@
           <li class="md-nav__item">
   <a href="#wrong-firebase-project-deployed" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Wrong Firebase project deployed
-      
+      Wrong Firebase project deployed
     </span>
   </a>
   
@@ -972,9 +795,7 @@
           <li class="md-nav__item">
   <a href="#hosting-works-but-client-points-at-wrong-backend" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Hosting works but client points at wrong backend
-      
+      Hosting works but client points at wrong backend
     </span>
   </a>
   
@@ -983,9 +804,7 @@
           <li class="md-nav__item">
   <a href="#google-sign-in-does-not-work" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Google sign-in does not work
-      
+      Google sign-in does not work
     </span>
   </a>
   
@@ -994,9 +813,7 @@
           <li class="md-nav__item">
   <a href="#video-or-integrations-do-not-work" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Video or integrations do not work
-      
+      Video or integrations do not work
     </span>
   </a>
   
@@ -1005,9 +822,7 @@
           <li class="md-nav__item">
   <a href="#scheduled-functions-do-not-run" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Scheduled functions do not run
-      
+      Scheduled functions do not run
     </span>
   </a>
   
@@ -1021,9 +836,7 @@
         <li class="md-nav__item">
   <a href="#15-minimal-deployment-checklist" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        15. Minimal Deployment Checklist
-      
+      15. Minimal Deployment Checklist
     </span>
   </a>
   
@@ -1032,9 +845,7 @@
         <li class="md-nav__item">
   <a href="#16-useful-commands-reference" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        16. Useful Commands Reference
-      
+      16. Useful Commands Reference
     </span>
   </a>
   
@@ -1054,7 +865,48 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../e2e/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    End-to-end testing
     
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -1074,16 +926,10 @@
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
-  
   <span class="md-ellipsis">
-    
-  
     Architecture
-  
-
     
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1092,13 +938,31 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Architecture
-  
-
+            Architecture
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/repo_map/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Repository map
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -1110,16 +974,10 @@
       <a href="../architecture/cloud-functions/" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Cloud Functions
-  
-
     
   </span>
-  
   
 
       </a>
@@ -1138,44 +996,10 @@
       <a href="../architecture/meeting-lifecycle/" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Meeting Lifecycle
-  
-
+    Meeting lifecycle
     
   </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../architecture/repo_map/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Architecture
-  
-
-    
-  </span>
-  
   
 
       </a>
@@ -1187,6 +1011,27 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l10n/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Localization
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1220,9 +1065,7 @@
         <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Prerequisites
-      
+      Prerequisites
     </span>
   </a>
   
@@ -1231,9 +1074,7 @@
         <li class="md-nav__item">
   <a href="#1-create-firebase-projects" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        1. Create Firebase Projects
-      
+      1. Create Firebase Projects
     </span>
   </a>
   
@@ -1242,9 +1083,7 @@
         <li class="md-nav__item">
   <a href="#2-update-firebaserc" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        2. Update .firebaserc
-      
+      2. Update .firebaserc
     </span>
   </a>
   
@@ -1253,9 +1092,7 @@
         <li class="md-nav__item">
   <a href="#3-initialize-core-firebase-services" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        3. Initialize Core Firebase Services
-      
+      3. Initialize Core Firebase Services
     </span>
   </a>
   
@@ -1265,9 +1102,7 @@
           <li class="md-nav__item">
   <a href="#firestore" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Firestore
-      
+      Firestore
     </span>
   </a>
   
@@ -1276,9 +1111,7 @@
           <li class="md-nav__item">
   <a href="#realtime-database" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Realtime Database
-      
+      Realtime Database
     </span>
   </a>
   
@@ -1287,9 +1120,7 @@
           <li class="md-nav__item">
   <a href="#firebase-authentication" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Firebase Authentication
-      
+      Firebase Authentication
     </span>
   </a>
   
@@ -1303,9 +1134,7 @@
         <li class="md-nav__item">
   <a href="#4-configure-firebase-hosting" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        4. Configure Firebase Hosting
-      
+      4. Configure Firebase Hosting
     </span>
   </a>
   
@@ -1315,9 +1144,7 @@
           <li class="md-nav__item">
   <a href="#same-origin-callable-routing-api" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Same-origin callable routing (/api/*)
-      
+      Same-origin callable routing (/api/*)
     </span>
   </a>
   
@@ -1326,9 +1153,7 @@
           <li class="md-nav__item">
   <a href="#content-security-policy-csp" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Content Security Policy (CSP)
-      
+      Content Security Policy (CSP)
     </span>
   </a>
   
@@ -1337,9 +1162,7 @@
           <li class="md-nav__item">
   <a href="#adding-a-new-third-party-script" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Adding a new third-party script
-      
+      Adding a new third-party script
     </span>
   </a>
   
@@ -1348,9 +1171,7 @@
           <li class="md-nav__item">
   <a href="#template-sync" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Template sync
-      
+      Template sync
     </span>
   </a>
   
@@ -1364,9 +1185,7 @@
         <li class="md-nav__item">
   <a href="#5-configure-firebase-functions" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        5. Configure Firebase Functions
-      
+      5. Configure Firebase Functions
     </span>
   </a>
   
@@ -1376,9 +1195,7 @@
           <li class="md-nav__item">
   <a href="#install-dependencies-and-build-functions" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Install dependencies and build functions
-      
+      Install dependencies and build functions
     </span>
   </a>
   
@@ -1387,9 +1204,7 @@
           <li class="md-nav__item">
   <a href="#deploy-functions" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Deploy functions
-      
+      Deploy functions
     </span>
   </a>
   
@@ -1398,9 +1213,7 @@
           <li class="md-nav__item">
   <a href="#inspect-current-runtime-config" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Inspect current runtime config
-      
+      Inspect current runtime config
     </span>
   </a>
   
@@ -1414,9 +1227,7 @@
         <li class="md-nav__item">
   <a href="#6-create-required-cloud-tasks-queue" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        6. Create Required Cloud Tasks Queue
-      
+      6. Create Required Cloud Tasks Queue
     </span>
   </a>
   
@@ -1425,9 +1236,7 @@
         <li class="md-nav__item">
   <a href="#7-deploy-rules-and-indexes" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        7. Deploy Rules and Indexes
-      
+      7. Deploy Rules and Indexes
     </span>
   </a>
   
@@ -1436,9 +1245,7 @@
         <li class="md-nav__item">
   <a href="#8-set-functions-runtime-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        8. Set Functions Runtime Configuration
-      
+      8. Set Functions Runtime Configuration
     </span>
   </a>
   
@@ -1448,9 +1255,7 @@
           <li class="md-nav__item">
   <a href="#what-these-values-are-for" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        What these values are for
-      
+      What these values are for
     </span>
   </a>
   
@@ -1464,9 +1269,7 @@
         <li class="md-nav__item">
   <a href="#9-configure-the-flutter-client" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        9. Configure the Flutter Client
-      
+      9. Configure the Flutter Client
     </span>
   </a>
   
@@ -1476,9 +1279,7 @@
           <li class="md-nav__item">
   <a href="#required-values-in-clientenv" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Required values in client/.env
-      
+      Required values in client/.env
     </span>
   </a>
   
@@ -1487,9 +1288,7 @@
           <li class="md-nav__item">
   <a href="#google-sign-in-client-id" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Google Sign-In Client ID
-      
+      Google Sign-In Client ID
     </span>
   </a>
   
@@ -1503,9 +1302,7 @@
         <li class="md-nav__item">
   <a href="#10-optional-third-party-integrations" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        10. Optional Third-Party Integrations
-      
+      10. Optional Third-Party Integrations
     </span>
   </a>
   
@@ -1515,9 +1312,7 @@
           <li class="md-nav__item">
   <a href="#agora" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Agora
-      
+      Agora
     </span>
   </a>
   
@@ -1526,9 +1321,7 @@
           <li class="md-nav__item">
   <a href="#mux" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Mux
-      
+      Mux
     </span>
   </a>
   
@@ -1537,9 +1330,7 @@
           <li class="md-nav__item">
   <a href="#cloudinary" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Cloudinary
-      
+      Cloudinary
     </span>
   </a>
   
@@ -1548,9 +1339,7 @@
           <li class="md-nav__item">
   <a href="#stripe" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Stripe
-      
+      Stripe
     </span>
   </a>
   
@@ -1559,9 +1348,7 @@
           <li class="md-nav__item">
   <a href="#sendgrid" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        SendGrid
-      
+      SendGrid
     </span>
   </a>
   
@@ -1570,9 +1357,7 @@
           <li class="md-nav__item">
   <a href="#email-authentication-dns-records" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Email Authentication DNS Records
-      
+      Email Authentication DNS Records
     </span>
   </a>
   
@@ -1581,9 +1366,7 @@
           <li class="md-nav__item">
   <a href="#dnssec" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        DNSSEC
-      
+      DNSSEC
     </span>
   </a>
   
@@ -1597,9 +1380,7 @@
         <li class="md-nav__item">
   <a href="#11-build-and-deploy" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        11. Build and Deploy
-      
+      11. Build and Deploy
     </span>
   </a>
   
@@ -1609,9 +1390,7 @@
           <li class="md-nav__item">
   <a href="#step-1-select-the-target-project" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Step 1: Select the target project
-      
+      Step 1: Select the target project
     </span>
   </a>
   
@@ -1620,9 +1399,7 @@
           <li class="md-nav__item">
   <a href="#step-2-deploy-rules-and-indexes" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Step 2: Deploy rules and indexes
-      
+      Step 2: Deploy rules and indexes
     </span>
   </a>
   
@@ -1631,9 +1408,7 @@
           <li class="md-nav__item">
   <a href="#step-3-build-and-deploy-functions" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Step 3: Build and deploy functions
-      
+      Step 3: Build and deploy functions
     </span>
   </a>
   
@@ -1642,9 +1417,7 @@
           <li class="md-nav__item">
   <a href="#step-4-build-the-flutter-client" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Step 4: Build the Flutter client
-      
+      Step 4: Build the Flutter client
     </span>
   </a>
   
@@ -1653,9 +1426,7 @@
           <li class="md-nav__item">
   <a href="#step-5-deploy-hosting" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Step 5: Deploy hosting
-      
+      Step 5: Deploy hosting
     </span>
   </a>
   
@@ -1669,9 +1440,7 @@
         <li class="md-nav__item">
   <a href="#12-post-deployment-verification-checklist" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        12. Post-Deployment Verification Checklist
-      
+      12. Post-Deployment Verification Checklist
     </span>
   </a>
   
@@ -1681,9 +1450,7 @@
           <li class="md-nav__item">
   <a href="#core-platform" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Core platform
-      
+      Core platform
     </span>
   </a>
   
@@ -1692,9 +1459,7 @@
           <li class="md-nav__item">
   <a href="#video-events" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Video / events
-      
+      Video / events
     </span>
   </a>
   
@@ -1703,9 +1468,7 @@
           <li class="md-nav__item">
   <a href="#livestreaming" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Livestreaming
-      
+      Livestreaming
     </span>
   </a>
   
@@ -1714,9 +1477,7 @@
           <li class="md-nav__item">
   <a href="#media-and-messaging" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Media and messaging
-      
+      Media and messaging
     </span>
   </a>
   
@@ -1725,9 +1486,7 @@
           <li class="md-nav__item">
   <a href="#infrastructure" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Infrastructure
-      
+      Infrastructure
     </span>
   </a>
   
@@ -1741,9 +1500,7 @@
         <li class="md-nav__item">
   <a href="#13-recommended-environment-rollout-process" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        13. Recommended Environment Rollout Process
-      
+      13. Recommended Environment Rollout Process
     </span>
   </a>
   
@@ -1752,9 +1509,7 @@
         <li class="md-nav__item">
   <a href="#14-common-pitfalls" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        14. Common Pitfalls
-      
+      14. Common Pitfalls
     </span>
   </a>
   
@@ -1764,9 +1519,7 @@
           <li class="md-nav__item">
   <a href="#functions-deploy-but-fail-at-runtime" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Functions deploy but fail at runtime
-      
+      Functions deploy but fail at runtime
     </span>
   </a>
   
@@ -1775,9 +1528,7 @@
           <li class="md-nav__item">
   <a href="#wrong-firebase-project-deployed" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Wrong Firebase project deployed
-      
+      Wrong Firebase project deployed
     </span>
   </a>
   
@@ -1786,9 +1537,7 @@
           <li class="md-nav__item">
   <a href="#hosting-works-but-client-points-at-wrong-backend" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Hosting works but client points at wrong backend
-      
+      Hosting works but client points at wrong backend
     </span>
   </a>
   
@@ -1797,9 +1546,7 @@
           <li class="md-nav__item">
   <a href="#google-sign-in-does-not-work" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Google sign-in does not work
-      
+      Google sign-in does not work
     </span>
   </a>
   
@@ -1808,9 +1555,7 @@
           <li class="md-nav__item">
   <a href="#video-or-integrations-do-not-work" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Video or integrations do not work
-      
+      Video or integrations do not work
     </span>
   </a>
   
@@ -1819,9 +1564,7 @@
           <li class="md-nav__item">
   <a href="#scheduled-functions-do-not-run" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Scheduled functions do not run
-      
+      Scheduled functions do not run
     </span>
   </a>
   
@@ -1835,9 +1578,7 @@
         <li class="md-nav__item">
   <a href="#15-minimal-deployment-checklist" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        15. Minimal Deployment Checklist
-      
+      15. Minimal Deployment Checklist
     </span>
   </a>
   
@@ -1846,9 +1587,7 @@
         <li class="md-nav__item">
   <a href="#16-useful-commands-reference" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        16. Useful Commands Reference
-      
+      16. Useful Commands Reference
     </span>
   </a>
   
@@ -1864,7 +1603,6 @@
           
           
             <div class="md-content" data-md-component="content">
-              
               <article class="md-content__inner md-typeset">
                 
                   
@@ -1921,10 +1659,10 @@
 <p>Update <code>.firebaserc</code> at the repo root to point at your Firebase project IDs.</p>
 <p>Example structure:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"projects"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-staging-project-id"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"staging"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-staging-project-id"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"prod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-production-project-id"</span>
+<span class="w">  </span><span class="nt">&quot;projects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-staging-project-id&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;staging&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-staging-project-id&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;prod&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-production-project-id&quot;</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -1959,8 +1697,8 @@
 <p>All HTML page requests are routed through the <code>ServeIndex</code> Cloud Function, which injects a per-request Content Security Policy (CSP) nonce. A nonce is a random, single-use token generated fresh for each page load. The server includes the same nonce value in both the CSP header and on each trusted <code>&lt;script&gt;</code> tag. The browser only executes scripts whose nonce attribute matches the one in the CSP header. Because an attacker cannot predict the nonce for a given request, injected scripts will not have the correct nonce and will be blocked. Static assets (JS, CSS, images, fonts) are served directly by Firebase Hosting without going through the function.</p>
 <p>This is configured by the catch-all rewrite in <code>firebase.json</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"**"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"function"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ServeIndex"</span>
+<span class="w">  </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;**&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;function&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ServeIndex&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
 <h3 id="same-origin-callable-routing-api">Same-origin callable routing (<code>/api/*</code>)</h3>
@@ -1968,7 +1706,7 @@
 <code>https://&lt;your-host&gt;/api/&lt;FunctionName&gt;</code>, which <code>firebase.json</code> rewrites to the
 matching function. These <code>/api/*</code> rewrites are listed <strong>above</strong> the <code>ServeIndex</code>
 catch-all so they take precedence (Firebase Hosting uses first-match-wins):</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"> </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/api/GetMeetingJoinInfo"</span><span class="p">,</span><span class="w"> </span><span class="nt">"function"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GetMeetingJoinInfo"</span><span class="w"> </span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"> </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/api/GetMeetingJoinInfo&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;function&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GetMeetingJoinInfo&quot;</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <p>Routing callables through the app's own origin avoids the separate
 <code>us-central1-&lt;project&gt;.cloudfunctions.net</code> host, which some clients cannot reach
@@ -2051,26 +1789,26 @@ firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class=
 <p>A sample configuration file is at <code>firebase/functions/.runtimeconfig.json.example</code>. Copy it to <code>firebase/functions/.runtimeconfig.json</code> for local development.</p>
 <p>For production, set values using the Firebase CLI:</p>
 <div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>functions:config:set<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.domain<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.legal_entity_name<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.alt_email_domain<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.no_reply_email<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.unsubscribe_encryption_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.name<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.full_url<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.privacy_policy_url<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.mailing_address<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.banner_image_url<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.functions_url_prefix<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.project_id<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.copyright<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.google_id<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.version<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>ics.prod_id<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>xmlns.url<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>xmlns.media_url<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>functions.on_firestore.min_instances<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>functions.update_live_stream_participant_count.min_instances<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+<span class="w">  </span>app.domain<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.legal_entity_name<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.alt_email_domain<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.no_reply_email<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.unsubscribe_encryption_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.name<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.full_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.privacy_policy_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.mailing_address<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.banner_image_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.functions_url_prefix<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.project_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.copyright<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.google_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.version<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ics.prod_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>xmlns.url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>xmlns.media_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>functions.on_firestore.min_instances<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>functions.update_live_stream_participant_count.min_instances<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
 </code></pre></div>
 <h3 id="what-these-values-are-for">What these values are for</h3>
 <p><strong>Application settings</strong></p>
@@ -2156,14 +1894,14 @@ AGORA_APP_ID=<value>           # For client-side connections to Agora.</p>
 <p>You only need to configure the services your instance will use.</p>
 <h3 id="agora">Agora</h3>
 <p>Agora powers video functionality. Set these values via <code>firebase functions:config:set</code>:</p>
-<div class="highlight"><pre><span></span><code>agora.app_id<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-agora.app_certificate<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-agora.rest_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-agora.rest_secret<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-agora.storage_bucket_name<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-agora.storage_access_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-agora.storage_secret_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-agora.webhook_secret<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+<div class="highlight"><pre><span></span><code>agora.app_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.app_certificate<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.rest_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.rest_secret<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.storage_bucket_name<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.storage_access_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.storage_secret_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.webhook_secret<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
 </code></pre></div>
 <p>Setup summary:</p>
 <ul>
@@ -2175,18 +1913,18 @@ agora.webhook_secret<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HER
 </ul>
 <h3 id="mux">Mux</h3>
 <p>Mux supports livestream workflows. Set via <code>firebase functions:config:set</code>:</p>
-<div class="highlight"><pre><span></span><code>mux.token_id<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-mux.secret<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+<div class="highlight"><pre><span></span><code>mux.token_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+mux.secret<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
 </code></pre></div>
 <p>Also configure Mux webhooks in the Mux dashboard to POST to your deployed <code>MuxWebhooks</code> function URL.</p>
 <h3 id="cloudinary">Cloudinary</h3>
 <p>Cloudinary is used for media uploads. Configuration is done entirely via <code>client/.env</code> (see step 9). No source files need to be edited.</p>
 <h3 id="stripe">Stripe</h3>
 <p>Stripe is currently disabled by default. If you enable it, set via <code>firebase functions:config:set</code>:</p>
-<div class="highlight"><pre><span></span><code>stripe.connected_account_webhook_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-stripe.pub_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-stripe.secret_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
-stripe.webhook_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+<div class="highlight"><pre><span></span><code>stripe.connected_account_webhook_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+stripe.pub_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+stripe.secret_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+stripe.webhook_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
 </code></pre></div>
 <p>Also create products and pricing with a <code>plan_type</code> metadata field (<code>individual</code>, <code>club</code>, or <code>pro</code>) and configure prices for each.</p>
 <h3 id="sendgrid">SendGrid</h3>
@@ -2356,7 +2094,7 @@ firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class=
 
 <span class="c1"># Inspect / set runtime config</span>
 firebase<span class="w"> </span>functions:config:get
-firebase<span class="w"> </span>functions:config:set<span class="w"> </span>app.name<span class="o">=</span><span class="s2">"Your App Name"</span>
+firebase<span class="w"> </span>functions:config:set<span class="w"> </span>app.name<span class="o">=</span><span class="s2">&quot;Your App Name&quot;</span>
 
 <span class="c1"># Create Cloud Tasks queue</span>
 gcloud<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>project<span class="w"> </span>YOUR-FIREBASE-PROJECT-ID
@@ -2414,13 +2152,10 @@ firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class=
     </div>
     
     
-    
-      
-      
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "navigation.sections", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "navigation.sections", "search.suggest"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
       
     
   </body>
