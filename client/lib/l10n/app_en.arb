@@ -489,7 +489,7 @@
   "confirmDeleteAnnouncement": "Are you sure you want to delete this announcement?",
   "confirmDeleteResource": "Are you sure you want to delete this resource?",
   "confirmRemoveMessage": "Are you sure you want to remove this message?",
-  "confirmRemoveTemplate": "Are you sure you want to remove this template?",
+  "confirmRemoveTemplate": "Are you sure you want to delete this template? This action cannot be undone.",
   "delete": "Delete",
   "deleteAnnouncement": "Delete Announcement",
   "deleteResource": "Delete Resource",
