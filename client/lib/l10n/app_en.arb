@@ -413,7 +413,7 @@
   "cancelCurrentPlan": "Cancel current plan?",
   "cancelEmailEdit": "Cancel",
   "cancelEvent": "Cancel Event",
-  "cancelEventConfirmation": "Are you sure you want to cancel event? This cannot be undone and will notify all participants.",
+  "cancelEventConfirmation": "Are you sure you want to cancel this event? This action cannot be undone.",
   "cancelHelpNeeded": "Cancel Help Needed",
   "cancelParticipation": "Cancel Participation",
   "cannotPlayVimeoVideo": "Cannot play Vimeo video",
