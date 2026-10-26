@@ -49,14 +49,17 @@ Future<void> _sendEndedEmail({
   required Event event,
   required NotificationsUtils notificationsUtils,
 }) async {
-  final participantDocs = await firestore
-      .collection('$eventPath/event-participants')
-      .get();
+  final participantDocs =
+      await firestore.collection('$eventPath/event-participants').get();
   final activeParticipantIds = participantDocs.documents
-      .map((doc) => Participant.fromJson(
-            firestoreUtils.fromFirestoreJson(doc.data.toMap()),
-          ),)
-      .where((p) => p.status == ParticipantStatus.active)
+      .map(
+        (doc) => Participant.fromJson(
+          firestoreUtils.fromFirestoreJson(doc.data.toMap()),
+        ),
+      )
+      .where((p) =>
+          p.status == ParticipantStatus.active &&
+          p.mostRecentPresentTime != null)
       .map((p) => p.id)
       .whereType<String>()
       .toList();
