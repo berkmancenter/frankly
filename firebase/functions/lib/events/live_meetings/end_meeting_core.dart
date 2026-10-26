@@ -29,11 +29,14 @@ Future<void> endMeetingCore({
     agoraUtils: agoraUtils,
   );
 
+  // Email failure must not skip analytics; the meeting is already ended.
   final emailFuture = _sendEndedEmail(
     eventPath: eventPath,
     event: event,
     notificationsUtils: notificationsUtils,
-  );
+  ).catchError((Object e) {
+    print('Failed to send meeting ended emails: $e');
+  });
 
   await Future.wait([recordingsFuture, emailFuture]);
 
