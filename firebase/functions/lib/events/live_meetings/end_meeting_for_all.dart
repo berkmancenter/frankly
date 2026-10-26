@@ -17,9 +17,10 @@ class EndMeetingForAll extends OnCallMethod<EndMeetingForAllRequest> {
   NotificationsUtils notificationsUtils;
   AgoraUtils agoraUtils;
 
-  EndMeetingForAll(
-      {NotificationsUtils? notificationsUtils, AgoraUtils? agoraUtils,})
-      : notificationsUtils = notificationsUtils ?? NotificationsUtils(),
+  EndMeetingForAll({
+    NotificationsUtils? notificationsUtils,
+    AgoraUtils? agoraUtils,
+  })  : notificationsUtils = notificationsUtils ?? NotificationsUtils(),
         agoraUtils = agoraUtils ?? AgoraUtils(),
         super(
           kEndMeetingForAllApi,
@@ -69,6 +70,13 @@ class EndMeetingForAll extends OnCallMethod<EndMeetingForAllRequest> {
         UpdateData.fromMap({
           LiveMeeting.kFieldMeetingEndedAt:
               Firestore.fieldValues.serverTimestamp(),
+        }),
+      );
+      // Mirror on the Event doc so listings can tell it ended.
+      transaction.update(
+        firestore.document(request.eventPath),
+        UpdateData.fromMap({
+          Event.kFieldEndedAt: Firestore.fieldValues.serverTimestamp(),
         }),
       );
       return true;

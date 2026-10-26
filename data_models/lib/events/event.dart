@@ -57,6 +57,7 @@ class Event with _$Event implements SerializeableRequest {
   static const String kDurationInMinutes = 'durationInMinutes';
   static const String kFieldEventSettings = 'eventSettings';
   static const String kFieldCommunityId = 'communityId';
+  static const String kFieldEndedAt = 'endedAt';
 
   static const int defaultMinParticipants = 0;
   static const int defaultMaxParticipants = 8;
@@ -103,6 +104,10 @@ class Event with _$Event implements SerializeableRequest {
     PrePostCard? postEventCardData,
     EventSettings? eventSettings,
     @Default(60) int durationInMinutes,
+
+    /// Set server-side when the meeting is ended (manually or auto-end).
+    @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+    DateTime? endedAt,
 
     /// ID used to tie meetings back to external communities
     String? externalCommunityId,

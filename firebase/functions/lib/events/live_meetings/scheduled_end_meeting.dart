@@ -4,6 +4,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import '../../on_request_method.dart';
+import '../../utils/infra/emulator_utils.dart';
 import '../../utils/infra/firestore_utils.dart';
 import '../../utils/notifications_utils.dart';
 import 'agora_api.dart';
@@ -34,8 +35,9 @@ class ScheduledEndMeeting extends OnRequestMethod<EndMeetingForAllRequest> {
     // Only Cloud Tasks sets X-CloudTasks-TaskName. Cloud Functions strips
     // this header from external requests, so its presence confirms the
     // call originated from a Cloud Tasks queue.
+    // If emulated, calls directly without the header (env-based flag).
     final taskName = expressRequest.headers.value('X-CloudTasks-TaskName');
-    if (taskName == null || taskName.isEmpty) {
+    if (!isEmulator && (taskName == null || taskName.isEmpty)) {
       expressRequest.response.statusCode = 403;
       expressRequest.response.write('Forbidden');
       return;
@@ -83,6 +85,13 @@ class ScheduledEndMeeting extends OnRequestMethod<EndMeetingForAllRequest> {
         UpdateData.fromMap({
           LiveMeeting.kFieldMeetingEndedAt:
               Firestore.fieldValues.serverTimestamp(),
+        }),
+      );
+      // Mirror on the Event doc so listings can tell it ended.
+      transaction.update(
+        firestore.document(request.eventPath),
+        UpdateData.fromMap({
+          Event.kFieldEndedAt: Firestore.fieldValues.serverTimestamp(),
         }),
       );
       return true;

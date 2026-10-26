@@ -104,6 +104,11 @@ void main() {
         constructor: (map) => LiveMeeting.fromJson(map),
       );
       expect(liveMeeting.meetingEndedAt, isNotNull);
+      final endedEvent = await firestoreUtils.getFirestoreObject(
+        path: event.fullPath,
+        constructor: (map) => Event.fromJson(map),
+      );
+      expect(endedEvent.endedAt, isNotNull);
 
       // Verify email was sent.
       verify(

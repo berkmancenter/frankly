@@ -105,6 +105,11 @@ void main() {
         constructor: (map) => LiveMeeting.fromJson(map),
       );
       expect(liveMeeting.meetingEndedAt, isNotNull);
+      final endedEvent = await firestoreUtils.getFirestoreObject(
+        path: event.fullPath,
+        constructor: (map) => Event.fromJson(map),
+      );
+      expect(endedEvent.endedAt, isNotNull);
 
       // Verify email was sent.
       verify(
@@ -138,6 +143,11 @@ void main() {
         constructor: (map) => LiveMeeting.fromJson(map),
       );
       expect(liveMeeting.meetingEndedAt, isNull);
+      final storedEvent = await firestoreUtils.getFirestoreObject(
+        path: event.fullPath,
+        constructor: (map) => Event.fromJson(map),
+      );
+      expect(storedEvent.endedAt, isNull);
     }
 
     test('skips if auto-end was disabled after scheduling', () async {

@@ -60,6 +60,10 @@ mixin _$Event {
   EventSettings? get eventSettings => throw _privateConstructorUsedError;
   int get durationInMinutes => throw _privateConstructorUsedError;
 
+  /// Set server-side when the meeting is ended (manually or auto-end).
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  DateTime? get endedAt => throw _privateConstructorUsedError;
+
   /// ID used to tie meetings back to external communities
   String? get externalCommunityId => throw _privateConstructorUsedError;
 
@@ -130,6 +134,8 @@ abstract class $EventCopyWith<$Res> {
       PrePostCard? postEventCardData,
       EventSettings? eventSettings,
       int durationInMinutes,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      DateTime? endedAt,
       String? externalCommunityId,
       String? externalCommunityStatus,
       int? participantCountEstimate,
@@ -185,6 +191,7 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
     Object? postEventCardData = freezed,
     Object? eventSettings = freezed,
     Object? durationInMinutes = null,
+    Object? endedAt = freezed,
     Object? externalCommunityId = freezed,
     Object? externalCommunityStatus = freezed,
     Object? participantCountEstimate = freezed,
@@ -301,6 +308,10 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
           ? _value.durationInMinutes
           : durationInMinutes // ignore: cast_nullable_to_non_nullable
               as int,
+      endedAt: freezed == endedAt
+          ? _value.endedAt
+          : endedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       externalCommunityId: freezed == externalCommunityId
           ? _value.externalCommunityId
           : externalCommunityId // ignore: cast_nullable_to_non_nullable
@@ -444,6 +455,8 @@ abstract class _$$_EventCopyWith<$Res> implements $EventCopyWith<$Res> {
       PrePostCard? postEventCardData,
       EventSettings? eventSettings,
       int durationInMinutes,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      DateTime? endedAt,
       String? externalCommunityId,
       String? externalCommunityStatus,
       int? participantCountEstimate,
@@ -501,6 +514,7 @@ class __$$_EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res, _$_Event>
     Object? postEventCardData = freezed,
     Object? eventSettings = freezed,
     Object? durationInMinutes = null,
+    Object? endedAt = freezed,
     Object? externalCommunityId = freezed,
     Object? externalCommunityStatus = freezed,
     Object? participantCountEstimate = freezed,
@@ -617,6 +631,10 @@ class __$$_EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res, _$_Event>
           ? _value.durationInMinutes
           : durationInMinutes // ignore: cast_nullable_to_non_nullable
               as int,
+      endedAt: freezed == endedAt
+          ? _value.endedAt
+          : endedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       externalCommunityId: freezed == externalCommunityId
           ? _value.externalCommunityId
           : externalCommunityId // ignore: cast_nullable_to_non_nullable
@@ -683,6 +701,8 @@ class _$_Event extends _Event {
       this.postEventCardData,
       this.eventSettings,
       this.durationInMinutes = 60,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      this.endedAt,
       this.externalCommunityId,
       this.externalCommunityStatus,
       this.participantCountEstimate,
@@ -764,6 +784,11 @@ class _$_Event extends _Event {
   @JsonKey()
   final int durationInMinutes;
 
+  /// Set server-side when the meeting is ended (manually or auto-end).
+  @override
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  final DateTime? endedAt;
+
   /// ID used to tie meetings back to external communities
   @override
   final String? externalCommunityId;
@@ -797,7 +822,7 @@ class _$_Event extends _Event {
 
   @override
   String toString() {
-    return 'Event(id: $id, status: $status, nullableEventType: $nullableEventType, collectionPath: $collectionPath, communityId: $communityId, templateId: $templateId, creatorId: $creatorId, prerequisiteTemplateId: $prerequisiteTemplateId, creatorDisplayName: $creatorDisplayName, createdDate: $createdDate, scheduledTime: $scheduledTime, scheduledTimeZone: $scheduledTimeZone, title: $title, description: $description, image: $image, isPublic: $isPublic, minParticipants: $minParticipants, maxParticipants: $maxParticipants, agendaItems: $agendaItems, waitingRoomInfo: $waitingRoomInfo, breakoutRoomDefinition: $breakoutRoomDefinition, isLocked: $isLocked, liveStreamInfo: $liveStreamInfo, preEventCardData: $preEventCardData, postEventCardData: $postEventCardData, eventSettings: $eventSettings, durationInMinutes: $durationInMinutes, externalCommunityId: $externalCommunityId, externalCommunityStatus: $externalCommunityStatus, participantCountEstimate: $participantCountEstimate, presentParticipantCountEstimate: $presentParticipantCountEstimate, registrationCount: $registrationCount, breakoutMatchIdsToRecord: $breakoutMatchIdsToRecord)';
+    return 'Event(id: $id, status: $status, nullableEventType: $nullableEventType, collectionPath: $collectionPath, communityId: $communityId, templateId: $templateId, creatorId: $creatorId, prerequisiteTemplateId: $prerequisiteTemplateId, creatorDisplayName: $creatorDisplayName, createdDate: $createdDate, scheduledTime: $scheduledTime, scheduledTimeZone: $scheduledTimeZone, title: $title, description: $description, image: $image, isPublic: $isPublic, minParticipants: $minParticipants, maxParticipants: $maxParticipants, agendaItems: $agendaItems, waitingRoomInfo: $waitingRoomInfo, breakoutRoomDefinition: $breakoutRoomDefinition, isLocked: $isLocked, liveStreamInfo: $liveStreamInfo, preEventCardData: $preEventCardData, postEventCardData: $postEventCardData, eventSettings: $eventSettings, durationInMinutes: $durationInMinutes, endedAt: $endedAt, externalCommunityId: $externalCommunityId, externalCommunityStatus: $externalCommunityStatus, participantCountEstimate: $participantCountEstimate, presentParticipantCountEstimate: $presentParticipantCountEstimate, registrationCount: $registrationCount, breakoutMatchIdsToRecord: $breakoutMatchIdsToRecord)';
   }
 
   @override
@@ -855,6 +880,7 @@ class _$_Event extends _Event {
                 other.eventSettings == eventSettings) &&
             (identical(other.durationInMinutes, durationInMinutes) ||
                 other.durationInMinutes == durationInMinutes) &&
+            (identical(other.endedAt, endedAt) || other.endedAt == endedAt) &&
             (identical(other.externalCommunityId, externalCommunityId) ||
                 other.externalCommunityId == externalCommunityId) &&
             (identical(
@@ -904,6 +930,7 @@ class _$_Event extends _Event {
         postEventCardData,
         eventSettings,
         durationInMinutes,
+        endedAt,
         externalCommunityId,
         externalCommunityStatus,
         participantCountEstimate,
@@ -962,6 +989,8 @@ abstract class _Event extends Event {
       final PrePostCard? postEventCardData,
       final EventSettings? eventSettings,
       final int durationInMinutes,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      final DateTime? endedAt,
       final String? externalCommunityId,
       final String? externalCommunityStatus,
       final int? participantCountEstimate,
@@ -1037,6 +1066,11 @@ abstract class _Event extends Event {
   EventSettings? get eventSettings;
   @override
   int get durationInMinutes;
+  @override
+
+  /// Set server-side when the meeting is ended (manually or auto-end).
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  DateTime? get endedAt;
   @override
 
   /// ID used to tie meetings back to external communities
