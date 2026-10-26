@@ -81,6 +81,9 @@ class _HomePageEventCardState extends State<HomePageEventCard> {
         height: 100,
         child: VerticalTimeAndDateIndicator(
           time: widget.event.scheduledTime ?? clockService.now(),
+          endTime: widget.event.scheduledTime?.add(
+            Duration(minutes: widget.event.durationInMinutes),
+          ),
           shadow: false,
           padding: const EdgeInsets.all(3),
         ),

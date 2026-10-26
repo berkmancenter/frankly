@@ -3607,6 +3607,17 @@ class MockCloudFunctionsEventService extends _i1.Mock
       ) as _i40.Future<void>);
 
   @override
+  _i40.Future<void> endMeetingForAll(_i18.EndMeetingForAllRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #endMeetingForAll,
+          [request],
+        ),
+        returnValue: _i40.Future<void>.value(),
+        returnValueForMissingStub: _i40.Future<void>.value(),
+      ) as _i40.Future<void>);
+
+  @override
   _i40.Future<_i18.GetCommunityCalendarLinkResponse> getCommunityCalendarLink(
           _i18.GetCommunityCalendarLinkRequest? request) =>
       (super.noSuchMethod(
