@@ -80,11 +80,15 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
   }
 
   Future<void> _showDeleteDialog() async {
-    final title = _presenter.getTitle();
+    final isPreEvent = widget.prePostCardType == PrePostCardType.preEvent;
 
     await DeleteDialog(
-      title: context.l10n.deleteAgendaItemName(title),
-      content: context.l10n.confirmDelete,
+      title: isPreEvent
+          ? context.l10n.deletePreEventItem
+          : context.l10n.deletePostEventItem,
+      content: isPreEvent
+          ? context.l10n.confirmDeletePreEventItem
+          : context.l10n.confirmDeletePostEventItem,
       onConfirm: (context) {
         Navigator.pop(context);
         widget.onDelete();

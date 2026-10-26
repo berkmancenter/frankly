@@ -212,8 +212,8 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
 
   Future<void> _showClearAgendaItemsDialog() async {
     final delete = await DeleteDialog(
-      title: context.l10n.clearAgenda,
-      content: context.l10n.confirmRemoveAllAgendaItems,
+      title: context.l10n.deleteAllAgendaItems,
+      content: context.l10n.confirmDeleteAllAgendaItems,
     ).show(context: context);
 
     if (delete && mounted) {

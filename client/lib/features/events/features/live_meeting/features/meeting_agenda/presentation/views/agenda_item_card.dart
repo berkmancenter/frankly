@@ -360,7 +360,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
   Future<void> _showDeleteDialog() async {
     final delete = await DeleteDialog(
       title: context.l10n.deleteAgendaItemGeneral,
-      content: context.l10n.confirmDelete,
+      content: context.l10n.confirmDeleteAgendaItem,
     ).show(context: context);
 
     if (delete && mounted) {

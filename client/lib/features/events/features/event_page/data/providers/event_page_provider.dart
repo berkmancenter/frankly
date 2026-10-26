@@ -306,6 +306,7 @@ class EventPageProvider with ChangeNotifier {
       content:
           appLocalizationService.getLocalization().cancelEventConfirmation,
       confirmText: appLocalizationService.getLocalization().cancelEvent,
+      cancelText: appLocalizationService.getLocalization().keepEvent,
     ).show();
     if (!cancel) return false;
 

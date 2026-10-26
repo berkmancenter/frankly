@@ -246,8 +246,8 @@ class _MeetingGuideCardItemUserSuggestionsState
                         ),
                         onTap: () async {
                           final isSuccess = await DeleteDialog(
-                            title: context.l10n.removeSuggestion,
-                            confirmText: context.l10n.remove,
+                            title: context.l10n.deleteSuggestion,
+                            content: context.l10n.confirmDeleteSuggestion,
                           ).show();
 
                           if (isSuccess && mounted) {

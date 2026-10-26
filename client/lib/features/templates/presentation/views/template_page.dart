@@ -776,9 +776,8 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
         } else if (value == 'removeTemplate') {
           if (!isRemoved) {
             final confirmed = await DeleteDialog(
-              title: context.l10n.removeTemplate,
+              title: context.l10n.deleteTemplate,
               content: context.l10n.confirmRemoveTemplate,
-              confirmText: context.l10n.remove,
             ).show();
             if (!confirmed || !mounted) return;
           }
