@@ -116,7 +116,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
   final Set<String> _handledBreakoutSessionIds = {};
 
-  late BehaviorSubjectWrapper<LiveMeeting> _liveMeetingStream;
+  BehaviorSubjectWrapper<LiveMeeting>? _liveMeetingStream;
   BehaviorSubjectWrapper<LiveMeeting>? _breakoutLiveMeetingStream;
 
   /// Used to detect changes in the main live meeting object
@@ -210,12 +210,12 @@ class LiveMeetingProvider with ChangeNotifier {
   List<MeetingProviderParticipant>? get meetingProviderParticipants =>
       _meetingProviderParticipants;
 
-  Stream<LiveMeeting>? get liveMeetingStream => _liveMeetingStream.stream;
+  Stream<LiveMeeting>? get liveMeetingStream => _liveMeetingStream?.stream;
 
   Stream<LiveMeeting>? get breakoutRoomLiveMeetingStream =>
       _breakoutLiveMeetingStream?.stream;
 
-  LiveMeeting? get liveMeeting => _liveMeetingStream.stream.valueOrNull;
+  LiveMeeting? get liveMeeting => _liveMeetingStream?.stream.valueOrNull;
 
   LiveMeeting? get breakoutRoomLiveMeeting =>
       _breakoutLiveMeetingStream?.stream.valueOrNull;
@@ -416,13 +416,14 @@ class LiveMeetingProvider with ChangeNotifier {
     shouldStartLocalAudioOn = audioDefaultOn;
     shouldStartLocalVideoOn = videoDefaultOn;
 
-    _liveMeetingStream = firestoreLiveMeetingService.liveMeetingStream(
+    final liveMeetingStream = firestoreLiveMeetingService.liveMeetingStream(
       parentDoc: eventPath,
       id: eventProvider.event.id,
     );
+    _liveMeetingStream = liveMeetingStream;
 
     _liveMeetingSubscription =
-        _liveMeetingStream.stream.listen(_onLiveMeetingChange);
+        liveMeetingStream.stream.listen(_onLiveMeetingChange);
     _selfParticipantSubscription =
         eventProvider.selfParticipantStream?.listen((currentParticipant) {
       if (currentParticipant.status == ParticipantStatus.banned) {
@@ -578,7 +579,7 @@ class LiveMeetingProvider with ChangeNotifier {
     );
 
     Future.microtask(() => navBarProvider.resetHideNav());
-    _liveMeetingStream.dispose();
+    _liveMeetingStream?.dispose();
     _breakoutLiveMeetingStream?.dispose();
     _assignedBreakoutRoomStream?.dispose();
     _overrideBreakoutRoomStream?.dispose();

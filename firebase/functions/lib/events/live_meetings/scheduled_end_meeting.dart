@@ -12,14 +12,17 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 
-class ScheduledEndMeeting
-    extends OnRequestMethod<EndMeetingForAllRequest> {
+class ScheduledEndMeeting extends OnRequestMethod<EndMeetingForAllRequest> {
+  // Clock skew allowance when checking the auto-end deadline.
+  static const _deadlineTolerance = Duration(minutes: 1);
+
   NotificationsUtils notificationsUtils;
   AgoraUtils agoraUtils;
 
-  ScheduledEndMeeting(
-      {NotificationsUtils? notificationsUtils, AgoraUtils? agoraUtils,})
-      : notificationsUtils = notificationsUtils ?? NotificationsUtils(),
+  ScheduledEndMeeting({
+    NotificationsUtils? notificationsUtils,
+    AgoraUtils? agoraUtils,
+  })  : notificationsUtils = notificationsUtils ?? NotificationsUtils(),
         agoraUtils = agoraUtils ?? AgoraUtils(),
         super(
           'ScheduledEndMeeting',
@@ -46,6 +49,23 @@ class ScheduledEndMeeting
       path: request.eventPath,
       constructor: (map) => Event.fromJson(map),
     );
+
+    // Skip stale tasks: auto-end turned off, or deadline moved later.
+    final scheduledTime = event.scheduledTime;
+    if (!(event.eventSettings?.autoEndMeeting ?? false) ||
+        scheduledTime == null) {
+      print('Auto-end disabled for ${request.eventPath}, skipping');
+      return '';
+    }
+    final gracePeriod =
+        (event.eventSettings?.autoEndGracePeriodMinutes ?? 0).clamp(0, 120);
+    final deadline = scheduledTime.add(
+      Duration(minutes: event.durationInMinutes + gracePeriod),
+    );
+    if (DateTime.now().isBefore(deadline.subtract(_deadlineTolerance))) {
+      print('Auto-end deadline not reached for ${request.eventPath}, skipping');
+      return '';
+    }
 
     // Atomically set meetingEndedAt. If already set, return (idempotent).
     final liveMeetingPath = '${request.eventPath}/live-meetings/${event.id}';

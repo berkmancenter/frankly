@@ -3,6 +3,8 @@ import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:firebase_admin_interop/firebase_admin_interop.dart'
+    show Firestore, UpdateData;
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/end_meeting_for_all.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
@@ -43,7 +45,18 @@ void main() {
         ),
       ],
     );
-    return eventTestUtils.createEvent(event: event, userId: adminUserId);
+    final created =
+        await eventTestUtils.createEvent(event: event, userId: adminUserId);
+    // Mark creator as attended for the ended-email filter.
+    await firestore
+        .document('${created.fullPath}/event-participants/$adminUserId')
+        .updateData(
+          UpdateData.fromMap({
+            Participant.kFieldMostRecentPresentTime:
+                Firestore.fieldValues.serverTimestamp(),
+          }),
+        );
+    return created;
   }
 
   group('EndMeetingForAll', () {
@@ -85,8 +98,7 @@ void main() {
       );
 
       // Verify meetingEndedAt was written.
-      final liveMeetingPath =
-          liveMeetingTestUtils.getLiveMeetingPath(event);
+      final liveMeetingPath = liveMeetingTestUtils.getLiveMeetingPath(event);
       final liveMeeting = await firestoreUtils.getFirestoreObject(
         path: liveMeetingPath,
         constructor: (map) => LiveMeeting.fromJson(map),

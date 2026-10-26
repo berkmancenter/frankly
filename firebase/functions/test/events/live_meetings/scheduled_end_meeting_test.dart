@@ -2,6 +2,8 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:firebase_admin_interop/firebase_admin_interop.dart'
+    show Firestore, UpdateData;
 import 'package:functions/events/live_meetings/scheduled_end_meeting.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:mocktail/mocktail.dart';
@@ -24,7 +26,11 @@ void main() {
     communityId = await communityTestUtils.createTestCommunity();
   });
 
-  Future<Event> createTestEvent() async {
+  // Defaults to auto-end on with the deadline already passed.
+  Future<Event> createTestEvent({
+    bool autoEnd = true,
+    Duration startedAgo = const Duration(hours: 2),
+  }) async {
     var event = Event(
       id: 'scheduled-end-test',
       status: EventStatus.active,
@@ -33,6 +39,8 @@ void main() {
       creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
+      scheduledTime: DateTime.now().subtract(startedAgo),
+      eventSettings: EventSettings(autoEndMeeting: autoEnd),
       agendaItems: [
         AgendaItem(
           id: '55005',
@@ -41,7 +49,18 @@ void main() {
         ),
       ],
     );
-    return eventTestUtils.createEvent(event: event, userId: adminUserId);
+    final created =
+        await eventTestUtils.createEvent(event: event, userId: adminUserId);
+    // Mark creator as attended for the ended-email filter.
+    await firestore
+        .document('${created.fullPath}/event-participants/$adminUserId')
+        .updateData(
+          UpdateData.fromMap({
+            Participant.kFieldMostRecentPresentTime:
+                Firestore.fieldValues.serverTimestamp(),
+          }),
+        );
+    return created;
   }
 
   group('ScheduledEndMeeting', () {
@@ -97,6 +116,38 @@ void main() {
           generateMessage: any(named: 'generateMessage'),
         ),
       ).called(1);
+    });
+
+    Future<void> expectNotEnded(Event event) async {
+      await liveMeetingTestUtils.addMeetingEvent(
+        liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+        liveMeetingId: event.id,
+        meetingEvent: LiveMeetingEvent(
+          event: LiveMeetingEventType.agendaItemStarted,
+          timestamp: DateTime.now(),
+        ),
+      );
+      final notificationsUtils = MockNotificationsUtils();
+      await ScheduledEndMeeting(
+        notificationsUtils: notificationsUtils,
+        agoraUtils: MockAgoraUtils(),
+      ).action(EndMeetingForAllRequest(eventPath: event.fullPath));
+
+      final liveMeeting = await firestoreUtils.getFirestoreObject(
+        path: liveMeetingTestUtils.getLiveMeetingPath(event),
+        constructor: (map) => LiveMeeting.fromJson(map),
+      );
+      expect(liveMeeting.meetingEndedAt, isNull);
+    }
+
+    test('skips if auto-end was disabled after scheduling', () async {
+      await expectNotEnded(await createTestEvent(autoEnd: false));
+    });
+
+    test('skips if the deadline has not been reached', () async {
+      await expectNotEnded(
+        await createTestEvent(startedAgo: const Duration(minutes: 5)),
+      );
     });
 
     test('is idempotent -- no-op if meetingEndedAt already set', () async {
