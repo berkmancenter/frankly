@@ -7,6 +7,7 @@ void main() {
   Future<void> pumpDialog(
     WidgetTester tester, {
     required ValueChanged<bool?> onResult,
+    String content = 'Are you sure?',
   }) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -15,9 +16,9 @@ void main() {
             onPressed: () async => onResult(
               await showDialog<bool>(
                 context: context,
-                builder: (_) => const DeleteDialog(
+                builder: (_) => DeleteDialog(
                   title: 'Delete Post',
-                  content: 'Are you sure?',
+                  content: content,
                   cancelText: 'Cancel',
                   confirmText: 'Delete',
                 ),
@@ -38,6 +39,43 @@ void main() {
     expect(find.text('Delete Post'), findsOneWidget);
     expect(find.text('Are you sure?'), findsOneWidget);
     expect(find.byIcon(Icons.close), findsNothing);
+  });
+
+  testWidgets('is capped at the design width on wide screens', (tester) async {
+    tester.view.physicalSize = const Size(1600, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await pumpDialog(
+      tester,
+      onResult: (_) {},
+      content: 'Are you sure you want to delete all agenda items from this '
+          'event? This action cannot be undone.',
+    );
+
+    expect(
+      tester.getSize(find.byType(AlertDialog)).width,
+      DeleteDialog.maxWidth,
+    );
+  });
+
+  testWidgets('shrinks to fit narrow screens', (tester) async {
+    tester.view.physicalSize = const Size(300, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await pumpDialog(
+      tester,
+      onResult: (_) {},
+      content: 'Are you sure you want to delete this post? This action '
+          'cannot be undone.',
+    );
+
+    expect(
+      tester.getSize(find.byType(AlertDialog)).width,
+      lessThanOrEqualTo(252),
+    );
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('delete button uses the error color', (tester) async {

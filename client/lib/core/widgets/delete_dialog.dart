@@ -11,6 +11,10 @@ class DeleteDialog extends StatelessWidget {
   static const Key confirmButtonKey = Key('delete-dialog-confirm-button');
   static const Key cancelButtonKey = Key('delete-dialog-cancel-button');
 
+  /// Maximum dialog width, from the design.
+  static const double maxWidth = 312;
+  static const double _screenMargin = 24;
+
   final String title;
   final String? content;
 
@@ -45,27 +49,40 @@ class DeleteDialog extends StatelessWidget {
     final onConfirm = this.onConfirm;
     final content = this.content;
 
-    return AlertDialog(
-      title: Text(title),
-      content: (content == null || content.isEmpty) ? null : Text(content),
-      actions: [
-        TextButton(
-          key: cancelButtonKey,
-          autofocus: true,
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(cancelText ?? context.l10n.cancel),
-        ),
-        TextButton(
-          key: confirmButtonKey,
-          style: TextButton.styleFrom(
-            foregroundColor: context.theme.colorScheme.error,
+    // AlertDialog sizes to its content (up to 560), which makes long messages
+    // wide. Cap the width to match the design, keeping a screen margin on
+    // narrow phones.
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: _screenMargin),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: maxWidth),
+          child: AlertDialog(
+            insetPadding: const EdgeInsets.symmetric(vertical: _screenMargin),
+            title: Text(title),
+            content:
+                (content == null || content.isEmpty) ? null : Text(content),
+            actions: [
+              TextButton(
+                key: cancelButtonKey,
+                autofocus: true,
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(cancelText ?? context.l10n.cancel),
+              ),
+              TextButton(
+                key: confirmButtonKey,
+                style: TextButton.styleFrom(
+                  foregroundColor: context.theme.colorScheme.error,
+                ),
+                onPressed: onConfirm != null
+                    ? () => onConfirm(context)
+                    : () => Navigator.of(context).pop(true),
+                child: Text(confirmText ?? context.l10n.delete),
+              ),
+            ],
           ),
-          onPressed: onConfirm != null
-              ? () => onConfirm(context)
-              : () => Navigator.of(context).pop(true),
-          child: Text(confirmText ?? context.l10n.delete),
         ),
-      ],
+      ),
     );
   }
 }
