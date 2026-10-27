@@ -487,7 +487,7 @@
   "confirmDeletePreEventItem": "Are you sure you want to delete this pre-event agenda item? This action cannot be undone.",
   "confirmDeleteResource": "Are you sure you want to delete this resource? This action cannot be undone.",
   "confirmDeleteSuggestion": "Are you sure you want to delete this suggestion? This action cannot be undone.",
-  "confirmRemoveTemplate": "Are you sure you want to delete this template? This action cannot be undone.",
+  "confirmRemoveTemplate": "Are you sure you want to delete this template?",
   "delete": "Delete",
   "deleteAllAgendaItems": "Delete All Agenda Items",
   "deleteAnnouncement": "Delete Announcement",
