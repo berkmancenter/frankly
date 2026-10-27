@@ -60,6 +60,8 @@
       "StripeWebhooks"
     ],
     "firebase/functions/lib/admin/payments/analytics_util.dart": [
+      "endMeetingForAll",
+      "ScheduledEndMeeting",
       "createStripeConnectedAccount",
       "StripeWebhooks"
     ],
@@ -168,6 +170,8 @@
       "KickParticipant",
       "VoteToKick",
       "eventEnded",
+      "endMeetingForAll",
+      "ScheduledEndMeeting",
       "LiveMeetingOnWrite"
     ],
     "firebase/functions/lib/events/live_meetings/create_live_stream.dart": [
@@ -180,7 +184,22 @@
       "GetMeetingPollData"
     ],
     "firebase/functions/lib/events/live_meetings/get_meeting_join_info.dart": [
-      "GetMeetingJoinInfo"
+      "GetMeetingJoinInfo",
+      "ScheduledEndMeeting"
+    ],
+    "firebase/functions/lib/events/live_meetings/end_meeting_for_all.dart": [
+      "endMeetingForAll"
+    ],
+    "firebase/functions/lib/events/live_meetings/scheduled_end_meeting.dart": [
+      "ScheduledEndMeeting"
+    ],
+    "firebase/functions/lib/events/live_meetings/end_meeting_core.dart": [
+      "endMeetingForAll",
+      "ScheduledEndMeeting"
+    ],
+    "firebase/functions/lib/events/live_meetings/stop_all_event_recordings.dart": [
+      "endMeetingForAll",
+      "ScheduledEndMeeting"
     ],
     "firebase/functions/lib/events/live_meetings/get_user_id_from_agora_id.dart": [
       "GetUserIdFromAgoraId"
@@ -301,6 +320,8 @@
       "TemplateOnCreate"
     ],
     "firebase/functions/lib/utils/infra/scheduled_functions.dart": [
+      "GetMeetingJoinInfo",
+      "ScheduledEndMeeting",
       "ExtendCloudTaskScheduler",
       "CheckAssignToBreakoutsServer",
       "CheckHostlessGoToBreakoutsServer",
@@ -315,7 +336,24 @@
     ],
     "firebase/functions/lib/utils/server_timestamp.dart": ["serverTimestamp"],
     "firebase/functions/lib/utils/share_link.dart": ["ShareLink"],
+    "firebase/functions/lib/utils/calendar_link_lib.dart": [
+      "endMeetingForAll",
+      "ScheduledEndMeeting",
+      "getCommunityCalendarLink",
+      "sendAnnouncement",
+      "eventEnded",
+      "resolveJoinRequest",
+      "sendEventMessage",
+      "TriggerEmailDigests",
+      "createEvent",
+      "joinEvent",
+      "EventOnUpdate",
+      "EventOnCreate",
+      "EmailEventReminder"
+    ],
     "firebase/functions/lib/utils/calendar_link_util.dart": [
+      "endMeetingForAll",
+      "ScheduledEndMeeting",
       "getCommunityCalendarLink",
       "sendAnnouncement",
       "eventEnded",
@@ -329,6 +367,8 @@
       "EmailEventReminder"
     ],
     "firebase/functions/lib/utils/email_templates.dart": [
+      "endMeetingForAll",
+      "ScheduledEndMeeting",
       "sendAnnouncement",
       "eventEnded",
       "resolveJoinRequest",
@@ -342,6 +382,8 @@
     ],
     "firebase/functions/lib/utils/ics_util.dart": ["CalendarFeedIcs"],
     "firebase/functions/lib/utils/notifications_utils.dart": [
+      "endMeetingForAll",
+      "ScheduledEndMeeting",
       "sendAnnouncement",
       "eventEnded",
       "sendEventMessage",
@@ -361,6 +403,8 @@
       "TemplateOnCreate"
     ],
     "firebase/functions/lib/utils/send_email_client.dart": [
+      "endMeetingForAll",
+      "ScheduledEndMeeting",
       "resolveJoinRequest",
       "TriggerEmailDigests",
       "createEvent",
@@ -374,6 +418,8 @@
       "unsubscribeFromCommunityNotifications"
     ],
     "firebase/functions/lib/utils/subscription_plan_util.dart": [
+      "endMeetingForAll",
+      "ScheduledEndMeeting",
       "createDonationCheckoutSession",
       "eventEnded",
       "getCommunityCapabilities",
@@ -388,6 +434,8 @@
       "EmailEventReminder"
     ],
     "firebase/functions/lib/utils/timezone_utils.dart": [
+      "endMeetingForAll",
+      "ScheduledEndMeeting",
       "ShareLink",
       "createEvent",
       "joinEvent",
@@ -433,6 +481,7 @@
       "EmailEventReminder",
       "ExtendCloudTaskScheduler",
       "MuxWebhooks",
+      "ScheduledEndMeeting",
       "ShareLink",
       "ServeIndex"
     ],
@@ -453,6 +502,7 @@
       "updateMembership",
       "VoteToKick",
       "eventEnded",
+      "endMeetingForAll",
       "getCommunityCalendarLink",
       "InitiateBreakouts"
     ],
