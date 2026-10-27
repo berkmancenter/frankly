@@ -933,6 +933,7 @@
   "remove": "移除",
   "removedFromEvent": "您已被从此活动中移除，无法重新加入。",
   "removeParticipant": "移除参与者",
+  "removeSuggestion": "删除建议",
   "removeTemplate": "删除模板",
   "reorderingNotSavedUntilQuestionsCompleted": "在所有问题完成之前，重新排序不会被保存。",
   "requestToFollow": "请求关注",

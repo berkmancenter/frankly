@@ -946,6 +946,7 @@
   "remove": "Eliminar",
   "removedFromEvent": "Ha sido eliminado de este evento y no puede volver a unirse.",
   "removeParticipant": "Eliminar Participante",
+  "removeSuggestion": "Eliminar Sugerencia",
   "removeTemplate": "Eliminar plantilla",
   "reorderingNotSavedUntilQuestionsCompleted": "El reordenamiento no se guardará hasta que se completen todas las preguntas.",
   "requestToFollow": "Solicitar seguir",

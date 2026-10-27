@@ -927,6 +927,7 @@
   "remove": "移除",
   "removedFromEvent": "您已被從此活動中移除，無法重新加入。",
   "removeParticipant": "移除參與者",
+  "removeSuggestion": "刪除建議",
   "removeTemplate": "移除範本",
   "reorderingNotSavedUntilQuestionsCompleted": "在所有問題完成之前，重新排序不會被儲存。",
   "requests": "請求",

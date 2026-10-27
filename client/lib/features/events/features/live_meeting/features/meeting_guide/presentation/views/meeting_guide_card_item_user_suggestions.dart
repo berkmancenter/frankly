@@ -1,10 +1,10 @@
-import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
+import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
@@ -245,12 +245,15 @@ class _MeetingGuideCardItemUserSuggestionsState
                           height: 20,
                         ),
                         onTap: () async {
-                          final isSuccess = await DeleteDialog(
-                            title: context.l10n.deleteSuggestion,
-                            content: context.l10n.confirmDeleteSuggestion,
+                          final isSuccess = await ConfirmDialog(
+                            title: context.l10n.removeSuggestion,
+                            confirmText: context.l10n.remove,
+                            cancelText: context.l10n.cancel,
+                            onConfirm: (context) =>
+                                Navigator.pop(context, true),
                           ).show();
 
-                          if (isSuccess && mounted) {
+                          if (isSuccess == true && mounted) {
                             await alertOnError(
                               context,
                               () => _presenter.removeSuggestion(
