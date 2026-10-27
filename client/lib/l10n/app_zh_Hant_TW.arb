@@ -126,13 +126,6 @@
       }
     }
   },
-  "@deleteAgendaItemName": {
-    "placeholders": {
-      "itemName": {
-        "type": "String"
-      }
-    }
-  },
   "@emailUpdatedResent": {
     "placeholders": {
       "email": {}
@@ -498,7 +491,6 @@
   "chatWelcome": "歡迎！",
   "chatWithParticipants": "和參與者聊天",
   "chooseABackgroundAndAccentColor": "選擇淺色背景和深色強調色，提供足夠的對比度，讓包括中度視力不佳用戶在內的廣大用戶都能閱讀文字。我們會檢查其可讀性。",
-  "clearAgenda": "清除議程？",
   "close": "關閉",
   "closeEdit": "關閉編輯",
   "commentWasDeleted": "留言已刪除",
@@ -548,7 +540,6 @@
   "defineBreakoutsOptional": "定義分組討論（可選）",
   "deleteAgendaItem":"刪除{title}議程項目",
   "deleteAgendaItemGeneral": "刪除議程項目",
-  "deleteAgendaItemName": "刪除{itemName}議程項",
   "deleteComment": "刪除評論",
   "deleteOption": "刪除選項",
   "deletePost": "刪除貼文",
@@ -936,7 +927,6 @@
   "remove": "移除",
   "removedFromEvent": "您已被從此活動中移除，無法重新加入。",
   "removeParticipant": "移除參與者",
-  "removeSuggestion": "刪除建議",
   "removeTemplate": "移除範本",
   "reorderingNotSavedUntilQuestionsCompleted": "在所有問題完成之前，重新排序不會被儲存。",
   "requests": "請求",

@@ -125,13 +125,6 @@
       }
     }
   },
-  "@deleteAgendaItemName": {
-    "placeholders": {
-      "itemName": {
-        "type": "String"
-      }
-    }
-  },
   "@emailUpdatedResent": {
     "placeholders": {
       "email": {}
@@ -499,7 +492,6 @@
   "chatWithParticipants": "Chatear con participantes",
   "chooseABackgroundAndAccentColor": "Elija un color de fondo claro y un color de acento oscuro que proporcionen suficiente contraste para que el texto sea legible por una amplia gama de usuarios, incluidos aquellos con visión moderadamente baja. Comprobaremos su legibilidad.",
   "chooseDuration": "Elegir duración",
-  "clearAgenda": "¿Limpiar agenda?",
   "clearAll": "Borrar todo",
   "clickNextWhenReady": "Haga clic en Siguiente cuando esté listo para continuar.",
   "close": "Cerrar",
@@ -524,7 +516,6 @@
   "confirmDiscardChanges": "¿Estás seguro de que quieres descartar los cambios?",
   "confirmMakeOwner": "¿Está seguro de que desea convertir a {userName} en propietario de {communityName}? Esto le dará todos los permisos posibles en esta comunidad, incluida la capacidad de eliminarla.",
   "confirmRefreshTemplate": "¿Estás seguro de que quieres actualizar la plantilla?",
-  "confirmRemoveAllAgendaItems": "¿Está seguro de que desea eliminar todos los elementos de agenda de las salas de grupos? No podrá deshacer esta acción.",
   "confirmRemoveParticipant": "¿Está seguro de que desea eliminar a {name} de este evento?",
   "congratulations": "¡Felicidades!",
   "connectingToRoom": "Conectando a la sala...",
@@ -556,7 +547,6 @@
   "defineBreakoutsOptional": "Definir salas (Opcional)",
   "deleteAgendaItem":"Eliminar el elemento de agenda {title}",
   "deleteAgendaItemGeneral": "Eliminar elemento de agenda",
-  "deleteAgendaItemName": "Eliminar {itemName} de la agenda",
   "deleteComment": "Eliminar comentario",
   "deleteOption": "Eliminar opción",
   "deletePost": "Eliminar publicación",
@@ -956,7 +946,6 @@
   "remove": "Eliminar",
   "removedFromEvent": "Ha sido eliminado de este evento y no puede volver a unirse.",
   "removeParticipant": "Eliminar Participante",
-  "removeSuggestion": "Eliminar Sugerencia",
   "removeTemplate": "Eliminar plantilla",
   "reorderingNotSavedUntilQuestionsCompleted": "El reordenamiento no se guardará hasta que se completen todas las preguntas.",
   "requestToFollow": "Solicitar seguir",

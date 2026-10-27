@@ -126,13 +126,6 @@
       }
     }
   },
-  "@deleteAgendaItemName": {
-    "placeholders": {
-      "itemName": {
-        "type": "String"
-      }
-    }
-  },
   "@emailUpdatedResent": {
     "placeholders": {
       "email": {}
@@ -503,7 +496,6 @@
   "chatWelcome": "欢迎！",
   "chatWithParticipants": "与参与者聊天",
   "chooseABackgroundAndAccentColor": "选择浅色背景和深色强调色，提供足够的对比度，使包括视力中度低下的用户在内的广泛用户都能阅读文本。我们将检查其可读性。",
-  "clearAgenda": "清空议程？",
   "close": "关闭",
   "closeEdit": "关闭编辑",
   "commentWasDeleted": "评论已删除",
@@ -553,7 +545,6 @@
   "defineBreakoutsOptional": "定义分组讨论（可选）",
   "deleteAgendaItem":"删除{title}议程项",
   "deleteAgendaItemGeneral": "删除议程项",
-  "deleteAgendaItemName": "删除{itemName}议程项",
   "deleteComment": "删除评论",
   "deleteOption": "删除选项",
   "deletePost": "删除帖子",
@@ -942,7 +933,6 @@
   "remove": "移除",
   "removedFromEvent": "您已被从此活动中移除，无法重新加入。",
   "removeParticipant": "移除参与者",
-  "removeSuggestion": "删除建议",
   "removeTemplate": "删除模板",
   "reorderingNotSavedUntilQuestionsCompleted": "在所有问题完成之前，重新排序不会被保存。",
   "requestToFollow": "请求关注",

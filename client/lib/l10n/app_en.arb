@@ -88,11 +88,6 @@
       "title": {}
     }
   },
-  "@deleteAgendaItemName": {
-    "placeholders": {
-      "itemName": {}
-    }
-  },
   "@emailUpdatedResent": {
     "placeholders": {
       "email": {}
@@ -431,7 +426,6 @@
   "chatWithParticipants": "Chat with participants",
   "chooseABackgroundAndAccentColor": "Choose a light colored background and a dark accent color that provide enough contrast so that text is readable by a wide range of users including those with moderately low vision. We'll check its readability.",
   "chooseDuration": "Choose duration",
-  "clearAgenda": "Clear agenda?",
   "clearAll": "Clear all",
   "clickNextWhenReady": "Click Next when you’re ready to move on.",
   "close": "Close",
@@ -456,7 +450,6 @@
   "confirmDiscardChanges": "Are you sure you want to discard changes?",
   "confirmMakeOwner": "Are you sure you want to make {userName} an owner of {communityName}? This will give them all possible permissions in this community, including the ability to delete it.",
   "confirmRefreshTemplate": "Are you sure you want to refresh the template?",
-  "confirmRemoveAllAgendaItems": "Are you sure you want to remove all agenda items from the breakout rooms? You won't be able to undo this.",
   "confirmRemoveParticipant": "Are you sure you want to remove {name} from this event?",
   "congratulations": "Congratulations!",
   "connectingToRoom": "Connecting to room...",
@@ -507,7 +500,6 @@
   "keepEvent": "Keep Event",
   "deleteAgendaItem":"Delete {title} agenda item",
   "deleteAgendaItemGeneral": "Delete Agenda Item",
-  "deleteAgendaItemName": "Delete {itemName} agenda item",
   "deleteComment": "Delete Comment",
   "deleteOption": "Delete option",
   "deletePost": "Delete Post",
@@ -905,7 +897,6 @@
   "remove": "Remove",
   "removedFromEvent": "You were removed from this event and cannot rejoin.",
   "removeParticipant": "Remove Participant",
-  "removeSuggestion": "Remove Suggestion",
   "removeTemplate": "Remove Template",
   "reorderingNotSavedUntilQuestionsCompleted": "Reordering not saved until all questions are completed.",
   "requestToFollow": "Request To Follow",
