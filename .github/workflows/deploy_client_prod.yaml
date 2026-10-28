@@ -83,9 +83,6 @@ jobs:
       - name: Build the Flutter App
         run: flutter build web --release --source-maps --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 
-      - name: Replace Service Worker with Cache Switch
-        run: cp web_overrides/flutter_service_worker.js build/web/flutter_service_worker.js
-
       - name: Upload sourcemaps to Sentry
         continue-on-error: true
         env:
