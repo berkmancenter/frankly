@@ -611,7 +611,7 @@
   "confirmDeletePostEventItem": "您確定要刪除此活動後議程項目嗎？此操作無法撤銷。",
   "confirmDeletePreEventItem": "您確定要刪除此活動前議程項目嗎？此操作無法撤銷。",
   "confirmDeleteResource": "您確定要刪除此資源嗎？此操作無法撤銷。",
-  "confirmRemoveTemplate": "您確定要移除此範本嗎？",
+  "confirmRemoveTemplate": "您確定要移除此範本嗎？此操作無法撤銷。",
   "delete": "刪除",
   "deleteAllAgendaItems": "刪除所有議程項目",
   "deleteAnnouncement": "刪除公告",

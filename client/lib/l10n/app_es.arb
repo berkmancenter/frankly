@@ -608,7 +608,7 @@
   "confirmDeletePostEventItem": "¿Está seguro de que desea eliminar este elemento de agenda post-evento? Esta acción no se puede deshacer.",
   "confirmDeletePreEventItem": "¿Está seguro de que desea eliminar este elemento de agenda pre-evento? Esta acción no se puede deshacer.",
   "confirmDeleteResource": "¿Está seguro de que desea eliminar este recurso? Esta acción no se puede deshacer.",
-  "confirmRemoveTemplate": "¿Está seguro de que desea eliminar esta plantilla?",
+  "confirmRemoveTemplate": "¿Está seguro de que desea eliminar esta plantilla? Esta acción no se puede deshacer.",
   "delete": "Eliminar",
   "deleteAllAgendaItems": "Eliminar todos los elementos de agenda",
   "deleteAnnouncement": "Eliminar anuncio",
