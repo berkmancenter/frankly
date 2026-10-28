@@ -1,11 +1,10 @@
 name: Cache Bust Client
-concurrency: cache-bust-${{ inputs.environment }}
-# Deploys the cache reset switch service worker (web_overrides/flutter_service_worker.js).
-# Existing clients pick it up on their next page load, clear all caches,
-# unregister the service worker, and reload. The registration call is removed
-# from index.html in this build so reloaded clients do not re-install it.
-# Normal deploys restore the Flutter service worker, so run a normal deploy
-# after clients have reloaded.
+# Shares the deploy concurrency group so a normal deploy cannot race it.
+concurrency: ${{ inputs.environment }}
+# Builds and deploys the client with a new cache_epoch.json token. Every
+# client that loads the site afterwards sees the changed token and clears its
+# caches and service workers once. Later normal deploys carry the token over
+# unchanged. For production, run this on the tag that is currently live.
 on:
   workflow_dispatch:
     inputs:
@@ -27,6 +26,12 @@ jobs:
       run:
         working-directory: client
     steps:
+      - name: Require Tag Ref for Production
+        if: inputs.environment == 'production' && github.ref_type != 'tag'
+        run: |
+          echo "::error::Production cache bust must run on a release tag."
+          exit 1
+
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -45,12 +50,11 @@ jobs:
         run: flutter pub get
 
       - name: Update Product Version
+        env:
+          VERSION: ${{ inputs.environment == 'production' && github.ref_name || github.sha }}
+        # Literal replace so ref name can't reach shell or regex.
         run: |
-          sed -i 's/__VERSION__/${{ github.sha }}/g' ${{ github.workspace }}/client/web/index.html
-
-      - name: Remove Service Worker Registration
-        run: |
-          sed -i '/navigator.serviceWorker.register("flutter_service_worker.js");/d' ${{ github.workspace }}/client/web/index.html
+          perl -pi -e 's/__VERSION__/$ENV{VERSION}/g' "${{ github.workspace }}/client/web/index.html"
 
       - name: Update Google Auth Client ID
         run: |
@@ -70,6 +74,11 @@ jobs:
           envkey_FUNCTIONS_URL_PREFIX: ${{ secrets.FUNCTIONS_URL_PREFIX }}
           envkey_SHARE_LINK_URL: ${{ inputs.environment == 'production' && secrets.APP_FULL_URL || secrets.APP_STAGING_FULL_URL }}/share
           envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
+          envkey_ENABLE_FAKE_PARTICIPANTS: ${{ inputs.environment == 'staging' }}
+          envkey_ENABLE_DEV_EVENT_SETTINGS: ${{ inputs.environment == 'staging' }}
+          envkey_ENABLE_DEV_ADMIN_SETTINGS: ${{ inputs.environment == 'staging' }}
+          envkey_ENABLE_TRACE_LOG: ${{ inputs.environment == 'staging' }}
+          envkey_SENTRY_RELEASE: ${{ inputs.environment == 'production' && github.ref_name || github.sha }}
           envkey_SENTRY_ENVIRONMENT: ${{ inputs.environment }}
           envkey_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           envkey_MATOMO_URL: ${{ secrets.MATOMO_URL }}
@@ -99,8 +108,10 @@ jobs:
       - name: Build the Flutter App
         run: flutter build web --release --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 
-      - name: Replace Service Worker with Cache Reset Switch
-        run: cp web_overrides/flutter_service_worker.js build/web/flutter_service_worker.js
+      - name: Write New Cache Epoch
+        run: |
+          jq -nc --arg t "${{ github.run_id }}-${{ github.run_attempt }}" '{token: $t}' > build/web/cache_epoch.json
+          cat build/web/cache_epoch.json
 
       - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@v13.22.1

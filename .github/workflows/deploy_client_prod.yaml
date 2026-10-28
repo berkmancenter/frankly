@@ -91,6 +91,23 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         run: flutter packages pub run sentry_dart_plugin --sentry-define=release=${{ github.ref_name }}
 
+      # Keeps the live token so this deploy does not reset client caches.
+      # Fails if missing; run Cache Bust Client once to initialize.
+      - name: Carry Over Live Cache Epoch
+        env:
+          SITE_URL: ${{ secrets.APP_FULL_URL }}
+        run: |
+          set -euo pipefail
+          type=$(curl -fsS --retry 3 -o epoch.json -w '%{content_type}' "$SITE_URL/cache_epoch.json?ts=$(date +%s)")
+          if [[ "$type" != application/json* ]]; then
+            echo "::error::No cache_epoch.json on live site (got '$type'). Run Cache Bust Client to initialize."
+            exit 1
+          fi
+          jq -e '.token | type == "string" and test("^[A-Za-z0-9_-]{1,64}$")' epoch.json > /dev/null \
+            || { echo "::error::Live cache_epoch.json has an invalid token."; exit 1; }
+          jq -c '{token: .token}' epoch.json > build/web/cache_epoch.json
+          rm epoch.json
+
       - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@v13.22.1
         with:
