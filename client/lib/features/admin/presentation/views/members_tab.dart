@@ -933,7 +933,7 @@ class MembershipDropdownState extends State<MembershipDropdown> {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Owner',
+                    context.l10n.owner,
                   ),
                 ),
               ]

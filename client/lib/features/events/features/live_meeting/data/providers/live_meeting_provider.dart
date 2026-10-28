@@ -85,6 +85,9 @@ class LiveMeetingProvider with ChangeNotifier {
   final Function(String, {bool? hideOnMobile}) showToast;
 
   bool _leftMeeting = false;
+  // Server emails everyone when ended for all; skip the per-user call.
+  bool _endedForAll = false;
+  bool _leavingInProgress = false;
   bool _userLeftBreakouts = false;
 
   /// True when the user left breakouts because their join/rejoin transition
@@ -113,7 +116,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
   final Set<String> _handledBreakoutSessionIds = {};
 
-  late BehaviorSubjectWrapper<LiveMeeting> _liveMeetingStream;
+  BehaviorSubjectWrapper<LiveMeeting>? _liveMeetingStream;
   BehaviorSubjectWrapper<LiveMeeting>? _breakoutLiveMeetingStream;
 
   /// Used to detect changes in the main live meeting object
@@ -171,6 +174,9 @@ class LiveMeetingProvider with ChangeNotifier {
     required this.showToast,
   });
 
+  /// Suppress the post-event email for meetings shorter than this many minutes
+  /// past scheduled start. Prevents spam from test joins or accidental entries.
+  /// Recording stop still fires regardless of this threshold.
   static const int _postEventEmailThresholdInMinutes = 5;
   static const int _presenceHeartbeatIntervalSeconds = 20;
   static const int _meetingStartTimerBufferMs = 100;
@@ -204,12 +210,12 @@ class LiveMeetingProvider with ChangeNotifier {
   List<MeetingProviderParticipant>? get meetingProviderParticipants =>
       _meetingProviderParticipants;
 
-  Stream<LiveMeeting>? get liveMeetingStream => _liveMeetingStream.stream;
+  Stream<LiveMeeting>? get liveMeetingStream => _liveMeetingStream?.stream;
 
   Stream<LiveMeeting>? get breakoutRoomLiveMeetingStream =>
       _breakoutLiveMeetingStream?.stream;
 
-  LiveMeeting? get liveMeeting => _liveMeetingStream.stream.valueOrNull;
+  LiveMeeting? get liveMeeting => _liveMeetingStream?.stream.valueOrNull;
 
   LiveMeeting? get breakoutRoomLiveMeeting =>
       _breakoutLiveMeetingStream?.stream.valueOrNull;
@@ -410,17 +416,18 @@ class LiveMeetingProvider with ChangeNotifier {
     shouldStartLocalAudioOn = audioDefaultOn;
     shouldStartLocalVideoOn = videoDefaultOn;
 
-    _liveMeetingStream = firestoreLiveMeetingService.liveMeetingStream(
+    final liveMeetingStream = firestoreLiveMeetingService.liveMeetingStream(
       parentDoc: eventPath,
       id: eventProvider.event.id,
     );
+    _liveMeetingStream = liveMeetingStream;
 
     _liveMeetingSubscription =
-        _liveMeetingStream.stream.listen(_onLiveMeetingChange);
+        liveMeetingStream.stream.listen(_onLiveMeetingChange);
     _selfParticipantSubscription =
         eventProvider.selfParticipantStream?.listen((currentParticipant) {
       if (currentParticipant.status == ParticipantStatus.banned) {
-        leaveMeeting();
+        unawaited(leaveMeeting());
       }
 
       if (currentParticipant.muteOverride &&
@@ -572,7 +579,7 @@ class LiveMeetingProvider with ChangeNotifier {
     );
 
     Future.microtask(() => navBarProvider.resetHideNav());
-    _liveMeetingStream.dispose();
+    _liveMeetingStream?.dispose();
     _breakoutLiveMeetingStream?.dispose();
     _assignedBreakoutRoomStream?.dispose();
     _overrideBreakoutRoomStream?.dispose();
@@ -584,6 +591,12 @@ class LiveMeetingProvider with ChangeNotifier {
     _checkShowBreakoutDialog();
 
     _checkLoadBreakoutsStream(liveMeeting);
+
+    // Auto-leave when the host (or server) ends the meeting for everyone.
+    if (liveMeeting.meetingEndedAt != null && !_leftMeeting) {
+      unawaited(leaveMeeting());
+      return;
+    }
 
     if (!breakoutsActive && (isInBreakoutTransition || isInBreakout)) {
       leaveBreakoutRoom();
@@ -882,6 +895,8 @@ class LiveMeetingProvider with ChangeNotifier {
   /// Post-event email only; this runs for every participant who leaves.
   @visibleForTesting
   void sendPostEventEmailIfDue() {
+    if (_endedForAll || liveMeeting?.meetingEndedAt != null) return;
+
     final timeNow = clockService.now();
     final pastThreshold = timeNow
             .difference(eventProvider.event.scheduledTime ?? timeNow)
@@ -897,78 +912,114 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   Future<void> leaveMeeting() async {
-    if (_leftMeeting) return;
+    if (_leftMeeting || _leavingInProgress) return;
+    _leavingInProgress = true;
 
-    _leftMeeting = true;
-    notifyListeners();
-
-    final localOnLeave = onLeave;
-    if (localOnLeave != null) {
-      localOnLeave();
-    } else {
-      final community = communityProvider.community;
-
-      final donationsEnabledFuture = communityProvider.donationsEnabled();
-      final prePostEnabledFuture = communityProvider.prePostEnabled();
-      final donationsEnabled = await donationsEnabledFuture;
-      final prePostEnabled = await prePostEnabledFuture;
-
-      final postEventCardData = eventProvider.event.postEventCardData;
-
-      sendPostEventEmailIfDue();
-
-      if (prePostEnabled && postEventCardData != null) {
-        if (postEventCardData.hasData) {
-          await PrePostEventDialogPage.show(
-            prePostCardData: postEventCardData,
-            event: eventProvider.event,
+    try {
+      // If the meeting is still running and the user is the host or an admin,
+      // prompt whether to end the meeting for all participants.
+      final meetingAlreadyEnded = liveMeeting?.meetingEndedAt != null;
+      if (!meetingAlreadyEnded && eventProvider.event.isHosted) {
+        final isAdmin = userDataService
+            .getMembership(communityProvider.communityId)
+            .isAdmin;
+        if (isHost || isAdmin) {
+          final endForAll = await showCustomDialog<bool>(
+            isDismissible: false,
+            builder: (_) => ConfirmDialog(
+              mainText: appLocalizationService
+                  .getLocalization()
+                  .endMeetingConfirmation,
+              confirmText: appLocalizationService.getLocalization().endMeeting,
+              cancelText:
+                  appLocalizationService.getLocalization().leaveWithoutEnding,
+            ),
           );
+          if (endForAll == null) return;
+          if (endForAll) {
+            _endedForAll = true;
+            await cloudFunctionsEventService.endMeetingForAll(
+              EndMeetingForAllRequest(eventPath: eventPath),
+            );
+          }
         }
       }
 
-      if (donationsEnabled &&
-          (isMeetingStarted ||
-              _meetingHadParticipants ||
-              eventProvider.isLiveStream)) {
-        await DonateWidget(
-          community: community,
-          headline: 'Donate to keep the conversation going!',
-          subHeader: 'Support ${community.name ?? 'this space'}!',
-        ).show();
-      }
+      if (_leftMeeting) return;
 
-      if (isMeetingStarted || eventProvider.isLiveStream) {
-        await MeetingRating().showInDialog(
-          eventProvider: eventProvider,
-          liveMeetingProvider: this,
-          communityProvider: communityProvider,
-        );
-      }
+      _leftMeeting = true;
+      notifyListeners();
 
-      // We want to share community home page instead of event page.
-      final pathToPage = '/space/${communityProvider.communityId}';
+      final localOnLeave = onLeave;
+      if (localOnLeave != null) {
+        localOnLeave();
+      } else {
+        final community = communityProvider.community;
 
-      await showCustomDialog(
-        builder: (context) => AppShareDialog(
-          title: context.l10n.spreadTheWord,
-          content: 'Who else would benefit from these events?',
-          appShareData: AppShareData(
-            subject: 'Join an event with me on ${Environment.appName}!',
-            body: "Let's have a conversation on ${Environment.appName}!",
-            pathToPage: pathToPage,
-            communityId: communityProvider.communityId,
+        final donationsEnabledFuture = communityProvider.donationsEnabled();
+        final prePostEnabledFuture = communityProvider.prePostEnabled();
+        final donationsEnabled = await donationsEnabledFuture;
+        final prePostEnabled = await prePostEnabledFuture;
+
+        final postEventCardData = eventProvider.event.postEventCardData;
+
+        sendPostEventEmailIfDue();
+
+        if (prePostEnabled && postEventCardData != null) {
+          if (postEventCardData.hasData) {
+            await PrePostEventDialogPage.show(
+              prePostCardData: postEventCardData,
+              event: eventProvider.event,
+            );
+          }
+        }
+
+        if (donationsEnabled &&
+            (isMeetingStarted ||
+                _meetingHadParticipants ||
+                eventProvider.isLiveStream)) {
+          await DonateWidget(
+            community: community,
+            headline: 'Donate to keep the conversation going!',
+            subHeader: 'Support ${community.name ?? 'this space'}!',
+          ).show();
+        }
+
+        if (isMeetingStarted || eventProvider.isLiveStream) {
+          await MeetingRating().showInDialog(
+            eventProvider: eventProvider,
+            liveMeetingProvider: this,
+            communityProvider: communityProvider,
+          );
+        }
+
+        // We want to share community home page instead of event page.
+        final pathToPage = '/space/${communityProvider.communityId}';
+
+        await showCustomDialog(
+          builder: (context) => AppShareDialog(
+            title: context.l10n.spreadTheWord,
+            content: 'Who else would benefit from these events?',
+            appShareData: AppShareData(
+              subject: 'Join an event with me on ${Environment.appName}!',
+              body: "Let's have a conversation on ${Environment.appName}!",
+              pathToPage: pathToPage,
+              communityId: communityProvider.communityId,
+            ),
           ),
-        ),
-      );
+        );
 
-      final location = leaveLocation ??
-          CommunityPageRoutes(
-            communityDisplayId: communityProvider.displayId,
-          ).communityHome;
+        final location = leaveLocation ??
+            CommunityPageRoutes(
+              communityDisplayId: communityProvider.displayId,
+            ).communityHome;
 
-      // ignore: unnecessary_non_null_assertion
-      html.window.location.href = html.window.location.origin! +
-          (location.state as BeamState).uri.toString();
+        // ignore: unnecessary_non_null_assertion
+        html.window.location.href = html.window.location.origin! +
+            (location.state as BeamState).uri.toString();
+      }
+    } finally {
+      _leavingInProgress = false;
     }
   }
 
