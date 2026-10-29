@@ -27,6 +27,7 @@ class LiveMeeting with _$LiveMeeting implements SerializeableRequest {
   static const String kFieldMeetingId = 'meetingId';
   static const String kFieldIsMeetingCardMinimized = 'isMeetingCardMinimized';
   static const String kFieldRecordingSessionId = 'recordingSessionId';
+  static const String kFieldMeetingEndedAt = 'meetingEndedAt';
   static const String kFieldPendingAdvanceAgendaItemId =
       'pendingAdvanceAgendaItemId';
   static const String kFieldPendingAdvanceTime = 'pendingAdvanceTime';
@@ -48,6 +49,8 @@ class LiveMeeting with _$LiveMeeting implements SerializeableRequest {
     @Default(false) bool isMeetingCardMinimized,
     @Default([]) List<String> pinnedUserIds,
     String? recordingSessionId,
+    @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+    DateTime? meetingEndedAt,
 
     /// The agenda item that was current when a majority of participants marked themselves ready
     /// to advance. While this is set, a countdown is shown to all participants and no further
