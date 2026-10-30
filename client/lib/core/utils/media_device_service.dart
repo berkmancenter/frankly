@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:client/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:universal_html/html.dart' as html;
@@ -22,6 +21,24 @@ class MediaDeviceService {
 
   String? selectedAudioInputId;
   String? selectedVideoInputId;
+
+  /// Picks the device id to select, given the id currently held by
+  /// `currentId`, the id stored in shared preferences, and the ids of
+  /// the devices that were actually enumerated.
+  ///
+  /// Remembered ids win, and the first available device
+  /// is only used when nothing is remembered.
+  String? resolveSelectedDeviceId({
+    required String? currentId,
+    required String? storedId,
+    required List<String> availableIds,
+  }) {
+    String? selected = currentId ?? storedId;
+    if (selected == null && availableIds.isNotEmpty) {
+      selected = availableIds.first;
+    }
+    return selected;
+  }
 
   Future<PermissionStatus> requestPermissions(Permission permission) async {
     try {
@@ -94,19 +111,26 @@ class MediaDeviceService {
           .toList();
     }
 
-    // First, check for defaults from shared preferences.
-    selectedAudioInputId ??= sharedPreferencesService.getDefaultMicrophoneId();
-    selectedVideoInputId ??= sharedPreferencesService.getDefaultCameraId();
+    _applyDeviceSelection();
+  }
 
-    // If no defaults, use the first available device.
-    // Don't save this as a default preference as it wasn't explicitly chosen.
-    if (selectedAudioInputId == null && audioInputs.isNotEmpty) {
-      selectedAudioInputId = audioInputs.first.deviceId;
-    }
-
-    if (selectedVideoInputId == null && videoInputs.isNotEmpty) {
-      selectedVideoInputId = videoInputs.first.deviceId;
-    }
+  /// Makes sure the selected ids name an available device, so the UI always
+  /// has a valid default. Defaults come from shared preferences, falling back
+  /// to the first available device. Don't save the fallback as a default
+  /// preference as it wasn't explicitly chosen.
+  void _applyDeviceSelection() {
+    selectedAudioInputId = resolveSelectedDeviceId(
+      currentId: selectedAudioInputId,
+      storedId: sharedPreferencesService.getDefaultMicrophoneId(),
+      availableIds:
+          audioInputs.map((d) => d.deviceId).whereType<String>().toList(),
+    );
+    selectedVideoInputId = resolveSelectedDeviceId(
+      currentId: selectedVideoInputId,
+      storedId: sharedPreferencesService.getDefaultCameraId(),
+      availableIds:
+          videoInputs.map((d) => d.deviceId).whereType<String>().toList(),
+    );
   }
 
   Future<void> selectAudioDevice({
@@ -223,6 +247,7 @@ class MediaDeviceService {
       _previewMediaStream =
           await html.window.navigator.mediaDevices?.getUserMedia(constraints);
       await _refreshDeviceListIfStale();
+      _applyDeviceSelection();
     } catch (e) {
       // If getUserMedia fails, it could be due to either a permission error
       // (user denied access) or a device error (requested device not available).
@@ -256,6 +281,9 @@ class MediaDeviceService {
             _previewMediaStream = await html.window.navigator.mediaDevices
                 ?.getUserMedia(retryConstraints);
             await _refreshDeviceListIfStale();
+            // Forgotten devices leave the selection null; re-select a default
+            // so the UI doesn't show an empty dropdown.
+            _applyDeviceSelection();
             return;
           }
         } catch (retryError) {
