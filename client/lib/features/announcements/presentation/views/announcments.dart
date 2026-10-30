@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:client/features/announcements/data/providers/announcements_provi
 import 'package:client/features/announcements/presentation/views/create_announcement_dialog.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/buttons/thick_outline_button.dart';
@@ -65,10 +65,9 @@ class _AnnouncementsState extends State<Announcements> {
                 .canEditCommunity)
               CustomInkWell(
                 onTap: () => alertOnError(context, () async {
-                  final confirmedDelete = await ConfirmDialog(
-                    mainText:
-                        'Are you sure you want to delete this announcement?',
-                    cancelText: context.l10n.no,
+                  final confirmedDelete = await DeleteDialog(
+                    title: context.l10n.deleteAnnouncement,
+                    content: context.l10n.confirmDeleteAnnouncement,
                   ).show();
 
                   if (confirmedDelete && mounted) {

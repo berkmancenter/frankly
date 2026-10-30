@@ -1,3 +1,5 @@
+import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,6 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/features/resources/presentation/views/create_community_resource_modal.dart';
 import 'package:client/features/resources/presentation/community_resources_presenter.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -119,9 +120,9 @@ class _CommunityResourcesState extends State<_CommunityResources> {
                           SizedBox(height: 10),
                           IconButton(
                             onPressed: () async {
-                              final delete = await ConfirmDialog(
-                                mainText:
-                                    'Are you sure you want to delete this resource?',
+                              final delete = await DeleteDialog(
+                                title: context.l10n.deleteResource,
+                                content: context.l10n.confirmDeleteResource,
                               ).show();
 
                               if (!delete || !mounted) return;

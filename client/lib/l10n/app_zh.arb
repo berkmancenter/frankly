@@ -126,13 +126,6 @@
       }
     }
   },
-  "@deleteAgendaItemName": {
-    "placeholders": {
-      "itemName": {
-        "type": "String"
-      }
-    }
-  },
   "@emailAndPasswordMismatch": {
     "placeholders": {
       "appName": {
@@ -540,7 +533,7 @@
   "cancelCurrentPlan": "取消当前计划？",
   "cancelEmailEdit": "取消",
   "cancelEvent": "取消活动",
-  "cancelEventConfirmation": "您确定要取消活动吗？此操作无法撤销，并将通知所有参与者。",
+  "cancelEventConfirmation": "您确定要取消此活动吗？此操作无法撤销。",
   "cancelHelpNeeded": "取消求助",
   "cancelParticipation": "取消参与",
   "cannotPlayVimeoVideo": "无法播放 Vimeo 视频",
@@ -558,7 +551,6 @@
   "chatWithParticipants": "与参与者聊天",
   "chooseABackgroundAndAccentColor": "选择浅色背景和深色强调色，提供足够的对比度，使包括视力中度低下的用户在内的广泛用户都能阅读文本。我们将检查其可读性。",
   "chooseDuration": "选择时长",
-  "clearAgenda": "清空议程？",
   "clearAll": "全部清除",
   "clickNextWhenReady": "准备好继续后点击“下一步”。",
   "close": "关闭",
@@ -577,9 +569,9 @@
   "confirm": "确认",
   "confirmCancelQuestion": "您确定要取消吗？",
   "confirmDelete": "确定要删除吗？",
-  "confirmDeleteComment": "确定要删除此评论吗？",
+  "confirmDeleteComment": "确定要删除此评论吗？此操作无法撤销。",
   "confirmDeleteMedia": "您确定要删除媒体吗？",
-  "confirmDeletePost": "您确定要删除此帖子吗？",
+  "confirmDeletePost": "您确定要删除此帖子吗？此操作无法撤销。",
   "confirmDiscardChanges": "您确定要放弃更改吗？",
   "confirmMakeOwner": "您确定要将 {userName} 变更为 {communityName} 的拥有者吗？这将赋予他们在此社区中的所有可能权限，包括删除社区的能力。",
   "confirmRefreshTemplate": "您确定要刷新模板吗？",
@@ -616,9 +608,24 @@
   "dataDownload": "数据下载",
   "date": "日期",
   "defineBreakoutsOptional": "定义分组讨论（可选）",
-  "deleteAgendaItem": "删除{title}议程项",
+  "confirmDeleteAgendaItem": "您确定要删除此议程项吗？此操作无法撤销。",
+  "confirmDeleteAllAgendaItems": "您确定要删除此活动的所有议程项吗？此操作无法撤销。",
+  "confirmDeleteAnnouncement": "您确定要删除此公告吗？此操作无法撤销。",
+  "confirmDeleteEventAnnouncement": "您确定要删除此活动公告吗？此操作无法撤销。",
+  "confirmDeletePostEventItem": "您确定要删除此活动后议程项吗？此操作无法撤销。",
+  "confirmDeletePreEventItem": "您确定要删除此活动前议程项吗？此操作无法撤销。",
+  "confirmDeleteResource": "您确定要删除此资源吗？此操作无法撤销。",
+  "confirmRemoveTemplate": "您确定要删除此模板吗？此操作无法撤销。",
+  "delete": "删除",
+  "deleteAllAgendaItems": "删除所有议程项",
+  "deleteAnnouncement": "删除公告",
+  "deleteEventAnnouncement": "删除活动公告",
+  "deletePostEventItem": "删除活动后项目",
+  "deletePreEventItem": "删除活动前项目",
+  "deleteResource": "删除资源",
+  "keepEvent": "保留活动",
+  "deleteAgendaItem":"删除{title}议程项",
   "deleteAgendaItemGeneral": "删除议程项",
-  "deleteAgendaItemName": "删除{itemName}议程项",
   "deleteComment": "删除评论",
   "deleteOption": "删除选项",
   "deletePost": "删除帖子",
