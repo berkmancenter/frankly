@@ -33,10 +33,9 @@ class MediaDeviceService {
     required String? storedId,
     required List<String> availableIds,
   }) {
-String? selected;
+    String? selected;
     for (final id in [currentId, storedId]) {
-      if (id != null &&
-          (availableIds.isEmpty || availableIds.contains(id))) {
+      if (id != null && (availableIds.isEmpty || availableIds.contains(id))) {
         selected = id;
         break;
       }
@@ -78,9 +77,12 @@ String? selected;
   /// permission has actually been granted, so whenever permission is granted
   /// during [getUserMedia] itself, lists built by [init]
   /// are still empty and the UI has nothing to render even though the camera was acquired.
-  Future<void> _refreshDeviceListIfStale() async {
+  /// [forceRefresh] can be used to force a refresh even if the device lists are not empty.
+  Future<void> _refreshDeviceListIfStale({bool forceRefresh = false}) async {
     if (_previewMediaStream == null) return;
-    if (audioInputs.isNotEmpty && videoInputs.isNotEmpty) return;
+    if (!forceRefresh && audioInputs.isNotEmpty && videoInputs.isNotEmpty) {
+      return;
+    }
     try {
       await _refreshDeviceList();
     } catch (e) {
@@ -284,7 +286,7 @@ String? selected;
           if (retryConstraints.isNotEmpty) {
             _previewMediaStream = await html.window.navigator.mediaDevices
                 ?.getUserMedia(retryConstraints);
-            await _refreshDeviceListIfStale();
+            await _refreshDeviceListIfStale(forceRefresh: true);
             // Forgotten devices leave the selection null; re-select a default
             // so the UI doesn't show an empty dropdown.
             _applyDeviceSelection();
