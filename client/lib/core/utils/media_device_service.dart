@@ -33,11 +33,15 @@ class MediaDeviceService {
     required String? storedId,
     required List<String> availableIds,
   }) {
-    String? selected = currentId ?? storedId;
-    if (selected == null && availableIds.isNotEmpty) {
-      selected = availableIds.first;
+String? selected;
+    for (final id in [currentId, storedId]) {
+      if (id != null &&
+          (availableIds.isEmpty || availableIds.contains(id))) {
+        selected = id;
+        break;
+      }
     }
-    return selected;
+    return selected ?? (availableIds.isNotEmpty ? availableIds.first : null);
   }
 
   Future<PermissionStatus> requestPermissions(Permission permission) async {
