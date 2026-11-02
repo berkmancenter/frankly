@@ -161,8 +161,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _clickedEnterMeeting = true;
     notifyListeners();
 
-    // Presence is skipped on the prescreen, so record it as soon as the user
-    // enters rather than waiting for the next heartbeat.
+    // Record the presence skipped in initialize().
     if (wasInPrescreen) {
       unawaited(forcePresenceHeartbeat());
     }
@@ -447,8 +446,7 @@ class LiveMeetingProvider with ChangeNotifier {
       _checkShowBreakoutDialog();
     });
 
-    // Users on the instant meeting prescreen have not joined yet. Presence is
-    // written when they click past it (see clickedEnterMeeting).
+    // Skip presence until the user leaves the prescreen.
     if (activeUiState != MeetingUiState.enterMeetingPrescreen) {
       firestoreLiveMeetingService.updateMeetingPresence(
         event: eventProvider.event,
