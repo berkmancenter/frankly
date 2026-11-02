@@ -161,7 +161,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _clickedEnterMeeting = true;
     notifyListeners();
 
-    // Record the presence skipped in initialize().
+    // Mark present now instead of waiting for the next heartbeat.
     if (wasInPrescreen) {
       unawaited(forcePresenceHeartbeat());
     }
