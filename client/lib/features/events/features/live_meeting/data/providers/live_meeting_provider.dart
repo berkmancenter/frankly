@@ -446,7 +446,7 @@ class LiveMeetingProvider with ChangeNotifier {
       _checkShowBreakoutDialog();
     });
 
-    // Skip presence until the user leaves the prescreen.
+    // Mark present unless on the prescreen.
     if (activeUiState != MeetingUiState.enterMeetingPrescreen) {
       firestoreLiveMeetingService.updateMeetingPresence(
         event: eventProvider.event,
