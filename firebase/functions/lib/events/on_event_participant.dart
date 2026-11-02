@@ -48,9 +48,12 @@ class OnEventParticipant extends OnFirestoreFunction<Participant> {
     DateTime updateTime,
     EventContext context,
   ) async {
-    final firstPresentTime = firstPresentTimeToRecord(after);
-    if (changes.after.exists && firstPresentTime != null) {
-      await recordFirstPresence(changes.after.reference, firstPresentTime);
+    final presentTime = after.mostRecentPresentTime;
+    if (changes.after.exists &&
+        after.isPresent &&
+        after.firstPresentTime == null &&
+        presentTime != null) {
+      await _recordFirstPresence(changes.after.reference, presentTime);
     }
 
     // Skip writes that don't affect active status (presence, breakout room,
@@ -85,15 +88,7 @@ class OnEventParticipant extends OnFirestoreFunction<Participant> {
     }
   }
 
-  /// Returns the time to record as firstPresentTime, or null to skip.
-  static DateTime? firstPresentTimeToRecord(Participant participant) {
-    if (!participant.isPresent || participant.firstPresentTime != null) {
-      return null;
-    }
-    return participant.mostRecentPresentTime;
-  }
-
-  Future<void> recordFirstPresence(
+  Future<void> _recordFirstPresence(
     DocumentReference participantRef,
     DateTime firstPresentTime,
   ) async {
