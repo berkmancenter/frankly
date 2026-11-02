@@ -66,17 +66,22 @@ void main() {
         isPresent: isPresent,
       );
 
+  /// Runs recordFirstPresence with the participant as currently stored.
+  Future<void> recordFirstPresence(String userId, DateTime updateTime) async {
+    await onEventParticipant.recordFirstPresence(
+      participantRef: participantRef(userId),
+      participant: await getParticipant(userId),
+      updateTime: updateTime,
+    );
+  }
+
   test('Records firstPresentTime from mostRecentPresentTime', () async {
     const userId = 'joinedUser';
     final presentTime = DateTime.utc(2026, 1, 1, 12);
 
     await joinEvent(userId);
     await setMostRecentPresentTime(userId, presentTime);
-
-    await onEventParticipant.recordFirstPresence(
-      participantRef: participantRef(userId),
-      fallbackTime: DateTime.utc(2026, 1, 1, 13),
-    );
+    await recordFirstPresence(userId, DateTime.utc(2026, 1, 1, 13));
 
     final participant = await getParticipant(userId);
     expect(participant.firstPresentTime?.toUtc(), equals(presentTime));
@@ -89,16 +94,10 @@ void main() {
 
     await joinEvent(userId);
     await setMostRecentPresentTime(userId, firstTime);
-    await onEventParticipant.recordFirstPresence(
-      participantRef: participantRef(userId),
-      fallbackTime: firstTime,
-    );
+    await recordFirstPresence(userId, firstTime);
 
     await setMostRecentPresentTime(userId, laterTime);
-    await onEventParticipant.recordFirstPresence(
-      participantRef: participantRef(userId),
-      fallbackTime: laterTime,
-    );
+    await recordFirstPresence(userId, laterTime);
 
     final participant = await getParticipant(userId);
     expect(participant.firstPresentTime?.toUtc(), equals(firstTime));
@@ -108,10 +107,7 @@ void main() {
     const userId = 'absentUser';
 
     await joinEvent(userId, isPresent: false);
-    await onEventParticipant.recordFirstPresence(
-      participantRef: participantRef(userId),
-      fallbackTime: DateTime.utc(2026, 1, 1, 12),
-    );
+    await recordFirstPresence(userId, DateTime.utc(2026, 1, 1, 12));
 
     final participant = await getParticipant(userId);
     expect(participant.firstPresentTime, isNull);
@@ -120,15 +116,12 @@ void main() {
   test('Falls back to update time when mostRecentPresentTime is missing',
       () async {
     const userId = 'noHeartbeatUser';
-    final fallbackTime = DateTime.utc(2026, 1, 1, 12);
+    final updateTime = DateTime.utc(2026, 1, 1, 12);
 
     await joinEvent(userId);
-    await onEventParticipant.recordFirstPresence(
-      participantRef: participantRef(userId),
-      fallbackTime: fallbackTime,
-    );
+    await recordFirstPresence(userId, updateTime);
 
     final participant = await getParticipant(userId);
-    expect(participant.firstPresentTime?.toUtc(), equals(fallbackTime));
+    expect(participant.firstPresentTime?.toUtc(), equals(updateTime));
   });
 }
