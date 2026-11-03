@@ -22,6 +22,7 @@ We encourage and value all contributions. See the [Table of Contents](#table-of-
 - [Contributing](#contributing)
   - [Getting Started](#getting-started)
   - [How to Contribute](#how-to-contribute)
+    - [Pull Request Communication](#pull-request-communication)
   - [What to Work On](#what-to-work-on)
 - [Styleguides](#styleguides)
   - [Commit Messages](#commit-messages)
@@ -85,6 +86,10 @@ When you're ready to make your first contribution to Frankly, you can open a pul
 3. **Provide a title and description**: When you open a pull request, the description will automatically populate with a template that the Frankly team uses for PRs. Please fill this out to help the team with the review process, and provide a descriptive title.
 
 You're done! 🎉 Our team will review your pull request from this point. Thank you for contributing to Frankly!
+
+### Pull Request Communication
+
+Please respond to review comments and requested changes on your pull request in a timely manner. If review feedback has not been addressed within two weeks, maintainers may close the pull request or reassign the remaining work so that the project can continue moving forward. If you need additional time, please leave a comment on the pull request to let the maintainers know.
 
 ### What to Work On
 
