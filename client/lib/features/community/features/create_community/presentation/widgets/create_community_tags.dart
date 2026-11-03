@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/community/features/create_community/data/providers/community_tag_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/widgets/create_tag_widget.dart';
@@ -22,7 +23,7 @@ class CreateCommunityTags extends StatelessWidget {
           entryFrom: 'CreateCommunityDialog._buildAddTagsSection',
           stream: createCommunityTagProvider.communityTagsStream,
           builder: (context, _) => CreateTagWidget(
-            titleText: 'Add Tags',
+            titleText: context.l10n.addTags,
             showIcon: false,
             tags: Provider.of<CreateCommunityTagProvider>(context).tags,
             onAddTag: (title) => alertOnError(

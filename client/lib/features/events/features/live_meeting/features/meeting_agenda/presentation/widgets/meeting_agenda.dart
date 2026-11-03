@@ -140,7 +140,7 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
         children: [
           if (allAgendaItems.isEmpty)
             HeightConstrainedText(
-              'There is no agenda for this event.',
+              context.l10n.noAgendaForEvent,
               style: context.theme.textTheme.bodyMedium!.copyWith(
                 color: context.theme.colorScheme.onSurfaceVariant,
               ),

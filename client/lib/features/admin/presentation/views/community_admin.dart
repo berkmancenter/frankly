@@ -89,7 +89,7 @@ class CommunityAdminState extends State<CommunityAdmin>
         height: MediaQuery.of(context).size.height,
         alignment: Alignment.center,
         child: HeightConstrainedText(
-          'Must be logged in and an admin to access this section',
+          context.l10n.mustBeAdminToAccessSection,
         ),
       );
     }

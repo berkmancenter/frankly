@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:intl/intl.dart';
 import 'package:client/features/chat/data/providers/chat_model.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_tabs.dart';
@@ -149,14 +150,14 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
         _buildTab(
           tabType: TabType.guide,
           icon: Icons.book_outlined,
-          text: 'Agenda',
+          text: context.l10n.agendaTitle,
         ),
       if (provider.enableChat)
         _buildTab(
           tabType: TabType.chat,
           unreadMessages: Provider.of<ChatModel>(context).numUnreadMessages,
           icon: Icons.comment_outlined,
-          text: 'Chat',
+          text: context.l10n.chat,
         ),
       if (provider.enableUserSubmittedAgenda)
         _buildTab(
@@ -164,13 +165,13 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
           unreadMessages: Provider.of<UserSubmittedAgendaProvider>(context)
               .numUnreadSuggestions,
           icon: Icons.book_outlined,
-          text: 'Suggest',
+          text: context.l10n.suggest,
         ),
       if (provider.enableAdminPanel)
         _buildTab(
           tabType: TabType.admin,
           icon: Icons.settings_outlined,
-          text: 'Admin',
+          text: context.l10n.admin,
         ),
     ];
 

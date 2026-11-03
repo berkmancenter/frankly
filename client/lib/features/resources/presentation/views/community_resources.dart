@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:flutter/material.dart';
@@ -121,7 +122,7 @@ class _CommunityResourcesState extends State<_CommunityResources> {
                             onPressed: () async {
                               final delete = await ConfirmDialog(
                                 mainText:
-                                    'Are you sure you want to delete this resource?',
+                                    context.l10n.confirmDeleteResource,
                               ).show();
 
                               if (!delete || !mounted) return;

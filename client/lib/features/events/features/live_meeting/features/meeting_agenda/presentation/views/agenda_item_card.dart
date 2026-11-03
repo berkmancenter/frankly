@@ -359,7 +359,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
   Future<void> _showDeleteDialog() async {
     final delete = await ConfirmDialog(
       title: context.l10n.deleteAgendaItemGeneral,
-      mainText: 'Are you sure you want to delete?',
+      mainText: context.l10n.confirmDelete,
       cancelText: context.l10n.cancel,
     ).show(context: context);
 

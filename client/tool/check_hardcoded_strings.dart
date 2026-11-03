@@ -21,6 +21,7 @@ const _textWidgetTypes = <String>{
   'Text',
 };
 
+// Named arguments that are considered user-facing and should be checked for hardcoded strings.
 const _userFacingNamedParameters = <String>{
   'counterText',
   'errorText',
@@ -36,6 +37,7 @@ const _userFacingNamedParameters = <String>{
   'tooltip',
 };
 
+// Named arguments for specific widgets that carry display text.
 const _namedTextParametersByWidget = <String, Set<String>>{
   'ActionButton': {'text'},
   'AppBar': {'title'},
@@ -47,9 +49,25 @@ const _namedTextParametersByWidget = <String, Set<String>>{
     'subText',
     'title',
   },
+  'ConfirmTextInputDialog': {
+    'cancelText',
+    'confirmText',
+    'mainText',
+    'subText',
+    'textHint',
+    'textLabel',
+    'title',
+  },
   'ThickOutlineButton': {'text'},
   '_IconButton': {'text'},
 };
+
+/// Named arguments whose name ends in one of these words carry display text,
+/// whatever widget they are passed to (e.g. `subText`, `textHint`, `label`).
+final _userFacingNamePattern = RegExp(
+  r'(?:text|label|hint|title|message|tooltip|caption|subtitle|heading)$',
+  caseSensitive: false,
+);
 
 final _ignoreCommentPattern = RegExp(
   r'//\s*ignore:\s*hardcoded_string(?:\s|$)',
@@ -111,7 +129,8 @@ class _StringVisitor extends RecursiveAstVisitor<void> {
   void visitArgumentList(ArgumentList node) {
     for (final argument in node.arguments) {
       if (argument case NamedExpression(:final name, :final expression)) {
-        if (_userFacingNamedParameters.contains(name.label.name)) {
+        if (_userFacingNamedParameters.contains(name.label.name) ||
+            _userFacingNamePattern.hasMatch(name.label.name)) {
           _record(expression);
         }
       }

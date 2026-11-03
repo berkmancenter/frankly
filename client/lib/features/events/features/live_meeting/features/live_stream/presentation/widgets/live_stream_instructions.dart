@@ -59,19 +59,17 @@ class LiveStreamInstructions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HeightConstrainedText(
-            'Admin Live Stream Setup',
+            context.l10n.adminLiveStreamSetup,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(height: 6),
-          HeightConstrainedText(
-              'When you are ready to start streaming, enter the Stream URL and Stream Key into the '
-              'stream settings of your streaming application (i.e. Zoom).'),
+          HeightConstrainedText(context.l10n.liveStreamSetupInstructions),
           SizedBox(height: 6),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               HeightConstrainedText(
-                'Stream URL:',
+                context.l10n.streamUrl,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -89,7 +87,7 @@ class LiveStreamInstructions extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               HeightConstrainedText(
-                'Stream Key:',
+                context.l10n.streamKey,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -105,7 +103,7 @@ class LiveStreamInstructions extends StatelessWidget {
           ),
           SizedBox(height: 6),
           HeightConstrainedText(
-            'WARNING: Anyone with this stream key can stream content on your stream. Keep it secret.',
+            context.l10n.streamKeyWarning,
             style: TextStyle(color: Colors.red),
           ),
         ],

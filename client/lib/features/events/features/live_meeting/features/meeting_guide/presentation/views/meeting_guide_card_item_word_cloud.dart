@@ -239,7 +239,7 @@ class _MeetingGuideCardItemWordCloudState
         return CustomStreamBuilder<List<ParticipantAgendaItemDetails>>(
           entryFrom: '_MeetingGuideCardState._buildWordCloudContent',
           stream: stream,
-          errorMessage: 'Error loading word cloud responses',
+          errorMessage: context.l10n.errorLoadingWordCloudResponses,
           builder: (_, details) {
             context.watch<AgendaProvider>();
 

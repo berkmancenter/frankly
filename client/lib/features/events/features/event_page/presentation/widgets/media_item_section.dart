@@ -73,7 +73,7 @@ class MediaItemSection extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     alignment: Alignment.centerLeft,
                     child: HeightConstrainedText(
-                      'Add video or image',
+                      context.l10n.addVideoOrImage,
                       style: context.theme.textTheme.bodyMedium!.copyWith(
                         color: context.theme.colorScheme.onSurfaceVariant,
                       ),

@@ -79,7 +79,7 @@ class _LiveStreamWidgetState extends State<LiveStreamWidget> {
                       .event
                       .liveStreamInfo
                       ?.liveStreamWaitingTextOverride ??
-                  'Stream will show here when it is active.',
+                  context.l10n.streamWaitingText,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Theme.of(context).primaryColor,

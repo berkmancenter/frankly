@@ -76,7 +76,7 @@ class _CategoryCardState extends State<CategoryCard> {
                     );
                   } else {
                     final delete = await ConfirmDialog(
-                      mainText: 'Are you sure you want to delete?',
+                      mainText: context.l10n.confirmDelete,
                       cancelText: context.l10n.cancel,
                     ).show(context: context);
                     if (delete && context.mounted) {

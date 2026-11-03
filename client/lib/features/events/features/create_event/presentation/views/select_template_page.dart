@@ -62,7 +62,7 @@ class _SelectTemplatePageState extends State<SelectTemplatePage> {
               onPressed: provider.selectedTemplate != null
                   ? () => provider.goNext()
                   : null,
-              text: 'Next',
+              text: context.l10n.next,
             ),
           ],
         ),

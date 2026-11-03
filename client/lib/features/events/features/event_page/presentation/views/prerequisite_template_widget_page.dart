@@ -83,7 +83,7 @@ class _PrerequisiteTemplateWidgetPageState
   Future<void> _showDeleteDialog() async {
     await ConfirmDialog(
       title: context.l10n.deletePrerequisiteTemplate,
-      mainText: 'Are you sure want to delete?',
+      mainText: context.l10n.confirmDelete,
       cancelText: context.l10n.cancel,
       onConfirm: (context) {
         Navigator.pop(context);
@@ -146,7 +146,7 @@ class _PrerequisiteTemplateWidgetPageState
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           HeightConstrainedText(
-            'Template',
+            context.l10n.template,
             style: context.theme.textTheme.titleSmall!.copyWith(
               color: widget.isWhiteBackground
                   ? context.theme.colorScheme.onSurface
@@ -211,8 +211,8 @@ class _PrerequisiteTemplateWidgetPageState
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
                                   templates.isEmpty
-                                      ? 'No Templates Available'
-                                      : 'Choose Template',
+                                      ? context.l10n.noTemplatesAvailable
+                                      : context.l10n.chooseTemplate,
                                   style: context.theme.textTheme.bodyMedium,
                                 ),
                               ),
@@ -244,8 +244,8 @@ class _PrerequisiteTemplateWidgetPageState
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
                                   (templates ?? []).isEmpty
-                                      ? 'No Templates Available'
-                                      : 'Choose Template',
+                                      ? context.l10n.noTemplatesAvailable
+                                      : context.l10n.chooseTemplate,
                                   style: context.theme.textTheme.bodyMedium!
                                       .copyWith(
                                     color: widget.isWhiteBackground
