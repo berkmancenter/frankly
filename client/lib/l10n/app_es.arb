@@ -620,7 +620,7 @@
   "createATemplate": "Crear una plantilla",
   "createEvent": "Crear evento",
   "createEventButton": "Crear evento",
-  "createEventFromThisTemplate": "Crear un evento {separator}a partir de esta plantilla",
+  "createEventFromThisTemplate": "Crear un evento a partir de esta plantilla",
   "createNewAnnouncement": "Crear nuevo anuncio",
   "createPost": "Crear publicación",
   "createTemplateFromEvent": "Crear Plantilla a partir del Evento",

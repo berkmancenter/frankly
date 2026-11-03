@@ -104,13 +104,6 @@
       }
     }
   },
-  "@createEventFromThisTemplate": {
-    "placeholders": {
-      "separator": {
-        "type": "String"
-      }
-    }
-  },
   "@deleteAgendaItem": {
     "placeholders": {
       "title": {}
@@ -708,7 +701,7 @@
   "createATemplate": "Create a template",
   "createEvent": "Create Event",
   "createEventButton": "Create event",
-  "createEventFromThisTemplate": "Create an event {separator}from this template",
+  "createEventFromThisTemplate": "Create an event from this template",
   "createNewAnnouncement": "Create New Announcement",
   "createPost": "Create post",
   "createTemplateFromEvent": "Create Template from Event",

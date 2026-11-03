@@ -626,7 +626,7 @@
   "createATemplate": "创建一个模板",
   "createEvent": "创建活动",
   "createEventButton": "创建活动",
-  "createEventFromThisTemplate": "使用此模板{separator}创建活动",
+  "createEventFromThisTemplate": "使用此模板创建活动",
   "createNewAnnouncement": "创建新公告",
   "createPost": "创建帖子",
   "createTemplateFromEvent": "从活动创建模板",

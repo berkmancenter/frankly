@@ -79,15 +79,13 @@ class _NewEventCardState extends State<NewEventCard> {
   }
 
   Widget _buildTitleAndHelpIcon() {
-    final isMobile = responsiveLayoutService.isMobile(context);
-
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Flexible(
           child: HeightConstrainedText(
-            context.l10n.createEventFromThisTemplate(isMobile ? '' : '\n'),
+            context.l10n.createEventFromThisTemplate,
             style: AppTextStyle.headline4,
           ),
         ),

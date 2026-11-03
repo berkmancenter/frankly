@@ -425,7 +425,7 @@ class _TemplatePageState extends State<TemplatePage>
     );
   }
 
-  Widget _buildUpcomingEvents(context) {
+  Widget _buildUpcomingEvents(BuildContext context) {
     final templatePageProvider = Provider.of<TemplatePageProvider>(context);
     final tabController = Provider.of<CustomTabControllerState>(context);
     return Column(
