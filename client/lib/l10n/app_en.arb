@@ -7,6 +7,19 @@
       }
     }
   },
+  "@adminEventPagination": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@appNameHome": {
     "placeholders": {
       "appName": {}
@@ -128,16 +141,16 @@
       }
     }
   },
-  "@emailUpdatedResent": {
-    "placeholders": {
-      "email": {}
-    }
-  },
   "@emailAndPasswordMismatch": {
     "placeholders": {
       "appName": {
         "type": "String"
       }
+    }
+  },
+  "@emailUpdatedResent": {
+    "placeholders": {
+      "email": {}
     }
   },
   "@enterCategoryNum": {
@@ -165,6 +178,13 @@
   },
   "@enterWordCloudPrompt": {},
   "@featureOnCommunityHomepage": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "@followCommunityAccess": {
     "placeholders": {
       "communityName": {
         "type": "String"
@@ -356,6 +376,13 @@
       "number": {}
     }
   },
+  "@reassignUser": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
   "@reassignedToRoom": {
     "placeholders": {
       "roomName": {
@@ -366,6 +393,33 @@
   "@recordingStatusParts": {
     "placeholders": {
       "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@registrationCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@registrationCountWithActive": {
+    "placeholders": {
+      "regCount": {
+        "type": "int"
+      },
+      "activeCount": {
+        "type": "int"
+      }
+    }
+  },
+  "@registrationCountWithAttended": {
+    "placeholders": {
+      "regCount": {
+        "type": "int"
+      },
+      "attendedCount": {
         "type": "int"
       }
     }
@@ -394,6 +448,13 @@
       },
       "lastIndex": {
         "type": "int"
+      }
+    }
+  },
+  "@takeRateDescription": {
+    "placeholders": {
+      "percentage": {
+        "type": "String"
       }
     }
   },
@@ -463,40 +524,6 @@
       "name": {}
     }
   },
-  "@adminEventPagination": {
-    "placeholders": {
-      "start": {
-        "type": "int"
-      },
-      "end": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "@followCommunityAccess": {
-    "placeholders": {
-      "communityName": {
-        "type": "String"
-      }
-    }
-  },
-  "@reassignUser": {
-    "placeholders": {
-      "displayName": {
-        "type": "String"
-      }
-    }
-  },
-  "@takeRateDescription": {
-    "placeholders": {
-      "percentage": {
-        "type": "String"
-      }
-    }
-  },
   "@youHaveUnsubscribedFromUpdates": {
     "placeholders": {
       "appName": {
@@ -504,6 +531,7 @@
       }
     }
   },
+  "aVIssues": "A/V issues?",
   "about": "About",
   "aboutHint": "Add more detail as to the goals of this community",
   "aboutMe": "About me",
@@ -513,13 +541,13 @@
   "accountExistsWithSameEmail": "An account exists with the same email address but a different sign in method. Use Sign in with Email and click Forgot Password if you don't know it. Or, Sign Up again using a different email.",
   "addACategory": "Add a category",
   "addAComment": "Add a comment",
+  "addAPrerequisiteTemplate": "Add a prerequisite template",
+  "addAQuestion": "Add a question",
+  "addAResource": "Add a resource",
   "addActionLink": "Add action link",
   "addActionLinksAfter": "Add action links participants should visit after the event",
   "addActionLinksBefore": "Add action links participants should visit before the event",
   "addAgendaItem": "Add agenda item",
-  "addAPrerequisiteTemplate": "Add a prerequisite template",
-  "addAQuestion": "Add a question",
-  "addAResource": "Add a resource",
   "addBreakouts": "Add breakouts",
   "addCategory": "Add a category",
   "addComment": "Add comment",
@@ -540,14 +568,14 @@
   "addVideoOrImage": "Add video or image",
   "admin": "Admin",
   "adminBadge": "ADMIN",
+  "adminBilling": "Admin Billing",
   "adminEventPagination": "{start} - {end} of {total}",
   "adminLiveStreamSetup": "Admin Live Stream Setup",
   "agendaItemJustStartedConfirm": "This agenda item just started! Are you sure you want to move on?",
-  "agendaItemsWereRemoved": "Agenda items were removed",
-  "adminBilling": "Admin Billing",
   "agendaItemWasDeleted": "Agenda item was deleted",
   "agendaItemWasDuplicated": "Agenda item was duplicated!",
   "agendaItemWasSaved": "Agenda item was saved",
+  "agendaItemsWereRemoved": "Agenda items were removed",
   "agendaPromptReady": "Your event is ready to start!",
   "agendaPromptWaiting": "Waiting for host to start the event...",
   "agendaSuggestionsDescription": "Let participants suggest agenda items and then upvote or downvote.",
@@ -569,20 +597,23 @@
   "appNameUnsubscribe": "{appName} - Unsubscribe",
   "appNameUserSettings": "{appName} - User Settings",
   "appNameWelcome": "{appName} - Welcome",
-  "approveAll": "Approve All",
   "appTitle": "Frankly",
   "appTitleHome": "{appName} - Home",
   "appTitleUnsubscribe": "{appName} - Unsubscribe",
   "appTitleUserSettings": "{appName} - User Settings",
   "appTitleWelcome": "{appName} - Welcome",
+  "approveAll": "Approve All",
   "areYouSure": "Are you sure?",
   "areYouSureYouWantToDeleteMedia": "Are you sure you want to delete media?",
   "areYouSureYouWantToRefreshTheTemplate": "Are you sure you want to refresh the template?",
   "aspectRatioClipped": "Aspect ratio clipped",
-  "attendee": "Attendee",
   "attendThisFirst": "Attend this first:",
+  "attendee": "Attendee",
   "audioDeviceUpdated": "Audio device updated.",
+  "audioInputDevice": "Audio Input Device:",
   "audioVideoSettings": "Audio/Video Settings",
+  "audiovisualSettings": "Audiovisual Settings",
+  "autoEndMeeting": "Auto-end meeting",
   "avAudioErrorNotFound": "Frankly can’t access your microphone(s). Modify your permissions/device settings and refresh the page to allow mic use.",
   "avConnecting": "Connecting...",
   "avErrorConstraints": "Media constraints error.",
@@ -596,7 +627,6 @@
   "avErrorSaveDeviceSettings": "Error saving audio/video device settings. Please try again or contact support.",
   "avIssues": "A/V issues?",
   "avVideoErrorNotFound": "Frankly can’t access your camera(s). Modify your permissions/device settings and refresh the page to allow camera use.",
-  "audiovisualSettings": "Audiovisual Settings",
   "awaitingResponses": "Awaiting responses…",
   "back": "Back",
   "background": "Background",
@@ -605,8 +635,8 @@
   "basicInformation": "Basic Information",
   "beta": "BETA",
   "billing": "Billing",
-  "brandingAndTheme": "Branding & Theme",
   "brandYourSpace": "Brand your space",
+  "brandingAndTheme": "Branding & Theme",
   "breakoutRoomTransitionTimeout": "Could not find that breakout room! This usually means a network error or that the host closed the room. Returning to the main meeting.",
   "breakoutRooms": "Breakout Rooms",
   "breakoutUpdated": "Breakout Updated!",
@@ -630,11 +660,11 @@
   "cancelHelpNeeded": "Cancel Help Needed",
   "cancelParticipation": "Cancel Participation",
   "cannotPlayVimeoVideo": "Cannot play Vimeo video",
-  "cannotPlayYoutubeVideo": "Cannot play YouTube video",
   "cannotPlayYouTubeVideo": "Cannot play YouTube video",
+  "cannotPlayYoutubeVideo": "Cannot play YouTube video",
   "category": "Category",
-  "changedFromDefault": "Changed from default",
   "changeLanguage": "Change Language",
+  "changedFromDefault": "Changed from default",
   "changesSaved": "Changes Saved",
   "chat": "Chat",
   "chatData": "Chat Data",
@@ -681,24 +711,26 @@
   "confirmRemoveParticipant": "Are you sure you want to remove {name} from this event?",
   "confirmUnsubscribeFrom": "Are you sure you want to unsubscribe from {communityName}?",
   "congratulations": "Congratulations!",
-  "contact": "Contact",
   "connectingToRoom": "Connecting to room...",
+  "contact": "Contact",
   "contactEmail": "Contact email",
-  "continueAfterVerification": "I've Verified My Email",
   "contactUs": "Contact us",
+  "contactUsDot": "Contact us.",
+  "content": "Content",
+  "continueAfterVerification": "I've Verified My Email",
   "continueButton": "Continue",
   "copiedToClipboard": "Copied to clipboard",
   "couldntFindAccount": "We couldn’t find an account with this email. Try ",
   "create": "Create",
-  "createAccount": "Create an account",
   "createACommunity": "Create a community",
-  "createAction": "Create",
-  "createAnAnnouncement": "Create an announcement",
-  "createAnEvent": "Create an event",
   "createANewTemplate": "Create a new template",
   "createAPost": "Create a post",
   "createAResource": "Create a resource",
   "createATemplate": "Create a template",
+  "createAccount": "Create an account",
+  "createAction": "Create",
+  "createAnAnnouncement": "Create an announcement",
+  "createAnEvent": "Create an event",
   "createEvent": "Create Event",
   "createEventButton": "Create event",
   "createEventFromThisTemplate": "Create an event from this template",
@@ -741,25 +773,35 @@
   "editEvent": "Edit event",
   "editImage": "Edit Image",
   "editItem": "Edit Item",
-  "editingEventNotice": "You are editing an event. \n",
-  "editingFutureInstancesNotice": "If you want to edit future instances, ",
   "editProfile": "Edit Profile",
   "editSettings": "Edit settings",
   "editTemplate": "Edit template",
   "editTheTemplate": "edit the template.",
+  "editYourAddressLink": "Edit the address",
+  "editYourEmailAddressLink": "Edit your email address",
   "editYourProfile": "Edit your profile",
+  "editingEventNotice": "You are editing an event. \n",
+  "editingFutureInstancesNotice": "If you want to edit future instances, ",
   "email": "Email",
   "emailAddressAlreadyInUse": "You already created an account tied to this email address. Use Sign in with Email and click Forgot Password if you don't know it. Or, Sign Up again using a different email.",
   "emailAddressAlreadyInUseLoginError": "This email is already in use. Try ",
+  "emailAndPasswordMismatch": "Your email and password combination don’t match a {appName} account.",
+  "emailAndPasswordMismatchCheck": "You can check what you entered and try again.",
+  "emailCannotBeUsedBody": "This email may be in use already on Frankly.",
+  "emailCannotBeUsedFieldError": "This email address cannot be used.",
+  "emailCannotBeUsedTitle": "The email entered cannot be used.",
+  "emailCannotBeVerifiedBodyAfterLink": " for help.",
+  "emailCannotBeVerifiedBodyBeforeLink": "Something went wrong. Try again later.\nStill can't verify? ",
+  "emailCannotBeVerifiedTitle": "Your email cannot be verified right now.",
   "emailNotYetVerified": "Check your inbox for the verification email and select the verification link. If you can't find it, it may be in your spam folder. You can also ",
   "emailNotYetVerifiedHeader": "Your email hasn't been verified yet.",
   "emailUpdatedResent": "Check your email for the verification message.\n\nIf this address isn’t already in use with another account, you’ll soon receive a message from no-reply@frankly.org. If it doesn’t appear in your inbox, check your spam folder.",
-  "emailAndPasswordMismatch": "Your email and password combination don’t match a {appName} account.",
-  "emailAndPasswordMismatchCheck": "You can check what you entered and try again.",
   "emailVerifiedInAnotherTab": "I verified my email in another window",
   "endBreakoutRooms": "End Breakout Rooms",
   "endBreakoutRoomsConfirm": "Are you sure you want to end breakout rooms for all participants? \n\nThis will send all participants back to the main room immediately.",
   "endBreakouts": "End Breakouts",
+  "endMeeting": "End Meeting",
+  "endMeetingConfirmation": "End this event for all participants? Everyone will be disconnected.",
   "endTime": "End Time",
   "enterAMessage": "Enter a message",
   "enterATitle": "Enter a title",
@@ -817,25 +859,26 @@
   "eventHasNotStartedYet": "The event has not started yet. We'll see you soon!",
   "eventIsLocked": "This event is locked",
   "eventLocked": "This event is locked",
-  "events": "Events",
   "eventSettings": "Event Settings",
   "eventSettingsDescription": "Define default settings for events within your community. These can be overridden for individual events and templates.",
   "eventTabsContent": "event-tabs-content",
   "eventTemplate": "Event Template",
   "eventTitle": "Event Title",
   "eventWasNotEntered": "Event was not entered.",
+  "events": "Events",
   "everyoneReadyToMoveOn": "Everyone is ready to move on.",
   "ex2": "Ex: 2",
-  "explorePlansCta": "Explore plans",
   "exTwo": "Ex: 2",
   "exceedsTwentyCharacterLimit": "Exceeds 20 characters limit",
   "explorePlans": "Explore Plans",
+  "explorePlansCta": "Explore plans",
   "facebookUrl": "Facebook URL",
   "facilitator": "Facilitator",
   "fakeParticipantCount": "Fake Participant Count",
+  "featureOnCommunityHomepage": "Feature on {communityName} homepage",
+  "featured": "Featured",
   "featuredTags": "Featured Tags",
   "featuredTemplatesAndEventsHint": "Featured Templates and Events will show up at the top of the Home page.",
-  "featureOnCommunityHomepage": "Feature on {communityName} homepage",
   "filter": "filter",
   "filterMemberListByName": "Filter member list by name",
   "findEventWithTemplate": "Find an event with this template.",
@@ -846,20 +889,21 @@
   "followCommunityAccess": "Follow {communityName} for access to all events and resources.",
   "followCommunityButton": "Follow Community Button",
   "followCommunityNamed": "Follow {communityName}",
-  "followerRequest": "Follower Request",
   "followRequestSent": "Follow Request Sent",
-  "forgotPasswordPrefix": "Forgot your password?",
-  "forgotPasswordEnterEmail": "Enter your email",
-  "forgotPasswordSuffix": "reset your password",
-  "forgotPasswordThen": "then ",
+  "followerRequest": "Follower Request",
   "forgotAccountEmailOrNeedHelp": "Forgot your account email or need other help signing in?",
   "forgotEmail": "Forgot the email associated with your account?",
+  "forgotPasswordEnterEmail": "Enter your email",
+  "forgotPasswordPrefix": "Forgot your password?",
+  "forgotPasswordSuffix": "reset your password",
+  "forgotPasswordThen": "then ",
   "franklyLogo": "Frankly Logo",
   "galleryView": "Gallery View",
   "getCustomColors": "Get custom colors ",
+  "goTo": "Go to",
   "googleCalendar": "Google Calendar",
   "googleMeet": "Google Meet",
-  "goTo": "Go to",
+  "gracePeriodMinutes": "Grace period (0-120 min):",
   "headline": "Headline",
   "headlineCannotBeEmpty": "Headline cannot be empty",
   "headlineIsRequired": "Headline is required",
@@ -869,23 +913,23 @@
   "historyHeader": "HISTORY",
   "homeWithAppName": "{appName} Home",
   "hostBeganRecording": "The host is now recording this event. They will\nreceive a downloadable copy of audio\nand video after this time.",
-  "hosted": "Hosted",
-  "hostingOption": "Hosting option",
-  "hostless": "Hostless",
   "hostMessagesWillShowHere": "If the host sends a message, you'll see it here.",
   "hostSendingToBreakout": "Host is sending you to a breakout room. Join breakout room?",
   "hostWillReceiveDownloadableCopy": "The host will receive a downloadable copy of audio and video.",
+  "hosted": "Hosted",
+  "hostingOption": "Hosting option",
+  "hostless": "Hostless",
   "howManyPeople": "How many people",
   "howWasTheEvent": "How was the event?",
   "iAgreeToThe": "I agree to the ",
   "iCalCalendar": "iCal Calendar",
   "illBeThere": "I'll be there!",
+  "imReadyToMoveOn": "I'm ready to move on",
   "image": "Image",
   "imageUrl": "Image URL",
   "imageUrlIsNotSet": "(Image URL is not set.)",
   "imageUrlIsRequired": "Image URL is required",
   "imageUrlNotSet": "(Image URL is not set.)",
-  "imReadyToMoveOn": "I'm ready to move on",
   "incorrectEmailOrPassword": "Incorrect email or password",
   "initializationError": "There was an unexpected error during initialization.",
   "instagramUrl": "Instagram URL",
@@ -894,10 +938,10 @@
   "interactiveEventsWithTemplates": "Quickly create interactive events using templates. ",
   "introBeforeBreakouts": "About {duration} of intro before breakout rooms",
   "introImageVideo": "Intro Image/Video",
-  "introductionContent": "_Introduce yourselves!  Each take one minute to answer one of the following questions._\n\n* What's something you did recently that was a lot of fun?\n* Who is your favorite cartoon character and why?\n* What's one thing you wish to accomplish before you die?\n* What movie did you NOT like?\n",
-  "introductions": "Introductions",
   "introLength": "Intro Length",
   "introText": "Intro Text",
+  "introductionContent": "_Introduce yourselves!  Each take one minute to answer one of the following questions._\n\n* What's something you did recently that was a lot of fun?\n* Who is your favorite cartoon character and why?\n* What's one thing you wish to accomplish before you die?\n* What movie did you NOT like?\n",
+  "introductions": "Introductions",
   "invalidCharacters": "Invalid characters(s)",
   "invalidEmail": "Invalid email",
   "items": "Items",
@@ -908,9 +952,9 @@
   "joinUppercase": "JOIN",
   "jumpTo": "Jump To",
   "jumpToRoom": "Jump To Room",
+  "keepItShortHint": "Keep it short! You don’t want people to spend time reading.",
   "kick": "Kick",
   "kickOutUser": "Kick out {displayName}?",
-  "keepItShortHint": "Keep it short! You don’t want people to spend time reading.",
   "kickReasonHint": "e.g. They are trying to sabotage the event",
   "kickVoteConfirmation": "Are you sure you want to start a vote to kick out {displayName}? Please only take this action if the participant is behaving inappropriately.",
   "kickVoteStarted": "{initiatorName} started a vote to kick {targetName} out of the event. Do you want to kick them out? They will not be allowed back in.",
@@ -920,29 +964,31 @@
   "learnMore": "Learn more",
   "leave": "Leave",
   "leaveRoom": "Leave Room",
+  "leaveWithoutEnding": "Leave without ending",
   "length": "Length",
   "less": "Less",
   "lightColorHex": "Light Color HEX#",
   "linkCopied": "Link Copied!",
+  "linkMustBeMp4": "Link must be MP4",
   "linkedPayeeAccountEdit": "Edit Linked Payee Account",
   "linkedPayeeAccountSet": "Set Linked Payee Account",
-  "linkMustBeMp4": "Link must be MP4",
   "linkedinUrl": "LinkedIn URL",
   "links": "Links",
-  "livestream": "Livestream",
   "liveStreamSetupInstructions": "When you are ready to start streaming, enter the Stream URL and Stream Key into the stream settings of your streaming application (i.e. Zoom).",
+  "livestream": "Livestream",
   "loading": "Loading",
   "loadingBreakoutRoomPleaseWait": "Loading breakout room. Please wait...",
   "loadingEllipsis": "Loading...",
   "loadingRoomPleaseWait": "Loading room. Please wait...",
-  "locked": "Locked",
   "lockMeeting": "Lock Meeting",
   "lockRoomPrompt": "Lock room to prevent any new registrants from joining?",
-  "loggingIn": "logging in",
-  "logIntoApp": "Log into {appName}",
-  "logInto": "Log into",
-  "login": "Login",
+  "locked": "Locked",
+  "logInInsteadLink": "Log in instead",
   "logInWithGoogle": "Log in with Google",
+  "logInto": "Log into",
+  "logIntoApp": "Log into {appName}",
+  "loggingIn": "logging in",
+  "login": "Login",
   "logo": "Logo",
   "logout": "Log out",
   "loopVideo": "Loop Video",
@@ -962,8 +1008,8 @@
   "meetingEndMessage": "This meeting has ended. You may close this window.",
   "meetingEndWithFollowMessage": "This meeting has ended. You may close this window or visit {name} to continue the conversation.",
   "meetingGuideCard": "meeting-guide-card",
-  "meetingGuideTutorial": "Click here when\nyou’re ready to\nget started",
   "meetingGuideEntryNotFound": "Meeting Guide entry not found.",
+  "meetingGuideTutorial": "Click here when\nyou’re ready to\nget started",
   "member": "Member",
   "memberRolesHelpMessage": "Check the Help Center for permission details by role.",
   "members": "Members",
@@ -1000,24 +1046,25 @@
   "myUpcomingEvents": "My Upcoming Events",
   "name": "Name",
   "nameHintExample": "e.g. Jane Doe",
+  "needHelp": "Need help? ",
   "needHelpButton": "Need Help?",
   "needMoreHelp": "Need more help? ",
   "networkRequestBlocked": "We could not reach the server. A VPN, DNS filter, or a privacy or ad-blocking extension may be blocking requests. Try a different network or browser, or disable the blocker, then try again.",
   "newAnnouncement": "New Announcement",
-  "newestFirst": "Newest First",
   "newRoomNumber": "New Room Number:",
   "newSubscription": "New Subscription",
   "newToApp": "New to {appName}?",
   "newUserRegister": "New user? Register",
+  "newestFirst": "Newest First",
   "next": "Next",
   "no": "No",
   "noAccountFound": "No account found. Try signing in using a different email address. Or, Sign Up using this one.",
   "noAgendaForEvent": "There is no agenda for this event.",
   "noAnnouncementsSentYet": "No announcements sent yet",
   "noAnnouncementsYet": "No announcements yet.",
-  "noCancel": "No, Cancel",
   "noCameraAvailable": "No camera available",
   "noCameraDetected": "No camera detected",
+  "noCancel": "No, Cancel",
   "noChatDataForEvent": "No chat data for this event.",
   "noDescriptionForEvent": "No description for this event",
   "noDevicesFound": "No devices found.",
@@ -1029,30 +1076,31 @@
   "noMatchingMembersFound": "No matching members found.",
   "noMeetingGuideForThisMeeting": "There is no meeting guide for this meeting",
   "noMembersFoundToExport": "No members found to export.",
-  "none": "None",
+  "noMicrophoneAvailable": "No microphone available",
   "noOneIsHereYet": "No one is here yet.",
   "noOneIsHereYet1": "No one is here yet",
   "noPendingJoinRequests": "No Pending Join Requests",
   "noPollsOrSuggestionsDataForEvent": "No polls or suggestions data for this event.",
   "noRoomsFound": "No rooms found.",
   "noRoomsNeedHelp": "No rooms need help.",
-  "notAuthorized": "Sorry, you aren't authorized to do that.",
   "noSkip": "No, skip",
-  "notBillingManager": "You are not the billing manager for any communities",
   "noTemplatesAvailable": "No Templates Available",
   "noTemplatesFound": "No templates found.",
   "noThanks": "No thanks",
   "noTitle": "NO TITLE",
+  "noUpcomingEvents": "No upcoming events.",
+  "noUpcomingEventsMessage": "You haven't registered for any upcoming events.",
+  "none": "None",
+  "notAuthorized": "Sorry, you aren't authorized to do that.",
+  "notBillingManager": "You are not the billing manager for any communities",
   "notNow": "Not now",
   "notUserSignUp": "Don't have an account?",
   "notifications": "Notifications",
   "notifyMeAboutNewAnnouncements": "Notify me about new announcements",
   "notifyMeAboutNewEvents": "Notify me about new events",
-  "noUpcomingEvents": "No upcoming events.",
-  "noUpcomingEventsMessage": "You haven't registered for any upcoming events.",
   "odometer": "Odometer",
-  "office365Calendar": "Office 365 Calendar",
   "ofTotal": "of {count}",
+  "office365Calendar": "Office 365 Calendar",
   "ok": "Ok",
   "onboardingBrandSpaceSubtitle": "Make it yours with custom colors, images, and logos",
   "onboardingCreateStripeAccountSubtitle": "Enable donations for your community.",
@@ -1064,6 +1112,7 @@
   "openLink": "Open Link",
   "optional": "Optional",
   "or": "Or",
+  "orCheckAndTryAgain": " or you can check what you entered and ",
   "other": "Other",
   "otherDataDownload": "Polls, Suggestions and Chat can be downloaded from the event page.",
   "otherDataDownloadAction": "Go to Event Page",
@@ -1073,50 +1122,12 @@
   "participantActions": "Participant Actions",
   "participantActionsForUserWithId": "Participant Actions for user with ID {userId}",
   "participantCount": "{count} participants",
-  "participantsSentToRoomsAt": "Participants will be sent into rooms at {time}.",
-  "participateInBreakoutAssignments": "Would you like to participate in breakout room assignments?",
-  "pin": "Pin",
-  "pleaseProvideAdditionalFeedbackFor": "Please provide additional feedback for {communityName} here.",
-  "pleaseProvideFeedbackFor": "Please take a moment to provide feedback for {communityName}.",
-  "proposeToRemoveUserAction": "Propose to remove user",
-  "publicOrPrivate": "Public or private?",
-  "readMore": "Read More",
-  "readyIn": "We'll be ready in:",
-  "reassignedToRoom": "Reassigned to Room {roomName}",
-  "registrationCountLabel": "{count} {count, plural, =1{Registration} other{Registrations}}",
-  "@registrationCountLabel": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "registrationCountWithActive": "{regCount} registrations ({activeCount} active)",
-  "@registrationCountWithActive": {
-    "placeholders": {
-      "regCount": {
-        "type": "int"
-      },
-      "activeCount": {
-        "type": "int"
-      }
-    }
-  },
-  "registrationCountWithAttended": "{regCount} registrations ({attendedCount} attended)",
-  "@registrationCountWithAttended": {
-    "placeholders": {
-      "regCount": {
-        "type": "int"
-      },
-      "attendedCount": {
-        "type": "int"
-      }
-    }
-  },
   "participantReassigned": "Participant Reassigned",
   "participants": "Participants",
   "participantsLoadError": "Something went wrong loading participants. Please refresh.",
   "participantsReadyToMoveOn": "{readyCount} out of {participantCount} participants are ready to move on.",
+  "participantsSentToRoomsAt": "Participants will be sent into rooms at {time}.",
+  "participateInBreakoutAssignments": "Would you like to participate in breakout room assignments?",
   "password": "Password",
   "passwordInvalid": "Password is invalid. Click Forgot Password to reset it. Or, Sign Up again using a different email.",
   "passwordRequirements": "Must be at least 12 characters long, and contain one lowercase and one uppercase letter.",
@@ -1134,6 +1145,7 @@
   "permissionsOwnerDescription": "All admin capabilities, can add/remove other admins.",
   "person": "person",
   "pickAColor": "Pick a color",
+  "pin": "Pin",
   "playsAt": "Plays at {time}",
   "pleaseAddSomeAnswers": "Please add some answers",
   "pleaseAnswerQuestions": "Please answer a few questions so we can match you with the right group.",
@@ -1147,6 +1159,8 @@
   "pleaseEnterValidUrl": "Please enter a valid URL.",
   "pleaseFixErrorsBeforeSaving": "Please fix form errors before saving.",
   "pleaseLogInOrSignUp": "Please log in or sign up",
+  "pleaseProvideAdditionalFeedbackFor": "Please provide additional feedback for {communityName} here.",
+  "pleaseProvideFeedbackFor": "Please take a moment to provide feedback for {communityName}.",
   "pleaseRemoveDuplicateAnswers": "Please remove duplicate answers.",
   "pollQuestion": "Poll Question",
   "pollsSuggestionsData": "Polls & Suggestions Data",
@@ -1154,8 +1168,8 @@
   "postEvent": "Post-event",
   "postHasBeenCreated": "Post has been created",
   "postHasBeenUpdated": "Post has been updated",
-  "posts": "Posts",
   "postWasDeleted": "Post was deleted.",
+  "posts": "Posts",
   "preEvent": "Pre-event",
   "prereqRequired": "Prerequisite required",
   "prerequisiteRequired": "Prerequisite Required",
@@ -1172,6 +1186,8 @@
   "profileButton": "Profile Button",
   "profileUpdated": "Profile updated",
   "proposeToRemoveUser": "Propose to remove user?",
+  "proposeToRemoveUserAction": "Propose to remove user",
+  "publicOrPrivate": "Public or private?",
   "publicVisibility": "Public",
   "question": "Question",
   "questionDeleted": "Question deleted!",
@@ -1187,9 +1203,12 @@
   "raiseYourHandToJoinTheSpeakerQueue": "Raise your hand to join the speaker queue",
   "randomlyAssign": "Randomly Assign",
   "reactivate": "Reactivate",
+  "readMore": "Read More",
   "ready": "Ready",
+  "readyIn": "We'll be ready in:",
   "reassign": "Reassign",
   "reassignUser": "Reassign {displayName}",
+  "reassignedToRoom": "Reassigned to Room {roomName}",
   "recentRooms": "Recent Rooms",
   "record": "Recording",
   "recording": "Recordings",
@@ -1208,13 +1227,16 @@
   "refreshTemplate": "Refresh Template",
   "registered": "Registered",
   "registrantList": "Registrant List",
+  "registrationCountLabel": "{count} {count, plural, =1{Registration} other{Registrations}}",
+  "registrationCountWithActive": "{regCount} registrations ({activeCount} active)",
+  "registrationCountWithAttended": "{regCount} registrations ({attendedCount} attended)",
   "registrationDataDownload": "Registrations",
   "reload": "Reload",
   "remove": "Remove",
-  "removedFromEvent": "You were removed from this event and cannot rejoin.",
   "removeParticipant": "Remove Participant",
   "removeSuggestion": "Remove Suggestion",
   "removeTemplate": "Remove Template",
+  "removedFromEvent": "You were removed from this event and cannot rejoin.",
   "reorderingNotSavedUntilQuestionsCompleted": "Reordering not saved until all questions are completed.",
   "reply": "Reply",
   "requestToFollow": "Request To Follow",
@@ -1222,6 +1244,7 @@
   "required": "Required",
   "requiredToMoveOn": "required to move on",
   "resendCooldownLabel": "{label} ({seconds}s)",
+  "resendEmailAndTryAgain": "Resend the verification email and try again.",
   "resendVerificationEmail": "Resend Email",
   "resendVerificationEmailLink": "resend the email.",
   "resetEventToTemplateWarning": "Your event will be reset to the original template. The list of attendees will not be affected.",
@@ -1245,11 +1268,11 @@
   "saveAgendaItem": "Save Agenda Item",
   "saveAndClose": "Save and Close",
   "saveAndJoin": "Save & Join",
-  "saved": "Saved",
   "saveChangesQuestion": "Save changes?",
   "saveEvent": "Save Event",
   "saveSettings": "Save Settings",
   "saveTemplate": "Save template",
+  "saved": "Saved",
   "saySomething": "Say something",
   "scheduledEvent": "Scheduled event",
   "search": "Search",
@@ -1263,18 +1286,20 @@
   "seeMoreEvents": "See More Events",
   "selectADay": "Select a day",
   "selectATime": "Select a time",
-  "noMicrophoneAvailable": "No microphone available",
   "selectAudioInputDevice": "Select audio input device",
   "selectData": "Select Data",
-  "selectedColorsContrastError": "The selected colors do not have sufficient contrast. Please choose different colors.",
   "selectLanguage": "Select Language",
   "selectMaxParticipantCount": "Select max. participant count",
   "selectSpace": "Select space:",
   "selectVideoInput": "Select video input",
+  "selectedColorsContrastError": "The selected colors do not have sufficient contrast. Please choose different colors.",
   "send": "Send",
   "sendMessage": "Send message",
   "sendMessageToAllParticipantsInGroup": "Send a message to all the participants in the group",
+  "sendVerification": "Send verification",
+  "sessionExpiredSignInAgain": "Your session has expired. Please sign in again.",
   "setPayeeAccountDetails": "Set your payee account details",
+  "setYourPayeeAccountDetails": "Set your payee account details",
   "settingAgendaPreview": "Agenda Preview",
   "settingAllowMembersToCreateEvents": "Allow members to create events",
   "settingAllowMembersToCreateTemplates": "Allow members to create templates",
@@ -1293,7 +1318,6 @@
   "settingRequireApprovalForNewMembers": "Require approval for new members",
   "settings": "Settings",
   "settingsFor": "Settings for {communityName}",
-  "setYourPayeeAccountDetails": "Set your payee account details",
   "share": "Share",
   "shareYourCommunityWithOthers": "Share your community with others",
   "showAgendaItem": "Show Agenda Item",
@@ -1305,8 +1329,6 @@
   "showSidebarButton": "Show Sidebar Button",
   "sidebarFollowCommunityButton": "Sidebar Follow Community Button",
   "sidebarUnfollowButton": "Sidebar Unfollow Button",
-  "sessionExpiredSignInAgain": "Your session has expired. Please sign in again.",
-  "signedOutRefreshPrompt": "You have been signed out. Please refresh to sign back in",
   "signIn": "Log In",
   "signInToApp": "Sign in to {appName}",
   "signInWithEmail": "Sign in with Email",
@@ -1316,6 +1338,7 @@
   "signUpToGetStarted": "Sign up to get started.",
   "signUpWithEmail": "Sign up with Email",
   "signUpWithGoogle": "Sign up with Google",
+  "signedOutRefreshPrompt": "You have been signed out. Please refresh to sign back in",
   "signingUp": "signing up",
   "skip": "Skip",
   "skipStripeAccountSetupForNow": "Skip Stripe account setup for now",
@@ -1330,8 +1353,8 @@
   "somethingWentWrongLoadingCommunity": "Something went wrong loading this community.",
   "somethingWentWrongLoadingEvents": "Something went wrong loading events.",
   "somethingWentWrongLoadingRoom": "Something went wrong loading room. Please refresh!",
-  "somethingWentWrongLongPrefix": "We’re sorry, something went wrong.",
   "somethingWentWrongLongMiddle": "Refresh the page and try logging in to Frankly again.\n\nIf you continue having trouble, you can",
+  "somethingWentWrongLongPrefix": "We’re sorry, something went wrong.",
   "somethingWentWrongLongSuffix": "contact us for support",
   "somethingWentWrongTryAgain": "Something went wrong. Please try again.",
   "sorryVimeoVideoLookupFailed": "Sorry, vimeo video lookup failed.",
@@ -1342,10 +1365,10 @@
   "start": "Start",
   "startCommunity": "Start a community",
   "startEvent": "Start Event",
-  "startingNextAgendaItem": "Starting the Next Agenda Item",
-  "startsTomorrow": "Starts Tomorrow",
   "startTime": "Start Time",
   "startVideo": "Start Video",
+  "startingNextAgendaItem": "Starting the Next Agenda Item",
+  "startsTomorrow": "Starts Tomorrow",
   "stepXOfY": "STEP {currentIndex} OF {lastIndex}",
   "stopVideo": "Stop Video",
   "streamKey": "Stream Key:",
@@ -1370,8 +1393,8 @@
   "targetSizeQuestion": "Target Size?",
   "template": "Template",
   "templateName": "Template name",
-  "templates": "Templates",
   "templateSettings": "Template Settings",
+  "templates": "Templates",
   "termsAgreementPrefix": "By signing in, registering, or using {appName}, I agree to be bound by the ",
   "termsOfService": "{appName} Terms of Service",
   "textCopied": "Text copied!",
@@ -1387,7 +1410,6 @@
   "thisWillUnsubscribeFromUpdates": "This will unsubscribe from {appName} updates:",
   "time": "Time",
   "timeShownIn": "Time shown in {timezone}",
-  "timesShownInLocalTimezone": "Times are shown in your local timezone.",
   "title": "Title",
   "titleCannotBeEmpty": "Title cannot be empty",
   "titleIsRequired": "Title is required",
@@ -1399,13 +1421,14 @@
   "troubleshootingGuide": "Troubleshooting Guide",
   "tryAgain": "Please try again",
   "tryAgainLater": " and try again later",
+  "tryAgainLink": "try again",
   "turnOnAudioVideo": "Turn on Audio/Video?",
   "twitterUrl": "Twitter URL",
   "typeSomething": "Type something",
   "unfollow": "Unfollow",
-  "unknownUser": "Unknown User",
   "uniqueUrlDisplayName": "Unique URL display name (Optional)",
   "uniqueUrlDisplayNameOptional": "Unique URL display name (Optional)",
+  "unknownUser": "Unknown User",
   "unlockMeeting": "Unlock Meeting",
   "unmute": "Unmute",
   "unnamedCommunity": "Unnamed Community",
@@ -1418,7 +1441,6 @@
   "updateBilling": "Update billing",
   "updateButton": "Update",
   "updateEmail": "Update Email",
-  "sendVerification": "Send verification",
   "updateEvent": "Update Event",
   "updatePlan": "Update Plan",
   "updatePost": "Update post",
@@ -1442,19 +1464,19 @@
   "useLighterAccentColor": "Use a lighter accent color.",
   "useLighterBackgroundColor": "Use a lighter background color.",
   "usersAreInBreakoutRooms": "Users are in breakout rooms.",
+  "verificationAccountInstructions": "Use the link in the email to verify and continue.",
   "verificationEmailResent": "Verification email resent to {email}.",
   "verificationEmailSent": "We sent a verification email to {email}. \n To verify your account and continue, use the link in the email.",
   "verificationEmailSentTo": "We sent a verification email to {email}.",
-  "verificationAccountInstructions": "Use the link in the email to verify and continue.",
   "verificationLinkExpired": "Your verification link has expired. Please resend a new one.",
   "verificationLinkExpiredTitle": "Your verification link has expired.",
-  "resendEmailAndTryAgain": "Resend the verification email and try again.",
   "verificationLinkExpiresIn": "This email link will expire in 30 minutes.",
   "verifyYourEmail": "Verify your email",
   "video": "Video",
   "videoDeviceUpdated": "Video device updated.",
   "videoDisabled": "Video Off",
   "videoElement": "{label}-video-element",
+  "videoInputDevice": "Video Input Device:",
   "videoPreview": "Video Preview",
   "videoTabUpload": "UPLOAD",
   "videoTabUrl": "URL",
@@ -1487,23 +1509,9 @@
   "wordCloudPrompt": "Word Cloud Prompt",
   "wordCloudPromptRequired": "Word Cloud prompt is required",
   "wordList": "Word List",
+  "wouldYouLikeToTurnOnAv": "Would you like to turn on audio and video?",
   "wrongEmail": "Wrong email? Edit",
   "wrongEmailEditAddress": "(Meant to use a different address for your account? Edit the address.)",
-  "editYourEmailAddressLink": "Edit your email address",
-  "editYourAddressLink": "Edit the address",
-  "emailCannotBeUsedTitle": "The email entered cannot be used.",
-  "emailCannotBeUsedBody": "This email may be in use already on Frankly.",
-  "logInInsteadLink": "Log in instead",
-  "orCheckAndTryAgain": " or you can check what you entered and ",
-  "tryAgainLink": "try again",
-  "needHelp": "Need help? ",
-  "contactUsDot": "Contact us.",
-  "content": "Content",
-  "emailCannotBeUsedFieldError": "This email address cannot be used.",
-  "emailCannotBeVerifiedTitle": "Your email cannot be verified right now.",
-  "emailCannotBeVerifiedBodyBeforeLink": "Something went wrong. Try again later.\nStill can't verify? ",
-  "emailCannotBeVerifiedBodyAfterLink": " for help.",
-  "wouldYouLikeToTurnOnAv": "Would you like to turn on audio and video?",
   "yes": "Yes",
   "yesCancel": "Yes, cancel",
   "yesCancelPlan": "Yes, cancel plan",
@@ -1519,16 +1527,16 @@
   "youAreInTheWaitingRoom": "You are in the waiting room.",
   "youAreInWaitingRoom": "You are in the waiting room.",
   "youCanChangeThisLater": "You can change this later",
-  "youHaventJoinedAnyCommunities": "You haven't joined any communities.",
   "youHaveUnsubscribedFromUpdates": "You have unsubscribed from {appName} updates.",
+  "youHaventJoinedAnyCommunities": "You haven't joined any communities.",
   "youLeftTheEvent": "You left the event.",
   "youNeedToBeLoggedInToDoThis": "You need to be logged in to do this.",
+  "youWereRemovedFromThisEventAndCannotRejoin": "You were removed from this event and cannot rejoin.",
   "yourChangesToProfileCantBeSaved": "Your changes to Profile can't be saved",
-  "youreReadyToMoveOn": "You're ready to move on",
   "yourEvent": "Your Event",
   "yourName": "Your Name",
+  "youreReadyToMoveOn": "You're ready to move on",
   "youtubeUrl": "YouTube URL",
   "youtubeVideoLookupFailed": "Sorry, youtube video lookup failed.",
-  "youWereRemovedFromThisEventAndCannotRejoin": "You were removed from this event and cannot rejoin.",
   "zoom": "Zoom"
 }

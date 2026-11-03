@@ -43,7 +43,9 @@ class FirestoreUtils {
 
     json.forEach((key, value) {
       if (value is Timestamp) {
-        formattedJson[key] = value.toDateTime();
+        // Mark as UTC so toIso8601String() ends in "Z". Without it, clients
+        // parse the string as local time and show it shifted by their offset.
+        formattedJson[key] = value.toDateTime().toUtc();
       } else if (value is Map) {
         formattedJson[key] = fromFirestoreJson(value as Map<String, dynamic>);
       } else if (value is List) {

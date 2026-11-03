@@ -34,13 +34,17 @@ class PendingRecording {
 class MeetingJoinResult {
   final GetMeetingJoinInfoResponse response;
   final PendingRecording? pendingRecording;
+  final bool isFirstJoin;
+  final Event event;
   final String? recordingSessionId;
   final bool shouldRecord;
   final bool shouldTranscribe;
 
   MeetingJoinResult({
     required this.response,
+    required this.event,
     this.pendingRecording,
+    this.isFirstJoin = false,
     this.recordingSessionId,
     this.shouldRecord = false,
     this.shouldTranscribe = false,
@@ -74,7 +78,8 @@ class LiveMeetingUtils {
     var liveMeeting = LiveMeeting.fromJson(
       firestoreUtils.fromFirestoreJson(liveMeetingSnapshot.data.toMap()),
     );
-    if (isNullOrEmpty(liveMeeting.meetingId)) {
+    final isFirstJoin = isNullOrEmpty(liveMeeting.meetingId);
+    if (isFirstJoin) {
       fieldsToUpdate.add(LiveMeeting.kFieldMeetingId);
     }
     liveMeeting = liveMeeting.copyWith(
@@ -141,7 +146,9 @@ class LiveMeetingUtils {
         meetingToken: token,
         meetingId: meetingId,
       ),
+      event: event,
       pendingRecording: pendingRecording,
+      isFirstJoin: isFirstJoin,
       recordingSessionId: liveMeeting.recordingSessionId,
       shouldRecord: shouldRecord,
       shouldTranscribe: shouldTranscribe,

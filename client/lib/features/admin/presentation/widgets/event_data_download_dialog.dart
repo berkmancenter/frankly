@@ -328,6 +328,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   String _transcriptAnnotation(BuildContext context, int? parts) {
     if (parts == null) return ' ${context.l10n.recordingStatusChecking}';
     if (parts == 0) return ' ${context.l10n.recordingStatusPreparing}';
+    if (parts == -1) return ' ${context.l10n.recordingStatusFailed}';
+    if (parts == -2) return ' (${context.l10n.none.toLowerCase()})';
     return ' ${context.l10n.recordingStatusParts(parts)}';
   }
 
@@ -487,12 +489,6 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                     () => registrantListSelected = value ?? false,
                   ),
                   title: Text(context.l10n.registrationDataDownload),
-                  subtitle: Text(
-                    context.l10n.timesShownInLocalTimezone,
-                    style: context.theme.textTheme.bodySmall?.copyWith(
-                      color: context.theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
                 ),
               CheckboxListTile(
                 value: chatDataSelected,

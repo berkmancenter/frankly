@@ -56,6 +56,7 @@ _$_Event _$$_EventFromJson(Map<String, dynamic> json) => _$_Event(
           : EventSettings.fromJson(
               json['eventSettings'] as Map<String, dynamic>),
       durationInMinutes: json['durationInMinutes'] as int? ?? 60,
+      endedAt: dateTimeFromTimestamp(json['endedAt']),
       externalCommunityId: json['externalCommunityId'] as String?,
       externalCommunityStatus: json['externalCommunityStatus'] as String?,
       participantCountEstimate: json['participantCountEstimate'] as int?,
@@ -93,6 +94,7 @@ Map<String, dynamic> _$$_EventToJson(_$_Event instance) => <String, dynamic>{
       'postEventCardData': instance.postEventCardData?.toJson(),
       'eventSettings': instance.eventSettings?.toJson(),
       'durationInMinutes': instance.durationInMinutes,
+      'endedAt': timestampFromDateTime(instance.endedAt),
       'externalCommunityId': instance.externalCommunityId,
       'externalCommunityStatus': instance.externalCommunityStatus,
       'participantCountEstimate': instance.participantCountEstimate,
@@ -128,6 +130,8 @@ _$_EventSettings _$$_EventSettingsFromJson(Map<String, dynamic> json) =>
       alwaysTranscribe: json['alwaysTranscribe'] as bool?,
       enablePrerequisites: json['enablePrerequisites'] as bool?,
       agendaPreview: json['agendaPreview'] as bool?,
+      autoEndMeeting: json['autoEndMeeting'] as bool?,
+      autoEndGracePeriodMinutes: json['autoEndGracePeriodMinutes'] as int?,
     );
 
 Map<String, dynamic> _$$_EventSettingsToJson(_$_EventSettings instance) =>
@@ -144,6 +148,8 @@ Map<String, dynamic> _$$_EventSettingsToJson(_$_EventSettings instance) =>
       'alwaysTranscribe': instance.alwaysTranscribe,
       'enablePrerequisites': instance.enablePrerequisites,
       'agendaPreview': instance.agendaPreview,
+      'autoEndMeeting': instance.autoEndMeeting,
+      'autoEndGracePeriodMinutes': instance.autoEndGracePeriodMinutes,
     };
 
 _$_LiveStreamInfo _$$_LiveStreamInfoFromJson(Map<String, dynamic> json) =>

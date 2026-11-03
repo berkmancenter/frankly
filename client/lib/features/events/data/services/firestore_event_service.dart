@@ -164,8 +164,12 @@ class FirestoreEventService {
           .snapshots()
           .asyncMap((snapshot) async {
         final events = await _convertEventListAsync(snapshot.docs);
+        // Include recently started events & hide ones that were ended early.
         return events
-            .where((event) => event.status == EventStatus.active)
+            .where(
+              (event) =>
+                  event.status == EventStatus.active && event.endedAt == null,
+            )
             .toList();
       });
     });

@@ -34,6 +34,7 @@ const sameOriginCallables = {
   'createDonationCheckoutSession',
   'createEvent',
   'createStripeConnectedAccount',
+  'endMeetingForAll',
   'eventEnded',
   'getCommunityCalendarLink',
   'getCommunityCapabilities',
