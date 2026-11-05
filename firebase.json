@@ -42,7 +42,7 @@
         ]
       },
       {
-        "source": "/version.json",
+        "source": "/@(version|cache_epoch).json",
         "headers": [
           {
             "key": "Cache-Control",
