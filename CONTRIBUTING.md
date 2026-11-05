@@ -75,7 +75,7 @@ We would love for you to contribute to Frankly! To set up your development envir
 
 If the feature you want to work on requires third-party services (e.g. Agora for video calling, or Mux for running livestreams), please follow the instructions in the README to set up your own accounts. The free tiers of these services should allow for testing development use cases.
 
-If you have any questions about the instructions, please feel free to [submit an issue](https://github.com/berkmancenter/frankly/issues/new). We welcome any suggestions for improvements to the README from contributors, especially as a Pull Request to the documentation itself.
+If you have any questions about the instructions, please feel free to [submit an issue](https://github.com/berkmancenter/frankly/issues/new). We welcome any suggestions for improvements to the README from contributors, especially as a Pull Request to the [documentation](https://berkmancenter.github.io/frankly/) itself.
 
 ### How to Contribute
 
