@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'dart:async';
 
 import 'package:beamer/beamer.dart';
@@ -300,12 +301,12 @@ class EventPageProvider with ChangeNotifier {
   }
 
   Future<bool> cancelEvent() async {
-    final cancel = await ConfirmDialog(
+    final cancel = await DeleteDialog(
       title: appLocalizationService.getLocalization().cancelEvent,
-      mainText:
+      content:
           appLocalizationService.getLocalization().cancelEventConfirmation,
-      confirmText: appLocalizationService.getLocalization().yesCancel,
-      cancelText: appLocalizationService.getLocalization().no,
+      confirmText: appLocalizationService.getLocalization().cancelEvent,
+      cancelText: appLocalizationService.getLocalization().keepEvent,
     ).show();
     if (!cancel) return false;
 
