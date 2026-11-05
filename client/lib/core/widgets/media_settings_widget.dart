@@ -73,11 +73,13 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   Future<void> initAll() async {
     await _mediaService.init();
+    await updatePreviewWidget();
 
+    // Capture after the preview is up: getUserMedia may have recovered from a
+    // stale device id and re-selected a different default.
     initialAudioDeviceId = _mediaService.selectedAudioInputId;
     initialVideoDeviceId = _mediaService.selectedVideoInputId;
 
-    await updatePreviewWidget();
     if (!mounted) return;
     setState(() {
       isLoading = false;
@@ -113,10 +115,14 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     // initial value. Don't call getUserMedia here (e.g. via
     // updatePreviewWidget) - that would open a new camera stream that never
     // gets stopped, leaving the camera active after this widget is gone.
-    await _mediaService.selectVideoDevice(
-      deviceId: initialVideoDeviceId ?? '',
-      shouldUpdatePreview: false,
-    );
+    // Nothing to restore if there was no initial device; selecting '' would
+    // persist an id that matches no device.
+    if (initialVideoDeviceId != null) {
+      await _mediaService.selectVideoDevice(
+        deviceId: initialVideoDeviceId!,
+        shouldUpdatePreview: false,
+      );
+    }
 
     _videoElement.srcObject = null;
     _videoElement.remove();
