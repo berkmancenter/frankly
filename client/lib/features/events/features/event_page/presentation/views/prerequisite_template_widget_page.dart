@@ -145,7 +145,7 @@ class _PrerequisiteTemplateWidgetPageState
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           HeightConstrainedText(
-            'Template',
+            context.l10n.template,
             style: context.theme.textTheme.titleSmall!.copyWith(
               color: widget.isWhiteBackground
                   ? context.theme.colorScheme.onSurface
@@ -210,8 +210,8 @@ class _PrerequisiteTemplateWidgetPageState
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
                                   templates.isEmpty
-                                      ? 'No Templates Available'
-                                      : 'Choose Template',
+                                      ? context.l10n.noTemplatesAvailable
+                                      : context.l10n.chooseTemplate,
                                   style: context.theme.textTheme.bodyMedium,
                                 ),
                               ),
@@ -243,8 +243,8 @@ class _PrerequisiteTemplateWidgetPageState
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
                                   (templates ?? []).isEmpty
-                                      ? 'No Templates Available'
-                                      : 'Choose Template',
+                                      ? context.l10n.noTemplatesAvailable
+                                      : context.l10n.chooseTemplate,
                                   style: context.theme.textTheme.bodyMedium!
                                       .copyWith(
                                     color: widget.isWhiteBackground

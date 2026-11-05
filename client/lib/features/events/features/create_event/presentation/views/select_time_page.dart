@@ -46,7 +46,7 @@ class _SelectTimePageState extends State<SelectTimePage> {
           },
         ),
         HeightConstrainedText(
-          isNullOrEmpty(timezone) ? '' : 'Time shown in $timezone',
+          isNullOrEmpty(timezone) ? '' : context.l10n.timeShownIn(timezone!),
           textAlign: TextAlign.right,
         ),
         SizedBox(height: 15),

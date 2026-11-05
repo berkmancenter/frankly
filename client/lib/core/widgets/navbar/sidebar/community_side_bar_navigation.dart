@@ -35,7 +35,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         SizedBox(height: 12),
         ActionButton(
           type: ActionButtonType.text,
-          text: 'Events',
+          text: context.l10n.events,
           onPressed: () =>
               routerDelegate.beamTo(initialCommunityRoute.eventsPage),
           textStyle: context.theme.textTheme.bodyLarge,
@@ -46,7 +46,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         if (enableDiscussionThreads) ...[
           ActionButton(
             type: ActionButtonType.text,
-            text: 'Posts',
+            text: context.l10n.posts,
             onPressed: () => routerDelegate
                 .beamTo(initialCommunityRoute.discussionThreadsPage),
             textStyle: context.theme.textTheme.bodyLarge,
@@ -58,7 +58,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         if (showResources) ...[
           ActionButton(
             type: ActionButtonType.text,
-            text: 'Resources',
+            text: context.l10n.resources,
             onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.resourcesPage),
             textStyle: context.theme.textTheme.bodyLarge,
@@ -69,7 +69,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         ],
         ActionButton(
           type: ActionButtonType.text,
-          text: 'Templates',
+          text: context.l10n.templates,
           onPressed: () =>
               routerDelegate.beamTo(initialCommunityRoute.browseTemplatesPage),
           textStyle: context.theme.textTheme.bodyLarge,
@@ -78,13 +78,13 @@ class CommunitySideBarNavigation extends StatelessWidget {
           contentAlign: ActionButtonContentAlignment.start,
         ),
         if (showLeaveCommunity)
-         Semantics(
+          Semantics(
             label: context.l10n.sidebarUnfollowButton,
             identifier: 'sidebar_unfollow_button',
             button: true,
             child: ActionButton(
               type: ActionButtonType.text,
-              text: 'Unfollow',
+              text: context.l10n.unfollow,
               onPressed: () => alertOnError(
                 context,
                 () => Provider.of<UserDataService>(context, listen: false)
@@ -102,7 +102,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         if (showAdmin) ...[
           ActionButton(
             type: ActionButtonType.text,
-            text: 'Admin',
+            text: context.l10n.admin,
             onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.communityAdmin()),
             textStyle: context.theme.textTheme.bodyLarge,

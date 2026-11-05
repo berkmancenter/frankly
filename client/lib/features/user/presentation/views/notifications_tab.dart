@@ -140,8 +140,7 @@ class _NotificationsTabState extends State<NotificationsTab> {
       keys: [_userId, communityId],
       height: 100,
       width: 300,
-      errorMessage:
-          'Something went wrong loading notification settings. Please refresh.',
+      errorMessage: context.l10n.errorLoadingNotificationSettings,
       builder: (context, settings) => IntrinsicWidth(
         child: Column(
           children: [

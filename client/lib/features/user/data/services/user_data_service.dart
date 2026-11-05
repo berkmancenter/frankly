@@ -215,9 +215,11 @@ class UserDataService with ChangeNotifier {
         final unsubscribe = await ConfirmDialog(
           title: appLocalizationService.getLocalization().unfollow,
           mainText:
-              'Are you sure you want to unsubscribe from ${community.name}?',
-          confirmText: 'Yes',
-          cancelText: 'No',
+              appLocalizationService
+                  .getLocalization()
+                  .confirmUnsubscribeFrom(community.name ?? ''),
+          confirmText: appLocalizationService.getLocalization().yes,
+          cancelText: appLocalizationService.getLocalization().no,
         ).show();
         if (unsubscribe != true) {
           return;

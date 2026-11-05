@@ -61,7 +61,7 @@ class _AboutWidgetState extends State<CommunityHomeAboutSection> {
             widget.community.description!.length > maxDescriptionLength)
           CustomInkWell(
             child: HeightConstrainedText(
-              'Read More',
+              context.l10n.readMore,
               style: textStyle,
             ),
             onTap: () => setState(() => _isExpanded = true),
@@ -71,7 +71,7 @@ class _AboutWidgetState extends State<CommunityHomeAboutSection> {
             widget.community.description!.length > maxDescriptionLength)
           CustomInkWell(
             child: HeightConstrainedText(
-              'Less',
+              context.l10n.less,
               style: textStyle,
             ),
             onTap: () => setState(() => _isExpanded = false),

@@ -122,7 +122,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
           SizedBox.shrink(),
         if (provider.displayTemplates.isEmpty && widget.onAddNew == null)
           HeightConstrainedText(
-            'No templates found.',
+            context.l10n.noTemplatesFound,
             style: AppTextStyle.body
                 .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
           )
@@ -163,7 +163,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
                       alignment: Alignment.center,
                       child: ActionButton(
                         onPressed: provider.showMoreTemplates,
-                        text: 'View more templates',
+                        text: context.l10n.viewMoreTemplates,
                       ),
                     ),
                 ],
@@ -179,7 +179,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
     return CustomStreamBuilder<List<Template>>(
       entryFrom: '_SelectTemplateState._buildTemplatesLoading',
       stream: Stream.fromFuture(provider.templatesFuture),
-      errorMessage: 'There was an error loading events.',
+      errorMessage: context.l10n.errorLoadingEventsShort,
       builder: (_, __) => _buildTemplates(),
     );
   }
@@ -219,7 +219,7 @@ class _AddNewTemplateButton extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 5, bottom: 10, right: 5),
               child: HeightConstrainedText(
-                'Create a new template',
+                context.l10n.createANewTemplate,
                 style: TextStyle(
                   fontSize: 13,
                   color: context.theme.colorScheme.primary,

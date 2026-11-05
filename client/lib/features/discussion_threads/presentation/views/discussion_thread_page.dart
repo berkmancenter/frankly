@@ -240,12 +240,13 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               HeightConstrainedText(
-                                '$commentCount ${commentCount == 1 ? 'comment' : 'comments'}',
+                                context.l10n.commentCount(commentCount),
                                 style: AppTextStyle.bodyMedium,
                               ),
                               if (commentCount != 0)
                                 HeightConstrainedText(
-                                  'Newest First', // Forced (mock) sorting
+                                  context.l10n
+                                      .newestFirst, // Forced (mock) sorting
                                   style: AppTextStyle.bodyMedium.copyWith(
                                     color: context
                                         .theme.colorScheme.onSurfaceVariant,
@@ -283,7 +284,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
           children: [
             AppClickableWidget(
               onTap: () => _goToThreadsPage(),
-              tooltipMessage: 'Back',
+              tooltipMessage: context.l10n.back,
               child: ProxiedImage(
                 null,
                 asset: AppAsset.kArrowBackPng,

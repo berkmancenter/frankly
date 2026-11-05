@@ -4,4 +4,3 @@ enum CalendarMenuSelection {
   office365,
   ical,
 }
-

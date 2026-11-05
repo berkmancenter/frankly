@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
 import 'package:flutter/material.dart';
@@ -157,7 +158,7 @@ class _DeletedCommentWidget extends StatelessWidget {
         Container(
           alignment: Alignment.centerLeft,
           child: HeightConstrainedText(
-            'Comment Deleted',
+            context.l10n.commentDeleted,
             style: AppTextStyle.bodyMedium
                 .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
           ),

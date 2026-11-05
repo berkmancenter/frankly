@@ -149,15 +149,13 @@ class _InstantEventState extends State<InstantEvent> {
         builder: (context, _) => CustomStreamBuilder(
           entryFrom: '_InstantEventState._buildContent1',
           stream: CommunityProvider.read(context).communityStream,
-          errorMessage:
-              'There was an error setting up your event. Please refresh.',
+          errorMessage: context.l10n.errorSettingUpEvent,
           builder: (_, event) => ChangeNotifierProvider<TemplateProvider>.value(
             value: templateProvider,
             builder: (context, _) => CustomStreamBuilder<Event>(
               entryFrom: '_InstantEventState._buildContent2',
               stream: Stream.fromFuture(createEventFuture),
-              errorMessage:
-                  'There was an error setting up your event. Please refresh.',
+              errorMessage: context.l10n.errorSettingUpEvent,
               builder: (_, event) => ChangeNotifierProvider<EventProvider>(
                 create: (context) => EventProvider.fromEvent(
                   event!,

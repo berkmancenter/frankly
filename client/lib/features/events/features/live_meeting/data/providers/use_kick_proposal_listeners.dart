@@ -150,11 +150,12 @@ Future<String?> _kickProposalConfirmation(
     context: context,
     builder: (context) => ConfirmTextInputDialog(
       title: context.l10n.kickOutUser(targetUser.displayName ?? 'this user'),
-      subText: '${initiatingUser.displayName} started a vote to kick'
-          ' ${targetUser.displayName} out of the event. Do you want to'
-          ' kick them out? They will not be allowed back in.',
-      textLabel: 'Enter reason',
-      textHint: 'e.g. They are trying to sabotage the event',
+      subText: context.l10n.kickVoteStarted(
+        initiatingUser.displayName ?? '',
+        targetUser.displayName ?? '',
+      ),
+      textLabel: context.l10n.enterReason,
+      textHint: context.l10n.kickReasonHint,
       cancelText: context.l10n.noLetThemStay,
       confirmText: context.l10n.yesKickThemOut,
     ),

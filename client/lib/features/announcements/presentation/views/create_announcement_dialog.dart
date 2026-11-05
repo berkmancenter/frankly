@@ -80,7 +80,7 @@ class _CreateAnnouncementDialogState extends State<CreateAnnouncementDialog> {
                   ActionButton(
                     onPressed: _createAnnouncement,
                     color: Theme.of(context).primaryColor,
-                    text: 'Create',
+                    text: context.l10n.create,
                   ),
                 ],
               ),
