@@ -1,15 +1,15 @@
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import { ThemeProvider, useTheme, type Theme } from '@mui/material/styles';
-import { createContext, useContext, useState, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-import ButtonBase from '@mui/material/ButtonBase';
-import AddIcon from '@mui/icons-material/Add';
-import Typography from '@mui/material/Typography';
-import { useIsMobile } from '@/lib/useResponsive';
-import { appSize, appText } from '@/theme/typography';
-import { NavBar } from './NavBar';
-import { SideBar } from './SideBar';
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import { ThemeProvider, useTheme, type Theme } from "@mui/material/styles";
+import { createContext, useContext, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+import ButtonBase from "@mui/material/ButtonBase";
+import AddIcon from "@mui/icons-material/Add";
+import Typography from "@mui/material/Typography";
+import { useIsMobile } from "@/utils/useResponsive";
+import { appSize, appText } from "@/theme/typography";
+import { NavBar } from "./NavBar";
+import { SideBar } from "./SideBar";
 
 const FabHostContext = createContext<HTMLElement | null>(null);
 
@@ -26,7 +26,12 @@ interface AppScaffoldProps {
  * Port of `CustomScaffold`: nav bar + content + optional bottom nav + end drawer + floating
  * action button slot. Owns two bits of purely local UI state: sidebar open and the FAB host element.
  */
-export function AppScaffold({ children, bgColor, childTheme, bottomNav }: AppScaffoldProps) {
+export function AppScaffold({
+  children,
+  bgColor,
+  childTheme,
+  bottomNav,
+}: AppScaffoldProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [fabHost, setFabHost] = useState<HTMLElement | null>(null);
   const parentTheme = useTheme();
@@ -37,7 +42,12 @@ export function AppScaffold({ children, bgColor, childTheme, bottomNav }: AppSca
       {children}
       <Box
         ref={setFabHost}
-        sx={{ position: 'fixed', right: '10px', bottom: isMobile ? appSize.bottomNavBarHeight : '10px', zIndex: 1050 }}
+        sx={{
+          position: "fixed",
+          right: "10px",
+          bottom: isMobile ? appSize.bottomNavBarHeight : "10px",
+          zIndex: 1050,
+        }}
       />
     </>
   );
@@ -46,15 +56,17 @@ export function AppScaffold({ children, bgColor, childTheme, bottomNav }: AppSca
     <FabHostContext.Provider value={fabHost}>
       <Box
         sx={{
-          height: '100dvh',
-          display: 'flex',
-          flexDirection: 'column',
-          bgcolor: bgColor ?? 'background.default',
+          height: "100dvh",
+          display: "flex",
+          flexDirection: "column",
+          bgcolor: bgColor ?? "background.default",
         }}
       >
-        <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
+        <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
           <NavBar onMenuClick={() => setSidebarOpen(true)} />
-          <ThemeProvider theme={childTheme ?? parentTheme}>{content}</ThemeProvider>
+          <ThemeProvider theme={childTheme ?? parentTheme}>
+            {content}
+          </ThemeProvider>
         </Box>
         {bottomNav}
       </Box>
@@ -63,8 +75,8 @@ export function AppScaffold({ children, bgColor, childTheme, bottomNav }: AppSca
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         slotProps={{
-          paper: { sx: { width: appSize.sidebarWidth, maxWidth: '100vw' } },
-          backdrop: { sx: { bgcolor: 'rgba(0,0,0,0.54)' } },
+          paper: { sx: { width: appSize.sidebarWidth, maxWidth: "100vw" } },
+          backdrop: { sx: { bgcolor: "rgba(0,0,0,0.54)" } },
         }}
       >
         <SideBar onClose={() => setSidebarOpen(false)} />
@@ -78,7 +90,13 @@ export function AppScaffold({ children, bgColor, childTheme, bottomNav }: AppSca
  * so it follows the *content* theme (community colors) while living at the screen corner.
  * Mobile shows just the icon, like `CommunityPageFloatingActionButton`.
  */
-export function ScaffoldFab({ text, onClick }: { text: string; onClick: () => void }) {
+export function ScaffoldFab({
+  text,
+  onClick,
+}: {
+  text: string;
+  onClick: () => void;
+}) {
   const host = useContext(FabHostContext);
   const isMobile = useIsMobile();
   if (!host) return null;
@@ -89,18 +107,20 @@ export function ScaffoldFab({ text, onClick }: { text: string; onClick: () => vo
       sx={{
         height: 87,
         minWidth: 87,
-        borderRadius: '45px',
-        bgcolor: 'primary.main',
-        color: 'primary.contrastText',
-        px: '23px',
-        py: '10px',
-        boxShadow: '0 3px 8px rgba(0,0,0,.3)',
-        gap: '20px',
+        borderRadius: "45px",
+        bgcolor: "primary.main",
+        color: "primary.contrastText",
+        px: "23px",
+        py: "10px",
+        boxShadow: "0 3px 8px rgba(0,0,0,.3)",
+        gap: "20px",
       }}
     >
       <AddIcon sx={{ fontSize: 41 }} />
       {!isMobile && (
-        <Typography sx={{ ...appText.subhead, color: 'inherit', pr: '3px' }}>{text}</Typography>
+        <Typography sx={{ ...appText.subhead, color: "inherit", pr: "3px" }}>
+          {text}
+        </Typography>
       )}
     </ButtonBase>,
     host,

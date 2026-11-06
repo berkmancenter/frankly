@@ -1,8 +1,8 @@
-import CloseIcon from '@mui/icons-material/Close';
-import Dialog from '@mui/material/Dialog';
-import IconButton from '@mui/material/IconButton';
-import type { ReactNode } from 'react';
-import { useIsMobile } from '@/lib/useResponsive';
+import CloseIcon from "@mui/icons-material/Close";
+import Dialog from "@mui/material/Dialog";
+import IconButton from "@mui/material/IconButton";
+import type { ReactNode } from "react";
+import { useIsMobile } from "@/utils/useResponsive";
 
 interface AppDialogProps {
   open: boolean;
@@ -33,8 +33,8 @@ export function AppDialog({
   fullscreenOnMobile = false,
   padding = 30,
   hideClose,
-  background = 'm3.surfaceContainerLowest',
-  closeLabel = 'Close',
+  background = "m3.surfaceContainerLowest",
+  closeLabel = "Close",
   ariaLabel,
 }: AppDialogProps) {
   const isMobile = useIsMobile();
@@ -49,24 +49,30 @@ export function AppDialog({
       slotProps={{
         paper: {
           sx: {
-            width: '100%',
-            maxWidth: full ? 'none' : maxWidth,
-            m: full ? 0 : '30px',
-            maxHeight: full ? '100%' : 'calc(100% - 60px)',
-            borderRadius: full ? 0 : '20px',
+            width: "100%",
+            maxWidth: full ? "none" : maxWidth,
+            m: full ? 0 : "30px",
+            maxHeight: full ? "100%" : "calc(100% - 60px)",
+            borderRadius: full ? 0 : "20px",
             bgcolor: background,
             p: `${padding}px`,
-            position: 'relative',
+            position: "relative",
           },
         },
-        backdrop: { sx: { bgcolor: 'rgba(0,0,0,0.54)' } },
+        backdrop: { sx: { bgcolor: "rgba(0,0,0,0.54)" } },
       }}
     >
       {!hideClose && (
         <IconButton
           aria-label={closeLabel}
           onClick={onClose}
-          sx={{ position: 'absolute', top: 12, right: 12, zIndex: 1, color: 'm3.onSurface' }}
+          sx={{
+            position: "absolute",
+            top: 12,
+            right: 12,
+            zIndex: 1,
+            color: "m3.onSurface",
+          }}
         >
           <CloseIcon />
         </IconButton>

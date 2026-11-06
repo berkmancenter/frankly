@@ -1,39 +1,47 @@
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
-import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
-import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
-import MenuIcon from '@mui/icons-material/Menu';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
-import { paths } from '@/app/paths';
-import { ActionButton } from '@/components/ActionButton';
-import { CommunityMembershipButton } from '@/components/CommunityMembershipButton';
-import { ConstrainedBody } from '@/components/ConstrainedBody';
-import { useIsMobile } from '@/lib/useResponsive';
-import { useResources } from '@/queries/content';
-import { useCommunityScopeOrNull } from '@/scopes/CommunityScope';
-import { appSize } from '@/theme/typography';
-import { AnnouncementsBell } from './AnnouncementsBell';
-import { CurrentCommunityIconOrLogo } from './CurrentCommunityIconOrLogo';
-import { OnboardingBanner, currentOnboardingStep } from './OnboardingBanner';
-import { ProfileMenu } from './ProfileMenu';
-import { SelectableNavigationIcon } from './SelectableNavigationIcon';
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
+import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
+import MenuIcon from "@mui/icons-material/Menu";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { paths } from "@/app/paths";
+import { ActionButton } from "@/components/ActionButton";
+import { CommunityMembershipButton } from "@/components/CommunityMembershipButton";
+import { ConstrainedBody } from "@/components/ConstrainedBody";
+import { useIsMobile } from "@/utils/useResponsive";
+import { useResources } from "@/queries/content";
+import { useCommunityScopeOrNull } from "@/scopes/CommunityScope";
+import { appSize } from "@/theme/typography";
+import { AnnouncementsBell } from "./AnnouncementsBell";
+import { CurrentCommunityIconOrLogo } from "./CurrentCommunityIconOrLogo";
+import { OnboardingBanner, currentOnboardingStep } from "./OnboardingBanner";
+import { ProfileMenu } from "./ProfileMenu";
+import { SelectableNavigationIcon } from "./SelectableNavigationIcon";
 
-function NavTextButton({ title, onClick, selected }: { title: string; onClick: () => void; selected: boolean }) {
+function NavTextButton({
+  title,
+  onClick,
+  selected,
+}: {
+  title: string;
+  onClick: () => void;
+  selected: boolean;
+}) {
   return (
     <ActionButton type="text" onPress={onClick}>
       <Box
         sx={{
-          borderBottom: selected ? '1.5px solid' : '1.5px solid transparent',
-          borderColor: selected ? 'primary.main' : 'transparent',
+          borderBottom: selected ? "1.5px solid" : "1.5px solid transparent",
+          borderColor: selected ? "primary.main" : "transparent",
         }}
       >
         <Typography
           variant="titleMedium"
-          sx={{ color: selected ? 'm3.onSurface' : 'm3.onSurfaceVariant' }}
+          sx={{ color: selected ? "m3.onSurface" : "m3.onSurfaceVariant" }}
         >
           {title}
         </Typography>
@@ -60,8 +68,10 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
   const onCommunityPage = !!community;
   const canViewLinks = permissions?.canViewCommunityLinks ?? false;
   const adminVisible = !!permissions?.canEditCommunity && onCommunityPage;
-  const showResources = (resources.data?.length ?? 0) > 0 || !!permissions?.canEditCommunity;
-  const discussionsEnabled = community?.settings.enableDiscussionThreads ?? false;
+  const showResources =
+    (resources.data?.length ?? 0) > 0 || !!permissions?.canEditCommunity;
+  const discussionsEnabled =
+    community?.settings.enableDiscussionThreads ?? false;
   const links = community ? paths.community(community.displayId) : null;
 
   const isAt = (p: string) => pathname === p;
@@ -78,28 +88,53 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
   return (
     <Box component="header">
       {onboarding && community && (
-        <OnboardingBanner community={community} onDismiss={() => setOnboardingOpen(false)} />
+        <OnboardingBanner
+          community={community}
+          onDismiss={() => setOnboardingOpen(false)}
+        />
       )}
-      <Box sx={{ bgcolor: 'm3.surfaceContainerLowest', display: 'flex', justifyContent: 'center' }}>
-        <ConstrainedBody paddingLeft={20} paddingRight={10} sx={{ width: '100%' }}>
-          <Box sx={{ height: appSize.navBarHeight, display: 'flex', alignItems: 'center' }}>
+      <Box
+        sx={{
+          bgcolor: "m3.surfaceContainerLowest",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <ConstrainedBody
+          paddingLeft={20}
+          paddingRight={10}
+          sx={{ width: "100%" }}
+        >
+          <Box
+            sx={{
+              height: appSize.navBarHeight,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <CurrentCommunityIconOrLogo />
 
             {community && links && !isMobile && (
               <>
-                <Box sx={{ flex: showMembershipButton ? '0 1 auto' : 1, display: 'flex', minWidth: 0 }}>
+                <Box
+                  sx={{
+                    flex: showMembershipButton ? "0 1 auto" : 1,
+                    display: "flex",
+                    minWidth: 0,
+                  }}
+                >
                   <ActionButton
                     type="text"
                     contentAlign="start"
                     maxTextWidth={180}
                     maxLines={2}
                     text={community.name}
-                    sx={{ ...{ typography: 'titleMedium' }, textAlign: 'left' }}
+                    sx={{ ...{ typography: "titleMedium" }, textAlign: "left" }}
                     onPress={() => navigate(links.home)}
                   />
                 </Box>
                 {showMembershipButton && (
-                  <Box sx={{ flex: 1, ml: '16px' }}>
+                  <Box sx={{ flex: 1, ml: "16px" }}>
                     <CommunityMembershipButton community={community} />
                   </Box>
                 )}
@@ -107,10 +142,18 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
             )}
 
             {community && links && !isMobile && (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <NavTextButton title="Events" selected={isAt(links.events)} onClick={() => navigate(links.events)} />
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <NavTextButton
+                  title="Events"
+                  selected={isAt(links.events)}
+                  onClick={() => navigate(links.events)}
+                />
                 {discussionsEnabled && (
-                  <NavTextButton title="Posts" selected={isAt(links.posts)} onClick={() => navigate(links.posts)} />
+                  <NavTextButton
+                    title="Posts"
+                    selected={isAt(links.posts)}
+                    onClick={() => navigate(links.posts)}
+                  />
                 )}
                 {showResources && (
                   <NavTextButton
@@ -130,12 +173,17 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
 
             {community && canViewLinks && !isMobile && <AnnouncementsBell />}
 
-            {!isMobile && (
-              <ProfileMenu />
-            )}
+            {!isMobile && <ProfileMenu />}
 
             {isMobile && community && links && (
-              <Box sx={{ display: 'flex', alignItems: 'center', ml: '20px', gap: '20px' }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  ml: "20px",
+                  gap: "20px",
+                }}
+              >
                 {!canViewLinks ? (
                   <CommunityMembershipButton community={community} />
                 ) : (
@@ -176,13 +224,17 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
                 onClick={() => navigate(links.admin())}
               />
             )}
-            <IconButton aria-label="Show sidebar" onClick={onMenuClick} sx={{ ml: '8px', color: 'secondary.main' }}>
+            <IconButton
+              aria-label="Show sidebar"
+              onClick={onMenuClick}
+              sx={{ ml: "8px", color: "secondary.main" }}
+            >
               <MenuIcon sx={{ fontSize: 34 }} />
             </IconButton>
           </Box>
         </ConstrainedBody>
       </Box>
-      <Box sx={{ height: '1px', bgcolor: 'm3.outline' }} />
+      <Box sx={{ height: "1px", bgcolor: "m3.outline" }} />
     </Box>
   );
 }

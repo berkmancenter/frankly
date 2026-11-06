@@ -4,7 +4,7 @@ import { ErrorState, LoadingState } from "@/components/States";
 import {
   computeCommunityPermissions,
   type CommunityPermissions,
-} from "@/lib/permissions";
+} from "@/utils/permissions";
 import { useCommunity } from "@/queries/communities";
 import { useMembership } from "@/queries/me";
 import { useTemplates } from "@/queries/templates";

@@ -1,11 +1,11 @@
-import CloseIcon from '@mui/icons-material/Close';
-import Box from '@mui/material/Box';
-import Dialog from '@mui/material/Dialog';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { useCallback, useRef, useState, type ReactNode } from 'react';
-import { useIsMobile } from '@/lib/useResponsive';
-import { ActionButton } from './ActionButton';
+import CloseIcon from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
+import Dialog from "@mui/material/Dialog";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { useCallback, useRef, useState, type ReactNode } from "react";
+import { useIsMobile } from "@/utils/useResponsive";
+import { ActionButton } from "./ActionButton";
 
 export interface ConfirmOptions {
   title?: string;
@@ -16,7 +16,7 @@ export interface ConfirmOptions {
   cancelText?: string;
   /** Color the confirm button as destructive. */
   destructive?: boolean;
-  textAlign?: 'center' | 'left';
+  textAlign?: "center" | "left";
 }
 
 interface ConfirmDialogViewProps extends ConfirmOptions {
@@ -39,10 +39,10 @@ export function ConfirmDialogView({
   title,
   mainText,
   subText,
-  confirmText = 'Yes',
+  confirmText = "Yes",
   cancelText,
   destructive,
-  textAlign = 'center',
+  textAlign = "center",
   children,
 }: ConfirmDialogViewProps) {
   const isMobile = useIsMobile();
@@ -52,52 +52,80 @@ export function ConfirmDialogView({
       onClose={() => (onDismiss ? onDismiss() : onResolve(false))}
       maxWidth={false}
       slotProps={{
-        paper: { sx: { width: '100%', maxWidth: 600, m: 2, p: '40px', borderRadius: '20px' } },
-        backdrop: { sx: { bgcolor: 'rgba(0,0,0,0.54)' } },
+        paper: {
+          sx: {
+            width: "100%",
+            maxWidth: 600,
+            m: 2,
+            p: "40px",
+            borderRadius: "20px",
+          },
+        },
+        backdrop: { sx: { bgcolor: "rgba(0,0,0,0.54)" } },
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: '-16px', mr: '-16px', mb: '4px' }}>
-        <IconButton aria-label="Close" size="small" onClick={() => (onDismiss ? onDismiss() : onResolve(false))}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          mt: "-16px",
+          mr: "-16px",
+          mb: "4px",
+        }}
+      >
+        <IconButton
+          aria-label="Close"
+          size="small"
+          onClick={() => (onDismiss ? onDismiss() : onResolve(false))}
+        >
           <CloseIcon />
         </IconButton>
       </Box>
       {title && (
         <Typography
-          variant={isMobile ? 'headlineMedium' : 'headlineSmall'}
-          sx={{ textAlign, mb: '10px' }}
+          variant={isMobile ? "headlineMedium" : "headlineSmall"}
+          sx={{ textAlign, mb: "10px" }}
         >
           {title}
         </Typography>
       )}
       {mainText && (
-        <Typography variant="bodyLarge" sx={{ textAlign, mb: '10px' }}>
+        <Typography variant="bodyLarge" sx={{ textAlign, mb: "10px" }}>
           {mainText}
         </Typography>
       )}
       {subText && (
-        <Typography variant="bodyMedium" sx={{ textAlign: 'center', mb: '10px' }}>
+        <Typography
+          variant="bodyMedium"
+          sx={{ textAlign: "center", mb: "10px" }}
+        >
           {subText}
         </Typography>
       )}
       {children}
       <Box
         sx={{
-          mt: '12px',
-          display: 'flex',
-          justifyContent: cancelText ? 'space-between' : 'flex-end',
+          mt: "12px",
+          display: "flex",
+          justifyContent: cancelText ? "space-between" : "flex-end",
           gap: 2,
         }}
       >
         {cancelText && (
-          <ActionButton type="text" height={55} minWidth={100} onPress={() => onResolve(false)}>
+          <ActionButton
+            type="text"
+            height={55}
+            minWidth={100}
+            onPress={() => onResolve(false)}
+          >
             {cancelText}
           </ActionButton>
         )}
         <ActionButton
           height={55}
-          color={destructive ? 'error.main' : undefined}
-          textColor={destructive ? 'error.contrastText' : undefined}
-          sx={{ px: '18px' }}
+          color={destructive ? "error.main" : undefined}
+          textColor={destructive ? "error.contrastText" : undefined}
+          sx={{ px: "18px" }}
           onPress={() => onResolve(true)}
         >
           {confirmText}
@@ -136,6 +164,8 @@ export function useConfirm() {
     setOptions(null);
   }, []);
 
-  const dialog = options ? <ConfirmDialogView open {...options} onResolve={resolve} /> : null;
+  const dialog = options ? (
+    <ConfirmDialogView open {...options} onResolve={resolve} />
+  ) : null;
   return { confirm, dialog };
 }

@@ -1,25 +1,25 @@
-import EditIcon from '@mui/icons-material/Edit';
-import Box from '@mui/material/Box';
-import ButtonBase from '@mui/material/ButtonBase';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { useState } from 'react';
-import { Link } from 'react-router';
-import type { Community } from '@/api/types';
-import { paths } from '@/app/paths';
-import { CommunityMembershipButton } from '@/components/CommunityMembershipButton';
-import { ConstrainedBody } from '@/components/ConstrainedBody';
-import { EmptyPageContent } from '@/components/EmptyPageContent';
-import { EventCard } from '@/components/events/EventCards';
-import { Img } from '@/components/Img';
-import { ShareSection } from '@/components/ShareSection';
-import { LoadingState, ErrorState } from '@/components/States';
-import { ThickOutlineButton } from '@/components/ThickOutlineButton';
-import { useCreateEventDialog } from '@/features/events/CreateEventDialog';
-import { useIsMobile } from '@/lib/useResponsive';
-import { useAllEvents, useUpcomingEvents } from '@/queries/events';
-import { useCommunityScope } from '@/scopes/CommunityScope';
-import { appSize, appText } from '@/theme/typography';
+import EditIcon from "@mui/icons-material/Edit";
+import Box from "@mui/material/Box";
+import ButtonBase from "@mui/material/ButtonBase";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
+import { Link } from "react-router";
+import type { Community } from "@/api/types";
+import { paths } from "@/app/paths";
+import { CommunityMembershipButton } from "@/components/CommunityMembershipButton";
+import { ConstrainedBody } from "@/components/ConstrainedBody";
+import { EmptyPageContent } from "@/components/EmptyPageContent";
+import { EventCard } from "@/components/events/EventCards";
+import { Img } from "@/components/Img";
+import { ShareSection } from "@/components/ShareSection";
+import { LoadingState, ErrorState } from "@/components/States";
+import { ThickOutlineButton } from "@/components/ThickOutlineButton";
+import { useCreateEventDialog } from "@/features/events/CreateEventDialog";
+import { useIsMobile } from "@/utils/useResponsive";
+import { useAllEvents, useUpcomingEvents } from "@/queries/events";
+import { useCommunityScope } from "@/scopes/CommunityScope";
+import { appSize, appText } from "@/theme/typography";
 
 const ABOUT_LIMIT = 160;
 
@@ -43,19 +43,33 @@ export function CommunityHome() {
   );
 
   const contact = <ContactSection community={community} />;
-  const about = community.description ? <AboutSection description={community.description} /> : null;
+  const about = community.description ? (
+    <AboutSection description={community.description} />
+  ) : null;
 
   return (
     <Box component="main">
       {isMobile ? (
         <>
-          <Box sx={{ height: window.innerWidth > appSize.maxCarouselSize ? 30 : 0 }} />
-          <Box sx={{ position: 'relative' }}>
-            <Box sx={{ maxWidth: appSize.maxCarouselSize, mx: 'auto', borderRadius: window.innerWidth > appSize.maxCarouselSize ? '10px' : 0, overflow: 'hidden' }}>
+          <Box
+            sx={{
+              height: window.innerWidth > appSize.maxCarouselSize ? 30 : 0,
+            }}
+          />
+          <Box sx={{ position: "relative" }}>
+            <Box
+              sx={{
+                maxWidth: appSize.maxCarouselSize,
+                mx: "auto",
+                borderRadius:
+                  window.innerWidth > appSize.maxCarouselSize ? "10px" : 0,
+                overflow: "hidden",
+              }}
+            >
               <CommunityDetail community={community} />
             </Box>
             {permissions.canEditCommunity && (
-              <Box sx={{ position: 'absolute', top: 20, right: 20 }}>
+              <Box sx={{ position: "absolute", top: 20, right: 20 }}>
                 <EditCommunityButton displayId={community.displayId} />
               </Box>
             )}
@@ -78,12 +92,20 @@ export function CommunityHome() {
         <>
           <ConstrainedBody>
             <Box sx={{ height: 48 }} />
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: '52px' }}>
+            <Box
+              sx={{ display: "flex", alignItems: "flex-start", gap: "52px" }}
+            >
               <Box sx={{ flex: 1, minWidth: 0 }}>
-                <Box sx={{ position: 'relative', borderRadius: '10px', overflow: 'hidden' }}>
+                <Box
+                  sx={{
+                    position: "relative",
+                    borderRadius: "10px",
+                    overflow: "hidden",
+                  }}
+                >
                   <CommunityDetail community={community} />
                   {permissions.canEditCommunity && (
-                    <Box sx={{ position: 'absolute', top: 20, right: 20 }}>
+                    <Box sx={{ position: "absolute", top: 20, right: 20 }}>
                       <EditCommunityButton displayId={community.displayId} />
                     </Box>
                   )}
@@ -116,7 +138,11 @@ function EditCommunityButton({ displayId }: { displayId: string }) {
       component={Link}
       to={paths.community(displayId).admin()}
       aria-label="Edit community"
-      sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.main', opacity: 0.9 } }}
+      sx={{
+        bgcolor: "primary.main",
+        color: "primary.contrastText",
+        "&:hover": { bgcolor: "primary.main", opacity: 0.9 },
+      }}
     >
       <EditIcon />
     </IconButton>
@@ -128,27 +154,39 @@ function CommunityDetail({ community }: { community: Community }) {
   return (
     <Box
       sx={{
-        width: '100%',
-        aspectRatio: '1',
+        width: "100%",
+        aspectRatio: "1",
         maxHeight: appSize.maxCarouselSize,
-        bgcolor: 'primary.main',
-        p: '24px',
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
+        bgcolor: "primary.main",
+        p: "24px",
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
       }}
     >
       {community.profileImageUrl && (
-        <Img src={community.profileImageUrl} radius="200px" width={200} height={200} sx={{ maxWidth: '45%', height: 'auto', aspectRatio: '1' }} />
+        <Img
+          src={community.profileImageUrl}
+          radius="200px"
+          width={200}
+          height={200}
+          sx={{ maxWidth: "45%", height: "auto", aspectRatio: "1" }}
+        />
       )}
-      <Typography variant="headlineMedium" sx={{ color: 'primary.contrastText', mt: '24px' }}>
+      <Typography
+        variant="headlineMedium"
+        sx={{ color: "primary.contrastText", mt: "24px" }}
+      >
         {community.name}
       </Typography>
       {community.tagLine && (
-        <Typography variant="titleMedium" sx={{ color: 'primary.contrastText', mt: '16px' }}>
+        <Typography
+          variant="titleMedium"
+          sx={{ color: "primary.contrastText", mt: "16px" }}
+        >
           {community.tagLine}
         </Typography>
       )}
@@ -159,17 +197,27 @@ function CommunityDetail({ community }: { community: Community }) {
 function AboutSection({ description }: { description: string }) {
   const [expanded, setExpanded] = useState(false);
   const long = description.length > ABOUT_LIMIT;
-  const text = !long || expanded ? description : `${description.slice(0, ABOUT_LIMIT)}...`;
+  const text =
+    !long || expanded ? description : `${description.slice(0, ABOUT_LIMIT)}...`;
   return (
     <Box>
       <Typography variant="titleMedium">About Us</Typography>
-      <Typography variant="bodyMedium" sx={{ mt: '10px', whiteSpace: 'pre-wrap' }}>
+      <Typography
+        variant="bodyMedium"
+        sx={{ mt: "10px", whiteSpace: "pre-wrap" }}
+      >
         {text}
       </Typography>
       {long && (
-        <ButtonBase onClick={() => setExpanded((e) => !e)} sx={{ mt: '10px', display: 'block' }}>
-          <Typography variant="bodyMedium" sx={{ textDecoration: 'underline', color: 'primary.main' }}>
-            {expanded ? 'Less' : 'Read More'}
+        <ButtonBase
+          onClick={() => setExpanded((e) => !e)}
+          sx={{ mt: "10px", display: "block" }}
+        >
+          <Typography
+            variant="bodyMedium"
+            sx={{ textDecoration: "underline", color: "primary.main" }}
+          >
+            {expanded ? "Less" : "Read More"}
           </Typography>
         </ButtonBase>
       )}
@@ -179,7 +227,8 @@ function AboutSection({ description }: { description: string }) {
 
 function ContactSection({ community }: { community: Community }) {
   const { status } = useCommunityScope();
-  const isMember = status !== 'nonmember' && status !== 'banned' && status !== 'attendee';
+  const isMember =
+    status !== "nonmember" && status !== "banned" && status !== "attendee";
   const email = community.contactEmail;
   const subject = `Join ${community.name} on Frankly`;
   const body = `Hey, check out ${community.name} on Frankly!`;
@@ -187,12 +236,18 @@ function ContactSection({ community }: { community: Community }) {
     <Box>
       {email && (
         <>
-          <Typography sx={{ ...appText.headline4, color: 'primary.main' }}>Contact</Typography>
+          <Typography sx={{ ...appText.headline4, color: "primary.main" }}>
+            Contact
+          </Typography>
           <Box sx={{ height: 10 }} />
           <Typography
             component="a"
             href={`mailto:${email}`}
-            sx={{ ...appText.bodyMedium, color: 'primary.main', textDecoration: 'none' }}
+            sx={{
+              ...appText.bodyMedium,
+              color: "primary.main",
+              textDecoration: "none",
+            }}
           >
             {email}
           </Typography>
@@ -209,9 +264,11 @@ function ContactSection({ community }: { community: Community }) {
         justify="flex-start"
       />
       <Box sx={{ height: 30 }} />
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
         {!isMember && <CommunityMembershipButton community={community} />}
-        {community.settings.allowDonations && <ThickOutlineButton text="Donate" />}
+        {community.settings.allowDonations && (
+          <ThickOutlineButton text="Donate" />
+        )}
       </Box>
     </Box>
   );
@@ -225,7 +282,7 @@ function EventsBlock({
   onShowMore,
   onCreate,
 }: {
-  events: ReturnType<typeof useUpcomingEvents>['data'];
+  events: ReturnType<typeof useUpcomingEvents>["data"];
   loading: boolean;
   error: boolean;
   shown: number;
@@ -235,7 +292,10 @@ function EventsBlock({
   const { community, permissions } = useCommunityScope();
   const all = useAllEvents(community.id);
   if (loading) return <LoadingState height={200} />;
-  if (error) return <ErrorState message="There was an error loading events. Please refresh." />;
+  if (error)
+    return (
+      <ErrorState message="There was an error loading events. Please refresh." />
+    );
 
   if (!events || events.length === 0) {
     if (permissions.canEditCommunity) {
@@ -243,28 +303,43 @@ function EventsBlock({
       return (
         <EmptyPageContent
           type="events"
-          subtitleText={hasEvents ? 'No events found' : 'Create your first event'}
+          subtitleText={
+            hasEvents ? "No events found" : "Create your first event"
+          }
           onButtonPress={onCreate}
         />
       );
     }
-    return <EmptyPageContent type="events" onButtonPress={permissions.canCreateEvent ? onCreate : undefined} />;
+    return (
+      <EmptyPageContent
+        type="events"
+        onButtonPress={permissions.canCreateEvent ? onCreate : undefined}
+      />
+    );
   }
 
   return (
     <Box>
-      <Typography sx={{ ...appText.headline4, color: 'primary.main' }}>Upcoming Events</Typography>
+      <Typography sx={{ ...appText.headline4, color: "primary.main" }}>
+        Upcoming Events
+      </Typography>
       <Box sx={{ height: 10 }} />
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         {events.slice(0, shown).map((e) => (
           <EventCard key={e.id} event={e} />
         ))}
       </Box>
       {events.length > shown && (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: '20px' }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: "20px" }}>
           <ButtonBase
             onClick={onShowMore}
-            sx={{ width: 150, height: 40, borderRadius: '10px', border: '1px solid', borderColor: 'm3.onSurface' }}
+            sx={{
+              width: 150,
+              height: 40,
+              borderRadius: "10px",
+              border: "1px solid",
+              borderColor: "m3.onSurface",
+            }}
           >
             <Typography sx={appText.eyebrowSmall}>See More Events</Typography>
           </ButtonBase>
