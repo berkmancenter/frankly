@@ -20,6 +20,8 @@ import { useIsMobile } from "@/utils/useResponsive";
 import { useAllEvents, useUpcomingEvents } from "@/queries/events";
 import { useCommunityScope } from "@/scopes/CommunityScope";
 import { appSize, appText } from "@/theme/typography";
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 
 const ABOUT_LIMIT = 160;
 
@@ -201,7 +203,9 @@ function AboutSection({ description }: { description: string }) {
     !long || expanded ? description : `${description.slice(0, ABOUT_LIMIT)}...`;
   return (
     <Box>
-      <Typography variant="titleMedium">About Us</Typography>
+      <Typography variant="titleMedium">
+        <Trans id="aboutUs">About Us</Trans>
+      </Typography>
       <Typography
         variant="bodyMedium"
         sx={{ mt: "10px", whiteSpace: "pre-wrap" }}
@@ -217,7 +221,7 @@ function AboutSection({ description }: { description: string }) {
             variant="bodyMedium"
             sx={{ textDecoration: "underline", color: "primary.main" }}
           >
-            {expanded ? "Less" : "Read More"}
+            <Trans>{expanded ? "Less" : "Read More"}</Trans>
           </Typography>
         </ButtonBase>
       )}
@@ -237,7 +241,7 @@ function ContactSection({ community }: { community: Community }) {
       {email && (
         <>
           <Typography sx={{ ...appText.headline4, color: "primary.main" }}>
-            Contact
+            <Trans id="contact">Contact</Trans>
           </Typography>
           <Box sx={{ height: 10 }} />
           <Typography
@@ -293,9 +297,7 @@ function EventsBlock({
   const all = useAllEvents(community.id);
   if (loading) return <LoadingState height={200} />;
   if (error)
-    return (
-      <ErrorState message="There was an error loading events. Please refresh." />
-    );
+    return <ErrorState message={t`There was an error loading events.`} />;
 
   if (!events || events.length === 0) {
     if (permissions.canEditCommunity) {
@@ -304,7 +306,7 @@ function EventsBlock({
         <EmptyPageContent
           type="events"
           subtitleText={
-            hasEvents ? "No events found" : "Create your first event"
+            hasEvents ? t`No events found` : t`Create your first event`
           }
           onButtonPress={onCreate}
         />
@@ -321,7 +323,7 @@ function EventsBlock({
   return (
     <Box>
       <Typography sx={{ ...appText.headline4, color: "primary.main" }}>
-        Upcoming Events
+        <Trans id="upcomingEvents">Upcoming Events</Trans>
       </Typography>
       <Box sx={{ height: 10 }} />
       <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -341,7 +343,9 @@ function EventsBlock({
               borderColor: "m3.onSurface",
             }}
           >
-            <Typography sx={appText.eyebrowSmall}>See More Events</Typography>
+            <Typography sx={appText.eyebrowSmall}>
+              <Trans id="seeMoreEvents">See More Events</Trans>
+            </Typography>
           </ButtonBase>
         </Box>
       )}

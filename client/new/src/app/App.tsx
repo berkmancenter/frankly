@@ -1,13 +1,18 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { RouterProvider } from "react-router";
 import { BackendProvider } from "@/api/ApiProvider";
 import { ToastProvider } from "@/components/Toast";
 import { appTheme } from "@/theme/theme";
-import { createAppRouter } from "./router";
 import Box from "@mui/material/Box";
+
+import { I18nProvider } from "@lingui/react";
+import { i18n } from "@lingui/core";
+import { defaultLocale, dynamicActivate } from "./i18n";
+
+import { createAppRouter } from "./router";
 
 // Opt in with `?devtools` so the floating button never covers the UI being reviewed.
 const devtoolsRequested =
@@ -47,28 +52,36 @@ export function App() {
   );
   const [router] = useState(() => createAppRouter());
 
+  useEffect(() => {
+    // Dynamically load the catalogs;
+    // this keeps the initial bundle small and only loads the necessary locale.
+    dynamicActivate(defaultLocale);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <BackendProvider>
         <ThemeProvider theme={appTheme}>
           <CssBaseline />
           <ToastProvider>
-            {process.env.NODE_ENV === "development" && (
-              <Box
-                sx={{
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  zIndex: 1300,
-                  padding: "1rem",
-                  backgroundColor: "rgba(255, 94, 0, 0.7)",
-                  borderRadius: "0.5rem",
-                }}
-              >
-                React App
-              </Box>
-            )}
-            <RouterProvider router={router} />
+            <I18nProvider i18n={i18n}>
+              {process.env.NODE_ENV === "development" && (
+                <Box
+                  sx={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    zIndex: 1300,
+                    padding: "1rem",
+                    backgroundColor: "rgba(255, 94, 0, 0.7)",
+                    borderRadius: "0.5rem",
+                  }}
+                >
+                  React App
+                </Box>
+              )}
+              <RouterProvider router={router} />
+            </I18nProvider>
           </ToastProvider>
         </ThemeProvider>
       </BackendProvider>

@@ -45,7 +45,7 @@ npm run build        # tsc + vite build
 else is handed back to Flutter. Run it through [`dev-proxy`](../../dev-proxy/README.md) (one origin,
 path-based routing). Standalone there is no Flutter, so a page that is not migrated just says so.
 
-Needs Node ≥ 20.18. Tooling is pinned to majors that run there (Vite 6, React Router 7,
+Needs Node ≥ 26.13. Tooling is pinned to majors that run there (Vite 6, React Router 7,
 TypeScript 5.9, Vitest 3); the newest majors need a newer Node (Vite 8 ≥ 20.19, Vitest 5 ≥ 22.12,
 React Router 8 ≥ 22.22), so bumping them is a Node upgrade, not a code change.
 

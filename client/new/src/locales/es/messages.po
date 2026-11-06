@@ -1,0 +1,4081 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: flutterTranspile.ts\n"
+"Language: es\n"
+
+#. js-lingui-explicit-id
+msgid "aVIssues"
+msgstr "Problemas de A/V"
+
+#. js-lingui-explicit-id
+msgid "about"
+msgstr "Acerca de"
+
+#. js-lingui-explicit-id
+msgid "aboutHint"
+msgstr "Añade más detalles sobre los objetivos de esta comunidad"
+
+#. js-lingui-explicit-id
+msgid "aboutMe"
+msgstr "Sobre mí"
+
+#. js-lingui-explicit-id
+msgid "aboutUs"
+msgstr "Sobre Nosotros"
+
+#. js-lingui-explicit-id
+msgid "accentColor"
+msgstr "Color de acento"
+
+#. js-lingui-explicit-id
+msgid "accentColorMustBeDarker"
+msgstr "El color de acento debe ser más oscuro"
+
+#. js-lingui-explicit-id
+msgid "accountExistsWithSameEmail"
+msgstr "Ya existe una cuenta con la misma dirección de email pero con un método de inicio de sesión diferente. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente."
+
+#. js-lingui-explicit-id
+msgid "addACategory"
+msgstr "Agregar una categoría"
+
+#. js-lingui-explicit-id
+msgid "addAComment"
+msgstr "Añadir un comentario"
+
+#. js-lingui-explicit-id
+msgid "addAPrerequisiteTemplate"
+msgstr "Agregar una plantilla de requisito previo"
+
+#. js-lingui-explicit-id
+msgid "addAQuestion"
+msgstr "Agregar una pregunta"
+
+#. js-lingui-explicit-id
+msgid "addAResource"
+msgstr "Añadir un recurso"
+
+#. js-lingui-explicit-id
+msgid "addActionLink"
+msgstr "Añadir enlace de acción"
+
+#. js-lingui-explicit-id
+msgid "addActionLinksAfter"
+msgstr "Añade enlaces de acción que los participantes deban visitar después del evento"
+
+#. js-lingui-explicit-id
+msgid "addActionLinksBefore"
+msgstr "Añade enlaces de acción que los participantes deban visitar antes del evento"
+
+#. js-lingui-explicit-id
+msgid "addAgendaItem"
+msgstr "Añadir elemento de agenda"
+
+#. js-lingui-explicit-id
+msgid "addBreakouts"
+msgstr "Añadir grupos"
+
+#. js-lingui-explicit-id
+msgid "addCategory"
+msgstr "Añadir una categoría"
+
+#. js-lingui-explicit-id
+msgid "addComment"
+msgstr "Añadir comentario"
+
+#. js-lingui-explicit-id
+msgid "addCommunityImages"
+msgstr "Añadir imágenes de comunidad"
+
+#. js-lingui-explicit-id
+msgid "addNew"
+msgstr "+ Añadir nuevo"
+
+#. js-lingui-explicit-id
+msgid "addNewLabel"
+msgstr "Agregar nuevo"
+
+#. js-lingui-explicit-id
+msgid "addNewTag"
+msgstr "Añadir una etiqueta nueva"
+
+#. js-lingui-explicit-id
+msgid "addOption"
+msgstr "Añadir opción"
+
+#. js-lingui-explicit-id
+msgid "addPrerequisiteTemplate"
+msgstr "Añadir una plantilla de requisitos previos"
+
+#. js-lingui-explicit-id
+msgid "addQuestion"
+msgstr "Añadir una pregunta"
+
+#. js-lingui-explicit-id
+msgid "addRoom"
+msgstr "Añadir Sala"
+
+#. js-lingui-explicit-id
+msgid "addRoomNumber"
+msgstr "Agregar sala {number}"
+
+#. js-lingui-explicit-id
+msgid "addSomethingHere"
+msgstr "Añadir algo aquí"
+
+#. js-lingui-explicit-id
+msgid "addTag"
+msgstr "Añadir etiqueta"
+
+#. js-lingui-explicit-id
+msgid "addTags"
+msgstr "Añadir etiquetas"
+
+#. js-lingui-explicit-id
+msgid "addToCalendar"
+msgstr "Añadir al calendario"
+
+#. js-lingui-explicit-id
+msgid "addUrlParameter"
+msgstr "Agregar parámetro de URL"
+
+#. js-lingui-explicit-id
+msgid "addVideoOrImage"
+msgstr "Agregar video o imagen"
+
+#. js-lingui-explicit-id
+msgid "admin"
+msgstr "Administrador"
+
+#. js-lingui-explicit-id
+msgid "adminBadge"
+msgstr "ADMIN"
+
+#. js-lingui-explicit-id
+msgid "adminBilling"
+msgstr "Facturación de administración"
+
+#. js-lingui-explicit-id
+msgid "adminEventPagination"
+msgstr "{start} - {end} de {total}"
+
+#. js-lingui-explicit-id
+msgid "adminLiveStreamSetup"
+msgstr "Configuración de transmisión en vivo del administrador"
+
+#. js-lingui-explicit-id
+msgid "agendaItemJustStartedConfirm"
+msgstr "¡Este punto de la agenda acaba de comenzar! ¿Seguro que quieres continuar?"
+
+#. js-lingui-explicit-id
+msgid "agendaItemWasDeleted"
+msgstr "El elemento de agenda fue eliminado"
+
+#. js-lingui-explicit-id
+msgid "agendaItemWasDuplicated"
+msgstr "¡El elemento de agenda fue duplicado!"
+
+#. js-lingui-explicit-id
+msgid "agendaItemWasSaved"
+msgstr "El elemento de agenda fue guardado"
+
+#. js-lingui-explicit-id
+msgid "agendaItemsWereRemoved"
+msgstr "Los elementos de agenda fueron eliminados"
+
+#. js-lingui-explicit-id
+msgid "agendaPromptReady"
+msgstr "¡Su evento está listo para comenzar!"
+
+#. js-lingui-explicit-id
+msgid "agendaPromptWaiting"
+msgstr "Esperando a que el anfitrión inicie el evento..."
+
+#. js-lingui-explicit-id
+msgid "agendaSuggestionsDescription"
+msgstr "Permita que los participantes sugieran puntos de la agenda y luego voten a favor o en contra."
+
+#. js-lingui-explicit-id
+msgid "agendaTitle"
+msgstr "Agenda"
+
+#. js-lingui-explicit-id
+msgid "agreeAndContinue"
+msgstr "Aceptar y continuar"
+
+#. js-lingui-explicit-id
+msgid "alertsOnly"
+msgstr "Solo alertas"
+
+#. js-lingui-explicit-id
+msgid "allParticipantsMutedDuringVideo"
+msgstr "¡Todos los participantes están silenciados durante el video!"
+
+#. js-lingui-explicit-id
+msgid "allRooms"
+msgstr "Todas las salas"
+
+#. js-lingui-explicit-id
+msgid "alreadyAtFirstMeetingGuideEntry"
+msgstr "Ya estás en la primera entrada de la guía de reunión."
+
+#. js-lingui-explicit-id
+msgid "alreadyUserSignIn"
+msgstr "¿Ya eres usuario?"
+
+#. js-lingui-explicit-id
+msgid "and"
+msgstr "y"
+
+#. js-lingui-explicit-id
+msgid "announcement"
+msgstr "Anuncio"
+
+#. js-lingui-explicit-id
+msgid "announcements"
+msgstr "Anuncios"
+
+#. js-lingui-explicit-id
+msgid "anonymous"
+msgstr "Anónimo"
+
+#. js-lingui-explicit-id
+msgid "appDescription"
+msgstr "Una plataforma para deliberaciones en línea"
+
+#. js-lingui-explicit-id
+msgid "appNameHome"
+msgstr "{appName} - Inicio"
+
+#. js-lingui-explicit-id
+msgid "appNameTermsOfService"
+msgstr "Términos de Servicio de {appName}"
+
+#. js-lingui-explicit-id
+msgid "appNameTitle"
+msgstr "{appName}"
+
+#. js-lingui-explicit-id
+msgid "appNameUnsubscribe"
+msgstr "{appName} - Cancelar suscripción"
+
+#. js-lingui-explicit-id
+msgid "appNameUserSettings"
+msgstr "{appName} - Configuración de usuario"
+
+#. js-lingui-explicit-id
+msgid "appNameWelcome"
+msgstr "{appName} - Bienvenido"
+
+#. js-lingui-explicit-id
+msgid "appTitle"
+msgstr "Frankly"
+
+#. js-lingui-explicit-id
+msgid "appTitleHome"
+msgstr "{appName} - Inicio"
+
+#. js-lingui-explicit-id
+msgid "appTitleUnsubscribe"
+msgstr "{appName} - Cancelar suscripción"
+
+#. js-lingui-explicit-id
+msgid "appTitleUserSettings"
+msgstr "{appName} - Configuración de usuario"
+
+#. js-lingui-explicit-id
+msgid "appTitleWelcome"
+msgstr "{appName} - Bienvenido"
+
+#. js-lingui-explicit-id
+msgid "approveAll"
+msgstr "Aprobar todo"
+
+#. js-lingui-explicit-id
+msgid "areYouSure"
+msgstr "¿Estás seguro?"
+
+#. js-lingui-explicit-id
+msgid "areYouSureYouWantToDeleteMedia"
+msgstr "¿Estás seguro de que quieres eliminar este medio?"
+
+#. js-lingui-explicit-id
+msgid "areYouSureYouWantToRefreshTheTemplate"
+msgstr "¿Estás seguro de que quieres actualizar la plantilla?"
+
+#. js-lingui-explicit-id
+msgid "aspectRatioClipped"
+msgstr "Relación de aspecto recortada"
+
+#. js-lingui-explicit-id
+msgid "attendThisFirst"
+msgstr "Asiste primero a esto:"
+
+#. js-lingui-explicit-id
+msgid "attendee"
+msgstr "Asistente"
+
+#. js-lingui-explicit-id
+msgid "audioDeviceUpdated"
+msgstr "Dispositivo de audio actualizado."
+
+#. js-lingui-explicit-id
+msgid "audioInputDevice"
+msgstr "Dispositivo de entrada de audio:"
+
+#. js-lingui-explicit-id
+msgid "audioVideoSettings"
+msgstr "Configuración de audio/video"
+
+#. js-lingui-explicit-id
+msgid "audiovisualSettings"
+msgstr "Configuración audiovisual"
+
+#. js-lingui-explicit-id
+msgid "autoEndMeeting"
+msgstr "Finalizar reunión automáticamente"
+
+#. js-lingui-explicit-id
+msgid "avAudioErrorNotFound"
+msgstr "Frankly no puede acceder a su(s) micrófono(s). Modifique sus permisos/configuración de dispositivos y actualice la página para permitir el uso del micrófono."
+
+#. js-lingui-explicit-id
+msgid "avConnecting"
+msgstr "Conectando..."
+
+#. js-lingui-explicit-id
+msgid "avErrorConstraints"
+msgstr "Error de restricciones multimedia."
+
+#. js-lingui-explicit-id
+msgid "avErrorDisconnected"
+msgstr "Dispositivos de audio/video desconectados."
+
+#. js-lingui-explicit-id
+msgid "avErrorDuplicateIdentity"
+msgstr "Ya estás conectado desde otro dispositivo o navegador."
+
+#. js-lingui-explicit-id
+msgid "avErrorMediaAccess"
+msgstr "No se puede acceder a los dispositivos multimedia."
+
+#. js-lingui-explicit-id
+msgid "avErrorNetwork"
+msgstr "Error de red con conexión de audio/video."
+
+#. js-lingui-explicit-id
+msgid "avErrorNotFound"
+msgstr "Dispositivos de audio/video no encontrados. Por favor, verifica los permisos."
+
+#. js-lingui-explicit-id
+msgid "avErrorNotReadable"
+msgstr "El dispositivo de audio/video no se puede leer o está ocupado."
+
+#. js-lingui-explicit-id
+msgid "avErrorPermissionRequired"
+msgstr "Se requiere permiso para usar dispositivos de audio/video."
+
+#. js-lingui-explicit-id
+msgid "avErrorSaveDeviceSettings"
+msgstr "Error al guardar la configuración de dispositivos de audio/video. Por favor, inténtelo de nuevo o contacte al soporte."
+
+#. js-lingui-explicit-id
+msgid "avIssues"
+msgstr "¿Problemas de audio/video?"
+
+#. js-lingui-explicit-id
+msgid "avVideoErrorNotFound"
+msgstr "Frankly no puede acceder a su(s) cámara(s). Modifique sus permisos/configuración de dispositivos y actualice la página para permitir el uso de la cámara."
+
+#. js-lingui-explicit-id
+msgid "awaitingResponses"
+msgstr "Esperando respuestas…"
+
+#. js-lingui-explicit-id
+msgid "back"
+msgstr "Atrás"
+
+#. js-lingui-explicit-id
+msgid "background"
+msgstr "Fondo"
+
+#. js-lingui-explicit-id
+msgid "backgroundColor"
+msgstr "Color de fondo"
+
+#. js-lingui-explicit-id
+msgid "banned"
+msgstr "Prohibido"
+
+#. js-lingui-explicit-id
+msgid "basicInformation"
+msgstr "Información básica"
+
+#. js-lingui-explicit-id
+msgid "beta"
+msgstr "BETA"
+
+#. js-lingui-explicit-id
+msgid "billing"
+msgstr "Facturación"
+
+#. js-lingui-explicit-id
+msgid "brandYourSpace"
+msgstr "Marcar tu espacio"
+
+#. js-lingui-explicit-id
+msgid "brandingAndTheme"
+msgstr "Marca y tema"
+
+#. js-lingui-explicit-id
+msgid "breakoutRoomTransitionTimeout"
+msgstr "¡No se pudo encontrar esa sala de grupo! Regresando a la reunión principal."
+
+#. js-lingui-explicit-id
+msgid "breakoutRooms"
+msgstr "Salas de grupos"
+
+#. js-lingui-explicit-id
+msgid "breakoutUpdated"
+msgstr "¡Sala de grupos actualizada!"
+
+#. js-lingui-explicit-id
+msgid "breakouts"
+msgstr "Grupos"
+
+#. js-lingui-explicit-id
+msgid "broadcast"
+msgstr "Transmisión"
+
+#. js-lingui-explicit-id
+msgid "bufferAndIntroTime"
+msgstr "Aproximadamente {buffer} de tiempo de espera y {intro} de introducción antes de las salas de grupos"
+
+#. js-lingui-explicit-id
+msgid "bufferTimeDescription"
+msgstr "Aproximadamente {duration} de tiempo de espera antes de que comience el evento"
+
+#. js-lingui-explicit-id
+msgid "buildCommunitySpace"
+msgstr "Construir tu espacio comunitario"
+
+#. js-lingui-explicit-id
+msgid "buildYourCommunitySpace"
+msgstr "Construya su espacio de comunidad"
+
+#. js-lingui-explicit-id
+msgid "buttonText"
+msgstr "Texto del botón"
+
+#. js-lingui-explicit-id
+msgid "buttonTextCannotBeEmpty"
+msgstr "El texto del botón no puede estar vacío"
+
+#. js-lingui-explicit-id
+msgid "byCategory"
+msgstr "Por categoría"
+
+#. js-lingui-explicit-id
+msgid "bySigningInRegisteringOrUsing"
+msgstr "Al iniciar sesión, registrarse o usar {appName}, acepto estar sujeto a los "
+
+#. js-lingui-explicit-id
+msgid "bySize"
+msgstr "Por tamaño"
+
+#. js-lingui-explicit-id
+msgid "cameraInput"
+msgstr "Entrada de cámara"
+
+#. js-lingui-explicit-id
+msgid "cancel"
+msgstr "Cancelar"
+
+#. js-lingui-explicit-id
+msgid "cancelCurrentPlan"
+msgstr "¿Cancelar plan actual?"
+
+#. js-lingui-explicit-id
+msgid "cancelEmailEdit"
+msgstr "Cancel"
+
+#. js-lingui-explicit-id
+msgid "cancelEvent"
+msgstr "Cancelar evento"
+
+#. js-lingui-explicit-id
+msgid "cancelEventConfirmation"
+msgstr "¿Estás seguro de que quieres cancelar este evento? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "cancelHelpNeeded"
+msgstr "Cancelar solicitud de ayuda"
+
+#. js-lingui-explicit-id
+msgid "cancelParticipation"
+msgstr "Cancelar participación"
+
+#. js-lingui-explicit-id
+msgid "cannotPlayVimeoVideo"
+msgstr "No se puede reproducir el video de Vimeo."
+
+#. js-lingui-explicit-id
+msgid "cannotPlayYouTubeVideo"
+msgstr "No se puede reproducir el video de YouTube"
+
+#. js-lingui-explicit-id
+msgid "cannotPlayYoutubeVideo"
+msgstr "No se puede reproducir el video de YouTube."
+
+#. js-lingui-explicit-id
+msgid "category"
+msgstr "Categoría"
+
+#. js-lingui-explicit-id
+msgid "changeLanguage"
+msgstr "Cambiar idioma"
+
+#. js-lingui-explicit-id
+msgid "changedFromDefault"
+msgstr "Cambiado del valor predeterminado"
+
+#. js-lingui-explicit-id
+msgid "changesSaved"
+msgstr "Cambios guardados"
+
+#. js-lingui-explicit-id
+msgid "chat"
+msgstr "Chat"
+
+#. js-lingui-explicit-id
+msgid "chatData"
+msgstr "Datos de Chat"
+
+#. js-lingui-explicit-id
+msgid "chatIntroduceYourself"
+msgstr "Preséntate para romper el hielo."
+
+#. js-lingui-explicit-id
+msgid "chatMessage"
+msgstr "Mensaje de chat"
+
+#. js-lingui-explicit-id
+msgid "chatWelcome"
+msgstr "¡Bienvenido!"
+
+#. js-lingui-explicit-id
+msgid "chatWithParticipants"
+msgstr "Chatear con participantes"
+
+#. js-lingui-explicit-id
+msgid "chooseABackgroundAndAccentColor"
+msgstr "Elija un color de fondo claro y un color de acento oscuro que proporcionen suficiente contraste para que el texto sea legible por una amplia gama de usuarios, incluidos aquellos con visión moderadamente baja. Comprobaremos su legibilidad."
+
+#. js-lingui-explicit-id
+msgid "chooseDuration"
+msgstr "Elegir duración"
+
+#. js-lingui-explicit-id
+msgid "chooseTemplate"
+msgstr "Elegir plantilla"
+
+#. js-lingui-explicit-id
+msgid "clearAll"
+msgstr "Borrar todo"
+
+#. js-lingui-explicit-id
+msgid "clickNextWhenReady"
+msgstr "Haga clic en Siguiente cuando esté listo para continuar."
+
+#. js-lingui-explicit-id
+msgid "close"
+msgstr "Cerrar"
+
+#. js-lingui-explicit-id
+msgid "closeEdit"
+msgstr "Cerrar edición"
+
+#. js-lingui-explicit-id
+msgid "comment"
+msgstr "Comentario"
+
+#. js-lingui-explicit-id
+msgid "commentCannotBeEmpty"
+msgstr "El comentario no puede estar vacío"
+
+#. js-lingui-explicit-id
+msgid "commentCount"
+msgstr "{count, plural, =1{{count} comentario} other{{count} comentarios}}"
+
+#. js-lingui-explicit-id
+msgid "commentDeleted"
+msgstr "Comentario eliminado"
+
+#. js-lingui-explicit-id
+msgid "commentWasDeleted"
+msgstr "El comentario fue eliminado"
+
+#. js-lingui-explicit-id
+msgid "communities"
+msgstr "Comunidades"
+
+#. js-lingui-explicit-id
+msgid "communityDescription"
+msgstr "Descripción de la comunidad"
+
+#. js-lingui-explicit-id
+msgid "communityDescriptionHint"
+msgstr "Agrega más detalles sobre los objetivos de esta comunidad"
+
+#. js-lingui-explicit-id
+msgid "communityName"
+msgstr "Nombre de la comunidad"
+
+#. js-lingui-explicit-id
+msgid "communitySettings"
+msgstr "Configuración de la comunidad"
+
+#. js-lingui-explicit-id
+msgid "communitySuccessPrefix"
+msgstr "Has creado tu comunidad con éxito"
+
+#. js-lingui-explicit-id
+msgid "communitySuccessSuffix"
+msgstr "Haz clic en el ícono de engranaje en la esquina superior derecha para editar la configuración de tu comunidad."
+
+#. js-lingui-explicit-id
+msgid "communityTagline"
+msgstr "Lema de la comunidad"
+
+#. js-lingui-explicit-id
+msgid "communityUrl"
+msgstr "URL de la comunidad"
+
+#. js-lingui-explicit-id
+msgid "confirm"
+msgstr "Confirmar"
+
+#. js-lingui-explicit-id
+msgid "confirmCancelQuestion"
+msgstr "¿Estás seguro de que quieres cancelar?"
+
+#. js-lingui-explicit-id
+msgid "confirmCancelUserParticipation"
+msgstr "¿Seguro que quieres cancelar la participación de este usuario en este evento?"
+
+#. js-lingui-explicit-id
+msgid "confirmCancelYourParticipation"
+msgstr "¿Seguro que quieres cancelar tu participación en este evento?"
+
+#. js-lingui-explicit-id
+msgid "confirmDelete"
+msgstr "¿Está seguro de que desea eliminar?"
+
+#. js-lingui-explicit-id
+msgid "confirmDeleteAgendaItem"
+msgstr "¿Está seguro de que desea eliminar este elemento de agenda? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "confirmDeleteAllAgendaItems"
+msgstr "¿Está seguro de que desea eliminar todos los elementos de agenda de este evento? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "confirmDeleteAnnouncement"
+msgstr "¿Está seguro de que desea eliminar este anuncio? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "confirmDeleteComment"
+msgstr "¿Está seguro de que desea eliminar este comentario? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "confirmDeleteEventAnnouncement"
+msgstr "¿Está seguro de que desea eliminar este anuncio del evento? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "confirmDeleteMedia"
+msgstr "¿Estás seguro de que quieres eliminar el medio?"
+
+#. js-lingui-explicit-id
+msgid "confirmDeletePost"
+msgstr "¿Está seguro de que desea eliminar esta publicación? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "confirmDeletePostEventItem"
+msgstr "¿Está seguro de que desea eliminar este elemento de agenda post-evento? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "confirmDeletePreEventItem"
+msgstr "¿Está seguro de que desea eliminar este elemento de agenda pre-evento? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "confirmDeleteResource"
+msgstr "¿Está seguro de que desea eliminar este recurso? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "confirmDiscardChanges"
+msgstr "¿Estás seguro de que quieres descartar los cambios?"
+
+#. js-lingui-explicit-id
+msgid "confirmMakeOwner"
+msgstr "¿Está seguro de que desea convertir a {userName} en propietario de {communityName}? Esto le dará todos los permisos posibles en esta comunidad, incluida la capacidad de eliminarla."
+
+#. js-lingui-explicit-id
+msgid "confirmRefreshTemplate"
+msgstr "¿Estás seguro de que quieres actualizar la plantilla?"
+
+#. js-lingui-explicit-id
+msgid "confirmRemoveParticipant"
+msgstr "¿Está seguro de que desea eliminar a {name} de este evento?"
+
+#. js-lingui-explicit-id
+msgid "confirmRemoveTemplate"
+msgstr "¿Está seguro de que desea eliminar esta plantilla? Esta acción no se puede deshacer."
+
+#. js-lingui-explicit-id
+msgid "confirmUnsubscribeFrom"
+msgstr "¿Seguro que quieres cancelar tu suscripción a {communityName}?"
+
+#. js-lingui-explicit-id
+msgid "congratulations"
+msgstr "¡Felicidades!"
+
+#. js-lingui-explicit-id
+msgid "connectingToRoom"
+msgstr "Conectando a la sala..."
+
+#. js-lingui-explicit-id
+msgid "contact"
+msgstr "Contacto"
+
+#. js-lingui-explicit-id
+msgid "contactEmail"
+msgstr "Correo de contacto"
+
+#. js-lingui-explicit-id
+msgid "contactUs"
+msgstr "Contáctanos"
+
+#. js-lingui-explicit-id
+msgid "contactUsDot"
+msgstr "Contacta con nosotros."
+
+#. js-lingui-explicit-id
+msgid "content"
+msgstr "Contenido"
+
+#. js-lingui-explicit-id
+msgid "continueAfterVerification"
+msgstr "He Verificado Mi Correo"
+
+#. js-lingui-explicit-id
+msgid "continueButton"
+msgstr "Continuar"
+
+#. js-lingui-explicit-id
+msgid "copiedToClipboard"
+msgstr "Copiado al portapapeles"
+
+#. js-lingui-explicit-id
+msgid "couldntFindAccount"
+msgstr "No pudimos encontrar una cuenta con este correo electrónico. Inténtalo "
+
+#. js-lingui-explicit-id
+msgid "create"
+msgstr "Crear"
+
+#. js-lingui-explicit-id
+msgid "createACommunity"
+msgstr "Crear una comunidad"
+
+#. js-lingui-explicit-id
+msgid "createANewTemplate"
+msgstr "Crear una nueva plantilla"
+
+#. js-lingui-explicit-id
+msgid "createAPost"
+msgstr "Crear un post"
+
+#. js-lingui-explicit-id
+msgid "createAResource"
+msgstr "Crear un recurso"
+
+#. js-lingui-explicit-id
+msgid "createATemplate"
+msgstr "Crear una plantilla"
+
+#. js-lingui-explicit-id
+msgid "createAccount"
+msgstr "Crear una cuenta"
+
+#. js-lingui-explicit-id
+msgid "createAction"
+msgstr "Crear"
+
+#. js-lingui-explicit-id
+msgid "createAnAnnouncement"
+msgstr "Crear un anuncio"
+
+#. js-lingui-explicit-id
+msgid "createAnEvent"
+msgstr "Crear un evento"
+
+#. js-lingui-explicit-id
+msgid "createEvent"
+msgstr "Crear evento"
+
+#. js-lingui-explicit-id
+msgid "createEventButton"
+msgstr "Crear evento"
+
+#. js-lingui-explicit-id
+msgid "createEventFromThisTemplate"
+msgstr "Crear un evento a partir de esta plantilla"
+
+#. js-lingui-explicit-id
+msgid "createNewAnnouncement"
+msgstr "Crear nuevo anuncio"
+
+#. js-lingui-explicit-id
+msgid "createPost"
+msgstr "Crear publicación"
+
+#. js-lingui-explicit-id
+msgid "createTemplateFromEvent"
+msgstr "Crear Plantilla a partir del Evento"
+
+#. js-lingui-explicit-id
+msgid "createYourFirstEvent"
+msgstr "¡Crea tu primer evento!"
+
+#. js-lingui-explicit-id
+msgid "currentParticipants"
+msgstr "Participantes\nactuales"
+
+#. js-lingui-explicit-id
+msgid "custom"
+msgstr "Personalizado"
+
+#. js-lingui-explicit-id
+msgid "darkColorHex"
+msgstr "Color oscuro HEX#"
+
+#. js-lingui-explicit-id
+msgid "data"
+msgstr "Datos"
+
+#. js-lingui-explicit-id
+msgid "dataDownload"
+msgstr "Descarga de datos"
+
+#. js-lingui-explicit-id
+msgid "date"
+msgstr "Fecha"
+
+#. js-lingui-explicit-id
+msgid "defineBreakoutsOptional"
+msgstr "Definir salas (Opcional)"
+
+#. js-lingui-explicit-id
+msgid "delete"
+msgstr "Eliminar"
+
+#. js-lingui-explicit-id
+msgid "deleteAgendaItem"
+msgstr "Eliminar el elemento de agenda {title}"
+
+#. js-lingui-explicit-id
+msgid "deleteAgendaItemGeneral"
+msgstr "Eliminar elemento de agenda"
+
+#. js-lingui-explicit-id
+msgid "deleteAllAgendaItems"
+msgstr "Eliminar todos los elementos de agenda"
+
+#. js-lingui-explicit-id
+msgid "deleteAnnouncement"
+msgstr "Eliminar anuncio"
+
+#. js-lingui-explicit-id
+msgid "deleteComment"
+msgstr "Eliminar comentario"
+
+#. js-lingui-explicit-id
+msgid "deleteEventAnnouncement"
+msgstr "Eliminar anuncio del evento"
+
+#. js-lingui-explicit-id
+msgid "deleteOption"
+msgstr "Eliminar opción"
+
+#. js-lingui-explicit-id
+msgid "deletePost"
+msgstr "Eliminar publicación"
+
+#. js-lingui-explicit-id
+msgid "deletePostEventItem"
+msgstr "Eliminar elemento post-evento"
+
+#. js-lingui-explicit-id
+msgid "deletePreEventItem"
+msgstr "Eliminar elemento pre-evento"
+
+#. js-lingui-explicit-id
+msgid "deletePrerequisiteTemplate"
+msgstr "Eliminar plantilla de requisitos previos"
+
+#. js-lingui-explicit-id
+msgid "deleteResource"
+msgstr "Eliminar recurso"
+
+#. js-lingui-explicit-id
+msgid "deleteTitleAgendaItem"
+msgstr "Eliminar $title elemento de agenda"
+
+#. js-lingui-explicit-id
+msgid "description"
+msgstr "Descripción"
+
+#. js-lingui-explicit-id
+msgid "devSettings"
+msgstr "Configuración para desarrolladores"
+
+#. js-lingui-explicit-id
+msgid "discard"
+msgstr "Descartar"
+
+#. js-lingui-explicit-id
+msgid "displayIdWarning"
+msgstr "El nombre de visualización de URL solo puede contener letras, números y guiones."
+
+#. js-lingui-explicit-id
+msgid "donate"
+msgstr "Donar"
+
+#. js-lingui-explicit-id
+msgid "donateAmount"
+msgstr "Donar ${amount}"
+
+#. js-lingui-explicit-id
+msgid "donationSupportPrompt"
+msgstr "Si disfrutaste este evento, apoya a {name}."
+
+#. js-lingui-explicit-id
+msgid "download"
+msgstr "Descargar"
+
+#. js-lingui-explicit-id
+msgid "downloadComplete"
+msgstr "Descarga completa"
+
+#. js-lingui-explicit-id
+msgid "downloadMembersData"
+msgstr "Descargar datos de miembros"
+
+#. js-lingui-explicit-id
+msgid "downloadMembersRegistrationData"
+msgstr "Descargar Datos de Registro de Miembros"
+
+#. js-lingui-explicit-id
+msgid "duplicateAction"
+msgstr "Duplicar"
+
+#. js-lingui-explicit-id
+msgid "duplicateEvent"
+msgstr "Duplicar Evento"
+
+#. js-lingui-explicit-id
+msgid "duplicateItem"
+msgstr "Duplicar elemento"
+
+#. js-lingui-explicit-id
+msgid "duplicateTemplate"
+msgstr "Duplicar Plantilla"
+
+#. js-lingui-explicit-id
+msgid "edit"
+msgstr "Editar"
+
+#. js-lingui-explicit-id
+msgid "editEvent"
+msgstr "Editar evento"
+
+#. js-lingui-explicit-id
+msgid "editImage"
+msgstr "Editar imagen"
+
+#. js-lingui-explicit-id
+msgid "editItem"
+msgstr "Editar elemento"
+
+#. js-lingui-explicit-id
+msgid "editProfile"
+msgstr "Editar perfil"
+
+#. js-lingui-explicit-id
+msgid "editSettings"
+msgstr "Editar configuración"
+
+#. js-lingui-explicit-id
+msgid "editTemplate"
+msgstr "Editar plantilla"
+
+#. js-lingui-explicit-id
+msgid "editTheTemplate"
+msgstr "edita la plantilla."
+
+#. js-lingui-explicit-id
+msgid "editYourAddressLink"
+msgstr "Edita la dirección"
+
+#. js-lingui-explicit-id
+msgid "editYourEmailAddressLink"
+msgstr "Edita tu dirección de correo"
+
+#. js-lingui-explicit-id
+msgid "editYourProfile"
+msgstr "Edita tu perfil"
+
+#. js-lingui-explicit-id
+msgid "editingEventNotice"
+msgstr "Estás editando un evento. \n"
+
+#. js-lingui-explicit-id
+msgid "editingFutureInstancesNotice"
+msgstr "Si quieres editar las instancias futuras, "
+
+#. js-lingui-explicit-id
+msgid "email"
+msgstr "Correo electrónico"
+
+#. js-lingui-explicit-id
+msgid "emailAddressAlreadyInUse"
+msgstr "Ya ha creado una cuenta vinculada a esta dirección de email. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente."
+
+#. js-lingui-explicit-id
+msgid "emailAddressAlreadyInUseLoginError"
+msgstr "Este correo electrónico ya está en uso. Inténtalo "
+
+#. js-lingui-explicit-id
+msgid "emailAndPasswordMismatch"
+msgstr "Su combinación de correo electrónico y contraseña no coincide con una cuenta de {appName}."
+
+#. js-lingui-explicit-id
+msgid "emailAndPasswordMismatchCheck"
+msgstr "Puede verificar lo que ingresó e intentarlo de nuevo."
+
+#. js-lingui-explicit-id
+msgid "emailCannotBeUsedBody"
+msgstr "Actualmente estas usando esta direccion."
+
+#. js-lingui-explicit-id
+msgid "emailCannotBeUsedFieldError"
+msgstr "No se puede usar esta direccion de correo electronico."
+
+#. js-lingui-explicit-id
+msgid "emailCannotBeUsedTitle"
+msgstr "Esta direccion de correo electronico ya esta en uso."
+
+#. js-lingui-explicit-id
+msgid "emailCannotBeVerifiedBodyAfterLink"
+msgstr " para obtener ayuda."
+
+#. js-lingui-explicit-id
+msgid "emailCannotBeVerifiedBodyBeforeLink"
+msgstr "Algo salió mal. Inténtalo de nuevo más tarde.\n¿Todavía no puedes verificar? "
+
+#. js-lingui-explicit-id
+msgid "emailCannotBeVerifiedTitle"
+msgstr "Tu correo electrónico no puede verificarse en este momento."
+
+#. js-lingui-explicit-id
+msgid "emailNotYetVerified"
+msgstr "Tu correo aún no ha sido verificado. Por favor revisa tu bandeja de entrada y haz clic en el enlace de verificación."
+
+#. js-lingui-explicit-id
+msgid "emailNotYetVerifiedHeader"
+msgstr "Tu correo electrónico aún no ha sido verificado."
+
+#. js-lingui-explicit-id
+msgid "emailUpdatedResent"
+msgstr "Revisa tu correo para encontrar el mensaje de verificación.\n\nSi esta dirección no está en uso con otra cuenta, pronto recibirás un mensaje de no-reply@frankly.org. Si no aparece en tu bandeja de entrada, revisa tu carpeta de spam."
+
+#. js-lingui-explicit-id
+msgid "emailVerifiedInAnotherTab"
+msgstr "Verifiqué mi correo en otra pestaña o ventana"
+
+#. js-lingui-explicit-id
+msgid "endBreakoutRooms"
+msgstr "Finalizar salas de grupo"
+
+#. js-lingui-explicit-id
+msgid "endBreakoutRoomsConfirm"
+msgstr "¿Está seguro de que desea finalizar las salas de grupos para todos los participantes? \n\nEsto enviará de inmediato a todos los participantes de vuelta a la sala principal."
+
+#. js-lingui-explicit-id
+msgid "endBreakouts"
+msgstr "Finalizar grupos"
+
+#. js-lingui-explicit-id
+msgid "endMeeting"
+msgstr "Finalizar reunión"
+
+#. js-lingui-explicit-id
+msgid "endMeetingConfirmation"
+msgstr "¿Finalizar este evento para todos los participantes? Todos serán desconectados."
+
+#. js-lingui-explicit-id
+msgid "endTime"
+msgstr "Hora de finalización"
+
+#. js-lingui-explicit-id
+msgid "enterAMessage"
+msgstr "Ingrese un mensaje"
+
+#. js-lingui-explicit-id
+msgid "enterATitle"
+msgstr "Ingrese un título"
+
+#. js-lingui-explicit-id
+msgid "enterAmount"
+msgstr "Ingrese el monto"
+
+#. js-lingui-explicit-id
+msgid "enterCategoryNum"
+msgstr "Ingrese Categoría {number}"
+
+#. js-lingui-explicit-id
+msgid "enterEvent"
+msgstr "Entrar al evento"
+
+#. js-lingui-explicit-id
+msgid "enterHeadline"
+msgstr "Introducir título"
+
+#. js-lingui-explicit-id
+msgid "enterImageTitle"
+msgstr "Introducir título de la imagen"
+
+#. js-lingui-explicit-id
+msgid "enterMessage"
+msgstr "Ingrese un mensaje"
+
+#. js-lingui-explicit-id
+msgid "enterMessageExampleAfter"
+msgstr "Ingrese un mensaje (p. ej., \"Realiza esta encuesta después del evento\")"
+
+#. js-lingui-explicit-id
+msgid "enterMessageExampleBefore"
+msgstr "Ingrese un mensaje (p. ej., \"Realiza esta encuesta antes del evento\")"
+
+#. js-lingui-explicit-id
+msgid "enterQuestionWithNumber"
+msgstr "Ingrese la pregunta {number}"
+
+#. js-lingui-explicit-id
+msgid "enterReason"
+msgstr "Introduce el motivo"
+
+#. js-lingui-explicit-id
+msgid "enterRoom"
+msgstr "Entrar a la sala"
+
+#. js-lingui-explicit-id
+msgid "enterRoomNumber"
+msgstr "Ej: 2"
+
+#. js-lingui-explicit-id
+msgid "enterUrl"
+msgstr "Ingrese URL"
+
+#. js-lingui-explicit-id
+msgid "enterValidCommunityUrl"
+msgstr "Por favor, introduzca una URL de comunidad válida"
+
+#. js-lingui-explicit-id
+msgid "enterValidName"
+msgstr "Por favor, introduzca un nombre válido"
+
+#. js-lingui-explicit-id
+msgid "enterValidSocialUrl"
+msgstr "Ingrese una dirección web válida de {platform} que incluya “{url}”"
+
+#. js-lingui-explicit-id
+msgid "enterValidWebsiteUrl"
+msgstr "Ingrese una dirección web válida (p. ej., “https://nombredelsitio.com”)"
+
+#. js-lingui-explicit-id
+msgid "enterVideoTitle"
+msgstr "Introducir título del vídeo"
+
+#. js-lingui-explicit-id
+msgid "enterWaitingRoomText"
+msgstr "Introducir texto de sala de espera (opcional)"
+
+#. js-lingui-explicit-id
+msgid "enterWaitingRoomTextOptional"
+msgstr "Ingrese el texto de la sala de espera (opcional)"
+
+#. js-lingui-explicit-id
+msgid "enterWord"
+msgstr "Introducir palabra"
+
+#. js-lingui-explicit-id
+msgid "enterWordCloudPrompt"
+msgstr "Ingrese instrucción para la Nube de Palabras"
+
+#. js-lingui-explicit-id
+msgid "enterWordCloudPromptHint"
+msgstr "Ingrese instrucción para la Nube de Palabras"
+
+#. js-lingui-explicit-id
+msgid "error"
+msgstr "Error"
+
+#. js-lingui-explicit-id
+msgid "errorCommunityNameEmpty"
+msgstr "El nombre de la comunidad no puede estar vacío."
+
+#. js-lingui-explicit-id
+msgid "errorCommunityProfile"
+msgstr "Las entradas para uno o más ajustes de perfil necesitan ser cambiadas. Corrija cualquier error e inténtelo de nuevo. "
+
+#. js-lingui-explicit-id
+msgid "errorCommunityUrlEmpty"
+msgstr "La URL de la comunidad no puede estar vacía."
+
+#. js-lingui-explicit-id
+msgid "errorConnectingToRoom"
+msgstr "Hubo un error al conectar con la sala."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingAnnouncements"
+msgstr "Ocurrió un error al cargar los anuncios"
+
+#. js-lingui-explicit-id
+msgid "errorLoadingBreakoutRooms"
+msgstr "Algo salió mal al cargar las salas de grupos. Por favor, actualice"
+
+#. js-lingui-explicit-id
+msgid "errorLoadingChatMessages"
+msgstr "Hubo un error al cargar los mensajes del chat."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingCommunities"
+msgstr "Algo salió mal al cargar las comunidades. Por favor, actualice."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingEmail"
+msgstr "Error al cargar el Email."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingEventDetails"
+msgstr "Hubo un error al cargar los detalles del evento."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingEvents"
+msgstr "Algo salió mal al cargar los eventos. Por favor, actualice."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingEventsRefresh"
+msgstr "Error al cargar los eventos. ¡Actualiza la página!"
+
+#. js-lingui-explicit-id
+msgid "errorLoadingEventsShort"
+msgstr "Hubo un error al cargar los eventos."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingMemberships"
+msgstr "Algo salió mal al cargar las membresías. Por favor, actualice."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingNotificationSettings"
+msgstr "Algo salió mal al cargar la configuración de notificaciones. Actualiza la página."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingParticipants"
+msgstr "Algo salió mal al cargar los participantes. Por favor, actualice."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingProfileInfo"
+msgstr "Hubo un error al cargar la información del perfil."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingRequests"
+msgstr "Algo salió mal al cargar las solicitudes. Por favor, actualice."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingTemplates"
+msgstr "Hubo un error al cargar las plantillas."
+
+#. js-lingui-explicit-id
+msgid "errorLoadingWordCloudResponses"
+msgstr "Error al cargar las respuestas de la nube de palabras"
+
+#. js-lingui-explicit-id
+msgid "errorOccurred"
+msgstr "Se produjo un error"
+
+#. js-lingui-explicit-id
+msgid "errorSettingUpEvent"
+msgstr "Hubo un error al configurar tu evento. Actualiza la página."
+
+#. js-lingui-explicit-id
+msgid "eventData"
+msgstr "Datos"
+
+#. js-lingui-explicit-id
+msgid "eventDescription"
+msgstr "Descripción del evento"
+
+#. js-lingui-explicit-id
+msgid "eventDetails"
+msgstr "Detalles del evento"
+
+#. js-lingui-explicit-id
+msgid "eventEnded"
+msgstr "Evento finalizado"
+
+#. js-lingui-explicit-id
+msgid "eventFull"
+msgstr "LLENO"
+
+#. js-lingui-explicit-id
+msgid "eventHasNotStartedYet"
+msgstr "El evento aún no ha comenzado. ¡Nos vemos pronto!"
+
+#. js-lingui-explicit-id
+msgid "eventIsLocked"
+msgstr "Este evento está bloqueado"
+
+#. js-lingui-explicit-id
+msgid "eventLocked"
+msgstr "Este evento está bloqueado"
+
+#. js-lingui-explicit-id
+msgid "eventSettings"
+msgstr "Configuración del evento"
+
+#. js-lingui-explicit-id
+msgid "eventSettingsDescription"
+msgstr "Defina la configuración predeterminada para los eventos dentro de su comunidad. Estas se pueden anular para eventos y plantillas individuales."
+
+#. js-lingui-explicit-id
+msgid "eventTabsContent"
+msgstr "contenido-pestañas-evento"
+
+#. js-lingui-explicit-id
+msgid "eventTemplate"
+msgstr "Plantilla de evento"
+
+#. js-lingui-explicit-id
+msgid "eventTitle"
+msgstr "Título del evento"
+
+#. js-lingui-explicit-id
+msgid "eventWasNotEntered"
+msgstr "No se entró al evento."
+
+#. js-lingui-explicit-id
+msgid "events"
+msgstr "Eventos"
+
+#. js-lingui-explicit-id
+msgid "everyoneReadyToMoveOn"
+msgstr "Todos están listos para continuar."
+
+#. js-lingui-explicit-id
+msgid "ex2"
+msgstr "Ej: 2"
+
+#. js-lingui-explicit-id
+msgid "exTwo"
+msgstr "Ej: 2"
+
+#. js-lingui-explicit-id
+msgid "exceedsTwentyCharacterLimit"
+msgstr "Supera el límite de 20 caracteres"
+
+#. js-lingui-explicit-id
+msgid "explorePlans"
+msgstr "Explorar planes"
+
+#. js-lingui-explicit-id
+msgid "explorePlansCta"
+msgstr "Explorar planes"
+
+#. js-lingui-explicit-id
+msgid "facebookUrl"
+msgstr "URL de Facebook"
+
+#. js-lingui-explicit-id
+msgid "facilitator"
+msgstr "Facilitador"
+
+#. js-lingui-explicit-id
+msgid "fakeParticipantCount"
+msgstr "Recuento de participantes falsos"
+
+#. js-lingui-explicit-id
+msgid "featureOnCommunityHomepage"
+msgstr "Destacar en la página de inicio de {communityName}"
+
+#. js-lingui-explicit-id
+msgid "featured"
+msgstr "Destacado"
+
+#. js-lingui-explicit-id
+msgid "featuredTags"
+msgstr "Etiquetas destacadas"
+
+#. js-lingui-explicit-id
+msgid "featuredTemplatesAndEventsHint"
+msgstr "Las plantillas y eventos destacados aparecerán en la parte superior de la página de inicio."
+
+#. js-lingui-explicit-id
+msgid "filter"
+msgstr "filtrar"
+
+#. js-lingui-explicit-id
+msgid "filterMemberListByName"
+msgstr "Filtrar lista de miembros por nombre"
+
+#. js-lingui-explicit-id
+msgid "findEventWithTemplate"
+msgstr "Busca un evento con esta plantilla."
+
+#. js-lingui-explicit-id
+msgid "finish"
+msgstr "Finalizar"
+
+#. js-lingui-explicit-id
+msgid "finishRsvp"
+msgstr "Finalizar RSVP"
+
+#. js-lingui-explicit-id
+msgid "floatingChat"
+msgstr "Chat Flotante"
+
+#. js-lingui-explicit-id
+msgid "follow"
+msgstr "Seguir"
+
+#. js-lingui-explicit-id
+msgid "followCommunityAccess"
+msgstr "Sigue {communityName} para acceder a todos los eventos y recursos."
+
+#. js-lingui-explicit-id
+msgid "followCommunityButton"
+msgstr "Botón seguir comunidad"
+
+#. js-lingui-explicit-id
+msgid "followCommunityNamed"
+msgstr "Seguir a {communityName}"
+
+#. js-lingui-explicit-id
+msgid "followRequestSent"
+msgstr "Solicitud de seguimiento enviada"
+
+#. js-lingui-explicit-id
+msgid "followerRequest"
+msgstr "Solicitud de seguidor"
+
+#. js-lingui-explicit-id
+msgid "forgotAccountEmailOrNeedHelp"
+msgstr "¿Olvidaste tu correo electrónico de la cuenta o necesitas otra ayuda para iniciar sesión?"
+
+#. js-lingui-explicit-id
+msgid "forgotEmail"
+msgstr "¿Olvidaste el correo electrónico asociado a tu cuenta?"
+
+#. js-lingui-explicit-id
+msgid "forgotPasswordEnterEmail"
+msgstr "Ingresa tu correo electrónico"
+
+#. js-lingui-explicit-id
+msgid "forgotPasswordPrefix"
+msgstr "¿Olvidaste tu contraseña?"
+
+#. js-lingui-explicit-id
+msgid "forgotPasswordSuffix"
+msgstr "restablece tu contraseña"
+
+#. js-lingui-explicit-id
+msgid "forgotPasswordThen"
+msgstr "entonces "
+
+#. js-lingui-explicit-id
+msgid "franklyLogo"
+msgstr "Logo de Frankly"
+
+#. js-lingui-explicit-id
+msgid "galleryView"
+msgstr "Vista de galería"
+
+#. js-lingui-explicit-id
+msgid "getCustomColors"
+msgstr "Obtener colores personalizados"
+
+#. js-lingui-explicit-id
+msgid "goTo"
+msgstr "Ir a"
+
+#. js-lingui-explicit-id
+msgid "googleCalendar"
+msgstr "Google Calendar"
+
+#. js-lingui-explicit-id
+msgid "googleMeet"
+msgstr "Google Meet"
+
+#. js-lingui-explicit-id
+msgid "gracePeriodMinutes"
+msgstr "Período de gracia (0-120 min):"
+
+#. js-lingui-explicit-id
+msgid "headline"
+msgstr "Título"
+
+#. js-lingui-explicit-id
+msgid "headlineCannotBeEmpty"
+msgstr "El titular no puede estar vacío"
+
+#. js-lingui-explicit-id
+msgid "headlineIsRequired"
+msgstr "El titular es obligatorio"
+
+#. js-lingui-explicit-id
+msgid "helpCenter"
+msgstr "Centro de Ayuda"
+
+#. js-lingui-explicit-id
+msgid "hideAgendaItem"
+msgstr "Ocultar elemento de agenda"
+
+#. js-lingui-explicit-id
+msgid "hidePassword"
+msgstr "Ocultar contraseña"
+
+#. js-lingui-explicit-id
+msgid "historyHeader"
+msgstr "HISTORIAL"
+
+#. js-lingui-explicit-id
+msgid "homeWithAppName"
+msgstr "Inicio de {appName}"
+
+#. js-lingui-explicit-id
+msgid "hostBeganRecording"
+msgstr "El anfitrión está grabando este evento. Recibirán una copia descargable de audio y video después de este momento."
+
+#. js-lingui-explicit-id
+msgid "hostMessagesWillShowHere"
+msgstr "Si el anfitrión envía un mensaje, lo verás aquí."
+
+#. js-lingui-explicit-id
+msgid "hostSendingToBreakout"
+msgstr "El anfitrión lo está enviando a una sala de grupos. ¿Unirse a la sala de grupos?"
+
+#. js-lingui-explicit-id
+msgid "hostWillReceiveDownloadableCopy"
+msgstr "El anfitrión recibirá una copia descargable de audio y video."
+
+#. js-lingui-explicit-id
+msgid "hosted"
+msgstr "Con anfitrión"
+
+#. js-lingui-explicit-id
+msgid "hostingOption"
+msgstr "Opción de anfitrión"
+
+#. js-lingui-explicit-id
+msgid "hostless"
+msgstr "Sin anfitrión"
+
+#. js-lingui-explicit-id
+msgid "howManyPeople"
+msgstr "Cuántas personas"
+
+#. js-lingui-explicit-id
+msgid "howWasTheEvent"
+msgstr "¿Cómo fue el evento?"
+
+#. js-lingui-explicit-id
+msgid "iAgreeToThe"
+msgstr "Acepto los "
+
+#. js-lingui-explicit-id
+msgid "iCalCalendar"
+msgstr "iCal Calendar"
+
+#. js-lingui-explicit-id
+msgid "illBeThere"
+msgstr "¡Estaré allí!"
+
+#. js-lingui-explicit-id
+msgid "imReadyToMoveOn"
+msgstr "Estoy listo para continuar"
+
+#. js-lingui-explicit-id
+msgid "image"
+msgstr "Imagen"
+
+#. js-lingui-explicit-id
+msgid "imageUrl"
+msgstr "URL de la imagen"
+
+#. js-lingui-explicit-id
+msgid "imageUrlIsNotSet"
+msgstr "(URL de imagen no establecida.)"
+
+#. js-lingui-explicit-id
+msgid "imageUrlIsRequired"
+msgstr "La URL de la imagen es obligatoria"
+
+#. js-lingui-explicit-id
+msgid "imageUrlNotSet"
+msgstr "(URL de imagen no establecida.)"
+
+#. js-lingui-explicit-id
+msgid "incorrectEmailOrPassword"
+msgstr "Correo electrónico o contraseña incorrectos"
+
+#. js-lingui-explicit-id
+msgid "initializationError"
+msgstr "Se produjo un error inesperado durante la inicialización."
+
+#. js-lingui-explicit-id
+msgid "instagramUrl"
+msgstr "URL de Instagram"
+
+#. js-lingui-explicit-id
+msgid "instantMeeting"
+msgstr "Reunión instantánea"
+
+#. js-lingui-explicit-id
+msgid "insteadSuffix"
+msgstr " en cambio."
+
+#. js-lingui-explicit-id
+msgid "interactiveEventsWithTemplates"
+msgstr "Crea rápidamente eventos interactivos usando plantillas. "
+
+#. js-lingui-explicit-id
+msgid "introBeforeBreakouts"
+msgstr "Aproximadamente {duration} de introducción antes de las salas de grupos"
+
+#. js-lingui-explicit-id
+msgid "introImageVideo"
+msgstr "Imagen/Video de introducción"
+
+#. js-lingui-explicit-id
+msgid "introLength"
+msgstr "Duración de la introducción"
+
+#. js-lingui-explicit-id
+msgid "introText"
+msgstr "Texto de introducción"
+
+#. js-lingui-explicit-id
+msgid "introductionContent"
+msgstr "_¡Preséntense! Cada uno toma un minuto para responder una de las siguientes preguntas._\n\n* ¿Qué has hecho recientemente que fue muy divertido?\n* ¿Quién es tu personaje de dibujos animados favorito y por qué?\n* ¿Qué es algo que deseas lograr antes de morir?\n* ¿Qué película NO te gustó?\n"
+
+#. js-lingui-explicit-id
+msgid "introductions"
+msgstr "Introducciones"
+
+#. js-lingui-explicit-id
+msgid "invalidCharacters"
+msgstr "Caracteres no válidos"
+
+#. js-lingui-explicit-id
+msgid "invalidEmail"
+msgstr "Correo electrónico no válido"
+
+#. js-lingui-explicit-id
+msgid "items"
+msgstr "Artículos"
+
+#. js-lingui-explicit-id
+msgid "joinCommunity"
+msgstr "¿Unirse a {communityName}?"
+
+#. js-lingui-explicit-id
+msgid "joinEvent"
+msgstr "Unirse al evento"
+
+#. js-lingui-explicit-id
+msgid "joinNow"
+msgstr "Unirse ahora"
+
+#. js-lingui-explicit-id
+msgid "joinSpacePrompt"
+msgstr "Debes ser miembro de este espacio para participar. ¿Quieres unirte?"
+
+#. js-lingui-explicit-id
+msgid "joinUppercase"
+msgstr "UNIRSE"
+
+#. js-lingui-explicit-id
+msgid "jumpTo"
+msgstr "Saltar a"
+
+#. js-lingui-explicit-id
+msgid "jumpToRoom"
+msgstr "Ir a la sala"
+
+#. js-lingui-explicit-id
+msgid "keepEvent"
+msgstr "Mantener evento"
+
+#. js-lingui-explicit-id
+msgid "keepItShortHint"
+msgstr "¡Hazlo breve! No querrás que la gente pase tiempo leyendo."
+
+#. js-lingui-explicit-id
+msgid "kick"
+msgstr "Expulsar"
+
+#. js-lingui-explicit-id
+msgid "kickOutUser"
+msgstr "¿Expulsar a {displayName}?"
+
+#. js-lingui-explicit-id
+msgid "kickReasonHint"
+msgstr "p. ej., Está intentando sabotear el evento"
+
+#. js-lingui-explicit-id
+msgid "kickVoteConfirmation"
+msgstr "¿Seguro que quieres iniciar una votación para expulsar a {displayName}? Haz esto solo si el participante se está comportando de manera inapropiada."
+
+#. js-lingui-explicit-id
+msgid "kickVoteStarted"
+msgstr "{initiatorName} inició una votación para expulsar a {targetName} del evento. ¿Quieres expulsarlo? No se le permitirá volver a entrar."
+
+#. js-lingui-explicit-id
+msgid "language"
+msgstr "Idioma"
+
+#. js-lingui-explicit-id
+msgid "languageSelector"
+msgstr "Selector de idioma"
+
+#. js-lingui-explicit-id
+msgid "lastSession"
+msgstr "Última sesión"
+
+#. js-lingui-explicit-id
+msgid "learnMore"
+msgstr "Más información"
+
+#. js-lingui-explicit-id
+msgid "leave"
+msgstr "Salir"
+
+#. js-lingui-explicit-id
+msgid "leaveRoom"
+msgstr "Salir de la sala"
+
+#. js-lingui-explicit-id
+msgid "leaveWithoutEnding"
+msgstr "Salir sin finalizar"
+
+#. js-lingui-explicit-id
+msgid "length"
+msgstr "Duración"
+
+#. js-lingui-explicit-id
+msgid "less"
+msgstr "Menos"
+
+#. js-lingui-explicit-id
+msgid "lightColorHex"
+msgstr "Color claro HEX#"
+
+#. js-lingui-explicit-id
+msgid "linkCopied"
+msgstr "¡Enlace copiado!"
+
+#. js-lingui-explicit-id
+msgid "linkMustBeMp4"
+msgstr "El enlace debe ser MP4"
+
+#. js-lingui-explicit-id
+msgid "linkedPayeeAccountEdit"
+msgstr "Editar cuenta de beneficiario vinculada"
+
+#. js-lingui-explicit-id
+msgid "linkedPayeeAccountSet"
+msgstr "Configurar cuenta de beneficiario vinculada"
+
+#. js-lingui-explicit-id
+msgid "linkedinUrl"
+msgstr "URL de LinkedIn"
+
+#. js-lingui-explicit-id
+msgid "links"
+msgstr "Enlaces"
+
+#. js-lingui-explicit-id
+msgid "liveStreamSetupInstructions"
+msgstr "Cuando esté listo para comenzar a transmitir, ingrese la URL de transmisión y la clave de transmisión en la configuración de su aplicación de transmisión (p. ej., Zoom)."
+
+#. js-lingui-explicit-id
+msgid "livestream"
+msgstr "Transmisión en vivo"
+
+#. js-lingui-explicit-id
+msgid "loading"
+msgstr "Cargando"
+
+#. js-lingui-explicit-id
+msgid "loadingBreakoutRoomPleaseWait"
+msgstr "Cargando sala de grupo. Por favor, espera..."
+
+#. js-lingui-explicit-id
+msgid "loadingEllipsis"
+msgstr "Cargando..."
+
+#. js-lingui-explicit-id
+msgid "loadingRoomPleaseWait"
+msgstr "Cargando sala. Por favor, espera..."
+
+#. js-lingui-explicit-id
+msgid "lockMeeting"
+msgstr "Bloquear reunión"
+
+#. js-lingui-explicit-id
+msgid "lockRoomPrompt"
+msgstr "¿Bloquear la sala para evitar que se una cualquier nuevo registrado?"
+
+#. js-lingui-explicit-id
+msgid "locked"
+msgstr "Bloqueado"
+
+#. js-lingui-explicit-id
+msgid "logInInsteadLink"
+msgstr "Inicia sesion en su lugar"
+
+#. js-lingui-explicit-id
+msgid "logInWithGoogle"
+msgstr "Iniciar sesión con Google"
+
+#. js-lingui-explicit-id
+msgid "logInto"
+msgstr "Iniciar sesión en"
+
+#. js-lingui-explicit-id
+msgid "logIntoApp"
+msgstr "Iniciar sesión en {appName}"
+
+#. js-lingui-explicit-id
+msgid "loggingIn"
+msgstr "iniciando sesión"
+
+#. js-lingui-explicit-id
+msgid "login"
+msgstr "Iniciar sesión"
+
+#. js-lingui-explicit-id
+msgid "logo"
+msgstr "Logotipo"
+
+#. js-lingui-explicit-id
+msgid "logout"
+msgstr "Cerrar sesión"
+
+#. js-lingui-explicit-id
+msgid "loopVideo"
+msgstr "Repetir video"
+
+#. js-lingui-explicit-id
+msgid "lowBandwidth"
+msgstr "Poco ancho de banda"
+
+#. js-lingui-explicit-id
+msgid "lowBandwidthExplanation"
+msgstr "Intenta apagar tu cámara para disfrutar de una experiencia más fluida"
+
+#. js-lingui-explicit-id
+msgid "majorityOfParticipants"
+msgstr "La mayoría de los participantes deben estar de acuerdo para avanzar a la siguiente actividad del evento."
+
+#. js-lingui-explicit-id
+msgid "majorityOfParticipantsExample"
+msgstr "En este evento, {count} de las {total} personas que participan deben indicar que están listas para continuar antes de comenzar el siguiente elemento."
+
+#. js-lingui-explicit-id
+msgid "makeASuggestion"
+msgstr "Hacer una sugerencia"
+
+#. js-lingui-explicit-id
+msgid "makeThisSpacePrivate"
+msgstr "Hacer este espacio privado"
+
+#. js-lingui-explicit-id
+msgid "manageCommunity"
+msgstr "Administrar comunidad"
+
+#. js-lingui-explicit-id
+msgid "manageJoinRequests"
+msgstr "Administrar solicitudes de ingreso ({count})"
+
+#. js-lingui-explicit-id
+msgid "maps"
+msgstr "Mapas"
+
+#. js-lingui-explicit-id
+msgid "matchingOptions"
+msgstr "Opciones de emparejamiento"
+
+#. js-lingui-explicit-id
+msgid "matchingQuestions"
+msgstr "Preguntas de emparejamiento"
+
+#. js-lingui-explicit-id
+msgid "maximum"
+msgstr "Máximo"
+
+#. js-lingui-explicit-id
+msgid "meantToUseExistingAccount"
+msgstr "¿Querías usar una cuenta existente en su lugar?"
+
+#. js-lingui-explicit-id
+msgid "meetingEndMessage"
+msgstr "Esta reunión ha terminado. Puede cerrar esta ventana."
+
+#. js-lingui-explicit-id
+msgid "meetingEndWithFollowMessage"
+msgstr "Esta reunión ha terminado. Puede cerrar esta ventana o visitar {name} para continuar la conversación."
+
+#. js-lingui-explicit-id
+msgid "meetingGuideCard"
+msgstr "tarjeta-guía-reunión"
+
+#. js-lingui-explicit-id
+msgid "meetingGuideEntryNotFound"
+msgstr "No se encontró la entrada de la guía de reunión."
+
+#. js-lingui-explicit-id
+msgid "meetingGuideTutorial"
+msgstr "Haz clic aquí cuando\nestés listo para\ncomenzar"
+
+#. js-lingui-explicit-id
+msgid "member"
+msgstr "Miembro"
+
+#. js-lingui-explicit-id
+msgid "memberRolesHelpMessage"
+msgstr "Consulte el Centro de ayuda para obtener detalles sobre los permisos por rol."
+
+#. js-lingui-explicit-id
+msgid "members"
+msgstr "Miembros"
+
+#. js-lingui-explicit-id
+msgid "memberships"
+msgstr "membresías"
+
+#. js-lingui-explicit-id
+msgid "message"
+msgstr "Mensaje"
+
+#. js-lingui-explicit-id
+msgid "messageCannotBeEmpty"
+msgstr "El mensaje no puede estar vacío"
+
+#. js-lingui-explicit-id
+msgid "messageFrom"
+msgstr "Mensaje de"
+
+#. js-lingui-explicit-id
+msgid "messageIsRequired"
+msgstr "El mensaje es obligatorio"
+
+#. js-lingui-explicit-id
+msgid "messageParticipants"
+msgstr "Enviar mensaje a participantes"
+
+#. js-lingui-explicit-id
+msgid "messageRemoved"
+msgstr "Este mensaje fue eliminado."
+
+#. js-lingui-explicit-id
+msgid "messageTime"
+msgstr "Hora del mensaje"
+
+#. js-lingui-explicit-id
+msgid "micAndCameraEnabled"
+msgstr "El micrófono y la cámara están activados al inicio de la llamada"
+
+#. js-lingui-explicit-id
+msgid "micAndCameraEnabledNotHosted"
+msgstr "El micrófono y la cámara se activarán cuando comiencen las salas de grupo"
+
+#. js-lingui-explicit-id
+msgid "microphoneInput"
+msgstr "Entrada de micrófono"
+
+#. js-lingui-explicit-id
+msgid "microsoftTeams"
+msgstr "Microsoft Teams"
+
+#. js-lingui-explicit-id
+msgid "mins"
+msgstr "mins"
+
+#. js-lingui-explicit-id
+msgid "miscellaneous"
+msgstr "Misceláneo"
+
+#. js-lingui-explicit-id
+msgid "modBadge"
+msgstr "MOD"
+
+#. js-lingui-explicit-id
+msgid "moderator"
+msgstr "Moderador"
+
+#. js-lingui-explicit-id
+msgid "moreFromName"
+msgstr "Más de {name}"
+
+#. js-lingui-explicit-id
+msgid "moreUpcomingEvents"
+msgstr "Más eventos próximos"
+
+#. js-lingui-explicit-id
+msgid "movingOntoNextAgendaItem"
+msgstr "Pasando al siguiente punto de la agenda"
+
+#. js-lingui-explicit-id
+msgid "mustAddAtLeastTwoCategories"
+msgstr "Debe añadir al menos dos (2) categorías."
+
+#. js-lingui-explicit-id
+msgid "mustBeAdminToAccessSection"
+msgstr "Debes iniciar sesión y ser administrador para acceder a esta sección"
+
+#. js-lingui-explicit-id
+msgid "mustBeLoggedInToAccessThisSection"
+msgstr "Debe estar conectado para acceder a esta sección"
+
+#. js-lingui-explicit-id
+msgid "mustBeValidHexColor"
+msgstr "Debe ser un HEX válido"
+
+#. js-lingui-explicit-id
+msgid "mute"
+msgstr "Silenciar"
+
+#. js-lingui-explicit-id
+msgid "muteAll"
+msgstr "Silenciar a todos"
+
+#. js-lingui-explicit-id
+msgid "myCommunities"
+msgstr "Mis comunidades"
+
+#. js-lingui-explicit-id
+msgid "myCustomEvent"
+msgstr "Mi evento personalizado"
+
+#. js-lingui-explicit-id
+msgid "myEvents"
+msgstr "Mis eventos"
+
+#. js-lingui-explicit-id
+msgid "myProfile"
+msgstr "Mi Perfil"
+
+#. js-lingui-explicit-id
+msgid "myResponses"
+msgstr "Mis respuestas"
+
+#. js-lingui-explicit-id
+msgid "myUpcomingEvents"
+msgstr "Mis próximos eventos"
+
+#. js-lingui-explicit-id
+msgid "name"
+msgstr "Nombre"
+
+#. js-lingui-explicit-id
+msgid "nameHintExample"
+msgstr "p. ej., Jane Doe"
+
+#. js-lingui-explicit-id
+msgid "needHelp"
+msgstr "Need help? "
+
+#. js-lingui-explicit-id
+msgid "needHelpButton"
+msgstr "¿Necesita ayuda?"
+
+#. js-lingui-explicit-id
+msgid "needMoreHelp"
+msgstr "¿Necesitas más ayuda? "
+
+#. js-lingui-explicit-id
+msgid "networkRequestBlocked"
+msgstr "No pudimos conectarnos al servidor. Una VPN, un filtro DNS o una extensión de privacidad o de bloqueo de anuncios podría estar bloqueando las solicitudes. Prueba con otra red o navegador, o desactiva el bloqueador y vuelve a intentarlo."
+
+#. js-lingui-explicit-id
+msgid "newAnnouncement"
+msgstr "Nuevo anuncio"
+
+#. js-lingui-explicit-id
+msgid "newRoomNumber"
+msgstr "Número de sala nueva:"
+
+#. js-lingui-explicit-id
+msgid "newSubscription"
+msgstr "Nueva Suscripción"
+
+#. js-lingui-explicit-id
+msgid "newToApp"
+msgstr "¿Nuevo en {appName}?"
+
+#. js-lingui-explicit-id
+msgid "newUserRegister"
+msgstr "¿Nuevo usuario? Regístrate"
+
+#. js-lingui-explicit-id
+msgid "newestFirst"
+msgstr "Más recientes primero"
+
+#. js-lingui-explicit-id
+msgid "next"
+msgstr "Siguiente"
+
+#. js-lingui-explicit-id
+msgid "no"
+msgstr "No"
+
+#. js-lingui-explicit-id
+msgid "noAccountFound"
+msgstr "No se encontró ninguna cuenta. Intente iniciar sesión con una dirección de email diferente. O regístrese con esta."
+
+#. js-lingui-explicit-id
+msgid "noAgendaForEvent"
+msgstr "No hay agenda para este evento."
+
+#. js-lingui-explicit-id
+msgid "noAnnouncementsSentYet"
+msgstr "Aún no se han enviado anuncios"
+
+#. js-lingui-explicit-id
+msgid "noAnnouncementsYet"
+msgstr "Aún no hay anuncios."
+
+#. js-lingui-explicit-id
+msgid "noCameraAvailable"
+msgstr "No hay cámara disponible"
+
+#. js-lingui-explicit-id
+msgid "noCameraDetected"
+msgstr "No se detectó ninguna cámara"
+
+#. js-lingui-explicit-id
+msgid "noCancel"
+msgstr "No, Cancelar"
+
+#. js-lingui-explicit-id
+msgid "noChatDataForEvent"
+msgstr "No hay datos de chat para este evento."
+
+#. js-lingui-explicit-id
+msgid "noDescriptionForEvent"
+msgstr "Este evento no tiene descripción"
+
+#. js-lingui-explicit-id
+msgid "noDevicesFound"
+msgstr "No se encontraron dispositivos"
+
+#. js-lingui-explicit-id
+msgid "noEvents"
+msgstr "Sin eventos"
+
+#. js-lingui-explicit-id
+msgid "noEventsFound"
+msgstr "No se encontraron eventos."
+
+#. js-lingui-explicit-id
+msgid "noFollowRequestsCurrently"
+msgstr "No hay solicitudes de seguimiento actualmente"
+
+#. js-lingui-explicit-id
+msgid "noItems"
+msgstr "No hay {name}"
+
+#. js-lingui-explicit-id
+msgid "noLetThemStay"
+msgstr "No, déjalos quedarse"
+
+#. js-lingui-explicit-id
+msgid "noMatchingMembersFound"
+msgstr "No se encontraron miembros coincidentes."
+
+#. js-lingui-explicit-id
+msgid "noMeetingGuideForThisMeeting"
+msgstr "No hay guía de reunión para esta reunión"
+
+#. js-lingui-explicit-id
+msgid "noMembersFoundToExport"
+msgstr "No se encontraron miembros para exportar."
+
+#. js-lingui-explicit-id
+msgid "noMicrophoneAvailable"
+msgstr "No hay micrófono disponible"
+
+#. js-lingui-explicit-id
+msgid "noOneIsHereYet"
+msgstr "Nadie está aquí todavía."
+
+#. js-lingui-explicit-id
+msgid "noOneIsHereYet1"
+msgstr "Nadie está aquí todavía."
+
+#. js-lingui-explicit-id
+msgid "noPendingJoinRequests"
+msgstr "No hay solicitudes de ingreso pendientes"
+
+#. js-lingui-explicit-id
+msgid "noPollsOrSuggestionsDataForEvent"
+msgstr "No hay datos de encuestas o sugerencias para este evento."
+
+#. js-lingui-explicit-id
+msgid "noRoomsFound"
+msgstr "No se encontraron salas."
+
+#. js-lingui-explicit-id
+msgid "noRoomsNeedHelp"
+msgstr "No hay salas que necesiten ayuda."
+
+#. js-lingui-explicit-id
+msgid "noSkip"
+msgstr "No, omitir"
+
+#. js-lingui-explicit-id
+msgid "noTemplatesAvailable"
+msgstr "No hay plantillas disponibles"
+
+#. js-lingui-explicit-id
+msgid "noTemplatesFound"
+msgstr "No se encontraron plantillas."
+
+#. js-lingui-explicit-id
+msgid "noThanks"
+msgstr "No, gracias"
+
+#. js-lingui-explicit-id
+msgid "noTitle"
+msgstr "SIN TÍTULO"
+
+#. js-lingui-explicit-id
+msgid "noUpcomingEvents"
+msgstr "No hay eventos próximos."
+
+#. js-lingui-explicit-id
+msgid "noUpcomingEventsMessage"
+msgstr "No te has registrado para ningún evento próximo."
+
+#. js-lingui-explicit-id
+msgid "none"
+msgstr "Ninguno"
+
+#. js-lingui-explicit-id
+msgid "notAuthorized"
+msgstr "Lo sentimos, no está autorizado para hacer eso."
+
+#. js-lingui-explicit-id
+msgid "notBillingManager"
+msgstr "No eres el administrador de facturación de ninguna comunidad"
+
+#. js-lingui-explicit-id
+msgid "notNow"
+msgstr "Ahora no"
+
+#. js-lingui-explicit-id
+msgid "notUserSignUp"
+msgstr "¿No tienes una cuenta?"
+
+#. js-lingui-explicit-id
+msgid "notifications"
+msgstr "Notificaciones"
+
+#. js-lingui-explicit-id
+msgid "notifyMeAboutNewAnnouncements"
+msgstr "Notificarme sobre nuevos anuncios"
+
+#. js-lingui-explicit-id
+msgid "notifyMeAboutNewEvents"
+msgstr "Notificarme sobre nuevos eventos."
+
+#. js-lingui-explicit-id
+msgid "odometer"
+msgstr "Odómetro"
+
+#. js-lingui-explicit-id
+msgid "ofTotal"
+msgstr "de {count}"
+
+#. js-lingui-explicit-id
+msgid "office365Calendar"
+msgstr "Office 365 Calendar"
+
+#. js-lingui-explicit-id
+msgid "ok"
+msgstr "Hecho"
+
+#. js-lingui-explicit-id
+msgid "onboardingBrandSpaceSubtitle"
+msgstr "Personalízalo con colores, imágenes y logotipos personalizados"
+
+#. js-lingui-explicit-id
+msgid "onboardingCreateStripeAccountSubtitle"
+msgstr "Habilita donaciones para tu comunidad."
+
+#. js-lingui-explicit-id
+msgid "onboardingCreateTemplateSubtitle"
+msgstr "¿De qué quieres hablar? Elige una plantilla y estructura el evento. "
+
+#. js-lingui-explicit-id
+msgid "onboardingHostEventSubtitle"
+msgstr "Puedes ser el anfitrión o dejar que los miembros hablen directamente entre sí. "
+
+#. js-lingui-explicit-id
+msgid "onboardingInviteSomeoneSubtitle"
+msgstr "Sigue los próximos eventos, recursos y más."
+
+#. js-lingui-explicit-id
+msgid "onePerson"
+msgstr "1 persona"
+
+#. js-lingui-explicit-id
+msgid "onlyOneFreeTextQuestionNotice"
+msgstr "Puede agregar una pregunta de texto libre. Todas las demás preguntas deben ser de opción múltiple."
+
+#. js-lingui-explicit-id
+msgid "openLink"
+msgstr "Abrir enlace"
+
+#. js-lingui-explicit-id
+msgid "optional"
+msgstr "Opcional"
+
+#. js-lingui-explicit-id
+msgid "or"
+msgstr "O"
+
+#. js-lingui-explicit-id
+msgid "orCheckAndTryAgain"
+msgstr " or you can check what you entered and "
+
+#. js-lingui-explicit-id
+msgid "other"
+msgstr "Otro"
+
+#. js-lingui-explicit-id
+msgid "otherDataDownload"
+msgstr "Las encuestas, sugerencias y chat se pueden descargar desde la página del evento."
+
+#. js-lingui-explicit-id
+msgid "otherDataDownloadAction"
+msgstr "Ir a la página del evento"
+
+#. js-lingui-explicit-id
+msgid "outlookCalendar"
+msgstr "Outlook Calendar"
+
+#. js-lingui-explicit-id
+msgid "owner"
+msgstr "Propietario"
+
+#. js-lingui-explicit-id
+msgid "participant"
+msgstr "Participante"
+
+#. js-lingui-explicit-id
+msgid "participantActions"
+msgstr "Acciones del participante"
+
+#. Semantic label for participant actions, with userId as parameter.
+#. js-lingui-explicit-id
+msgid "participantActionsForUserWithId"
+msgstr "Acciones del participante para el usuario con ID {userId}"
+
+#. js-lingui-explicit-id
+msgid "participantCount"
+msgstr "{count} participantes"
+
+#. js-lingui-explicit-id
+msgid "participantReassigned"
+msgstr "Participante reasignado"
+
+#. js-lingui-explicit-id
+msgid "participants"
+msgstr "Participantes"
+
+#. js-lingui-explicit-id
+msgid "participantsLoadError"
+msgstr "Algo salió mal al cargar los participantes. Por favor, actualice."
+
+#. js-lingui-explicit-id
+msgid "participantsReadyToMoveOn"
+msgstr "{readyCount} de {participantCount} participantes están listos para continuar."
+
+#. js-lingui-explicit-id
+msgid "participantsSentToRoomsAt"
+msgstr "Los participantes serán enviados a las salas a las {time}."
+
+#. js-lingui-explicit-id
+msgid "participateInBreakoutAssignments"
+msgstr "¿Le gustaría participar en las asignaciones de salas de grupos?"
+
+#. js-lingui-explicit-id
+msgid "password"
+msgstr "Contraseña"
+
+#. js-lingui-explicit-id
+msgid "passwordInvalid"
+msgstr "La contraseña no es válida. Haga clic en Olvidé mi contraseña para restablecerla. O regístrese de nuevo con un email diferente."
+
+#. js-lingui-explicit-id
+msgid "passwordRequirements"
+msgstr "Debe tener al menos 12 caracteres y contener una letra minúscula y una mayúscula."
+
+#. js-lingui-explicit-id
+msgid "passwordResetLinkSent"
+msgstr "Enlace de restablecimiento de contraseña enviado a {email}"
+
+#. js-lingui-explicit-id
+msgid "pasteOrEnterAUrl"
+msgstr "Pegue o ingrese una URL"
+
+#. js-lingui-explicit-id
+msgid "pasteOrEnterUrl"
+msgstr "Pegar o ingresar URL"
+
+#. js-lingui-explicit-id
+msgid "paymentTerms"
+msgstr "Términos de pago"
+
+#. js-lingui-explicit-id
+msgid "people"
+msgstr "personas"
+
+#. js-lingui-explicit-id
+msgid "peopleReady"
+msgstr "personas listas"
+
+#. js-lingui-explicit-id
+msgid "peopleRequiredToMoveOn"
+msgstr "{count} de {total} personas necesarias para continuar"
+
+#. js-lingui-explicit-id
+msgid "permissionsAdminDescription"
+msgstr "Control total sobre la configuración de la comunidad, roles de miembros y todo el contenido."
+
+#. js-lingui-explicit-id
+msgid "permissionsFacilitatorDescription"
+msgstr "Puede programar y organizar eventos basados en plantillas existentes."
+
+#. js-lingui-explicit-id
+msgid "permissionsMemberDescription"
+msgstr "Alguien que se ha unido a la comunidad. Puede asistir a eventos, crear publicaciones y recibir anuncios de la comunidad."
+
+#. js-lingui-explicit-id
+msgid "permissionsModeratorDescription"
+msgstr "Puede crear/editar plantillas y eventos, eliminar contenido no deseado, mover participantes entre salas y responder a solicitudes de ayuda."
+
+#. js-lingui-explicit-id
+msgid "permissionsOwnerDescription"
+msgstr "Todas las capacidades de administrador, puede agregar/eliminar otros administradores."
+
+#. js-lingui-explicit-id
+msgid "person"
+msgstr "persona"
+
+#. js-lingui-explicit-id
+msgid "pickAColor"
+msgstr "Elige un color"
+
+#. js-lingui-explicit-id
+msgid "pin"
+msgstr "Anclar"
+
+#. js-lingui-explicit-id
+msgid "playsAt"
+msgstr "Comienza a las {time}"
+
+#. js-lingui-explicit-id
+msgid "pleaseAddSomeAnswers"
+msgstr "Por favor, agregue algunas respuestas"
+
+#. js-lingui-explicit-id
+msgid "pleaseAnswerQuestions"
+msgstr "Por favor, responda algunas preguntas para que podamos emparejarlo con el grupo adecuado."
+
+#. js-lingui-explicit-id
+msgid "pleaseCompleteAllYourQuestionsAndAnswers"
+msgstr "¡Por favor, complete todas sus preguntas y respuestas!"
+
+#. js-lingui-explicit-id
+msgid "pleaseCompletePreviousQuestionAndBothAnswers"
+msgstr "Por favor, complete la pregunta anterior y ambas respuestas"
+
+#. js-lingui-explicit-id
+msgid "pleaseConfirmAvailability"
+msgstr "Por favor, confirme que está disponible a las {eventTime} del {eventDate} para participar en este evento."
+
+#. js-lingui-explicit-id
+msgid "pleaseEnterPassword"
+msgstr "Por favor, introduzca una contraseña"
+
+#. js-lingui-explicit-id
+msgid "pleaseEnterValidAmount"
+msgstr "Por favor, ingrese un monto válido"
+
+#. js-lingui-explicit-id
+msgid "pleaseEnterValidEmail"
+msgstr "Por favor, introduzca una dirección de email válida."
+
+#. js-lingui-explicit-id
+msgid "pleaseEnterValidPassword"
+msgstr "Por favor, introduzca una contraseña válida"
+
+#. js-lingui-explicit-id
+msgid "pleaseEnterValidUrl"
+msgstr "Por favor, introduzca una URL válida."
+
+#. js-lingui-explicit-id
+msgid "pleaseFixErrorsBeforeSaving"
+msgstr "Por favor, corrija los errores del formulario antes de guardar."
+
+#. js-lingui-explicit-id
+msgid "pleaseLogInOrSignUp"
+msgstr "Por favor, inicia sesión o regístrate."
+
+#. js-lingui-explicit-id
+msgid "pleaseProvideAdditionalFeedbackFor"
+msgstr "Por favor, deja comentarios adicionales sobre {communityName} aquí."
+
+#. js-lingui-explicit-id
+msgid "pleaseProvideFeedbackFor"
+msgstr "Tómate un momento para dar tu opinión sobre {communityName}."
+
+#. js-lingui-explicit-id
+msgid "pleaseRemoveDuplicateAnswers"
+msgstr "Por favor, elimine las respuestas duplicadas."
+
+#. js-lingui-explicit-id
+msgid "pollQuestion"
+msgstr "Pregunta de la encuesta"
+
+#. js-lingui-explicit-id
+msgid "pollsSuggestionsData"
+msgstr "Datos de Encuestas y Sugerencias"
+
+#. js-lingui-explicit-id
+msgid "postAction"
+msgstr "Publicar"
+
+#. js-lingui-explicit-id
+msgid "postEvent"
+msgstr "Post-evento"
+
+#. js-lingui-explicit-id
+msgid "postHasBeenCreated"
+msgstr "La publicación ha sido creada"
+
+#. js-lingui-explicit-id
+msgid "postHasBeenUpdated"
+msgstr "La publicación ha sido actualizada"
+
+#. js-lingui-explicit-id
+msgid "postWasDeleted"
+msgstr "La publicación fue eliminada."
+
+#. js-lingui-explicit-id
+msgid "posts"
+msgstr "Publicaciones"
+
+#. js-lingui-explicit-id
+msgid "preEvent"
+msgstr "Pre-evento"
+
+#. js-lingui-explicit-id
+msgid "prereqRequired"
+msgstr "Requisito previo necesario"
+
+#. js-lingui-explicit-id
+msgid "prerequisiteRequired"
+msgstr "Requisito previo requerido"
+
+#. js-lingui-explicit-id
+msgid "prerequisiteTemplate"
+msgstr "Plantilla de requisito previo"
+
+#. js-lingui-explicit-id
+msgid "presets"
+msgstr "Preajustes"
+
+#. js-lingui-explicit-id
+msgid "pressToPromote"
+msgstr "Presione para promover"
+
+#. js-lingui-explicit-id
+msgid "preview"
+msgstr "Vista previa"
+
+#. js-lingui-explicit-id
+msgid "previewAgenda"
+msgstr "Vista previa de la agenda"
+
+#. js-lingui-explicit-id
+msgid "previewVideo"
+msgstr "Vista previa del video"
+
+#. js-lingui-explicit-id
+msgid "primaryContent"
+msgstr "contenido-principal"
+
+#. js-lingui-explicit-id
+msgid "privacyPolicy"
+msgstr "Política de Privacidad"
+
+#. js-lingui-explicit-id
+msgid "privateVisibility"
+msgstr "Privado"
+
+#. js-lingui-explicit-id
+msgid "profile"
+msgstr "Perfil"
+
+#. js-lingui-explicit-id
+msgid "profileButton"
+msgstr "Botón de perfil"
+
+#. js-lingui-explicit-id
+msgid "profileUpdated"
+msgstr "Perfil actualizado"
+
+#. js-lingui-explicit-id
+msgid "proposeToRemoveUser"
+msgstr "¿Proponer eliminar usuario?"
+
+#. js-lingui-explicit-id
+msgid "proposeToRemoveUserAction"
+msgstr "Proponer eliminar al usuario"
+
+#. js-lingui-explicit-id
+msgid "publicOrPrivate"
+msgstr "¿Público o privado?"
+
+#. js-lingui-explicit-id
+msgid "publicVisibility"
+msgstr "Público"
+
+#. js-lingui-explicit-id
+msgid "question"
+msgstr "Pregunta"
+
+#. js-lingui-explicit-id
+msgid "questionDeleted"
+msgstr "¡Pregunta eliminada!"
+
+#. js-lingui-explicit-id
+msgid "questionGoesHere"
+msgstr "La pregunta va aquí"
+
+#. js-lingui-explicit-id
+msgid "questionIsRequired"
+msgstr "La pregunta es obligatoria"
+
+#. js-lingui-explicit-id
+msgid "questionSaved"
+msgstr "¡Pregunta guardada!"
+
+#. js-lingui-explicit-id
+msgid "questionTypeFreeText"
+msgstr "Texto libre"
+
+#. js-lingui-explicit-id
+msgid "questionTypeMultipleChoice"
+msgstr "Opción múltiple"
+
+#. js-lingui-explicit-id
+msgid "questionWithNumber"
+msgstr "Pregunta {number}"
+
+#. js-lingui-explicit-id
+msgid "raiseHandJoinSpeakerQueue"
+msgstr "Levanta la mano para unirte a la cola de oradores"
+
+#. js-lingui-explicit-id
+msgid "raiseHandToJoin"
+msgstr "Levante la mano para unirse a la cola de oradores"
+
+#. js-lingui-explicit-id
+msgid "raiseHandToJoinSpeakerQueue"
+msgstr "Levante la mano para unirse a la cola de oradores"
+
+#. js-lingui-explicit-id
+msgid "raiseYourHandToJoinTheSpeakerQueue"
+msgstr "Levanta la mano para unirte a la cola de oradores"
+
+#. js-lingui-explicit-id
+msgid "randomlyAssign"
+msgstr "Asignar Aleatoriamente"
+
+#. js-lingui-explicit-id
+msgid "reactivate"
+msgstr "Reactivar"
+
+#. js-lingui-explicit-id
+msgid "readMore"
+msgstr "Leer más"
+
+#. js-lingui-explicit-id
+msgid "ready"
+msgstr "Listo"
+
+#. js-lingui-explicit-id
+msgid "readyIn"
+msgstr "Estaremos listos en:"
+
+#. js-lingui-explicit-id
+msgid "reassign"
+msgstr "Reasignar"
+
+#. js-lingui-explicit-id
+msgid "reassignUser"
+msgstr "Reasignar {displayName}"
+
+#. js-lingui-explicit-id
+msgid "reassignedToRoom"
+msgstr "Reasignado a la sala {roomName}"
+
+#. js-lingui-explicit-id
+msgid "recentRooms"
+msgstr "Salas Recientes"
+
+#. js-lingui-explicit-id
+msgid "record"
+msgstr "Grabación"
+
+#. js-lingui-explicit-id
+msgid "recording"
+msgstr "Grabando"
+
+#. js-lingui-explicit-id
+msgid "recordingIndicator"
+msgstr "Grabando"
+
+#. js-lingui-explicit-id
+msgid "recordingPreparing"
+msgstr "Preparando grabación..."
+
+#. js-lingui-explicit-id
+msgid "recordingStatusChecking"
+msgstr "(verificando...)"
+
+#. js-lingui-explicit-id
+msgid "recordingStatusFailed"
+msgstr "(error)"
+
+#. js-lingui-explicit-id
+msgid "recordingStatusFile"
+msgstr "archivo"
+
+#. js-lingui-explicit-id
+msgid "recordingStatusFiles"
+msgstr "archivos"
+
+#. js-lingui-explicit-id
+msgid "recordingStatusInProgress"
+msgstr "Grabación en curso"
+
+#. js-lingui-explicit-id
+msgid "recordingStatusParts"
+msgstr "({count} partes)"
+
+#. js-lingui-explicit-id
+msgid "recordingStatusPreparing"
+msgstr "(preparando...)"
+
+#. js-lingui-explicit-id
+msgid "recordingStatusProcessing"
+msgstr "Procesando grabaciones"
+
+#. js-lingui-explicit-id
+msgid "refresh"
+msgstr "Actualizar"
+
+#. js-lingui-explicit-id
+msgid "refreshConnection"
+msgstr "Actualizar conexión"
+
+#. js-lingui-explicit-id
+msgid "refreshTemplate"
+msgstr "Actualizar Plantilla"
+
+#. js-lingui-explicit-id
+msgid "registered"
+msgstr "Registrado"
+
+#. js-lingui-explicit-id
+msgid "registrantList"
+msgstr "Lista de Registrantes"
+
+#. js-lingui-explicit-id
+msgid "registrationCountLabel"
+msgstr "{count} {count, plural, =1{Registro} other{Registros}}"
+
+#. js-lingui-explicit-id
+msgid "registrationCountWithActive"
+msgstr "{regCount} registros ({activeCount} activos)"
+
+#. js-lingui-explicit-id
+msgid "registrationCountWithAttended"
+msgstr "{regCount} registros ({attendedCount} asistieron)"
+
+#. js-lingui-explicit-id
+msgid "registrationDataDownload"
+msgstr "Descarga de datos de registro"
+
+#. js-lingui-explicit-id
+msgid "reload"
+msgstr "Recargar"
+
+#. js-lingui-explicit-id
+msgid "remove"
+msgstr "Eliminar"
+
+#. js-lingui-explicit-id
+msgid "removeParticipant"
+msgstr "Eliminar Participante"
+
+#. js-lingui-explicit-id
+msgid "removeSuggestion"
+msgstr "Eliminar Sugerencia"
+
+#. js-lingui-explicit-id
+msgid "removeTemplate"
+msgstr "Eliminar plantilla"
+
+#. js-lingui-explicit-id
+msgid "removedFromEvent"
+msgstr "Ha sido eliminado de este evento y no puede volver a unirse."
+
+#. js-lingui-explicit-id
+msgid "reorderingNotSavedUntilQuestionsCompleted"
+msgstr "El reordenamiento no se guardará hasta que se completen todas las preguntas."
+
+#. js-lingui-explicit-id
+msgid "reply"
+msgstr "Responder"
+
+#. js-lingui-explicit-id
+msgid "requestToFollow"
+msgstr "Solicitar seguir"
+
+#. js-lingui-explicit-id
+msgid "requests"
+msgstr "Solicitudes"
+
+#. js-lingui-explicit-id
+msgid "required"
+msgstr "Requerido"
+
+#. js-lingui-explicit-id
+msgid "requiredToMoveOn"
+msgstr "requerido para continuar"
+
+#. js-lingui-explicit-id
+msgid "resendCooldownLabel"
+msgstr "{label} ({seconds} s)"
+
+#. js-lingui-explicit-id
+msgid "resendEmailAndTryAgain"
+msgstr "Resend the verification email and try again."
+
+#. js-lingui-explicit-id
+msgid "resendVerificationEmail"
+msgstr "Reenviar Correo"
+
+#. js-lingui-explicit-id
+msgid "resendVerificationEmailLink"
+msgstr "reenviar el correo."
+
+#. js-lingui-explicit-id
+msgid "resetEventToTemplateWarning"
+msgstr "Tu evento se restablecerá a la plantilla original. La lista de asistentes no se verá afectada."
+
+#. js-lingui-explicit-id
+msgid "resetGuide"
+msgstr "Restablecer guía"
+
+#. js-lingui-explicit-id
+msgid "resetMeetingConfirm"
+msgstr "Esto eliminará todos los datos existentes de la reunión. ¿Está seguro de que desea restablecer?"
+
+#. js-lingui-explicit-id
+msgid "resources"
+msgstr "Recursos"
+
+#. js-lingui-explicit-id
+msgid "restoreSettings"
+msgstr "Restaurar configuración predeterminada"
+
+#. js-lingui-explicit-id
+msgid "rewatch"
+msgstr "Volver a ver"
+
+#. js-lingui-explicit-id
+msgid "role"
+msgstr "Rol"
+
+#. js-lingui-explicit-id
+msgid "roleAdmin"
+msgstr "Administrador"
+
+#. js-lingui-explicit-id
+msgid "roleAttendee"
+msgstr "Asistente"
+
+#. js-lingui-explicit-id
+msgid "roleFacilitator"
+msgstr "Facilitador"
+
+#. js-lingui-explicit-id
+msgid "roleMember"
+msgstr "Miembro"
+
+#. js-lingui-explicit-id
+msgid "roleModerator"
+msgstr "Moderador"
+
+#. js-lingui-explicit-id
+msgid "roleOwner"
+msgstr "Propietario"
+
+#. js-lingui-explicit-id
+msgid "rolesTooltip"
+msgstr "Los roles de los miembros determinan los permisos \ny el acceso dentro de la comunidad."
+
+#. js-lingui-explicit-id
+msgid "roomNumber"
+msgstr "Número de sala"
+
+#. js-lingui-explicit-id
+msgid "roomsCountMayChange"
+msgstr "El número de salas puede cambiar si los participantes se desconectan."
+
+#. js-lingui-explicit-id
+msgid "rsvp"
+msgstr "RSVP"
+
+#. js-lingui-explicit-id
+msgid "save"
+msgstr "Guardar"
+
+#. js-lingui-explicit-id
+msgid "saveAgendaItem"
+msgstr "Guardar elemento de agenda"
+
+#. js-lingui-explicit-id
+msgid "saveAndClose"
+msgstr "Guardar y cerrar"
+
+#. js-lingui-explicit-id
+msgid "saveAndJoin"
+msgstr "Guardar y unirse"
+
+#. js-lingui-explicit-id
+msgid "saveChangesQuestion"
+msgstr "¿Guardar cambios?"
+
+#. js-lingui-explicit-id
+msgid "saveEvent"
+msgstr "Guardar evento"
+
+#. js-lingui-explicit-id
+msgid "saveSettings"
+msgstr "Guardar configuración"
+
+#. js-lingui-explicit-id
+msgid "saveTemplate"
+msgstr "Guardar plantilla"
+
+#. js-lingui-explicit-id
+msgid "saved"
+msgstr "Guardado"
+
+#. js-lingui-explicit-id
+msgid "saySomething"
+msgstr "Escribe algo"
+
+#. js-lingui-explicit-id
+msgid "scheduledEvent"
+msgstr "Evento programado"
+
+#. js-lingui-explicit-id
+msgid "search"
+msgstr "Buscar"
+
+#. js-lingui-explicit-id
+msgid "searchEvents"
+msgstr "Buscar eventos"
+
+#. js-lingui-explicit-id
+msgid "searchTemplates"
+msgstr "Buscar plantillas"
+
+#. js-lingui-explicit-id
+msgid "sec"
+msgstr "Seg"
+
+#. js-lingui-explicit-id
+msgid "sectionNotFilledYet"
+msgstr "Esta sección aún no se ha completado."
+
+#. js-lingui-explicit-id
+msgid "seeAll"
+msgstr "Ver todo"
+
+#. js-lingui-explicit-id
+msgid "seeManagingYourCommunity"
+msgstr "Ver la gestión de su comunidad para más detalles."
+
+#. js-lingui-explicit-id
+msgid "seeMore"
+msgstr "Ver más"
+
+#. js-lingui-explicit-id
+msgid "seeMoreEvents"
+msgstr "Ver más eventos"
+
+#. js-lingui-explicit-id
+msgid "selectADay"
+msgstr "Seleccionar un día"
+
+#. js-lingui-explicit-id
+msgid "selectATime"
+msgstr "Seleccionar una hora"
+
+#. js-lingui-explicit-id
+msgid "selectAudioInputDevice"
+msgstr "Seleccionar dispositivo de entrada de audio"
+
+#. js-lingui-explicit-id
+msgid "selectData"
+msgstr "Seleccionar datos"
+
+#. js-lingui-explicit-id
+msgid "selectLanguage"
+msgstr "Seleccionar idioma"
+
+#. js-lingui-explicit-id
+msgid "selectMaxParticipantCount"
+msgstr "Seleccionar número máximo de participantes"
+
+#. js-lingui-explicit-id
+msgid "selectSpace"
+msgstr "Seleccionar espacio:"
+
+#. js-lingui-explicit-id
+msgid "selectVideoInput"
+msgstr "Seleccionar entrada de video"
+
+#. js-lingui-explicit-id
+msgid "selectedColorsContrastError"
+msgstr "Los colores seleccionados no tienen suficiente contraste. Por favor, elige colores diferentes."
+
+#. js-lingui-explicit-id
+msgid "send"
+msgstr "Enviar"
+
+#. js-lingui-explicit-id
+msgid "sendMessage"
+msgstr "Enviar mensaje"
+
+#. js-lingui-explicit-id
+msgid "sendMessageToAllParticipantsInGroup"
+msgstr "Envía un mensaje a todos los participantes del grupo"
+
+#. js-lingui-explicit-id
+msgid "sendVerification"
+msgstr "Enviar verificación"
+
+#. js-lingui-explicit-id
+msgid "sessionExpiredSignInAgain"
+msgstr "Tu sesión ha expirado. Inicia sesión nuevamente."
+
+#. js-lingui-explicit-id
+msgid "setPayeeAccountDetails"
+msgstr "Establecer los detalles de tu cuenta de beneficiario"
+
+#. js-lingui-explicit-id
+msgid "setYourPayeeAccountDetails"
+msgstr "Establecer los detalles de su cuenta de pagos"
+
+#. js-lingui-explicit-id
+msgid "settingAgendaPreview"
+msgstr "Vista previa de la agenda"
+
+#. js-lingui-explicit-id
+msgid "settingAllowMembersToCreateEvents"
+msgstr "Permitir a los miembros crear eventos"
+
+#. js-lingui-explicit-id
+msgid "settingAllowMembersToCreateTemplates"
+msgstr "Permitir a los miembros crear plantillas"
+
+#. js-lingui-explicit-id
+msgid "settingAllowUsersToDonateFunds"
+msgstr "Permitir a los usuarios donar fondos"
+
+#. js-lingui-explicit-id
+msgid "settingEnableWeeklyEmailDigestsOfUpcomingEvents"
+msgstr "Habilitar resúmenes semanales por email de próximos eventos"
+
+#. js-lingui-explicit-id
+msgid "settingHelperAgendaPreview"
+msgstr "Hace visible la agenda del evento en la página de presentación del evento. Cuando está desactivada, la agenda solo es visible dentro de la sesión del evento."
+
+#. js-lingui-explicit-id
+msgid "settingHelperChat"
+msgstr "Permite la mensajería entre participantes en las páginas de eventos y durante los eventos, incluyendo en las salas de grupos."
+
+#. js-lingui-explicit-id
+msgid "settingHelperDonationWarning"
+msgstr "Su cuenta de beneficiario no se ha configurado completamente, por lo que actualmente no se aceptan donaciones. Es posible que deba vincular una cuenta bancaria o aceptar los términos de servicio de Stripe."
+
+#. js-lingui-explicit-id
+msgid "settingHelperEnableWeeklyEmail"
+msgstr "Envía automáticamente a los miembros un resumen semanal de próximos eventos para mantenerlos informados y comprometidos."
+
+#. js-lingui-explicit-id
+msgid "settingHelperFloatingChat"
+msgstr "Muestra notificaciones temporales de chat en burbujas en la parte inferior de la pantalla durante los eventos."
+
+#. js-lingui-explicit-id
+msgid "settingHelperMemberEvents"
+msgstr "Permite a los miembros de la comunidad crear y organizar eventos usando las plantillas de tu comunidad."
+
+#. js-lingui-explicit-id
+msgid "settingHelperMemberTemplates"
+msgstr "Permite a los miembros crear y guardar plantillas de eventos reutilizables dentro de tu comunidad."
+
+#. js-lingui-explicit-id
+msgid "settingHelperRecord"
+msgstr "Captura video del evento que los administradores pueden descargar más tarde. (Actualmente limitado a grabaciones de la sala principal en eventos con anfitrión; grabaciones de salas de grupos próximamente.)"
+
+#. js-lingui-explicit-id
+msgid "settingHelperRequireMembershipApproval"
+msgstr "Todas las solicitudes de membresía deben ser revisadas y aprobadas por los administradores de la comunidad antes de otorgar el acceso. La participación en eventos estará restringida a miembros."
+
+#. js-lingui-explicit-id
+msgid "settingHelperTalkTimer"
+msgstr "Muestra un indicador de tiempo de habla a los participantes y proporciona recordatorios sutiles para fomentar una discusión equilibrada."
+
+#. js-lingui-explicit-id
+msgid "settingRequireApprovalForNewMembers"
+msgstr "Requerir aprobación para nuevos miembros"
+
+#. js-lingui-explicit-id
+msgid "settings"
+msgstr "Configuración"
+
+#. js-lingui-explicit-id
+msgid "settingsFor"
+msgstr "Configuración para {communityName}"
+
+#. js-lingui-explicit-id
+msgid "share"
+msgstr "Compartir"
+
+#. js-lingui-explicit-id
+msgid "shareYourCommunityWithOthers"
+msgstr "Comparte tu comunidad con otros"
+
+#. js-lingui-explicit-id
+msgid "showAgendaItem"
+msgstr "Mostrar elemento de agenda"
+
+#. js-lingui-explicit-id
+msgid "showAnnouncementsButton"
+msgstr "Botón mostrar anuncios"
+
+#. js-lingui-explicit-id
+msgid "showOptions"
+msgstr "Mostrar opciones"
+
+#. js-lingui-explicit-id
+msgid "showPassword"
+msgstr "Mostrar contraseña"
+
+#. js-lingui-explicit-id
+msgid "showQuestions"
+msgstr "Mostrar preguntas"
+
+#. js-lingui-explicit-id
+msgid "showResults"
+msgstr "Mostrar resultados"
+
+#. js-lingui-explicit-id
+msgid "showSidebarButton"
+msgstr "Mostrar Botón de Barra Lateral"
+
+#. js-lingui-explicit-id
+msgid "sidebarFollowCommunityButton"
+msgstr "Botón de seguir comunidad barra lateral"
+
+#. js-lingui-explicit-id
+msgid "sidebarUnfollowButton"
+msgstr "Botón de dejar de seguir barra lateral"
+
+#. js-lingui-explicit-id
+msgid "signIn"
+msgstr "Iniciar sesión"
+
+#. js-lingui-explicit-id
+msgid "signInToApp"
+msgstr "Iniciar sesión en {appName}"
+
+#. js-lingui-explicit-id
+msgid "signInWithEmail"
+msgstr "Iniciar sesión con email"
+
+#. js-lingui-explicit-id
+msgid "signOut"
+msgstr "Cerrar sesión"
+
+#. js-lingui-explicit-id
+msgid "signUp"
+msgstr "Registrarse"
+
+#. js-lingui-explicit-id
+msgid "signUpOrSignInToContinue"
+msgstr "Regístrate (o inicia sesión con una cuenta existente) para continuar."
+
+#. js-lingui-explicit-id
+msgid "signUpToGetStarted"
+msgstr "Regístrate para comenzar."
+
+#. js-lingui-explicit-id
+msgid "signUpWithEmail"
+msgstr "Registrarse con email"
+
+#. js-lingui-explicit-id
+msgid "signUpWithGoogle"
+msgstr "Registrarse con Google"
+
+#. js-lingui-explicit-id
+msgid "signedOutRefreshPrompt"
+msgstr "Has cerrado sesión. Actualiza la página para volver a iniciar sesión"
+
+#. js-lingui-explicit-id
+msgid "signingUp"
+msgstr "registrándose"
+
+#. js-lingui-explicit-id
+msgid "skip"
+msgstr "Omitir"
+
+#. js-lingui-explicit-id
+msgid "skipStripeAccountSetupForNow"
+msgstr "Omitir la configuración de la cuenta de Stripe por ahora."
+
+#. js-lingui-explicit-id
+msgid "smartMatch"
+msgstr "Coincidencia inteligente"
+
+#. js-lingui-explicit-id
+msgid "smartMatchParticipants"
+msgstr "Emparejamiento Inteligente"
+
+#. js-lingui-explicit-id
+msgid "socialFacebook"
+msgstr "Facebook"
+
+#. js-lingui-explicit-id
+msgid "socialInstagram"
+msgstr "Instagram"
+
+#. js-lingui-explicit-id
+msgid "socialLinkedIn"
+msgstr "LinkedIn"
+
+#. js-lingui-explicit-id
+msgid "socialTwitter"
+msgstr "Twitter"
+
+#. js-lingui-explicit-id
+msgid "someStillFinishingVideo"
+msgstr "Algunas personas aún están terminando el video."
+
+#. js-lingui-explicit-id
+msgid "somethingWentWrong"
+msgstr "Algo salió mal"
+
+#. js-lingui-explicit-id
+msgid "somethingWentWrongLoadingCommunity"
+msgstr "Algo salió mal al cargar esta comunidad."
+
+#. js-lingui-explicit-id
+msgid "somethingWentWrongLoadingEvents"
+msgstr "Algo salió mal al cargar los eventos."
+
+#. js-lingui-explicit-id
+msgid "somethingWentWrongLoadingRoom"
+msgstr "Algo salió mal al cargar la sala. ¡Actualiza la página!"
+
+#. js-lingui-explicit-id
+msgid "somethingWentWrongLongMiddle"
+msgstr "Actualiza la página e intenta iniciar sesión en Frankly nuevamente.\n\nSi continúas teniendo problemas, puedes "
+
+#. js-lingui-explicit-id
+msgid "somethingWentWrongLongPrefix"
+msgstr "Lo sentimos, algo salió mal."
+
+#. js-lingui-explicit-id
+msgid "somethingWentWrongLongSuffix"
+msgstr "contactar al soporte para obtener ayuda"
+
+#. js-lingui-explicit-id
+msgid "somethingWentWrongTryAgain"
+msgstr "Algo salió mal. Por favor, inténtelo de nuevo."
+
+#. js-lingui-explicit-id
+msgid "sorryVimeoVideoLookupFailed"
+msgstr "Lo sentimos, la búsqueda del video de Vimeo falló."
+
+#. js-lingui-explicit-id
+msgid "sorryYoutubeVideoLookupFailed"
+msgstr "Lo sentimos, la búsqueda del video de YouTube falló."
+
+#. js-lingui-explicit-id
+msgid "spaceNotAllowed"
+msgstr "No se permiten espacios"
+
+#. js-lingui-explicit-id
+msgid "spreadTheWord"
+msgstr "CORRE LA VOZ"
+
+#. js-lingui-explicit-id
+msgid "stageView"
+msgstr "Vista de escenario"
+
+#. js-lingui-explicit-id
+msgid "start"
+msgstr "Iniciar"
+
+#. js-lingui-explicit-id
+msgid "startCommunity"
+msgstr "Iniciar una comunidad"
+
+#. js-lingui-explicit-id
+msgid "startEvent"
+msgstr "Iniciar Evento"
+
+#. js-lingui-explicit-id
+msgid "startTime"
+msgstr "Hora de inicio"
+
+#. js-lingui-explicit-id
+msgid "startVideo"
+msgstr "Iniciar video"
+
+#. js-lingui-explicit-id
+msgid "startingNextAgendaItem"
+msgstr "Iniciando el siguiente punto de la agenda"
+
+#. js-lingui-explicit-id
+msgid "startsTomorrow"
+msgstr "Comienza mañana"
+
+#. js-lingui-explicit-id
+msgid "stepXOfY"
+msgstr "PASO {currentIndex} DE {lastIndex}"
+
+#. js-lingui-explicit-id
+msgid "stopVideo"
+msgstr "Detener video"
+
+#. js-lingui-explicit-id
+msgid "streamKey"
+msgstr "Clave de transmisión:"
+
+#. js-lingui-explicit-id
+msgid "streamKeyWarning"
+msgstr "ADVERTENCIA: Cualquier persona con esta clave de transmisión puede transmitir contenido en su transmisión. Manténgala en secreto."
+
+#. js-lingui-explicit-id
+msgid "streamUrl"
+msgstr "URL de transmisión:"
+
+#. js-lingui-explicit-id
+msgid "streamWaitingText"
+msgstr "La transmisión se mostrará aquí cuando esté activa."
+
+#. js-lingui-explicit-id
+msgid "submitChatButton"
+msgstr "Botón enviar chat"
+
+#. js-lingui-explicit-id
+msgid "submitMessageButton"
+msgstr "Botón enviar mensaje"
+
+#. js-lingui-explicit-id
+msgid "submitTagButton"
+msgstr "Enviar"
+
+#. js-lingui-explicit-id
+msgid "suggest"
+msgstr "Sugerir"
+
+#. js-lingui-explicit-id
+msgid "suggestAgendaItemHint"
+msgstr "Puede sugerir un elemento de agenda y todos pueden votar"
+
+#. js-lingui-explicit-id
+msgid "suggestionCannotBeEmpty"
+msgstr "La sugerencia no puede estar vacía"
+
+#. js-lingui-explicit-id
+msgid "suggestions"
+msgstr "Sugerencias"
+
+#. js-lingui-explicit-id
+msgid "suggestionsWillShowUpHere"
+msgstr "Las sugerencias aparecerán aquí"
+
+#. js-lingui-explicit-id
+msgid "tag"
+msgstr "Etiqueta"
+
+#. js-lingui-explicit-id
+msgid "tagline"
+msgstr "Lema"
+
+#. js-lingui-explicit-id
+msgid "taglineHint"
+msgstr "Ej: Proteger la tierra de todos los invasores"
+
+#. js-lingui-explicit-id
+msgid "tags"
+msgstr "Etiquetas"
+
+#. js-lingui-explicit-id
+msgid "takeRateDescription"
+msgstr "En nuestro plan gratuito, cualquier pago de usuario final incurrirá en una comisión del {percentage}%. Actualiza tu plan para obtener una tarifa más baja."
+
+#. js-lingui-explicit-id
+msgid "targetParticipantsPerRoom"
+msgstr "Participantes\nPor Sala"
+
+#. js-lingui-explicit-id
+msgid "targetSize"
+msgstr "Tamaño objetivo"
+
+#. js-lingui-explicit-id
+msgid "targetSizeQuestion"
+msgstr "¿Tamaño objetivo?"
+
+#. js-lingui-explicit-id
+msgid "template"
+msgstr "Plantilla"
+
+#. js-lingui-explicit-id
+msgid "templateName"
+msgstr "Nombre de la plantilla"
+
+#. js-lingui-explicit-id
+msgid "templateSettings"
+msgstr "Configuración de plantilla"
+
+#. js-lingui-explicit-id
+msgid "templates"
+msgstr "Plantillas"
+
+#. js-lingui-explicit-id
+msgid "termsAgreementPrefix"
+msgstr "Al iniciar sesión, registrarme o usar {appName}, acepto estar sujeto a los "
+
+#. js-lingui-explicit-id
+msgid "termsOfService"
+msgstr "Términos de servicio de {appName}"
+
+#. js-lingui-explicit-id
+msgid "textCopied"
+msgstr "¡Texto copiado!"
+
+#. js-lingui-explicit-id
+msgid "textTitle"
+msgstr "Título de texto"
+
+#. js-lingui-explicit-id
+msgid "thatsIt"
+msgstr "¡Eso es todo!"
+
+#. js-lingui-explicit-id
+msgid "theme"
+msgstr "Tema"
+
+#. js-lingui-explicit-id
+msgid "thereWasAnErrorLoadingEventTemplates"
+msgstr "Hubo un error al cargar las plantillas de eventos."
+
+#. js-lingui-explicit-id
+msgid "thisEventIsBeingRecorded"
+msgstr "Este evento está siendo grabado."
+
+#. js-lingui-explicit-id
+msgid "thisEventIsLocked"
+msgstr "Este evento está bloqueado"
+
+#. js-lingui-explicit-id
+msgid "thisEventIsNowBeingRecorded"
+msgstr "Este evento ahora está\nsiendo grabado."
+
+#. js-lingui-explicit-id
+msgid "thisUrlWasNotFound"
+msgstr "Esta URL no se encontró."
+
+#. js-lingui-explicit-id
+msgid "thisUser"
+msgstr "este usuario"
+
+#. js-lingui-explicit-id
+msgid "thisWillUnsubscribeFromUpdates"
+msgstr "Esto cancelará la suscripción a las novedades de {appName}:"
+
+#. js-lingui-explicit-id
+msgid "time"
+msgstr "Hora"
+
+#. js-lingui-explicit-id
+msgid "timeShownIn"
+msgstr "Hora mostrada en {timezone}"
+
+#. js-lingui-explicit-id
+msgid "title"
+msgstr "Título"
+
+#. js-lingui-explicit-id
+msgid "titleCannotBeEmpty"
+msgstr "El título no puede estar vacío"
+
+#. js-lingui-explicit-id
+msgid "titleIsRequired"
+msgstr "El título es obligatorio"
+
+#. js-lingui-explicit-id
+msgid "tooManyRequests"
+msgstr "Demasiadas solicitudes fallidas. Por favor, inténtelo de nuevo más tarde."
+
+#. js-lingui-explicit-id
+msgid "transcription"
+msgstr "Transcripción"
+
+#. js-lingui-explicit-id
+msgid "transcriptsCsv"
+msgstr "Transcripciones (CSV)"
+
+#. js-lingui-explicit-id
+msgid "transcriptsNotAvailable"
+msgstr "Aún no hay transcripciones disponibles."
+
+#. js-lingui-explicit-id
+msgid "troubleshoot"
+msgstr "Solucionar problemas"
+
+#. js-lingui-explicit-id
+msgid "troubleshootingGuide"
+msgstr "Guía de solución de problemas"
+
+#. js-lingui-explicit-id
+msgid "tryAgain"
+msgstr "Por favor, inténtelo de nuevo"
+
+#. js-lingui-explicit-id
+msgid "tryAgainLater"
+msgstr " y inténtelo de nuevo más tarde"
+
+#. js-lingui-explicit-id
+msgid "tryAgainLink"
+msgstr "try again"
+
+#. js-lingui-explicit-id
+msgid "turnOnAudioVideo"
+msgstr "¿Activar audio/vídeo?"
+
+#. js-lingui-explicit-id
+msgid "twitterUrl"
+msgstr "URL de Twitter"
+
+#. js-lingui-explicit-id
+msgid "typeSomething"
+msgstr "Escribe algo"
+
+#. js-lingui-explicit-id
+msgid "unfollow"
+msgstr "Dejar de seguir"
+
+#. js-lingui-explicit-id
+msgid "uniqueUrlDisplayName"
+msgstr "Nombre de URL único (Opcional)"
+
+#. js-lingui-explicit-id
+msgid "uniqueUrlDisplayNameOptional"
+msgstr "Nombre de URL único (Opcional)"
+
+#. js-lingui-explicit-id
+msgid "unknownUser"
+msgstr "Usuario desconocido"
+
+#. js-lingui-explicit-id
+msgid "unlockMeeting"
+msgstr "Desbloquear reunión"
+
+#. js-lingui-explicit-id
+msgid "unmute"
+msgstr "Activar audio"
+
+#. js-lingui-explicit-id
+msgid "unnamedCommunity"
+msgstr "Comunidad sin nombre"
+
+#. js-lingui-explicit-id
+msgid "unpin"
+msgstr "Desanclar"
+
+#. js-lingui-explicit-id
+msgid "unsubscribeNow"
+msgstr "Cancelar suscripción ahora"
+
+#. js-lingui-explicit-id
+msgid "upcomingEvent"
+msgstr "Próximo evento"
+
+#. js-lingui-explicit-id
+msgid "upcomingEvents"
+msgstr "Próximos eventos"
+
+#. js-lingui-explicit-id
+msgid "upcomingHeader"
+msgstr "PRÓXIMOS"
+
+#. js-lingui-explicit-id
+msgid "updateAction"
+msgstr "Actualizar"
+
+#. js-lingui-explicit-id
+msgid "updateBilling"
+msgstr "Actualizar facturación"
+
+#. js-lingui-explicit-id
+msgid "updateButton"
+msgstr "Actualizar"
+
+#. js-lingui-explicit-id
+msgid "updateEmail"
+msgstr "Actualizar correo"
+
+#. js-lingui-explicit-id
+msgid "updateEvent"
+msgstr "Actualizar evento"
+
+#. js-lingui-explicit-id
+msgid "updatePlan"
+msgstr "Actualizar plan"
+
+#. js-lingui-explicit-id
+msgid "updatePost"
+msgstr "Actualizar publicación"
+
+#. js-lingui-explicit-id
+msgid "updateProfile"
+msgstr "Actualizar perfil"
+
+#. js-lingui-explicit-id
+msgid "updateTemplate"
+msgstr "Actualizar plantilla"
+
+#. js-lingui-explicit-id
+msgid "updateToPlan"
+msgstr "Actualizar al plan {name}"
+
+#. js-lingui-explicit-id
+msgid "upgrade"
+msgstr "Actualizar"
+
+#. js-lingui-explicit-id
+msgid "upgradeForAccess"
+msgstr "Actualiza para obtener acceso"
+
+#. js-lingui-explicit-id
+msgid "upgradeForMore"
+msgstr "Actualiza para obtener más"
+
+#. js-lingui-explicit-id
+msgid "upload"
+msgstr "Subir"
+
+#. js-lingui-explicit-id
+msgid "uploadImage"
+msgstr "Subir imagen"
+
+#. js-lingui-explicit-id
+msgid "uploadNewImage"
+msgstr "Subir nueva imagen"
+
+#. js-lingui-explicit-id
+msgid "upvoteDownvoteSuggestions"
+msgstr "Puede votar a favor y en contra de los elementos de agenda sugeridos para discutir"
+
+#. js-lingui-explicit-id
+msgid "urlCannotBeEmptyIfAttributesAreEntered"
+msgstr "La URL no puede estar vacía si se ingresan algunos atributos"
+
+#. js-lingui-explicit-id
+msgid "urlIsNotValid"
+msgstr "La URL no es válida"
+
+#. js-lingui-explicit-id
+msgid "urlParameter"
+msgstr "Parámetro URL"
+
+#. js-lingui-explicit-id
+msgid "urlParameterCannotBeEmpty"
+msgstr "El parámetro de URL no puede estar vacío"
+
+#. js-lingui-explicit-id
+msgid "urlPreview"
+msgstr "Vista previa de URL"
+
+#. js-lingui-explicit-id
+msgid "useDarkerAccentColor"
+msgstr "Usa un color de acento más oscuro."
+
+#. js-lingui-explicit-id
+msgid "useDarkerBackgroundColor"
+msgstr "Usa un color de fondo más oscuro."
+
+#. js-lingui-explicit-id
+msgid "useLighterAccentColor"
+msgstr "Usa un color de acento más claro."
+
+#. js-lingui-explicit-id
+msgid "useLighterBackgroundColor"
+msgstr "Usa un color de fondo más claro."
+
+#. js-lingui-explicit-id
+msgid "usersAreInBreakoutRooms"
+msgstr "Los usuarios están en salas de grupos."
+
+#. js-lingui-explicit-id
+msgid "verificationAccountInstructions"
+msgstr "Usa el enlace del correo para verificar y continuar."
+
+#. js-lingui-explicit-id
+msgid "verificationEmailResent"
+msgstr "Correo de verificación reenviado a {email}."
+
+#. js-lingui-explicit-id
+msgid "verificationEmailSent"
+msgstr "Enviamos un correo de verificación a {email}. Para verificar tu cuenta y continuar, usa el enlace del correo."
+
+#. js-lingui-explicit-id
+msgid "verificationEmailSentTo"
+msgstr "Enviamos un correo de verificación a {email}."
+
+#. js-lingui-explicit-id
+msgid "verificationLinkExpired"
+msgstr "Tu enlace de verificacion ha expirado. Vuelve a enviar uno nuevo."
+
+#. js-lingui-explicit-id
+msgid "verificationLinkExpiredTitle"
+msgstr "Tu enlace de verificacion ha expirado."
+
+#. js-lingui-explicit-id
+msgid "verificationLinkExpiresIn"
+msgstr "Este enlace de correo electrónico expirará en 30 minutos."
+
+#. js-lingui-explicit-id
+msgid "verifyYourEmail"
+msgstr "Verifica Tu Correo Electrónico"
+
+#. js-lingui-explicit-id
+msgid "video"
+msgstr "Video"
+
+#. js-lingui-explicit-id
+msgid "videoDeviceUpdated"
+msgstr "Dispositivo de video actualizado."
+
+#. js-lingui-explicit-id
+msgid "videoDisabled"
+msgstr "Vídeo desactivado"
+
+#. js-lingui-explicit-id
+msgid "videoElement"
+msgstr "{label}-elemento-video"
+
+#. js-lingui-explicit-id
+msgid "videoInputDevice"
+msgstr "Dispositivo de entrada de vídeo:"
+
+#. js-lingui-explicit-id
+msgid "videoPreview"
+msgstr "Vista previa de video"
+
+#. js-lingui-explicit-id
+msgid "videoTabUpload"
+msgstr "SUBIR"
+
+#. js-lingui-explicit-id
+msgid "videoTabUrl"
+msgstr "URL"
+
+#. js-lingui-explicit-id
+msgid "videoTabVimeo"
+msgstr "VIMEO"
+
+#. js-lingui-explicit-id
+msgid "videoTabYoutube"
+msgstr "YOUTUBE"
+
+#. js-lingui-explicit-id
+msgid "videoUpdating"
+msgstr "Actualizando video…"
+
+#. js-lingui-explicit-id
+msgid "videoUrlIsRequired"
+msgstr "La URL del video es obligatoria"
+
+#. js-lingui-explicit-id
+msgid "view"
+msgstr "Ver"
+
+#. js-lingui-explicit-id
+msgid "viewCurrentRoom"
+msgstr "Ver sala actual"
+
+#. js-lingui-explicit-id
+msgid "viewMoreTemplates"
+msgstr "Ver más plantillas"
+
+#. js-lingui-explicit-id
+msgid "viewProfile"
+msgstr "Ver perfil"
+
+#. js-lingui-explicit-id
+msgid "vimeoUrl"
+msgstr "URL de Vimeo"
+
+#. js-lingui-explicit-id
+msgid "vimeoVideoLookupFailed"
+msgstr "Lo sentimos, la búsqueda del video de Vimeo falló."
+
+#. js-lingui-explicit-id
+msgid "waitingRoom"
+msgstr "Sala de espera"
+
+#. js-lingui-explicit-id
+msgid "waitingRoomImageVideo"
+msgstr "Imagen/Video de la sala de espera"
+
+#. js-lingui-explicit-id
+msgid "websiteUrl"
+msgstr "URL del sitio web"
+
+#. js-lingui-explicit-id
+msgid "welcome"
+msgstr "Bienvenido a Frankly"
+
+#. js-lingui-explicit-id
+msgid "welcomeClickToEnterEvent"
+msgstr "¡Bienvenido! Haz clic aquí para entrar al evento:"
+
+#. js-lingui-explicit-id
+msgid "welcomeName"
+msgstr "Bienvenido, {name}"
+
+#. js-lingui-explicit-id
+msgid "welcomeToApp"
+msgstr "Bienvenido a {appName}"
+
+#. js-lingui-explicit-id
+msgid "whatMessageToShowParticipantsAfter"
+msgstr "¿Qué mensaje quieres mostrar a los participantes después del evento?"
+
+#. js-lingui-explicit-id
+msgid "whatMessageToShowParticipantsBefore"
+msgstr "¿Qué mensaje quieres mostrar a los participantes antes del evento?"
+
+#. js-lingui-explicit-id
+msgid "whenNewEventsAreAdded"
+msgstr "Cuando se añadan nuevos eventos, los verás aquí."
+
+#. js-lingui-explicit-id
+msgid "whenNewItemsAdded"
+msgstr "Cuando se agreguen nuevos {name}, los verás aquí."
+
+#. js-lingui-explicit-id
+msgid "whenYouUpgrade"
+msgstr "cuando actualice"
+
+#. js-lingui-explicit-id
+msgid "wordCloud"
+msgstr "Nube de palabras"
+
+#. js-lingui-explicit-id
+msgid "wordCloudDescription"
+msgstr "Se pedirá a los participantes que respondan con una lista de palabras o frases cortas."
+
+#. js-lingui-explicit-id
+msgid "wordCloudLabelText"
+msgstr "Instrucción para la Nube de Palabras"
+
+#. js-lingui-explicit-id
+msgid "wordCloudParticipantsInfo"
+msgstr "Se pedirá a los participantes que respondan con una lista de palabras o frases cortas"
+
+#. js-lingui-explicit-id
+msgid "wordCloudPrompt"
+msgstr "Introduzca una palabra para la nube de palabras"
+
+#. js-lingui-explicit-id
+msgid "wordCloudPromptRequired"
+msgstr "Por favor, introduzca una palabra para la nube de palabras"
+
+#. js-lingui-explicit-id
+msgid "wordList"
+msgstr "Lista de palabras"
+
+#. js-lingui-explicit-id
+msgid "wouldYouLikeToTurnOnAv"
+msgstr "¿Quieres activar el audio y el video?"
+
+#. js-lingui-explicit-id
+msgid "wrongEmail"
+msgstr "¿Correo incorrecto? Editar"
+
+#. js-lingui-explicit-id
+msgid "wrongEmailEditAddress"
+msgstr "(¿Querías usar una dirección diferente para tu cuenta? Edita la dirección.)"
+
+#. js-lingui-explicit-id
+msgid "yes"
+msgstr "Sí"
+
+#. js-lingui-explicit-id
+msgid "yesCancel"
+msgstr "Sí, cancelar"
+
+#. js-lingui-explicit-id
+msgid "yesCancelPlan"
+msgstr "Sí, cancelar plan"
+
+#. js-lingui-explicit-id
+msgid "yesClear"
+msgstr "Sí, borrar"
+
+#. js-lingui-explicit-id
+msgid "yesDelete"
+msgstr "Sí, eliminar"
+
+#. js-lingui-explicit-id
+msgid "yesJoin"
+msgstr "Sí, unirme"
+
+#. js-lingui-explicit-id
+msgid "yesJoinCommunity"
+msgstr "¡Sí, unirme!"
+
+#. js-lingui-explicit-id
+msgid "yesKickThemOut"
+msgstr "Sí, expulsarlos"
+
+#. js-lingui-explicit-id
+msgid "yesPollParticipants"
+msgstr "Sí, encuestar participantes"
+
+#. js-lingui-explicit-id
+msgid "yesRefresh"
+msgstr "Sí, actualizar"
+
+#. js-lingui-explicit-id
+msgid "yesUpdatePlan"
+msgstr "Sí, actualizar plan"
+
+#. js-lingui-explicit-id
+msgid "you"
+msgstr "Tú"
+
+#. js-lingui-explicit-id
+msgid "youAreInTheWaitingRoom"
+msgstr "Estás en la sala de espera."
+
+#. js-lingui-explicit-id
+msgid "youAreInWaitingRoom"
+msgstr "Estás en la sala de espera."
+
+#. js-lingui-explicit-id
+msgid "youCanChangeThisLater"
+msgstr "Puedes cambiar esto más tarde"
+
+#. js-lingui-explicit-id
+msgid "youHaveUnsubscribedFromUpdates"
+msgstr "Has cancelado la suscripción a las novedades de {appName}."
+
+#. js-lingui-explicit-id
+msgid "youHaventJoinedAnyCommunities"
+msgstr "No te has unido a ninguna comunidad"
+
+#. js-lingui-explicit-id
+msgid "youLeftTheEvent"
+msgstr "Has salido del evento."
+
+#. js-lingui-explicit-id
+msgid "youNeedToBeLoggedInToDoThis"
+msgstr "Necesita iniciar sesión para hacer esto"
+
+#. js-lingui-explicit-id
+msgid "youWereRemovedFromThisEventAndCannotRejoin"
+msgstr "Has sido eliminado de este evento y no puedes volver a unirte."
+
+#. js-lingui-explicit-id
+msgid "yourChangesToProfileCantBeSaved"
+msgstr "Tus cambios al perfil no se pueden guardar ahora mismo"
+
+#. js-lingui-explicit-id
+msgid "yourEvent"
+msgstr "Tu evento"
+
+#. js-lingui-explicit-id
+msgid "yourName"
+msgstr "Tu nombre"
+
+#. js-lingui-explicit-id
+msgid "youreReadyToMoveOn"
+msgstr "Estás listo para continuar"
+
+#. js-lingui-explicit-id
+msgid "youtubeUrl"
+msgstr "URL de YouTube"
+
+#. js-lingui-explicit-id
+msgid "youtubeVideoLookupFailed"
+msgstr "Lo sentimos, la búsqueda del video de YouTube falló."
+
+#. js-lingui-explicit-id
+msgid "zoom"
+msgstr "Zoom"

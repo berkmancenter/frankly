@@ -2,6 +2,7 @@
 import { fileURLToPath, URL } from "node:url";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { lingui } from "@lingui/vite-plugin";
 import migrated from "./migrated-routes.json";
 
 // Standalone (`npm run dev`) serves from "/". Behind the dev proxy (`npm run dev:proxied`,
@@ -12,7 +13,7 @@ const base = process.env.PROXIED === "1" ? migrated.assetBase : "/";
 
 export default defineConfig({
   base,
-  plugins: [react()],
+  plugins: [react(), lingui({ macroTransform: true })],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -32,10 +33,13 @@ export default defineConfig({
           // react/jsx-runtime land in the react chunk; the object form left them
           // in a circular chunk with mui and broke it at load time.
           if (!id.includes("node_modules")) return undefined;
-          if (/node_modules\/(react|react-dom|react-router|scheduler)\//.test(id))
+          if (
+            /node_modules\/(react|react-dom|react-router|scheduler)\//.test(id)
+          )
             return "react";
           if (/node_modules\/(@mui|@emotion)\//.test(id)) return "mui";
-          if (/node_modules\/(@tanstack|xstate|@xstate)\//.test(id)) return "state";
+          if (/node_modules\/(@tanstack|xstate|@xstate)\//.test(id))
+            return "state";
           return undefined;
         },
       },
