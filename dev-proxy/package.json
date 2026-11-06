@@ -1,0 +1,26 @@
+{
+  "name": "frankly-dev-proxy",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Local reverse proxy that serves the Flutter client and the React client (client/new) from one origin, routing by path.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.18"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "typecheck": "tsc --noEmit",
+    "start": "npm run build && node dist/server.mjs",
+    "dev": "npm run build && node dist/server.mjs --with-react",
+    "test": "npm run build && node --test dist/*.test.mjs"
+  },
+  "dependencies": {
+    "http-proxy": "^1.18.1"
+  },
+  "devDependencies": {
+    "@types/http-proxy": "^1.17.17",
+    "@types/node": "^20.19.43",
+    "concurrently": "^9.2.5",
+    "typescript": "~5.9.3"
+  }
+}
