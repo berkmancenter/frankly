@@ -1,0 +1,11 @@
+{
+  "$comment": "Single source of truth for which URLs the React app (client/new) owns. The dev proxy (dev-proxy/) routes exactly these paths to React and everything else to Flutter; the React router only registers these (src/app/router.tsx) and hands any other URL back to Flutter. To migrate another page: build it, add an entry for it in router.tsx, then add its pattern here. Patterns: ':name' matches one non-empty path segment; matching is exact (no sub-paths); a trailing slash is ignored.",
+  "assetBase": "/_new/",
+  "staticPrefixes": ["/media/"],
+  "routes": [
+    "/space/:displayId",
+    "/space/:displayId/posts",
+    "/space/:displayId/resources",
+    "/space/:displayId/discuss/upcoming"
+  ]
+}
