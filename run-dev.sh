@@ -232,4 +232,5 @@ cd "$CLIENT_DIR"
   -d chrome \
   --web-renderer html \
   -t lib/dev_emulators_main.dart \
+  --web-port=5000 \
   --dart-define-from-file=.env

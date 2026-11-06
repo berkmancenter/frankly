@@ -3,6 +3,10 @@
   "private": true,
   "scripts": {
     "dev": "./run-dev.sh",
+    "dev:proxy": "concurrently \"./run-dev.sh\" \"npm --prefix dev-proxy run dev\"",
     "build": "./build-all.sh"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.5"
   }
 }
