@@ -15,6 +15,7 @@ import { Img } from '@/components/Img';
 import { useToast } from '@/components/Toast';
 import { useCreateResource, useUpdateResource } from '@/queries/content';
 import { useCommunityScope } from '@/scopes/CommunityScope';
+import { colors, fontSizes } from "@/theme/tokens";
 
 /**
  * "Add a resource": paste a URL, press ✓ to look up its preview, edit the title,
@@ -76,7 +77,7 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
               onChange={(e) => setUrl(e.target.value)}
               error={!!error}
               slotProps={{ htmlInput: { 'aria-label': 'Resource URL' } }}
-              sx={{ '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: error ? 'm3.error' : 'primary.main' }, bgcolor: error ? 'm3.errorContainer' : undefined } }}
+              sx={{ '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: error ? colors.error : 'primary.main' }, bgcolor: error ? colors.errorContainer : undefined } }}
             />
             {dirty && url.trim() && (
               <IconButton
@@ -89,12 +90,12 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
             )}
           </Box>
           {error && (
-            <Typography variant="bodySmall" sx={{ color: 'm3.error', mt: '8px' }}>
+            <Typography sx={{ fontSize: fontSizes.xs, color: colors.error, mt: '8px' }}>
               {error}
             </Typography>
           )}
           {loading && (
-            <Box sx={{ mt: '10px', px: '10px', py: '30px', border: '1px dashed', borderColor: 'm3.onPrimaryContainer', borderRadius: '4px', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ mt: '10px', px: '10px', py: '30px', border: '1px dashed', borderColor: colors.onPrimaryContainer, borderRadius: '4px', display: 'flex', justifyContent: 'center' }}>
               <CircularProgress size={28} />
             </Box>
           )}
@@ -104,7 +105,7 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', mt: '-30px' }}>
             <Box sx={{ position: 'relative' }}>
               <Img src={image} width={80} height={80} radius="10px" />
-              <Box sx={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', bgcolor: 'm3.surfaceContainerLowest', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 1 }}>
+              <Box sx={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', bgcolor: colors.surfaceContainerLowest, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 1 }}>
                 <EditIcon sx={{ fontSize: 15, color: 'primary.main' }} />
               </Box>
             </Box>
@@ -129,7 +130,7 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
         )}
 
         <Box sx={{ mt: loaded ? '-30px' : '-30px' }}>
-          <Divider sx={{ borderColor: 'm3.onPrimaryContainer', mb: '20px' }} />
+          <Divider sx={{ borderColor: colors.onPrimaryContainer, mb: '20px' }} />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <ActionButton text="Post" disabled={!loaded || title.trim() === ''} onPress={post} />
           </Box>

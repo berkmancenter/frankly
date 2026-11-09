@@ -27,6 +27,7 @@ import { timeZoneAbbreviation } from "@/utils/format";
 import { useIsMobile } from "@/utils/useResponsive";
 import { useCreateEvent } from "@/queries/events";
 import { useCommunityScope } from "@/scopes/CommunityScope";
+import { colors, fontSizes } from "@/theme/tokens";
 
 type StepId = "template" | "visibility" | "date" | "time";
 
@@ -99,7 +100,7 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
         sx={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}
       >
         {stepIndex > 0 && (
-          <Typography variant="bodyLarge" sx={{ fontSize: 16, mb: "10px" }}>
+          <Typography sx={{ fontSize: fontSizes.md, mb: "10px" }}>
             STEP {stepIndex + 1} OF {STEPS.length}
           </Typography>
         )}
@@ -143,15 +144,13 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
           <Box>
             <TimeInput value={time} onChange={setTime} />
             <Typography
-              variant="bodySmall"
-              sx={{ textAlign: "right", mt: "12px" }}
+              sx={{ fontSize: fontSizes.xs, textAlign: "right", mt: "12px" }}
             >
               Time shown in {timeZoneAbbreviation(now)}
             </Typography>
             {inPast && (
               <Typography
-                variant="bodySmall"
-                sx={{ color: "m3.error", mt: "8px" }}
+                sx={{ fontSize: fontSizes.xs, color: colors.error, mt: "8px" }}
               >
                 Please choose a time in the future.
               </Typography>
@@ -179,8 +178,7 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
             >
               <ChevronLeftIcon sx={{ color: "primary.main" }} />
               <Typography
-                variant="bodyLarge"
-                sx={{ ml: "10px", color: "primary.main", fontSize: 16 }}
+                sx={{ fontSize: fontSizes.md, ml: "10px", color: "primary.main" }}
               >
                 Back
               </Typography>
@@ -270,7 +268,7 @@ function TemplateStep({
         sx={{
           "& .MuiOutlinedInput-root": {
             borderRadius: "10px",
-            bgcolor: "m3.surfaceContainerLowest",
+            bgcolor: colors.surfaceContainerLowest,
           },
           my: "6px",
         }}
@@ -292,11 +290,11 @@ function TemplateStep({
               onClick={() => setCategory(category === c ? null : c)}
               sx={{
                 bgcolor:
-                  category === c ? "primary.main" : "m3.surfaceContainer",
-                color: category === c ? "primary.contrastText" : "m3.onSurface",
+                  category === c ? "primary.main" : colors.surfaceContainer,
+                color: category === c ? "primary.contrastText" : colors.onSurface,
                 "&:hover": {
                   bgcolor:
-                    category === c ? "primary.main" : "m3.surfaceContainerHigh",
+                    category === c ? "primary.main" : colors.surfaceContainerHigh,
                 },
               }}
             />
@@ -324,7 +322,7 @@ function TemplateStep({
               flexDirection: "column",
               gap: "6px",
               color: "primary.main",
-              bgcolor: "m3.surfaceContainerLowest",
+              bgcolor: colors.surfaceContainerLowest,
             }}
           >
             <AddIcon />
@@ -353,9 +351,9 @@ function TemplateStep({
                 borderRadius: "10px",
                 position: "relative",
                 overflow: "hidden",
-                bgcolor: "m3.surfaceContainerLowest",
+                bgcolor: colors.surfaceContainerLowest,
                 outline: isSelected ? "3px solid" : "1px dashed",
-                outlineColor: isSelected ? "primary.main" : "m3.outline",
+                outlineColor: isSelected ? "primary.main" : colors.outline,
                 outlineOffset: 2,
                 alignItems: "flex-end",
                 justifyContent: "flex-start",
@@ -428,8 +426,7 @@ function TemplateStep({
         })}
         {visible.length === 0 && !canCreateTemplate && (
           <Typography
-            variant="bodyLarge"
-            sx={{ color: "m3.onPrimaryContainer" }}
+            sx={{ fontSize: fontSizes.md, color: colors.onPrimaryContainer }}
           >
             No templates found.
           </Typography>

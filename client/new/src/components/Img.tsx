@@ -2,6 +2,7 @@ import BrokenImageIcon from '@mui/icons-material/BrokenImage';
 import Box from '@mui/material/Box';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { useState } from 'react';
+import { colors } from "@/theme/tokens";
 
 interface ImgProps {
   src?: string | null;
@@ -24,13 +25,13 @@ export function Img({ src, alt = '', width, height, radius, fit = 'cover', sx }:
           width,
           height,
           borderRadius: radius,
-          bgcolor: 'm3.onPrimaryContainer',
+          bgcolor: colors.onPrimaryContainer,
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
-          color: 'm3.onSurfaceVariant',
+          color: colors.onSurfaceVariant,
         },
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}

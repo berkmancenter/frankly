@@ -4,6 +4,7 @@ import type { Event } from '@/api/types';
 import { Avatar } from '@/components/Avatar';
 import { useEventParticipants } from '@/queries/events';
 import { useCurrentUserId } from '@/queries/me';
+import { colors } from "@/theme/tokens";
 
 interface ParticipantsRowProps {
   event: Pick<Event, 'id' | 'creatorId'>;
@@ -49,7 +50,7 @@ export function ParticipantsRow({ event, iconSize = 30, maxAvatars = 6 }: Partic
           </Box>
         ))}
       </Box>
-      <Typography variant="bodyMedium" noWrap sx={{ ml: '5px', color: 'm3.onSurface', minWidth: 0 }}>
+      <Typography noWrap sx={{ ml: '5px', color: colors.onSurface, minWidth: 0 }}>
         {text}
       </Typography>
     </Box>

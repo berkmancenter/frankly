@@ -8,6 +8,7 @@ import { paths } from '@/app/paths';
 import { Avatar } from '@/components/Avatar';
 import { useToast } from '@/components/Toast';
 import { useCurrentUser } from '@/queries/me';
+import { colors } from "@/theme/tokens";
 
 /**
  * `ProfileOrLogin`: the user's avatar; opens a menu with "My Profile", "My Events", "Sign Out".
@@ -33,7 +34,7 @@ export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
         anchorOrigin={{ vertical: menuAbove ? 'top' : 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: menuAbove ? 'bottom' : 'top', horizontal: 'right' }}
         slotProps={{
-          paper: { sx: { width: 200, borderRadius: '8px', bgcolor: 'm3.surfaceContainerLowest', maxHeight: 400 } },
+          paper: { sx: { width: 200, borderRadius: '8px', bgcolor: colors.surfaceContainerLowest, maxHeight: 400 } },
         }}
       >
         <MenuItem

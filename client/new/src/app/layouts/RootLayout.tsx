@@ -9,6 +9,7 @@ import { isDev } from "@/utils/dev";
 export function RootLayout() {
   const me = useMe();
   if (me.isPending) return <LoadingState height="100dvh" />;
+  console.log(me.error);
   if (me.isError)
     return (
       <LoadingState

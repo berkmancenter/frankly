@@ -20,7 +20,7 @@ import { useMyCommunities, useUnfollowCommunity } from "@/queries/communities";
 import { useResources } from "@/queries/content";
 import { useCurrentUser, useMembership } from "@/queries/me";
 import { useCommunityScopeOrNull } from "@/scopes/CommunityScope";
-import { appSize } from "@/theme/typography";
+import { appSize, colors, fontSizes } from "@/theme/tokens";
 import { useConfirm } from "../ConfirmDialog";
 
 const HELP_URL = "https://berkmancenter.github.io/frankly";
@@ -40,7 +40,7 @@ function SidebarLink({
       onPress={onClick}
       sx={{ px: "16px" }}
     >
-      <Typography variant="bodyLarge">{label}</Typography>
+      <Typography sx={{ fontSize: fontSizes.md }}>{label}</Typography>
     </ActionButton>
   );
 }
@@ -83,7 +83,7 @@ function SidebarCommunityItem({
           maxTextWidth={200}
           text={community.name || "Unnamed Community"}
           minWidth={0}
-          sx={{ py: "12px", px: "6px", typography: "titleMedium" }}
+          sx={{ py: "12px", px: "6px", fontSize: fontSizes.md, fontWeight: 500 }}
           onPress={() => go(links.home)}
         />
         <Box sx={{ flex: 1 }} />
@@ -176,7 +176,7 @@ export function SideBar({ onClose }: { onClose: () => void }) {
       sx={{
         width: appSize.sidebarWidth,
         maxWidth: "100vw",
-        bgcolor: "m3.surfaceContainerLowest",
+        bgcolor: colors.surfaceContainerLowest,
         display: "flex",
         flexDirection: "column",
         height: "100%",
@@ -228,8 +228,7 @@ export function SideBar({ onClose }: { onClose: () => void }) {
                     }}
                   />
                   <Typography
-                    variant="bodyLarge"
-                    sx={{ color: "m3.onSurface", letterSpacing: 0 }}
+                    sx={{ fontSize: fontSizes.md, color: colors.onSurface, letterSpacing: 0 }}
                   >
                     Start a community
                   </Typography>
@@ -240,7 +239,7 @@ export function SideBar({ onClose }: { onClose: () => void }) {
         )}
       </Box>
 
-      <Box sx={{ bgcolor: "m3.surface", p: "20px", pt: "32px", flexShrink: 0 }}>
+      <Box sx={{ bgcolor: colors.surface, p: "20px", pt: "32px", flexShrink: 0 }}>
         <ActionButton
           type="text"
           contentAlign="start"
@@ -282,9 +281,9 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           Privacy Policy
         </ActionButton>
         <Typography
-          variant="labelMedium"
+          component="div"
           sx={{
-            color: "m3.onSurfaceVariant",
+            fontSize: fontSizes.xs, fontWeight: 500, color: colors.onSurfaceVariant,
             px: "8px",
             py: "24px",
             whiteSpace: "pre-line",
@@ -293,8 +292,8 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           {`Open-source deliberation software (AGPL-3.0).\n© ${new Date().getFullYear()} Frankly contributors`}
         </Typography>
         <Typography
-          variant="labelMedium"
-          sx={{ color: "m3.onSurfaceVariant", px: "8px", textAlign: "right" }}
+          component="div"
+          sx={{ fontSize: fontSizes.xs, fontWeight: 500, color: colors.onSurfaceVariant, px: "8px", textAlign: "right" }}
         >
           v0.1.0 (prototype)
         </Typography>

@@ -4,6 +4,7 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import type { EmotionType, EmotionVote } from '@/api/types';
+import { colors } from "@/theme/tokens";
 
 export const EMOTIONS: { id: EmotionType; src: string; label: string }[] = [
   { id: 'thumbsUp', src: 'emoji-thumbs-up.png', label: 'Thumbs up' },
@@ -47,7 +48,7 @@ export function EmotionSection({
         <img src="/media/smiley-with-plus.png" alt="" width={20} height={20} />
       </ButtonBase>
       {emotions.length > 0 && (
-        <Typography variant="bodyMedium" sx={{ ml: '10px', color: 'm3.onPrimaryContainer' }}>
+        <Typography sx={{ ml: '10px', color: colors.onPrimaryContainer }}>
           {emotions.length}
         </Typography>
       )}
@@ -68,7 +69,7 @@ export function EmotionSection({
               onSelect(mine === e.id ? null : e.id);
               setAnchor(null);
             }}
-            sx={{ p: '8px', borderRadius: '10px', bgcolor: mine === e.id ? 'm3.surface' : 'transparent' }}
+            sx={{ p: '8px', borderRadius: '10px', bgcolor: mine === e.id ? colors.surface : 'transparent' }}
           >
             <img src={`/media/${e.src}`} alt="" width={20} height={20} />
           </ButtonBase>

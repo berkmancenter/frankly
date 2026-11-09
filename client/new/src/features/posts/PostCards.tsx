@@ -15,7 +15,7 @@ import {
 } from "@/queries/threads";
 import { useCurrentUser, useCurrentUserId } from "@/queries/me";
 import { useCommunityScope } from "@/scopes/CommunityScope";
-import { appText } from "@/theme/typography";
+import { colors, fontSizes } from "@/theme/tokens";
 import { EmotionSection } from "./EmotionSection";
 
 /** Like / dislike cluster: compact count, thumbs-up, thumbs-down. */
@@ -35,8 +35,7 @@ export function VoteCluster({
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Typography
-        variant="bodyMedium"
-        sx={{ color: "m3.onSurfaceVariant", mr: gap }}
+        sx={{ color: colors.onSurfaceVariant, mr: gap }}
       >
         {compactNumber(count)}
       </Typography>
@@ -105,7 +104,7 @@ export function PostPreviewCard({
       component="article"
       onClick={open}
       sx={{
-        bgcolor: "m3.surfaceContainerLowest",
+        bgcolor: colors.surfaceContainerLowest,
         cursor: "pointer",
         breakInside: "avoid",
         mb: isMobile ? 0 : "40px",
@@ -147,8 +146,8 @@ export function PostPreviewCard({
       )}
       <Typography
         sx={{
-          ...appText.body,
-          color: "m3.onSurfaceVariant",
+          fontSize: fontSizes.md,
+          color: colors.onSurfaceVariant,
           px: "20px",
           display: "-webkit-box",
           WebkitLineClamp: 5,
@@ -167,7 +166,7 @@ export function PostPreviewCard({
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="bodyMedium" sx={{ color: "m3.onSurfaceVariant" }}>
+        <Typography sx={{ color: colors.onSurfaceVariant }}>
           {thread.commentCount === 0
             ? "No Comments"
             : pluralize(thread.commentCount, "Comment")}
@@ -187,13 +186,13 @@ export function PostPreviewCard({
           <Box
             sx={{
               borderLeft: "1px solid",
-              borderColor: "m3.outline",
+              borderColor: colors.outline,
               pl: "10px",
             }}
           >
             <Typography
               sx={{
-                ...appText.body,
+                fontSize: fontSizes.md,
                 display: "-webkit-box",
                 WebkitLineClamp: 3,
                 WebkitBoxOrient: "vertical",
@@ -203,7 +202,6 @@ export function PostPreviewCard({
               {latest.comment}
             </Typography>
             <Typography
-              variant="bodyMedium"
               sx={{ textDecoration: "underline", mt: "4px" }}
             >
               See more
@@ -221,13 +219,12 @@ export function PostPreviewCard({
             p: "10px",
             borderRadius: "10px",
             border: "1px solid",
-            borderColor: "m3.outline",
+            borderColor: colors.outline,
           }}
         >
           <Avatar name={me?.displayName} imageUrl={me?.imageUrl} size={42} />
           <Typography
-            variant="bodyMedium"
-            sx={{ color: "m3.onSurfaceVariant" }}
+            sx={{ color: colors.onSurfaceVariant }}
           >
             Reply
           </Typography>

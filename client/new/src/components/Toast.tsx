@@ -1,6 +1,7 @@
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
+import { colors } from "@/theme/tokens";
 
 export type ToastType = 'regular' | 'success' | 'error';
 
@@ -68,8 +69,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           variant="filled"
           onClose={() => setOpen(false)}
           sx={{
-            bgcolor: current?.type === 'error' ? 'm3.error' : current?.type === 'success' ? '#1a6e2e' : 'm3.inverseSurface',
-            color: current?.type === 'regular' ? 'm3.onInverseSurface' : '#fff',
+            bgcolor: current?.type === 'error' ? colors.error : current?.type === 'success' ? '#1a6e2e' : colors.inverseSurface,
+            color: current?.type === 'regular' ? colors.onInverseSurface : '#fff',
             alignItems: 'center',
           }}
         >

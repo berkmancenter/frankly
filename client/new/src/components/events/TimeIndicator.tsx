@@ -5,6 +5,7 @@ import {
   formatTimeShort,
   formatWeekdayShort,
 } from "@/utils/format";
+import { colors, fontSizes } from "@/theme/tokens";
 
 /** `VerticalTimeAndDateIndicator`: MON / day number / weekday / `6:00p - 7:00p`. */
 export function VerticalTimeAndDateIndicator({
@@ -21,7 +22,7 @@ export function VerticalTimeAndDateIndicator({
   const end = durationMinutes
     ? new Date(time.getTime() + durationMinutes * 60_000)
     : undefined;
-  const color = disabled ? "rgba(28,27,27,0.75)" : "m3.onSurface";
+  const color = disabled ? "rgba(28,27,27,0.75)" : colors.onSurface;
   const timeString = end
     ? `${formatTimeShort(time)} - ${formatTimeShort(end)}`
     : formatTimeShort(time);
@@ -36,17 +37,16 @@ export function VerticalTimeAndDateIndicator({
         flexShrink: 0,
       }}
     >
-      <Typography variant="bodySmall" sx={{ color: "inherit" }}>
+      <Typography sx={{ fontSize: fontSizes.xs, color: "inherit" }}>
         {formatMonthShortUpper(time)}
       </Typography>
-      <Typography variant="headlineMedium" sx={{ color: "inherit" }}>
+      <Typography component="h2" sx={{ fontSize: fontSizes["3xl"], color: "inherit" }}>
         {time.getDate()}
       </Typography>
-      <Typography variant="bodyMedium" sx={{ color: "inherit" }}>
+      <Typography sx={{ color: "inherit" }}>
         {formatWeekdayShort(time)}
       </Typography>
       <Typography
-        variant="bodyMedium"
         sx={{ color: "inherit", fontSize: 14, whiteSpace: "nowrap" }}
       >
         {timeString}

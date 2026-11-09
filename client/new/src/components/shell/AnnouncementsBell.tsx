@@ -19,6 +19,7 @@ import {
 } from "@/queries/content";
 import { useCommunityScope } from "@/scopes/CommunityScope";
 import { TextField } from "@mui/material";
+import { colors, fontSizes } from "@/theme/tokens";
 
 /** `AnnouncementsIcon`: bell in the nav bar; opens a popover with the community's announcements. */
 export function AnnouncementsBell() {
@@ -39,7 +40,7 @@ export function AnnouncementsBell() {
       <IconButton
         aria-label="Show Announcements Button"
         onClick={(e) => setAnchor(e.currentTarget)}
-        sx={{ color: anchor ? "m3.onSurface" : "m3.onSurfaceVariant" }}
+        sx={{ color: anchor ? colors.onSurface : colors.onSurfaceVariant }}
       >
         <NotificationsNoneRoundedIcon sx={{ fontSize: 30 }} />
       </IconButton>
@@ -55,14 +56,14 @@ export function AnnouncementsBell() {
               width: 260,
               p: "12px",
               borderRadius: "8px",
-              bgcolor: "m3.surfaceContainerLowest",
+              bgcolor: colors.surfaceContainerLowest,
               maxHeight: announcements?.length ? 400 : 200,
               boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
             },
           },
         }}
       >
-        <Typography variant="titleSmall">Announcements</Typography>
+        <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500 }}>Announcements</Typography>
         {permissions.canEditCommunity && (
           <Box sx={{ mt: "16px" }}>
             <ThickOutlineButton
@@ -76,11 +77,11 @@ export function AnnouncementsBell() {
         )}
         <Box sx={{ mt: "30px" }}>
           {isError ? (
-            <Typography variant="bodyMedium">
+            <Typography>
               There was an error while loading Announcements
             </Typography>
           ) : isPending ? null : announcements.length === 0 ? (
-            <Typography variant="bodyMedium">No announcements yet.</Typography>
+            <Typography>No announcements yet.</Typography>
           ) : (
             announcements.map((a) => (
               <Box key={a.id} sx={{ mb: "25px" }}>
@@ -91,7 +92,7 @@ export function AnnouncementsBell() {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography variant="titleSmall">
+                  <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500 }}>
                     {a.title || "Announcement"}
                   </Typography>
                   {permissions.canEditCommunity && (
@@ -131,7 +132,6 @@ export function AnnouncementsBell() {
                   {a.createdDate && formatLongStamp(new Date(a.createdDate))}
                 </Typography>
                 <Typography
-                  variant="bodyMedium"
                   sx={{ whiteSpace: "pre-wrap" }}
                 >
                   {a.message}

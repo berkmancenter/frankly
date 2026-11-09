@@ -15,7 +15,7 @@ import { ConstrainedBody } from "@/components/ConstrainedBody";
 import { useIsMobile } from "@/utils/useResponsive";
 import { useResources } from "@/queries/content";
 import { useCommunityScopeOrNull } from "@/scopes/CommunityScope";
-import { appSize } from "@/theme/typography";
+import { appSize, colors, fontSizes } from "@/theme/tokens";
 import { AnnouncementsBell } from "./AnnouncementsBell";
 import { CurrentCommunityIconOrLogo } from "./CurrentCommunityIconOrLogo";
 import { OnboardingBanner, currentOnboardingStep } from "./OnboardingBanner";
@@ -40,8 +40,8 @@ function NavTextButton({
         }}
       >
         <Typography
-          variant="titleMedium"
-          sx={{ color: selected ? "m3.onSurface" : "m3.onSurfaceVariant" }}
+          component="div"
+          sx={{ fontSize: fontSizes.md, fontWeight: 500, color: selected ? colors.onSurface : colors.onSurfaceVariant }}
         >
           {title}
         </Typography>
@@ -95,7 +95,7 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
       )}
       <Box
         sx={{
-          bgcolor: "m3.surfaceContainerLowest",
+          bgcolor: colors.surfaceContainerLowest,
           display: "flex",
           justifyContent: "center",
         }}
@@ -129,7 +129,7 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
                     maxTextWidth={180}
                     maxLines={2}
                     text={community.name}
-                    sx={{ ...{ typography: "titleMedium" }, textAlign: "left" }}
+                    sx={{ fontSize: fontSizes.md, fontWeight: 500, textAlign: "left" }}
                     onPress={() => navigate(links.home)}
                   />
                 </Box>
@@ -234,7 +234,7 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
           </Box>
         </ConstrainedBody>
       </Box>
-      <Box sx={{ height: "1px", bgcolor: "m3.outline" }} />
+      <Box sx={{ height: "1px", bgcolor: colors.outline }} />
     </Box>
   );
 }

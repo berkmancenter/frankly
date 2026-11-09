@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import { useNavigate } from 'react-router';
 import { paths } from '@/app/paths';
 import { useCreateEventDialog } from '@/features/events/CreateEventDialog';
-import { appSize } from '@/theme/typography';
+import { appSize, colors } from "@/theme/tokens";
 import { ProfileMenu } from './ProfileMenu';
 import { SelectableNavigationIcon } from './SelectableNavigationIcon';
 
@@ -14,7 +14,7 @@ export function HomeBottomNavBar() {
   return (
     <Box
       sx={{
-        bgcolor: 'm3.surfaceContainer',
+        bgcolor: colors.surfaceContainer,
         height: appSize.bottomNavBarHeight,
         display: 'flex',
         alignItems: 'center',
@@ -37,7 +37,7 @@ export function CommunityBottomNavBar({ showCreateEventButton }: { showCreateEve
       component="nav"
       aria-label="Bottom navigation"
       sx={{
-        bgcolor: 'm3.surfaceContainer',
+        bgcolor: colors.surfaceContainer,
         py: '16px',
         display: 'flex',
         alignItems: 'center',

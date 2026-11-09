@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ActionButton, type ActionButtonType } from './ActionButton';
+import { colors, fontSizes } from "@/theme/tokens";
 
 export type EmptyPageType = 'posts' | 'events' | 'resources';
 
@@ -47,7 +48,7 @@ export function EmptyPageContent({
         p: '10px',
         boxSizing: 'border-box',
         borderRadius: '10px',
-        bgcolor: showContainer ? 'm3.surfaceContainerLowest' : 'transparent',
+        bgcolor: showContainer ? colors.surfaceContainerLowest : 'transparent',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -58,10 +59,10 @@ export function EmptyPageContent({
       <Box sx={{ fontSize: 62, lineHeight: 1.2 }} aria-hidden>
         {ICONS[type]}
       </Box>
-      <Typography variant="titleLarge" sx={{ mt: '10px' }}>
+      <Typography component="h3" sx={{ fontSize: fontSizes.xl, mt: '10px' }}>
         {titleText ?? `No ${type}`}
       </Typography>
-      <Typography variant="labelLarge" sx={{ mt: '20px', width: 205 }}>
+      <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500, mt: '20px', width: 205 }}>
         {subtitleText ?? `When new ${type} are added, you'll see them here.`}
       </Typography>
       {onButtonPress && (

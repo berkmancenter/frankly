@@ -11,6 +11,7 @@ import { paths } from "@/app/paths";
 import { ConstrainedBody } from "@/components/ConstrainedBody";
 import { useIsMobile } from "@/utils/useResponsive";
 import { useCreateEventDialog } from "@/features/events/CreateEventDialog";
+import { colors } from "@/theme/tokens";
 
 /** Order and copy of the admin onboarding checklist (`OnboardingStepExtension`). */
 export const ONBOARDING_STEPS: OnboardingStep[] = [
@@ -93,7 +94,7 @@ export function OnboardingBanner({
         aria-label="Onboarding progress"
         sx={{
           bgcolor: "primary.contrastText",
-          "& .MuiLinearProgress-bar": { bgcolor: "m3.primaryFixedDim" },
+          "& .MuiLinearProgress-bar": { bgcolor: colors.primaryFixedDim },
           height: 6,
           borderRadius: 3,
         }}
@@ -108,13 +109,11 @@ export function OnboardingBanner({
     >
       <img src={`/media/${copy.icon}`} alt="" width={16} height={16} />
       <Typography
-        variant="bodyMedium"
         sx={{ fontSize: 16, fontWeight: 600, color: "inherit" }}
       >
         {copy.title}
       </Typography>
       <Typography
-        variant="bodyMedium"
         sx={{ fontSize: 16, fontWeight: 600, color: "inherit", ml: "5px" }}
       >
         {copy.section}
@@ -127,7 +126,7 @@ export function OnboardingBanner({
     <Box
       role="region"
       aria-label="Community onboarding"
-      sx={{ bgcolor: "m3.primaryContainer", py: "5px", px: "10px" }}
+      sx={{ bgcolor: colors.primaryContainer, py: "5px", px: "10px" }}
     >
       {isMobile ? (
         <Box>

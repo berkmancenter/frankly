@@ -16,6 +16,7 @@ import { useCreateThread, useUpdateThread } from "@/queries/threads";
 import { useCurrentUser } from "@/queries/me";
 import { useCommunityScope } from "@/scopes/CommunityScope";
 import { EMOTIONS } from "./EmotionSection";
+import { colors } from "@/theme/tokens";
 
 const EMOJI_CHARS = ["👍", "❤️", "💯", "❗", "➕", "😂", "😍"];
 
@@ -75,7 +76,7 @@ export function CreatePostDialog({
             width: "100%",
             maxWidth: 640,
             borderRadius: isMobile ? 0 : "10px",
-            bgcolor: "m3.surfaceContainerLowest",
+            bgcolor: colors.surfaceContainerLowest,
             m: isMobile ? 0 : 2,
           },
         },
@@ -152,7 +153,7 @@ export function CreatePostDialog({
             fontFamily: "inherit",
             fontSize: 16,
             lineHeight: 1.5,
-            color: "m3.onSurface",
+            color: colors.onSurface,
             bgcolor: "transparent",
           }}
         />
@@ -162,7 +163,7 @@ export function CreatePostDialog({
             sx={{ gap: "10px", borderRadius: 1, color: "primary.main" }}
           >
             <AttachFileRoundedIcon />
-            <Typography variant="bodyMedium" sx={{ color: "primary.main" }}>
+            <Typography sx={{ color: "primary.main" }}>
               Image
             </Typography>
           </ButtonBase>

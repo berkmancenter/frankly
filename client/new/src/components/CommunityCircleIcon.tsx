@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import type { Community } from "@/api/types";
 import { initials } from "@/utils/format";
+import { colors } from "@/theme/tokens";
 
 /** `CommunityCircleIcon`: the community's picture in a circle (tooltip = its name). */
 export function CommunityCircleIcon({
@@ -20,16 +21,16 @@ export function CommunityCircleIcon({
           width: size,
           height: size,
           borderRadius: "50%",
-          bgcolor: "m3.onPrimaryContainer",
+          bgcolor: colors.onPrimaryContainer,
           border: bordered ? "1px solid" : "none",
-          borderColor: "m3.onPrimaryContainer",
+          borderColor: colors.onPrimaryContainer,
           boxSizing: "border-box",
           overflow: "hidden",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           flexShrink: 0,
-          color: "m3.primaryContainer",
+          color: colors.primaryContainer,
           fontWeight: 600,
         }}
       >

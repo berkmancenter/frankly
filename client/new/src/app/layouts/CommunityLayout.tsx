@@ -6,8 +6,7 @@ import { CommunityBottomNavBar } from "@/components/shell/BottomNavBar";
 import { useCreateEventDialog } from "@/features/events/CreateEventDialog";
 import { useShowBottomNav } from "@/utils/useResponsive";
 import { CommunityScope, useCommunityScope } from "@/scopes/CommunityScope";
-import { communityBackground, communityScheme, lightScheme } from "@/theme/m3";
-import { createAppTheme } from "@/theme/theme";
+import { communityColors, createAppTheme } from "@/theme/theme";
 
 /** Per-route options, the port of the arguments `CommunityLocation.buildPages` passes to `CommunityPage`. */
 export interface CommunityRouteHandle {
@@ -36,12 +35,7 @@ function CommunityFrame() {
   // Pages inside a community use the community's colors.
   const theme = useMemo(
     () =>
-      createAppTheme(
-        communityScheme(lightScheme, {
-          dark: community.themeDarkColor,
-          light: community.themeLightColor,
-        }),
-      ),
+      createAppTheme(communityColors(community)),
     [community.themeDarkColor, community.themeLightColor],
   );
 
@@ -49,9 +43,7 @@ function CommunityFrame() {
 
   return (
     <AppScaffold
-      bgColor={communityBackground(lightScheme, {
-        light: community.themeLightColor,
-      })}
+      bgColor={communityColors(community).secondary}
       childTheme={theme}
       bottomNav={
         showBottomNav ? (

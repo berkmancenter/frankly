@@ -1,6 +1,6 @@
 import Box, { type BoxProps } from '@mui/material/Box';
 import type { ReactNode } from 'react';
-import { appSize } from '@/theme/typography';
+import { appSize } from '@/theme/tokens';
 
 interface ConstrainedBodyProps extends Omit<BoxProps, 'children'> {
   children: ReactNode;

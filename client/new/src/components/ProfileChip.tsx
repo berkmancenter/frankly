@@ -42,7 +42,6 @@ export function ProfileChip({
       <Avatar name={user?.displayName} imageUrl={user?.imageUrl} size={size} />
       {showName && (
         <Typography
-          variant="bodyMedium"
           sx={{
             px: '8px',
             fontWeight: nameWeight,

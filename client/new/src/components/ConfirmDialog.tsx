@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { useCallback, useRef, useState, type ReactNode } from "react";
 import { useIsMobile } from "@/utils/useResponsive";
 import { ActionButton } from "./ActionButton";
+import { fontSizes } from "@/theme/tokens";
 
 export interface ConfirmOptions {
   title?: string;
@@ -83,20 +84,19 @@ export function ConfirmDialogView({
       </Box>
       {title && (
         <Typography
-          variant={isMobile ? "headlineMedium" : "headlineSmall"}
-          sx={{ textAlign, mb: "10px" }}
+          component="h2"
+          sx={{ fontSize: isMobile ? fontSizes["3xl"] : fontSizes["2xl"], textAlign, mb: "10px" }}
         >
           {title}
         </Typography>
       )}
       {mainText && (
-        <Typography variant="bodyLarge" sx={{ textAlign, mb: "10px" }}>
+        <Typography sx={{ fontSize: fontSizes.md, textAlign, mb: "10px" }}>
           {mainText}
         </Typography>
       )}
       {subText && (
         <Typography
-          variant="bodyMedium"
           sx={{ textAlign: "center", mb: "10px" }}
         >
           {subText}

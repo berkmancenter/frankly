@@ -7,7 +7,7 @@ import ButtonBase from "@mui/material/ButtonBase";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import { useIsMobile } from "@/utils/useResponsive";
-import { appSize, appText } from "@/theme/typography";
+import { appSize, fontSizes } from "@/theme/tokens";
 import { NavBar } from "./NavBar";
 import { SideBar } from "./SideBar";
 
@@ -118,7 +118,7 @@ export function ScaffoldFab({
     >
       <AddIcon sx={{ fontSize: 41 }} />
       {!isMobile && (
-        <Typography sx={{ ...appText.subhead, color: "inherit", pr: "3px" }}>
+        <Typography sx={{ fontSize: fontSizes.lg, fontWeight: 500, color: "inherit", pr: "3px" }}>
           {text}
         </Typography>
       )}

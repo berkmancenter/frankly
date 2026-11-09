@@ -2,6 +2,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import type { ReactNode } from 'react';
+import { colors, fontSizes } from "@/theme/tokens";
 
 /** Centered spinner; `height` reserves space so pages don't jump when data arrives. */
 export function LoadingState({ height = 300, message }: { height?: number | string; message?: string }) {
@@ -17,7 +18,7 @@ export function LoadingState({ height = 300, message }: { height?: number | stri
       }}
     >
       <CircularProgress color="primary" />
-      {message && <Typography variant="bodyMedium">{message}</Typography>}
+      {message && <Typography>{message}</Typography>}
     </Box>
   );
 }
@@ -45,7 +46,7 @@ export function ErrorState({
         p: 2,
       }}
     >
-      <Typography variant="bodyLarge" sx={{ color: 'm3.onSurfaceVariant' }}>
+      <Typography sx={{ fontSize: fontSizes.md, color: colors.onSurfaceVariant }}>
         {message}
       </Typography>
       {action}

@@ -19,7 +19,7 @@ import { useCreateEventDialog } from "@/features/events/CreateEventDialog";
 import { useIsMobile } from "@/utils/useResponsive";
 import { useAllEvents, useUpcomingEvents } from "@/queries/events";
 import { useCommunityScope } from "@/scopes/CommunityScope";
-import { appSize, appText } from "@/theme/typography";
+import { appSize, colors, fontSizes } from "@/theme/tokens";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 
@@ -179,15 +179,24 @@ function CommunityDetail({ community }: { community: Community }) {
         />
       )}
       <Typography
-        variant="headlineMedium"
-        sx={{ color: "primary.contrastText", mt: "24px" }}
+        component="h2"
+        sx={{
+          fontSize: fontSizes["3xl"],
+          color: "primary.contrastText",
+          mt: "24px",
+        }}
       >
         {community.name}
       </Typography>
       {community.tagLine && (
         <Typography
-          variant="titleMedium"
-          sx={{ color: "primary.contrastText", mt: "16px" }}
+          component="div"
+          variant="body1"
+          sx={{
+            fontWeight: 500,
+            color: "primary.contrastText",
+            mt: "16px",
+          }}
         >
           {community.tagLine}
         </Typography>
@@ -203,13 +212,13 @@ function AboutSection({ description }: { description: string }) {
     !long || expanded ? description : `${description.slice(0, ABOUT_LIMIT)}...`;
   return (
     <Box>
-      <Typography variant="titleMedium">
+      <Typography
+        component="div"
+        sx={{ fontSize: fontSizes.md, fontWeight: 500 }}
+      >
         <Trans id="aboutUs">About Us</Trans>
       </Typography>
-      <Typography
-        variant="bodyMedium"
-        sx={{ mt: "10px", whiteSpace: "pre-wrap" }}
-      >
+      <Typography sx={{ mt: "10px", whiteSpace: "pre-wrap" }}>
         {text}
       </Typography>
       {long && (
@@ -218,7 +227,6 @@ function AboutSection({ description }: { description: string }) {
           sx={{ mt: "10px", display: "block" }}
         >
           <Typography
-            variant="bodyMedium"
             sx={{ textDecoration: "underline", color: "primary.main" }}
           >
             <Trans>{expanded ? "Less" : "Read More"}</Trans>
@@ -240,7 +248,9 @@ function ContactSection({ community }: { community: Community }) {
     <Box>
       {email && (
         <>
-          <Typography sx={{ ...appText.headline4, color: "primary.main" }}>
+          <Typography
+            sx={{ fontSize: fontSizes["4xl"], color: "primary.main" }}
+          >
             <Trans id="contact">Contact</Trans>
           </Typography>
           <Box sx={{ height: 10 }} />
@@ -248,7 +258,7 @@ function ContactSection({ community }: { community: Community }) {
             component="a"
             href={`mailto:${email}`}
             sx={{
-              ...appText.bodyMedium,
+              fontSize: fontSizes.sm,
               color: "primary.main",
               textDecoration: "none",
             }}
@@ -322,7 +332,7 @@ function EventsBlock({
 
   return (
     <Box>
-      <Typography sx={{ ...appText.headline4, color: "primary.main" }}>
+      <Typography sx={{ fontSize: fontSizes["4xl"], color: "primary.main" }}>
         <Trans id="upcomingEvents">Upcoming Events</Trans>
       </Typography>
       <Box sx={{ height: 10 }} />
@@ -340,10 +350,10 @@ function EventsBlock({
               height: 40,
               borderRadius: "10px",
               border: "1px solid",
-              borderColor: "m3.onSurface",
+              borderColor: colors.onSurface,
             }}
           >
-            <Typography sx={appText.eyebrowSmall}>
+            <Typography sx={{ fontSize: fontSizes.sm }}>
               <Trans id="seeMoreEvents">See More Events</Trans>
             </Typography>
           </ButtonBase>

@@ -9,6 +9,7 @@ import { roleLabel } from "@/utils/membership";
 import { useCommunityScopeOrNull } from "@/scopes/CommunityScope";
 import { useUser } from "@/queries/me";
 import { useMembers } from "@/queries/communities";
+import { colors, fontSizes } from "@/theme/tokens";
 
 /**
  * Read-only profile drawer opened from any avatar: 160px picture, name, role in the current
@@ -55,8 +56,12 @@ export function ProfileDrawer({
             ring={false}
           />
           <Typography
-            variant="headlineSmall"
-            sx={{ fontWeight: 700, lineHeight: 1.1 }}
+            component="h2"
+            sx={{
+              fontSize: fontSizes["2xl"],
+              fontWeight: 700,
+              lineHeight: 1.1,
+            }}
           >
             {user.displayName}
           </Typography>
@@ -65,8 +70,11 @@ export function ProfileDrawer({
           )}
           {user.about && (
             <Typography
-              variant="bodyLarge"
-              sx={{ color: "m3.onSurfaceVariant", lineHeight: 1.5 }}
+              sx={{
+                fontSize: fontSizes.md,
+                color: colors.onSurfaceVariant,
+                lineHeight: 1.5,
+              }}
             >
               {user.about}
             </Typography>
@@ -87,5 +95,7 @@ function RoleRow({
   const { data: members } = useMembers(communityId);
   const status = members?.find((m) => m.user.id === userId)?.membership.status;
   if (!status) return null;
-  return <Typography variant="bodyLarge">{roleLabel(status)}</Typography>;
+  return (
+    <Typography sx={{ fontSize: fontSizes.md }}>{roleLabel(status)}</Typography>
+  );
 }

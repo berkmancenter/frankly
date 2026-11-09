@@ -19,6 +19,7 @@ import { useDragScroll } from "@/utils/useDragScroll";
 import { useUpcomingEvents } from "@/queries/events";
 import { useCommunityScope } from "@/scopes/CommunityScope";
 import { useCreateEventDialog } from "./CreateEventDialog";
+import { colors, fontSizes } from "@/theme/tokens";
 
 /** `/space/:displayId/discuss/upcoming`: search, a 90-day date strip, and the flat list of upcoming events. */
 export function EventsPage() {
@@ -62,14 +63,14 @@ export function EventsPage() {
             sx={{
               maxWidth: 450,
               borderRadius: "10px",
-              bgcolor: "m3.surfaceContainerLowest",
+              bgcolor: colors.surfaceContainerLowest,
               pl: "12px",
               pr: "32px",
               display: "flex",
               alignItems: "center",
             }}
           >
-            <SearchIcon sx={{ mx: "10px", color: "m3.onSurface" }} />
+            <SearchIcon sx={{ mx: "10px", color: colors.onSurface }} />
             <Box
               component="input"
               aria-label="Search events"
@@ -86,8 +87,8 @@ export function EventsPage() {
                 fontFamily: "inherit",
                 fontSize: 16,
                 height: 56,
-                color: "m3.onSurface",
-                "&::placeholder": { color: "m3.onSurfaceVariant" },
+                color: colors.onSurface,
+                "&::placeholder": { color: colors.onSurfaceVariant },
               }}
             />
           </Box>
@@ -127,21 +128,21 @@ export function EventsPage() {
                 bgcolor: selected
                   ? "primary.main"
                   : disabled
-                    ? "m3.surfaceContainer"
-                    : "m3.surfaceContainerLowest",
+                    ? colors.surfaceContainer
+                    : colors.surfaceContainerLowest,
                 color: selected
                   ? "primary.contrastText"
-                  : "m3.onSurfaceVariant",
+                  : colors.onSurfaceVariant,
                 "&.Mui-disabled": { opacity: 1 },
               }}
             >
-              <Typography variant="titleSmall" sx={{ color: "inherit" }}>
+              <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500, color: "inherit" }}>
                 {formatMonthShortUpper(day)}
               </Typography>
-              <Typography variant="headlineLarge" sx={{ color: "inherit" }}>
+              <Typography component="h2" sx={{ fontSize: fontSizes["4xl"], color: "inherit" }}>
                 {day.getDate()}
               </Typography>
-              <Typography variant="titleSmall" sx={{ color: "inherit" }}>
+              <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500, color: "inherit" }}>
                 {formatWeekdayShort(day)}
               </Typography>
             </ButtonBase>

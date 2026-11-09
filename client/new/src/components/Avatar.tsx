@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { initials } from "@/utils/format";
+import { colors } from "@/theme/tokens";
 
 interface AvatarProps {
   name?: string | null;
@@ -30,7 +31,7 @@ export function Avatar({
           borderRadius: "50%",
           boxSizing: "border-box",
           border: ring ? "2px solid" : "none",
-          borderColor: "m3.surfaceContainer",
+          borderColor: colors.surfaceContainer,
           bgcolor: "primary.main",
           color: "primary.contrastText",
           display: "flex",

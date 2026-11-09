@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import type { ReactNode } from 'react';
+import { colors } from "@/theme/tokens";
 
 /** Nav icon with a 24x2 `primary` indicator under it while selected. */
 export function SelectableNavigationIcon({
@@ -19,7 +20,7 @@ export function SelectableNavigationIcon({
       <IconButton
         aria-label={label}
         onClick={onClick}
-        sx={{ color: selected ? 'm3.onSurface' : 'm3.onSurfaceVariant' }}
+        sx={{ color: selected ? colors.onSurface : colors.onSurfaceVariant }}
       >
         {icon}
       </IconButton>

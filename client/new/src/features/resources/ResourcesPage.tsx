@@ -15,6 +15,7 @@ import { ErrorState, LoadingState } from '@/components/States';
 import { useResources, useRemoveResource } from '@/queries/content';
 import { useCommunityScope } from '@/scopes/CommunityScope';
 import { ResourceDialog } from './ResourceDialog';
+import { colors } from "@/theme/tokens";
 
 /** `/space/:displayId/resources`: link cards (60px picture + title); admins can add, edit and delete. */
 export function ResourcesPage() {
@@ -45,9 +46,9 @@ export function ResourcesPage() {
                 key={r.id}
                 sx={{
                   border: '1px solid',
-                  borderColor: 'm3.outlineVariant',
+                  borderColor: colors.outlineVariant,
                   borderRadius: '12px',
-                  bgcolor: 'm3.surfaceContainerLowest',
+                  bgcolor: colors.surfaceContainerLowest,
                   display: 'flex',
                   alignItems: 'center',
                   pr: '8px',
@@ -61,7 +62,7 @@ export function ResourcesPage() {
                   sx={{ flex: 1, minWidth: 0, p: '20px', gap: '20px', justifyContent: 'flex-start', textAlign: 'left', borderRadius: '10px' }}
                 >
                   <Img src={r.image} width={60} height={60} radius="10px" />
-                  <Typography variant="bodyMedium" sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography sx={{ flex: 1, minWidth: 0 }}>
                     {r.title}
                   </Typography>
                 </ButtonBase>

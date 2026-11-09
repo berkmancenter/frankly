@@ -11,6 +11,7 @@ import { isBlank } from "@/utils/strings";
 import { useIsMobile } from "@/utils/useResponsive";
 import { useAddComment } from "@/queries/threads";
 import { useCommunityScope } from "@/scopes/CommunityScope";
+import { colors, fontSizes } from "@/theme/tokens";
 
 /** "Add comment" compose dialog (also used for replies to a comment). */
 export function AddCommentDialog({
@@ -42,7 +43,7 @@ export function AddCommentDialog({
             maxHeight: 600,
             borderRadius: "10px",
             p: isMobile ? "20px" : "40px",
-            bgcolor: "m3.surfaceContainerLowest",
+            bgcolor: colors.surfaceContainerLowest,
           },
         },
       }}
@@ -54,7 +55,10 @@ export function AddCommentDialog({
           justifyContent: "space-between",
         }}
       >
-        <Typography variant={isMobile ? "headlineMedium" : "headlineSmall"}>
+        <Typography
+          component="h2"
+          sx={{ fontSize: isMobile ? fontSizes["3xl"] : fontSizes["2xl"] }}
+        >
           Add comment
         </Typography>
         <IconButton aria-label="Close" onClick={onClose}>

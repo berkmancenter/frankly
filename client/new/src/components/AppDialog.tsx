@@ -3,6 +3,7 @@ import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import type { ReactNode } from "react";
 import { useIsMobile } from "@/utils/useResponsive";
+import { colors } from "@/theme/tokens";
 
 interface AppDialogProps {
   open: boolean;
@@ -31,9 +32,9 @@ export function AppDialog({
   children,
   maxWidth = 700,
   fullscreenOnMobile = false,
-  padding = 30,
+  padding = 50,
   hideClose,
-  background = "m3.surfaceContainerLowest",
+  background = colors.surfaceContainerLowest,
   closeLabel = "Close",
   ariaLabel,
 }: AppDialogProps) {
@@ -70,8 +71,9 @@ export function AppDialog({
             position: "absolute",
             top: 12,
             right: 12,
+
             zIndex: 1,
-            color: "m3.onSurface",
+            color: colors.onSurface,
           }}
         >
           <CloseIcon />

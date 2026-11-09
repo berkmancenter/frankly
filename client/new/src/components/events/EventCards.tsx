@@ -12,6 +12,7 @@ import { useHasAttendedTemplate } from "@/queries/templates";
 import { useMembership } from "@/queries/me";
 import { ParticipantsRow } from "./ParticipantsRow";
 import { VerticalTimeAndDateIndicator } from "./TimeIndicator";
+import { colors, fontSizes } from "@/theme/tokens";
 
 /** Is the user locked out of this event by an unmet prerequisite? Admins never are. */
 function usePrerequisiteLock(event: Event): boolean {
@@ -53,9 +54,9 @@ export function EventCard({ event }: { event: Event }) {
       <Box
         sx={{
           border: "1px solid",
-          borderColor: "m3.outlineVariant",
+          borderColor: colors.outlineVariant,
           borderRadius: "12px",
-          bgcolor: locked ? "m3.surfaceContainer" : "m3.surfaceContainerLowest",
+          bgcolor: locked ? colors.surfaceContainer : colors.surfaceContainerLowest,
           overflow: "hidden",
           p: "8px",
           display: "flex",
@@ -84,9 +85,9 @@ export function EventCard({ event }: { event: Event }) {
           }}
         >
           <Typography
-            variant="titleMedium"
+            component="div"
             sx={{
-              color: locked ? "rgba(28,27,27,0.75)" : "m3.onSurface",
+              fontSize: fontSizes.md, fontWeight: 500, color: locked ? "rgba(28,27,27,0.75)" : colors.onSurface,
               display: "-webkit-box",
               WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
@@ -102,8 +103,7 @@ export function EventCard({ event }: { event: Event }) {
               <>
                 {event.eventType === "livestream" && (
                   <Typography
-                    variant="bodySmall"
-                    sx={{ color: "rgba(28,27,27,0.75)" }}
+                    sx={{ fontSize: fontSizes.xs, color: "rgba(28,27,27,0.75)" }}
                   >
                     Livestream
                   </Typography>

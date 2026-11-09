@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { isSameCalendarDay, startOfDay } from "@/utils/format";
+import { colors, fontSizes } from "@/theme/tokens";
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
 const monthName = new Intl.DateTimeFormat("en-US", {
@@ -59,7 +60,7 @@ export function MonthCalendar({
           mb: "8px",
         }}
       >
-        <Typography variant="titleSmall">{monthName.format(cursor)}</Typography>
+        <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500 }}>{monthName.format(cursor)}</Typography>
         <Box>
           <IconButton
             aria-label="Previous month"
@@ -95,8 +96,7 @@ export function MonthCalendar({
         {WEEKDAYS.map((d, i) => (
           <Typography
             key={i}
-            variant="bodySmall"
-            sx={{ color: "m3.onSurface", height: 40, lineHeight: "40px" }}
+            sx={{ fontSize: fontSizes.xs, color: colors.onSurface, height: 40, lineHeight: "40px" }}
           >
             {d}
           </Typography>
@@ -123,9 +123,9 @@ export function MonthCalendar({
                   ? "primary.contrastText"
                   : disabled
                     ? "rgba(28,27,27,0.38)"
-                    : "m3.onSurface",
+                    : colors.onSurface,
                 border: isToday && !selected ? "1px solid" : "none",
-                borderColor: "m3.outline",
+                borderColor: colors.outline,
                 "&:hover": {
                   bgcolor: selected ? "primary.main" : "action.hover",
                 },
@@ -181,15 +181,15 @@ export function TimeInput({
           textAlign: "center",
           fontSize: 45,
           fontFamily: "inherit",
-          color: "m3.onSurface",
-          bgcolor: "m3.surfaceContainerHighest",
+          color: colors.onSurface,
+          bgcolor: colors.surfaceContainerHighest,
           border: "2px solid transparent",
           borderRadius: "8px",
           outline: "none",
           "&:focus": { borderColor: "primary.main" },
         }}
       />
-      <Typography variant="bodySmall" sx={{ display: "block", mt: "4px" }}>
+      <Typography sx={{ fontSize: fontSizes.xs, display: "block", mt: "4px" }}>
         {label}
       </Typography>
     </Box>
@@ -225,7 +225,7 @@ export function TimeInput({
         sx={{
           ml: "12px",
           border: "1px solid",
-          borderColor: "m3.outline",
+          borderColor: colors.outline,
           borderRadius: "8px",
           overflow: "hidden",
           height: 72,
@@ -244,12 +244,12 @@ export function TimeInput({
                 height: 36,
                 fontSize: 16,
                 fontWeight: 500,
-                bgcolor: selected ? "m3.secondaryContainer" : "transparent",
+                bgcolor: selected ? colors.secondaryContainer : "transparent",
                 color: selected
-                  ? "m3.onSecondaryContainer"
-                  : "m3.onSurfaceVariant",
+                  ? colors.onSecondaryContainer
+                  : colors.onSurfaceVariant,
                 borderTop: label === "PM" ? "1px solid" : "none",
-                borderColor: "m3.outline",
+                borderColor: colors.outline,
               }}
             >
               {label}
