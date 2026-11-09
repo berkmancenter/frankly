@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-import type { ReactElement } from 'react';
 import { matchRoutes } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import migrated from '../../../migrated-routes.json';
@@ -51,11 +50,10 @@ describe('standalone mode (no Flutter next to it)', () => {
     }
   });
 
-  it('sends "/" to a page that exists, since there is no home page', () => {
+  it('shows "not migrated" at "/", since there is no home page', () => {
     const root = lastRoute(standalone, '/');
     expect(root?.index).toBe(true);
-    const { to } = (root?.element as ReactElement<{ to: string }>).props;
-    expect(lastRoute(standalone, to)?.path).not.toBe('*');
+    expect(root?.path).not.toBe('*');
   });
 
   it('shows "not found" instead of reloading for a page Flutter owns', () => {

@@ -21,6 +21,7 @@ import {
   type DocumentReference,
   type QueryDocumentSnapshot,
 } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 import type { Api, ParticipantWithUser } from "./api";
 import { ApiError } from "./api";
 import type { FirebaseClient } from "./firebase";
@@ -116,7 +117,12 @@ function requiredString(value: unknown, field: string): string {
 }
 
 async function requireUser(client: FirebaseClient) {
-  await client.auth.authStateReady();
+  await new Promise<void>((resolve) => {
+    const unsubscribe = onAuthStateChanged(client.auth, () => {
+      unsubscribe();
+      resolve();
+    });
+  });
   const user = client.auth.currentUser;
   console.log("Current user:", user);
   if (!user)
