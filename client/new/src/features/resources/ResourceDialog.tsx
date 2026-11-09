@@ -1,6 +1,7 @@
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -12,6 +13,7 @@ import type { CommunityResource } from '@/api/types';
 import { ActionButton } from '@/components/ActionButton';
 import { AppDialog } from '@/components/AppDialog';
 import { Img } from '@/components/Img';
+import { Upload } from '@/components/Upload';
 import { useToast } from '@/components/Toast';
 import { useCreateResource, useUpdateResource } from '@/queries/content';
 import { useCommunityScope } from '@/scopes/CommunityScope';
@@ -35,6 +37,7 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
   const [title, setTitle] = useState(resource?.title ?? '');
   const [image, setImage] = useState(resource?.image);
   const [editingTitle, setEditingTitle] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const dirty = url.trim() !== loadedUrl;
   const loaded = !!loadedUrl && !dirty;
@@ -103,12 +106,16 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
 
         {loaded && !loading && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', mt: '-30px' }}>
-            <Box sx={{ position: 'relative' }}>
+            <ButtonBase
+              aria-label="Change image"
+              onClick={() => setUploadingImage(true)}
+              sx={{ position: 'relative', display: 'block', borderRadius: '10px' }}
+            >
               <Img src={image} width={80} height={80} radius="10px" />
               <Box sx={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', bgcolor: colors.surfaceContainerLowest, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 1 }}>
                 <EditIcon sx={{ fontSize: 15, color: 'primary.main' }} />
               </Box>
-            </Box>
+            </ButtonBase>
             <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
               {editingTitle ? (
                 <>
@@ -136,6 +143,17 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
           </Box>
         </Box>
       </Box>
+      {/* A second dialog stacked above this one; closing it leaves this one open. */}
+      <AppDialog open={uploadingImage} onClose={() => setUploadingImage(false)} maxWidth={500} padding={30} ariaLabel="Upload image">
+        <Box sx={{ pt: '20px' }}>
+          <Upload
+            onUploaded={({ url }) => {
+              setImage(url);
+              setUploadingImage(false);
+            }}
+          />
+        </Box>
+      </AppDialog>
     </AppDialog>
   );
 }
