@@ -1,0 +1,82 @@
+import eslint from "@eslint/js";
+import type { Rule } from "eslint";
+import { defineConfig } from "eslint/config";
+import tseslint from "typescript-eslint";
+import {
+  COLOR_KEYWORDS,
+  COLOR_PROPS,
+  THEME_COLOR_PATHS,
+} from "./client/new/src/theme/colorPaths.ts";
+
+// The allowed values and restricted properties come from the same lists `sx()` is typed with.
+const escape = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const THEME_COLOR_PATH = `(?:${THEME_COLOR_PATHS.map(escape).join("|")})`;
+const RAW_COLOR = `(?:${COLOR_KEYWORDS.join("|")}|#[0-9a-fA-F]+|rgba?\\(.*\\))`;
+const NOT_A_COLOR = `^(?!(?:${THEME_COLOR_PATH}|${RAW_COLOR})$)`;
+
+const COLOR_KEYS = `/^(${COLOR_PROPS.join("|")})$/`;
+const colorLiteral = (parent: string) =>
+  `Property[key.name=${COLOR_KEYS}]${parent} > Literal[value=/${NOT_A_COLOR}/]`;
+
+// `no-restricted-syntax` has one severity for all its selectors, so these warnings are a small
+// local rule (the color rule below stays an error). The sizes mirror `typography` in theme.ts:
+// body1 is fontSizes.sm (the default) and body2 is fontSizes.xs.
+const typographySize = (variantGuard: string, size: string, token: string) =>
+  [
+    'JSXOpeningElement[name.name="Typography"]',
+    variantGuard,
+    ' > JSXAttribute[name.name="sx"] > JSXExpressionContainer > ObjectExpression',
+    ' > Property[key.name="fontSize"]',
+    `:matches([value.type="Literal"][value.value=${size}], [value.object.name="fontSizes"][value.property.name="${token}"])`,
+  ].join("");
+
+const NO_VARIANT = ':not(:has(> JSXAttribute[name.name="variant"]))';
+const NOT_OTHER_VARIANT =
+  ':not(:has(> JSXAttribute[name.name="variant"][value.value!="body1"]))';
+
+const redundantDefaultFontSize: Rule.RuleModule = {
+  meta: { type: "suggestion", schema: [] },
+  create: (context) => ({
+    [typographySize(NOT_OTHER_VARIANT, "14", "sm")](node: Rule.Node) {
+      context.report({
+        node,
+        message:
+          "Redundant: `<Typography>` is body1 by default, which the theme already sets to fontSizes.sm (14px).",
+      });
+    },
+    [typographySize(NO_VARIANT, "12", "xs")](node: Rule.Node) {
+      context.report({
+        node,
+        message:
+          'Use `variant="body2"`, which the theme sets to fontSizes.xs (12px), instead of overriding the size.',
+      });
+    },
+  }),
+};
+
+export default defineConfig(
+  { ignores: ["dist", "node_modules", "src/locales/**/generated*"] },
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    files: ["./client/new/src/**/*.{ts,tsx}"],
+    plugins: {
+      frankly: { rules: { "redundant-default-font-size": redundantDefaultFontSize } },
+    },
+    rules: {
+      "frankly/redundant-default-font-size": "warn",
+      // MUI types `sx` colors as an open string, so a typo like "primary.mian" compiles and
+      // silently renders nothing. Reject string literals that aren't theme palette paths.
+      "no-restricted-syntax": [
+        "error",
+        ...["", " > ConditionalExpression", " > LogicalExpression"].map(
+          (parent) => ({
+            selector: colorLiteral(parent),
+            message:
+              'Not a theme color. Use a palette path ("primary.main"), a `colors` token, or a CSS keyword/#hex/rgb() value.',
+          }),
+        ),
+      ],
+    },
+  },
+);
