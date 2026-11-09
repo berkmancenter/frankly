@@ -5,11 +5,13 @@ import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import type { DiscussionThread } from "@/api/types";
 import { ActionButton } from "@/components/ActionButton";
+import { AppDialog } from "@/components/AppDialog";
 import { Avatar } from "@/components/Avatar";
 import { useToast } from "@/components/Toast";
+import { Upload } from "@/components/Upload";
 import { isBlank } from "@/utils/strings";
 import { useIsMobile } from "@/utils/useResponsive";
 import { useCreateThread, useUpdateThread } from "@/queries/threads";
@@ -38,15 +40,8 @@ export function CreatePostDialog({
   const [imageUrl, setImageUrl] = useState<string | undefined>(
     thread?.imageUrl,
   );
-  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const editing = !!thread;
-
-  const pickImage = (file: File | undefined) => {
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setImageUrl(String(reader.result));
-    reader.readAsDataURL(file);
-  };
 
   const submit = async () => {
     try {
@@ -158,23 +153,14 @@ export function CreatePostDialog({
           }}
         />
         <Box sx={{ px: "16px", pt: "10px", pb: "10px" }}>
-          <ButtonBase
-            onClick={() => fileRef.current?.click()}
+          <IconButton
+            onClick={() => setUploadingImage(true)}
             sx={{ gap: "10px", borderRadius: 1, color: "primary.main" }}
+            aria-label="Attach image"
           >
             <AttachFileRoundedIcon />
-            <Typography sx={{ color: "primary.main" }}>
-              Image
-            </Typography>
-          </ButtonBase>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/*"
-            hidden
-            aria-label="Attach image"
-            onChange={(e) => pickImage(e.target.files?.[0])}
-          />
+            <Typography sx={{ color: "primary.main" }}>Image</Typography>
+          </IconButton>
         </Box>
       </Box>
       <Divider />
@@ -213,6 +199,23 @@ export function CreatePostDialog({
           onPress={submit}
         />
       </Box>
+      {/* Stacked above the post dialog; closing it leaves the post draft open. */}
+      <AppDialog
+        open={uploadingImage}
+        onClose={() => setUploadingImage(false)}
+        maxWidth={500}
+        padding={30}
+        ariaLabel="Upload image"
+      >
+        <Box sx={{ pt: "20px" }}>
+          <Upload
+            onUploaded={({ url }) => {
+              setImageUrl(url);
+              setUploadingImage(false);
+            }}
+          />
+        </Box>
+      </AppDialog>
     </Dialog>
   );
 }
