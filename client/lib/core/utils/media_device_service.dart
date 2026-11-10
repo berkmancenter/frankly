@@ -117,8 +117,11 @@ class MediaDeviceService {
     if (shouldUpdatePreview) {
       await getUserMedia();
     }
-    await sharedPreferencesService
-        .setDefaultMicrophoneId(selectedAudioInputId!);
+    // Null if getUserMedia failed and forgot the device.
+    final selected = selectedAudioInputId;
+    if (selected != null) {
+      await sharedPreferencesService.setDefaultMicrophoneId(selected);
+    }
   }
 
   Future<void> selectVideoDevice({
@@ -129,7 +132,11 @@ class MediaDeviceService {
     if (shouldUpdatePreview) {
       await getUserMedia();
     }
-    await sharedPreferencesService.setDefaultCameraId(selectedVideoInputId!);
+    // Null if getUserMedia failed and forgot the device.
+    final selected = selectedVideoInputId;
+    if (selected != null) {
+      await sharedPreferencesService.setDefaultCameraId(selected);
+    }
   }
 
   bool _isPermissionError(Object error) =>
