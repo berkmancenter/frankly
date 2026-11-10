@@ -11,7 +11,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('firebase/functions', () => mocks);
 
-import { CloudFunctions } from '../cloudFunctions';
+import { CloudFunctions } from '@/api/cloudFunctions';
 
 describe('CloudFunctions', () => {
   beforeEach(() => {

@@ -2,8 +2,8 @@
 import { matchRoutes } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import migrated from '../../../migrated-routes.json';
-import { shouldHandOff } from '../LegacyFallback';
-import { buildRoutes } from '../router';
+import { shouldHandOff } from '@/app/LegacyFallback';
+import { buildRoutes } from '@/app/router';
 
 /** Fill ':param' segments with a sample value. */
 const sample = (pattern: string) => pattern.replace(/:[A-Za-z]+/g, 'sample');

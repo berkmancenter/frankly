@@ -50,5 +50,6 @@ export default defineConfig({
     // with a `// @vitest-environment jsdom` docblock.
     environment: "node",
     include: ["src/**/*.test.{ts,tsx}"],
+    setupFiles: ["src/__tests__/support/setup.ts"],
   },
 });

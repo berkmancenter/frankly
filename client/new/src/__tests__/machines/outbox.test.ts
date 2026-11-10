@@ -7,7 +7,7 @@ import {
   selectOutboxPendingCount,
   type Gate,
   type OutboxItem,
-} from '../outbox.machine';
+} from '@/machines/outbox.machine';
 
 /** Let queued microtasks (resolved promises -> actor events) run. */
 const flush = async (rounds = 5) => {

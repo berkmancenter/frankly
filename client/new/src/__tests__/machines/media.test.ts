@@ -8,7 +8,7 @@ import {
   type AcquiredTracks,
   type MediaInput,
   type MediaSource,
-} from '../media.machine';
+} from '@/machines/media.machine';
 
 class FakeTrack {
   enabled = true;

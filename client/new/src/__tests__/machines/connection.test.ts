@@ -6,7 +6,7 @@ import type {
   ServerMessage,
   TransportHandlers,
 } from '@/api/realtime';
-import { connectionMachine, selectConnectionStatus } from '../connection.machine';
+import { connectionMachine, selectConnectionStatus } from '@/machines/connection.machine';
 
 interface FakeSocket {
   channel: string;
