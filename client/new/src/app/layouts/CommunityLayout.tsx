@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { Outlet, useMatches, useParams } from "react-router";
 import { useDocumentTitle } from "@/utils/useDocumentTitle";
-import { AppScaffold, ScaffoldFab } from "@/components/shell/AppScaffold";
-import { CommunityBottomNavBar } from "@/components/shell/BottomNavBar";
+import { AppScaffold, ScaffoldFab } from "@/components/layout/AppScaffold";
+import { CommunityBottomNavBar } from "@/components/layout/BottomNavBar";
 import { useCreateEventDialog } from "@/features/events/CreateEventDialog";
 import { useShowBottomNav } from "@/utils/useResponsive";
 import { CommunityScope, useCommunityScope } from "@/scopes/CommunityScope";
@@ -34,8 +34,7 @@ function CommunityFrame() {
 
   // Pages inside a community use the community's colors.
   const theme = useMemo(
-    () =>
-      createAppTheme(communityColors(community)),
+    () => createAppTheme(communityColors(community)),
     [community.themeDarkColor, community.themeLightColor],
   );
 

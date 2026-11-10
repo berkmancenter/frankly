@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { DiscussionThread } from "@/api/types";
 import { ConstrainedBody } from "@/components/ConstrainedBody";
 import { EmptyPageContent } from "@/components/EmptyPageContent";
-import { ScaffoldFab } from "@/components/shell/AppScaffold";
+import { ScaffoldFab } from "@/components/layout/AppScaffold";
 import { ErrorState, LoadingState } from "@/components/States";
 import { useIsMobile } from "@/utils/useResponsive";
 import { useThreads } from "@/queries/threads";
