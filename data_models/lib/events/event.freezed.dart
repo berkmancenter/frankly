@@ -1832,6 +1832,11 @@ mixin _$Participant {
       throw _privateConstructorUsedError;
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
   DateTime? get mostRecentPresentTime => throw _privateConstructorUsedError;
+
+  /// Time the participant was first marked present in the live meeting. Set
+  /// once by the EventParticipantOnWrite function and never overwritten.
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  DateTime? get firstPresentTime => throw _privateConstructorUsedError;
   String? get zipCode => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
@@ -1868,6 +1873,8 @@ abstract class $ParticipantCopyWith<$Res> {
       List<BreakoutQuestion> breakoutRoomSurveyQuestions,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       DateTime? mostRecentPresentTime,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      DateTime? firstPresentTime,
       String? zipCode,
       String? email,
       String? name});
@@ -1902,6 +1909,7 @@ class _$ParticipantCopyWithImpl<$Res, $Val extends Participant>
     Object? joinParameters = freezed,
     Object? breakoutRoomSurveyQuestions = null,
     Object? mostRecentPresentTime = freezed,
+    Object? firstPresentTime = freezed,
     Object? zipCode = freezed,
     Object? email = freezed,
     Object? name = freezed,
@@ -1971,6 +1979,10 @@ class _$ParticipantCopyWithImpl<$Res, $Val extends Participant>
           ? _value.mostRecentPresentTime
           : mostRecentPresentTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      firstPresentTime: freezed == firstPresentTime
+          ? _value.firstPresentTime
+          : firstPresentTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       zipCode: freezed == zipCode
           ? _value.zipCode
           : zipCode // ignore: cast_nullable_to_non_nullable
@@ -2015,6 +2027,8 @@ abstract class _$$_ParticipantCopyWith<$Res>
       List<BreakoutQuestion> breakoutRoomSurveyQuestions,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       DateTime? mostRecentPresentTime,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      DateTime? firstPresentTime,
       String? zipCode,
       String? email,
       String? name});
@@ -2047,6 +2061,7 @@ class __$$_ParticipantCopyWithImpl<$Res>
     Object? joinParameters = freezed,
     Object? breakoutRoomSurveyQuestions = null,
     Object? mostRecentPresentTime = freezed,
+    Object? firstPresentTime = freezed,
     Object? zipCode = freezed,
     Object? email = freezed,
     Object? name = freezed,
@@ -2116,6 +2131,10 @@ class __$$_ParticipantCopyWithImpl<$Res>
           ? _value.mostRecentPresentTime
           : mostRecentPresentTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      firstPresentTime: freezed == firstPresentTime
+          ? _value.firstPresentTime
+          : firstPresentTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       zipCode: freezed == zipCode
           ? _value.zipCode
           : zipCode // ignore: cast_nullable_to_non_nullable
@@ -2155,6 +2174,8 @@ class _$_Participant implements _Participant {
       this.breakoutRoomSurveyQuestions = const [],
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       this.mostRecentPresentTime,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      this.firstPresentTime,
       this.zipCode,
       this.email,
       this.name});
@@ -2209,6 +2230,12 @@ class _$_Participant implements _Participant {
   @override
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
   final DateTime? mostRecentPresentTime;
+
+  /// Time the participant was first marked present in the live meeting. Set
+  /// once by the EventParticipantOnWrite function and never overwritten.
+  @override
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  final DateTime? firstPresentTime;
   @override
   final String? zipCode;
   @override
@@ -2218,7 +2245,7 @@ class _$_Participant implements _Participant {
 
   @override
   String toString() {
-    return 'Participant(id: $id, communityId: $communityId, externalCommunityId: $externalCommunityId, templateId: $templateId, lastUpdatedTime: $lastUpdatedTime, createdDate: $createdDate, scheduledTime: $scheduledTime, status: $status, isPresent: $isPresent, availableForBreakoutSessionId: $availableForBreakoutSessionId, membershipStatus: $membershipStatus, currentBreakoutRoomId: $currentBreakoutRoomId, muteOverride: $muteOverride, joinParameters: $joinParameters, breakoutRoomSurveyQuestions: $breakoutRoomSurveyQuestions, mostRecentPresentTime: $mostRecentPresentTime, zipCode: $zipCode, email: $email, name: $name)';
+    return 'Participant(id: $id, communityId: $communityId, externalCommunityId: $externalCommunityId, templateId: $templateId, lastUpdatedTime: $lastUpdatedTime, createdDate: $createdDate, scheduledTime: $scheduledTime, status: $status, isPresent: $isPresent, availableForBreakoutSessionId: $availableForBreakoutSessionId, membershipStatus: $membershipStatus, currentBreakoutRoomId: $currentBreakoutRoomId, muteOverride: $muteOverride, joinParameters: $joinParameters, breakoutRoomSurveyQuestions: $breakoutRoomSurveyQuestions, mostRecentPresentTime: $mostRecentPresentTime, firstPresentTime: $firstPresentTime, zipCode: $zipCode, email: $email, name: $name)';
   }
 
   @override
@@ -2259,6 +2286,8 @@ class _$_Participant implements _Participant {
                 breakoutRoomSurveyQuestions) &&
             (identical(other.mostRecentPresentTime, mostRecentPresentTime) ||
                 other.mostRecentPresentTime == mostRecentPresentTime) &&
+            (identical(other.firstPresentTime, firstPresentTime) ||
+                other.firstPresentTime == firstPresentTime) &&
             (identical(other.zipCode, zipCode) || other.zipCode == zipCode) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.name, name) || other.name == name));
@@ -2284,6 +2313,7 @@ class _$_Participant implements _Participant {
         const DeepCollectionEquality().hash(joinParameters),
         const DeepCollectionEquality().hash(breakoutRoomSurveyQuestions),
         mostRecentPresentTime,
+        firstPresentTime,
         zipCode,
         email,
         name
@@ -2324,6 +2354,8 @@ abstract class _Participant implements Participant {
       final List<BreakoutQuestion> breakoutRoomSurveyQuestions,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       final DateTime? mostRecentPresentTime,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      final DateTime? firstPresentTime,
       final String? zipCode,
       final String? email,
       final String? name}) = _$_Participant;
@@ -2374,6 +2406,12 @@ abstract class _Participant implements Participant {
   @override
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
   DateTime? get mostRecentPresentTime;
+  @override
+
+  /// Time the participant was first marked present in the live meeting. Set
+  /// once by the EventParticipantOnWrite function and never overwritten.
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  DateTime? get firstPresentTime;
   @override
   String? get zipCode;
   @override

@@ -200,6 +200,7 @@ _$_Participant _$$_ParticipantFromJson(Map<String, dynamic> json) =>
           const [],
       mostRecentPresentTime:
           dateTimeFromTimestamp(json['mostRecentPresentTime']),
+      firstPresentTime: dateTimeFromTimestamp(json['firstPresentTime']),
       zipCode: json['zipCode'] as String?,
       email: json['email'] as String?,
       name: json['name'] as String?,
@@ -225,6 +226,7 @@ Map<String, dynamic> _$$_ParticipantToJson(_$_Participant instance) =>
           instance.breakoutRoomSurveyQuestions.map((e) => e.toJson()).toList(),
       'mostRecentPresentTime':
           serverTimestampOrNull(instance.mostRecentPresentTime),
+      'firstPresentTime': timestampFromDateTime(instance.firstPresentTime),
       'zipCode': instance.zipCode,
       'email': instance.email,
       'name': instance.name,

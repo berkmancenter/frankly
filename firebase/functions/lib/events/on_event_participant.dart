@@ -9,6 +9,7 @@ import 'package:data_models/events/event.dart';
 
 /// Maintains Event.registrationCount by counting active participants whenever
 /// any event-participants document is written (created, updated, or deleted).
+/// Also sets Participant.firstPresentTime.
 class OnEventParticipant extends OnFirestoreFunction<Participant> {
   static const String _functionName = 'EventParticipantOnWrite';
 
@@ -47,6 +48,14 @@ class OnEventParticipant extends OnFirestoreFunction<Participant> {
     DateTime updateTime,
     EventContext context,
   ) async {
+    final presentTime = after.mostRecentPresentTime;
+    if (changes.after.exists &&
+        after.isPresent &&
+        after.firstPresentTime == null &&
+        presentTime != null) {
+      await _recordFirstPresence(changes.after.reference, presentTime);
+    }
+
     // Skip writes that don't affect active status (presence, breakout room,
     // timestamp updates, etc.) to avoid rescanning all participants on every
     // live-meeting heartbeat.
@@ -76,6 +85,23 @@ class OnEventParticipant extends OnFirestoreFunction<Participant> {
     } catch (e, s) {
       print('Error in $_functionName: $e\n$s');
       rethrow;
+    }
+  }
+
+  Future<void> _recordFirstPresence(
+    DocumentReference participantRef,
+    DateTime firstPresentTime,
+  ) async {
+    try {
+      await participantRef.updateData(
+        UpdateData.fromMap({
+          Participant.kFieldFirstPresentTime:
+              Timestamp.fromDateTime(firstPresentTime),
+        }),
+      );
+    } catch (e, s) {
+      // Don't block the registration count update below.
+      print('Error recording first presence in $_functionName: $e\n$s');
     }
   }
 
