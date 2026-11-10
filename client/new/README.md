@@ -19,7 +19,7 @@ admin…) are real page loads, so the proxy / hosting rewrites serve them from F
 
 | Concern                   | Choice                                                                              |
 | ------------------------- | ----------------------------------------------------------------------------------- |
-| UI                        | React 19, MUI (`@mui/material` 9) themed to **Material 3**, Inter                   |
+| UI                        | React 19, MUI (`@mui/material` 9) minimal theme, Inter                   |
 | Server state              | TanStack Query v5                                                                   |
 | Connection, media, outbox | XState v5 machines (`src/machines`), not wired to a page yet                        |
 | UI state                  | React local state (`useState` / `useReducer`)                                       |
@@ -129,7 +129,7 @@ src/
   components/       shared UI (ActionButton, dialogs, avatars…) and shell/ (nav, sidebar, scaffold)
   features/         community, events, posts, resources, profile drawer, not-found
   app/              router, route layouts, typed path builders, hand-off to Flutter
-  theme/            Material 3 color roles + type scale → MUI theme
+  theme/            tokens.ts (typed colors, font sizes, layout sizes) + a small MUI theme
   lib/              clock, formatting, permissions, responsive hook, placeholders…
 ```
 
@@ -147,14 +147,22 @@ src/
 | `ResponsiveLayoutService` (breakpoint 1000 px)         | `useIsMobile()`                                                                     |
 | `CustomScaffold`                                       | `AppScaffold` (+ `ScaffoldFab` portal slot)                                         |
 
-## Material 3 on MUI
+## Theme
 
-`@mui/material` implements Material 2; MUI has no first-party Material 3 component set. The look is
-reproduced with the Flutter app's own tokens: the exact `ColorScheme` (`theme/m3.ts`, also exposed
-to `sx` as `m3.surfaceContainerLowest` etc.), the M3 type scale, M3 shape/state-layer values and
-component overrides where M3 anatomy differs (Switch, Tabs, Dialog, Card, Menu, Tooltip, FAB…).
-Community colors work like Flutter's `childTheme`: a nested `ThemeProvider` over the page content
-only, built by `createAppTheme(communityScheme(...))`.
+Deliberately minimal. `@mui/material` implements Material 2, so we do not try to reproduce Flutter's
+Material 3 theme one-to-one.
+
+- `src/theme/tokens.ts`: typed constants `colors` (the Flutter `ColorScheme` roles the pages
+  use, by the same names), `fontSizes` and `appSize`. Use them directly:
+  `sx={{ color: colors.onSurfaceVariant, fontSize: fontSizes.sm }}`. A typo is a compile error.
+  Add a color when a page needs one.
+- `src/theme/theme.ts`: the font, palette `primary` / `secondary` (the only two colors a community
+  changes), and a handful of component defaults. No type scale, no module augmentation.
+- Headings are handled by hand: Flutter has no `h1`, so pick a size and, where it matters, a
+  semantic element (`<Typography component="h2" sx={{ fontSize: fontSizes["2xl"] }}>`).
+- Community colors: a nested `ThemeProvider` over the page content only, built by
+  `createAppTheme(communityColors(community))`. Use `'primary.main'` / `'secondary.main'` for the
+  two themable colors and `colors.*` for everything else.
 
 ## Not here (on purpose)
 
