@@ -151,30 +151,43 @@ export interface TimeValue {
 const clamp = (n: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, n));
 
-/** Material 3 time picker, "input" mode: big hour/minute fields and an AM/PM toggle. */
-export function TimeInput({
+/**
+ * One numeric field. While focused it shows what the user has typed so far ("1" on the way to
+ * "12"); the zero-padded committed value ("01") is shown again on blur. Re-padding on every
+ * keystroke would turn "1" into "01" and make a two-digit value impossible to type.
+ */
+function TimeField({
+  label,
   value,
-  onChange,
+  min,
+  max,
+  onCommit,
 }: {
-  value: TimeValue;
-  onChange: (v: TimeValue) => void;
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  onCommit: (n: number) => void;
 }) {
-  const field = (
-    label: string,
-    v: string,
-    set: (raw: string) => void,
-    ariaLabel: string,
-  ) => (
+  const [draft, setDraft] = useState<string | null>(null);
+  return (
     <Box>
       <Box
         component="input"
         inputMode="numeric"
-        aria-label={ariaLabel}
-        value={v}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          set(e.target.value.replace(/\D/g, "").slice(0, 2))
-        }
+        aria-label={label}
+        value={draft ?? String(value).padStart(2, "0")}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          const raw = e.target.value.replace(/\D/g, "").slice(0, 2);
+          if (raw === "") return setDraft(raw);
+          const n = clamp(Number(raw), min, max);
+          onCommit(n);
+          // A one-digit "0" (hour) may still become "05"; a complete out-of-range entry ("99")
+          // snaps to the clamped value right away.
+          setDraft(n === Number(raw) || raw.length < 2 ? raw : null);
+        }}
         onFocus={(e: React.FocusEvent<HTMLInputElement>) => e.target.select()}
+        onBlur={() => setDraft(null)}
         sx={{
           width: 96,
           height: 72,
@@ -194,7 +207,16 @@ export function TimeInput({
       </Typography>
     </Box>
   );
+}
 
+/** Material 3 time picker, "input" mode: big hour/minute fields and an AM/PM toggle. */
+export function TimeInput({
+  value,
+  onChange,
+}: {
+  value: TimeValue;
+  onChange: (v: TimeValue) => void;
+}) {
   return (
     <Box
       sx={{
@@ -204,21 +226,21 @@ export function TimeInput({
         gap: "8px",
       }}
     >
-      {field(
-        "Hour",
-        String(value.hour).padStart(2, "0"),
-        (raw) => raw && onChange({ ...value, hour: clamp(Number(raw), 1, 12) }),
-        "Hour",
-      )}
+      <TimeField
+        label="Hour"
+        value={value.hour}
+        min={1}
+        max={12}
+        onCommit={(hour) => onChange({ ...value, hour })}
+      />
       <Typography sx={{ fontSize: 45, lineHeight: "72px" }}>:</Typography>
-      {field(
-        "Minute",
-        String(value.minute).padStart(2, "0"),
-        (raw) =>
-          raw !== "" &&
-          onChange({ ...value, minute: clamp(Number(raw), 0, 59) }),
-        "Minute",
-      )}
+      <TimeField
+        label="Minute"
+        value={value.minute}
+        min={0}
+        max={59}
+        onCommit={(minute) => onChange({ ...value, minute })}
+      />
       <Box
         role="group"
         aria-label="AM or PM"

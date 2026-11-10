@@ -9,12 +9,11 @@ import { isDev } from "@/utils/dev";
 export function RootLayout() {
   const me = useMe();
   if (me.isPending) return <LoadingState height="100dvh" />;
-  console.log(me.error);
   if (me.isError)
     return (
       <LoadingState
         height="100dvh"
-        message={`Could not load your session.${isDev && " Are you running the local proxy, and did you first authenticate with the Flutter app? "}`}
+        message={`Could not load your session.${isDev ? " Are you running the local proxy, and did you first authenticate with the Flutter app? " : ""}`}
       />
     );
   return <Outlet />;

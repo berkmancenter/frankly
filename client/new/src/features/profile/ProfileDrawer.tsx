@@ -4,7 +4,7 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Avatar } from "@/components/Avatar";
-import { LoadingState } from "@/components/States";
+import { ErrorState, LoadingState } from "@/components/States";
 import { roleLabel } from "@/utils/membership";
 import { useCommunityScopeOrNull } from "@/scopes/CommunityScope";
 import { useUser } from "@/queries/me";
@@ -37,8 +37,10 @@ export function ProfileDrawer({
           <CloseIcon />
         </IconButton>
       </Box>
-      {isPending || !user ? (
+      {isPending ? (
         <LoadingState height={200} />
+      ) : !user ? (
+        <ErrorState message="Could not load this profile." />
       ) : (
         <Box
           sx={{

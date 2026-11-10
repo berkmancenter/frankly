@@ -62,7 +62,9 @@ export function CommunityScope({
   );
 
   if (communityQuery.isPending) return <LoadingState height="60vh" />;
-  if (communityQuery.isError || !value) {
+  // Not `isError ||`: a failed background refetch keeps the cached community, and unmounting
+  // the page for it would discard open dialogs and unsaved input.
+  if (!value) {
     return (
       <ErrorState
         height="60vh"

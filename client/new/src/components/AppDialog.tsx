@@ -46,9 +46,9 @@ export function AppDialog({
       onClose={onClose}
       fullScreen={full}
       maxWidth={false}
-      aria-label={ariaLabel}
       slotProps={{
         paper: {
+          "aria-label": ariaLabel,
           sx: {
             width: "100%",
             maxWidth: full ? "none" : maxWidth,

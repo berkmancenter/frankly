@@ -11,6 +11,7 @@ import { useConfirm } from "@/components/ConfirmDialog";
 import { EmptyPageContent } from "@/components/EmptyPageContent";
 import { Img } from "@/components/Img";
 import { ScaffoldFab } from "@/components/layout/AppScaffold";
+import { useToast } from "@/components/Toast";
 import { ErrorState, LoadingState } from "@/components/States";
 import { useResources, useRemoveResource } from "@/queries/content";
 import { useCommunityScope } from "@/scopes/CommunityScope";
@@ -23,6 +24,7 @@ export function ResourcesPage() {
   const resources = useResources(community.id);
   const remove = useRemoveResource(community.id);
   const { confirm, dialog } = useConfirm();
+  const toast = useToast();
   const [editing, setEditing] = useState<CommunityResource | "new" | null>(
     null,
   );
@@ -99,7 +101,11 @@ export function ResourcesPage() {
                                 "Are you sure you want to delete this resource?",
                             })
                           ) {
-                            await remove.mutateAsync(r.id);
+                            try {
+                              await remove.mutateAsync(r.id);
+                            } catch {
+                              toast.error("Something went wrong. Please try again.");
+                            }
                           }
                         }}
                       >

@@ -16,8 +16,9 @@ interface ImgProps {
 
 /** `ProxiedImage`: cover-fit image on an `onPrimaryContainer` placeholder that shows an icon on error. */
 export function Img({ src, alt = '', width, height, radius, fit = 'cover', sx }: ImgProps) {
-  const [failed, setFailed] = useState(false);
-  const showImage = !!src && !failed;
+  // Remember *which* URL failed, so a new `src` gets a fresh attempt.
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const showImage = !!src && failedSrc !== src;
   return (
     <Box
       sx={[
@@ -40,7 +41,7 @@ export function Img({ src, alt = '', width, height, radius, fit = 'cover', sx }:
         <img
           src={src}
           alt={alt}
-          onError={() => setFailed(true)}
+          onError={() => setFailedSrc(src)}
           style={{ width: '100%', height: '100%', objectFit: fit, display: 'block' }}
         />
       ) : (

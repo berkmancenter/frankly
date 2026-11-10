@@ -21,11 +21,13 @@ export function CircleIconButton({
   color = 'primary.main',
   iconColor = 'primary.contrastText',
   size = 44,
+  href,
 }: CircleIconButtonProps) {
   return (
     <Tooltip title={tooltip}>
       <ButtonBase
         onClick={onClick}
+        {...(href ? { href } : {})}
         aria-label={tooltip}
         sx={{
           width: size,
