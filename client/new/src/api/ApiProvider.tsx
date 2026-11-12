@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import type { Api } from './api';
+import type { AuthService } from './auth';
 import type { Backend } from './backend';
 import { createFirebaseBackend } from './firebaseBackend';
 
@@ -32,3 +33,5 @@ function useBackend(): Backend {
 }
 
 export const useApi = (): Api => useBackend().api;
+
+export const useAuthService = (): AuthService => useBackend().auth;

@@ -18,7 +18,7 @@ let client: FirebaseClient | undefined;
 const authEmulatorConnections = new WeakSet<Auth>();
 const firestoreEmulatorConnections = new WeakSet<Firestore>();
 
-function useFirebaseEmulators(): boolean {
+export function useFirebaseEmulators(): boolean {
 	const setting = import.meta.env.VITE_FIREBASE_USE_EMULATORS;
 	return setting === 'true' || (setting !== 'false' && import.meta.env.DEV);
 }
@@ -56,7 +56,11 @@ export function getFirebaseClient(): FirebaseClient {
 		?? initializeApp(options);
 	const auth = getAuth(app);
 	const firestore = getFirestore(app);
-	const emulatorHost = import.meta.env.VITE_FIREBASE_EMULATOR_HOST || '127.0.0.1';
+	// Must be `localhost`, like Flutter's `useAuthEmulator('localhost', 9099)`. Google sign-in goes through
+	// an iframe served by the Auth emulator, and Chrome partitions its storage unless the emulator is the
+	// same site as the app (`localhost` vs `127.0.0.1` is not), so the redirect result never arrives and
+	// the visitor stays anonymous.
+	const emulatorHost = import.meta.env.VITE_FIREBASE_EMULATOR_HOST || 'localhost';
 
 	if (useEmulators) {
 		if (!authEmulatorConnections.has(auth)) {
