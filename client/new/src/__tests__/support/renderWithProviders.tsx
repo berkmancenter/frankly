@@ -14,6 +14,8 @@ import { CommunityScope } from "@/scopes/CommunityScope";
 import { appTheme } from "@/theme/theme";
 import { community as communityFixture, me as meFixture, membership } from "@/__tests__/support/fixtures";
 import { createFakeApi } from "@/__tests__/support/fakeApi";
+import { createFakeAuth, type FakeAuth } from "@/__tests__/support/fakeAuth";
+import type { AuthSession } from "@/api/auth";
 
 i18n.load("en", {});
 i18n.activate("en");
@@ -21,6 +23,8 @@ i18n.activate("en");
 export interface RenderOptions {
   /** Data the component reads or writes; unstubbed methods reject. */
   api?: Parameters<typeof createFakeApi>[0];
+  /** Session of the (fake) auth service: a registered user unless overridden. Pass a `FakeAuth` to share one. */
+  auth?: Partial<AuthSession> | FakeAuth;
   /** Initial URL (default "/"). */
   route?: string;
   /** Route pattern the component is mounted at, so `useParams` works (default: everywhere). */
@@ -31,6 +35,7 @@ export interface RenderOptions {
 
 export interface RenderResultWithApi extends RenderResult {
   api: Api;
+  auth: FakeAuth;
   queryClient: QueryClient;
 }
 
@@ -54,10 +59,11 @@ function setMobile(mobile: boolean) {
  */
 export function renderWithProviders(
   ui: ReactElement,
-  { api: apiOverrides, route = "/", path, mobile = false }: RenderOptions = {},
+  { api: apiOverrides, auth: authOption, route = "/", path, mobile = false }: RenderOptions = {},
 ): RenderResultWithApi {
   setMobile(mobile);
   const api = createFakeApi(apiOverrides);
+  const auth = authOption && "setSession" in authOption ? authOption : createFakeAuth(authOption);
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, gcTime: Infinity }, mutations: { retry: false } },
   });
@@ -70,7 +76,7 @@ export function renderWithProviders(
   );
   const result = render(
     <QueryClientProvider client={queryClient}>
-      <BackendProvider backend={{ api }}>
+      <BackendProvider backend={{ api, auth }}>
         <ThemeProvider theme={appTheme}>
           <ToastProvider>
             <I18nProvider i18n={i18n}>
@@ -81,7 +87,7 @@ export function renderWithProviders(
       </BackendProvider>
     </QueryClientProvider>,
   );
-  return { ...result, api, queryClient };
+  return { ...result, api, auth, queryClient };
 }
 
 export interface CommunityRenderOptions extends RenderOptions {

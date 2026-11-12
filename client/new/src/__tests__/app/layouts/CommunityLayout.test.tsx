@@ -15,6 +15,7 @@ import { community, me, membership, template } from "@/__tests__/support/fixture
 import { createFakeApi } from "@/__tests__/support/fakeApi";
 import { appTheme } from "@/theme/theme";
 import { CommunityLayout, type CommunityRouteHandle } from "@/app/layouts/CommunityLayout";
+import { createFakeAuth } from "@/__tests__/support/fakeAuth";
 
 i18n.load("en", {});
 i18n.activate("en");
@@ -93,7 +94,7 @@ function renderLayout({
   });
   const result = render(
     <QueryClientProvider client={queryClient}>
-      <BackendProvider backend={{ api }}>
+      <BackendProvider backend={{ api, auth: createFakeAuth() }}>
         <ThemeProvider theme={appTheme}>
           <ToastProvider>
             <I18nProvider i18n={i18n}>

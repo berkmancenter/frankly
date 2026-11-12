@@ -3,13 +3,14 @@ import { renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createFakeApi } from "@/__tests__/support/fakeApi";
+import { createFakeAuth } from "@/__tests__/support/fakeAuth";
 import { BackendProvider, useApi } from "@/api/ApiProvider";
 import type { Backend } from "@/api/backend";
 
 const mocks = vi.hoisted(() => ({ createFirebaseBackend: vi.fn() }));
 vi.mock("@/api/firebaseBackend", () => mocks);
 
-const backendWith = (): Backend => ({ api: createFakeApi() });
+const backendWith = (): Backend => ({ api: createFakeApi(), auth: createFakeAuth() });
 
 describe("BackendProvider", () => {
   beforeEach(() => {

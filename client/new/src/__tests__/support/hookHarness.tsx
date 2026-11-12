@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import type { Api } from "@/api/api";
 import { BackendProvider } from "@/api/ApiProvider";
 import { createFakeApi } from "@/__tests__/support/fakeApi";
+import { createFakeAuth } from "@/__tests__/support/fakeAuth";
 
 export interface QueryHookHarness<T, P> extends RenderHookResult<T, P> {
   api: Api;
@@ -29,7 +30,7 @@ export function renderQueryHook<T, P = undefined>(
   const api = createFakeApi(apiOverrides);
   const wrapper = ({ children }: { children: ReactNode }) => (
     <QueryClientProvider client={queryClient}>
-      <BackendProvider backend={{ api }}>{children}</BackendProvider>
+      <BackendProvider backend={{ api, auth: createFakeAuth() }}>{children}</BackendProvider>
     </QueryClientProvider>
   );
   return { ...renderHook(hook, { wrapper, initialProps: initialProps as P }), api, queryClient };

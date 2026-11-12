@@ -4,6 +4,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Api } from "@/api/api";
 import { createFakeApi } from "@/__tests__/support/fakeApi";
+import { anonymousSession, createFakeAuth } from "@/__tests__/support/fakeAuth";
 import { community, event, me, membership } from "@/__tests__/support/fixtures";
 import { App } from "@/app/App";
 
@@ -33,7 +34,7 @@ const signedIn = {
 
 function renderApp(path: string, api: Parameters<typeof createFakeApi>[0] = signedIn): Api {
   const fake = createFakeApi(api);
-  mocks.createFirebaseBackend.mockReturnValue({ api: fake });
+  mocks.createFirebaseBackend.mockReturnValue({ api: fake, auth: createFakeAuth() });
   // The app owns a browser router, so the URL is set up the way a visit would.
   window.history.pushState({}, "", path);
   render(<App />);
@@ -71,13 +72,18 @@ describe("App", () => {
     expect(await screen.findByText("Weekly chat")).toBeInTheDocument();
   });
 
-  it("says a page is not migrated at the root, where there is no home page yet", async () => {
-    renderApp("/");
-    expect(await screen.findByText(/This page is not in the React app yet/)).toBeInTheDocument();
+  it("asks a visitor without an account to sign up at the root", async () => {
+    mocks.createFirebaseBackend.mockReset();
+    mocks.createFirebaseBackend.mockReturnValue({ api: createFakeApi(signedIn), auth: createFakeAuth(anonymousSession()) });
+    window.history.pushState({}, "", "/");
+    render(<App />);
+    expect(await screen.findByRole("heading", { name: "New to Frankly?" })).toBeInTheDocument();
   });
 
   it("shows 'not migrated' instead of reloading for a page Flutter owns", async () => {
     const reload = vi.fn();
+    // Set the URL first: the stub copies `window.location`, and the router reads the path from it.
+    window.history.pushState({}, "", "/settings");
     vi.stubGlobal("location", { ...window.location, replace: reload });
     renderApp("/settings");
     expect(await screen.findByText(/This page is not in the React app yet/)).toBeInTheDocument();

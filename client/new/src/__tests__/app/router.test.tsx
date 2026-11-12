@@ -50,7 +50,7 @@ describe('standalone mode (no Flutter next to it)', () => {
     }
   });
 
-  it('shows "not migrated" at "/", since there is no home page', () => {
+  it('serves "/" itself', () => {
     const root = lastRoute(standalone, '/');
     expect(root?.index).toBe(true);
     expect(root?.path).not.toBe('*');

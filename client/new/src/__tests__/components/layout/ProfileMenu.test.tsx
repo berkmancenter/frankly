@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { useLocation } from "react-router";
 import { describe, expect, it } from "vitest";
 import { me, user as userFixture } from "@/__tests__/support/fixtures";
+import { anonymousSession } from "@/__tests__/support/fakeAuth";
 import { renderWithProviders } from "@/__tests__/support/renderWithProviders";
 import { ProfileMenu } from "@/components/layout/ProfileMenu";
 
@@ -68,12 +69,19 @@ describe("ProfileMenu", () => {
     expect(screen.getByTestId("location")).toHaveTextContent("/settings?initialSection=events");
   });
 
-  it("explains that sign-in is faked instead of signing out", async () => {
+  it("signs out through the auth service", async () => {
     const user = userEvent.setup();
-    renderMenu();
+    const { auth } = renderMenu();
     await user.click(await screen.findByRole("button", { name: "Profile Button" }));
     await user.click(await screen.findByRole("menuitem", { name: "Sign Out" }));
-    expect(await screen.findByText(/Sign-in is faked/)).toBeInTheDocument();
-    expect(screen.getByTestId("location")).toHaveTextContent("/space/civic-lab");
+    expect(auth.signOut).toHaveBeenCalledTimes(1);
+  });
+
+  it("offers Log In and Sign Up instead of the avatar to a visitor without an account", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<ProfileMenu />, { api: signedIn, auth: anonymousSession() });
+    expect(screen.queryByRole("button", { name: "Profile Button" })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Log In" }));
+    expect(await screen.findByRole("heading", { name: "Log into Frankly" })).toBeInTheDocument();
   });
 });

@@ -18,6 +18,7 @@ import {
   useUpdateThread,
   useVoteThread,
 } from "@/queries/threads";
+import { createFakeAuth } from "@/__tests__/support/fakeAuth";
 
 const COMMUNITY = "c1";
 const ME = "u1";
@@ -29,7 +30,7 @@ function setup(apiOverrides: Parameters<typeof createFakeApi>[0] = {}) {
   });
   const wrapper = ({ children }: { children: ReactNode }) => (
     <QueryClientProvider client={queryClient}>
-      <BackendProvider backend={{ api }}>{children}</BackendProvider>
+      <BackendProvider backend={{ api, auth: createFakeAuth() }}>{children}</BackendProvider>
     </QueryClientProvider>
   );
   return { api, queryClient, wrapper };
