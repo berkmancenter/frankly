@@ -2,6 +2,15 @@
   "projects": {
     "default": "dev"
   },
+  "targets": {
+    "gen-hls-bkc-7627": {
+      "hosting": {
+        "react": [
+          "frankly-react"
+        ]
+      }
+    }
+  },
   "etags": {},
   "dataconnectEmulatorConfig": {}
 }
