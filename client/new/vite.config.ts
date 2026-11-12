@@ -25,6 +25,9 @@ export default defineConfig({
     strictPort: true,
   },
   build: {
+    // The Firebase vendor chunk is ~515 kB (Auth + Firestore, needed on every page) and cannot be
+    // split usefully; the limit sits just above it so any other chunk growing still warns.
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
         // Long-lived vendor chunks: app code changes far more often than these.
@@ -38,6 +41,7 @@ export default defineConfig({
           )
             return "react";
           if (/node_modules\/(@mui|@emotion)\//.test(id)) return "mui";
+          if (/node_modules\/(firebase|@firebase)\//.test(id)) return "firebase";
           if (/node_modules\/(@tanstack|xstate|@xstate)\//.test(id))
             return "state";
           return undefined;

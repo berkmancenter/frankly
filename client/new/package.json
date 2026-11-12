@@ -1,11 +1,11 @@
 {
-  "name": "frankly-client-v2",
+  "name": "frankly-client-v3",
   "private": true,
-  "version": "0.1.0",
-  "description": "Frankly web client built with React, TypeScript, MUI (Material 3), TanStack Query and XState, backed by Firebase.",
+  "version": "0.2.0",
+  "description": "Frankly web client built with React, TypeScript, @mui, TanStack Query and XState, backed by (for now) Firebase.",
   "type": "module",
   "engines": {
-    "node": ">=20.18"
+    "node": ">=26.13"
   },
   "scripts": {
     "dev": "npm run locales:transpile && vite",
