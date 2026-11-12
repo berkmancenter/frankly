@@ -1,10 +1,16 @@
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import Tooltip from '@mui/material/Tooltip';
-import type { SxProps, Theme } from '@mui/material/styles';
-import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react';
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Tooltip from "@mui/material/Tooltip";
+import type { SxProps, Theme } from "@mui/material/styles";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 
-export type ActionButtonType = 'filled' | 'outline' | 'text';
+export type ActionButtonType = "filled" | "outline" | "text";
 
 export interface ActionButtonProps {
   type?: ActionButtonType;
@@ -25,7 +31,7 @@ export interface ActionButtonProps {
   radius?: number;
   maxTextWidth?: number;
   maxLines?: number;
-  contentAlign?: 'start' | 'center' | 'end';
+  contentAlign?: "start" | "center" | "end";
   tooltip?: string;
   /** Label for tests / assistive tech when the content is not text. */
   ariaLabel?: string;
@@ -35,12 +41,12 @@ export interface ActionButtonProps {
 }
 
 /**
- * Port of Flutter's `ActionButton`: three looks (filled / outline / text), 10px radius,
- * 96x50 minimum, and — the part that matters — an async-aware `onPress`: return a promise
+ * `ActionButton`: three looks (filled / outline / text), 10px radius,
+ * 96x50 minimum, and an async-aware `onPress`: return a promise
  * and the button shows a spinner and swallows double clicks until it settles.
  */
 export function ActionButton({
-  type = 'filled',
+  type = "filled",
   text,
   children,
   icon,
@@ -54,7 +60,7 @@ export function ActionButton({
   radius = 10,
   maxTextWidth,
   maxLines,
-  contentAlign = 'center',
+  contentAlign = "center",
   tooltip,
   ariaLabel,
   hideLoadingIndicator,
@@ -83,19 +89,23 @@ export function ActionButton({
     }
   };
 
-  const variant = type === 'filled' ? 'contained' : type === 'outline' ? 'outlined' : 'text';
+  const variant =
+    type === "filled" ? "contained" : type === "outline" ? "outlined" : "text";
   const isDisabled = disabled || (!onPress && !waiting);
 
   const colorSx =
-    type === 'filled'
-      ? { bgcolor: color ?? 'primary.main', color: textColor ?? 'primary.contrastText' }
-      : type === 'outline'
+    type === "filled"
+      ? {
+          bgcolor: color ?? "primary.main",
+          color: textColor ?? "primary.contrastText",
+        }
+      : type === "outline"
         ? {
-            color: textColor ?? 'primary.main',
-            borderColor: borderColor ?? color ?? 'primary.main',
-            '&:hover': { borderColor: borderColor ?? color ?? 'primary.main' },
+            color: textColor ?? "primary.main",
+            borderColor: borderColor ?? color ?? "primary.main",
+            "&:hover": { borderColor: borderColor ?? color ?? "primary.main" },
           }
-        : { color: textColor ?? 'primary.main' };
+        : { color: textColor ?? "primary.main" };
 
   const button = (
     <Button
@@ -109,13 +119,20 @@ export function ActionButton({
           minWidth,
           borderRadius: `${radius}px`,
           justifyContent:
-            contentAlign === 'start' ? 'flex-start' : contentAlign === 'end' ? 'flex-end' : 'center',
-          width: expand ? '100%' : undefined,
-          textAlign: contentAlign === 'start' ? 'left' : 'center',
-          '&.Mui-disabled': waiting ? { opacity: 1 } : undefined,
+            contentAlign === "start"
+              ? "flex-start"
+              : contentAlign === "end"
+                ? "flex-end"
+                : "center",
+          width: expand ? "100%" : undefined,
+          textAlign: contentAlign === "start" ? "left" : "center",
+          "&.Mui-disabled": waiting ? { opacity: 1 } : undefined,
           ...(colorSx as object),
-          ...(waiting && type === 'filled' && !isDisabled
-            ? { bgcolor: color ?? 'primary.main', color: textColor ?? 'primary.contrastText' }
+          ...(waiting && type === "filled" && !isDisabled
+            ? {
+                bgcolor: color ?? "primary.main",
+                color: textColor ?? "primary.contrastText",
+              }
             : {}),
         },
         ...(Array.isArray(sx) ? sx : [sx]),
@@ -125,21 +142,28 @@ export function ActionButton({
         <CircularProgress
           size={24}
           color="inherit"
-          sx={{ mr: text || children ? '14px' : 0, flexShrink: 0 }}
+          sx={{ mr: text || children ? "14px" : 0, flexShrink: 0 }}
         />
       )}
       {!waiting && icon && (
-        <span style={{ display: 'inline-flex', marginRight: text || children ? 6 : 0 }}>{icon}</span>
+        <span
+          style={{
+            display: "inline-flex",
+            marginRight: text || children ? 6 : 0,
+          }}
+        >
+          {icon}
+        </span>
       )}
       {text !== undefined ? (
         <span
           style={{
             maxWidth: maxTextWidth,
-            display: maxLines ? '-webkit-box' : undefined,
+            display: maxLines ? "-webkit-box" : undefined,
             WebkitLineClamp: maxLines,
-            WebkitBoxOrient: 'vertical',
-            overflow: maxLines || maxTextWidth ? 'hidden' : undefined,
-            textOverflow: 'ellipsis',
+            WebkitBoxOrient: "vertical",
+            overflow: maxLines || maxTextWidth ? "hidden" : undefined,
+            textOverflow: "ellipsis",
           }}
         >
           {text}
@@ -152,10 +176,12 @@ export function ActionButton({
 
   const wrapped = tooltip ? (
     <Tooltip title={tooltip}>
-      <span style={{ display: expand ? 'block' : 'inline-flex' }}>{button}</span>
+      <span style={{ display: expand ? "block" : "inline-flex" }}>
+        {button}
+      </span>
     </Tooltip>
   ) : (
     button
   );
-  return expand ? <div style={{ width: '100%' }}>{wrapped}</div> : wrapped;
+  return expand ? <div style={{ width: "100%" }}>{wrapped}</div> : wrapped;
 }

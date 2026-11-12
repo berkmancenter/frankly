@@ -4,20 +4,26 @@
  * link in the app goes through here. Several targets (home, settings, templates, events, posts…)
  * are pages Flutter still owns: navigating to them is a hand-off (see `LegacyFallback`).
  */
-export type UserSettingsSection = 'events' | 'profile' | 'notifications' | 'subscriptions';
-export type AdminTab = 'profile' | 'members' | 'data' | 'settings';
+export type UserSettingsSection =
+  | "events"
+  | "profile"
+  | "notifications"
+  | "subscriptions";
+export type AdminTab = "profile" | "members" | "data" | "settings";
 
 const q = (params: Record<string, string | undefined>) => {
   const s = new URLSearchParams();
   for (const [k, v] of Object.entries(params)) if (v) s.set(k, v);
   const str = s.toString();
-  return str ? `?${str}` : '';
+  return str ? `?${str}` : "";
 };
 
 export const paths = {
-  home: '/home',
-  newSpace: '/newspace',
-  settings: (opts: { initialSection?: UserSettingsSection; communityId?: string } = {}) =>
+  root: "/",
+  home: "/home",
+  settings: (
+    opts: { initialSection?: UserSettingsSection; communityId?: string } = {},
+  ) =>
     `/settings${q({ initialSection: opts.initialSection, communityId: opts.communityId })}`,
 
   community: (displayId: string) => {
@@ -26,12 +32,15 @@ export const paths = {
       home: base,
       events: `${base}/discuss/upcoming`,
       templates: `${base}/discuss`,
-      event: (templateId: string, eventId: string, search: Record<string, string | undefined> = {}) =>
-        `${base}/discuss/${templateId}/${eventId}${q(search)}`,
+      event: (
+        templateId: string,
+        eventId: string,
+        search: Record<string, string | undefined> = {},
+      ) => `${base}/discuss/${templateId}/${eventId}${q(search)}`,
       resources: `${base}/resources`,
       posts: `${base}/posts`,
       post: (threadId: string) => `${base}/post/${threadId}`,
-      admin: (tab: AdminTab = 'profile') => `${base}/admin/${tab}`,
+      admin: (tab: AdminTab = "profile") => `${base}/admin/${tab}`,
     };
   },
 };

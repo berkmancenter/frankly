@@ -6,21 +6,25 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { paths } from '@/app/paths';
 import { Avatar } from '@/components/Avatar';
-import { useToast } from '@/components/Toast';
+import { useAuthService } from '@/api/ApiProvider';
+import { SignInButtons } from '@/features/auth/SignInButtons';
+import { useIsRegistered } from '@/features/auth/useAuthSession';
 import { useCurrentUser } from '@/queries/me';
 import { colors } from "@/theme/tokens";
 
 /**
- * `ProfileOrLogin`: the user's avatar; opens a menu with "My Profile", "My Events", "Sign Out".
- * (Auth is faked, so Sign Out only explains itself.)
+ * `ProfileOrLogin`: for a signed-in user the avatar, opening a menu with "My Profile", "My Events"
+ * and "Sign Out"; for a visitor without an account, the Log In / Sign Up buttons.
  */
 export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
   const user = useCurrentUser();
   const navigate = useNavigate();
-  const toast = useToast();
+  const auth = useAuthService();
+  const registered = useIsRegistered();
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const close = () => setAnchor(null);
 
+  if (!registered) return <SignInButtons />;
   if (!user) return null;
   return (
     <Box sx={{ px: '8px' }}>
@@ -56,7 +60,7 @@ export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
         <MenuItem
           onClick={() => {
             close();
-            toast.show('Sign-in is faked in this prototype: you are always the local user.');
+            void auth.signOut();
           }}
         >
           Sign Out

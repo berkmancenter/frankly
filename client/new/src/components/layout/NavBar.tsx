@@ -41,7 +41,11 @@ function NavTextButton({
       >
         <Typography
           component="div"
-          sx={{ fontSize: fontSizes.md, fontWeight: 500, color: selected ? colors.onSurface : colors.onSurfaceVariant }}
+          sx={{
+            fontSize: fontSizes.md,
+            fontWeight: 500,
+            color: selected ? colors.onSurface : colors.onSurfaceVariant,
+          }}
         >
           {title}
         </Typography>
@@ -75,6 +79,7 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
   const links = community ? paths.community(community.displayId) : null;
 
   const isAt = (p: string) => pathname === p;
+  const onAppRoot = isAt(paths.root);
   const showMembershipButton = !!community && !canViewLinks && !isMobile;
 
   const onboarding =
@@ -129,7 +134,11 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
                     maxTextWidth={180}
                     maxLines={2}
                     text={community.name}
-                    sx={{ fontSize: fontSizes.md, fontWeight: 500, textAlign: "left" }}
+                    sx={{
+                      fontSize: fontSizes.md,
+                      fontWeight: 500,
+                      textAlign: "left",
+                    }}
                     onPress={() => navigate(links.home)}
                   />
                 </Box>
@@ -142,7 +151,7 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
             )}
 
             {community && links && !isMobile && (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box>
                 <NavTextButton
                   title="Events"
                   selected={isAt(links.events)}
@@ -173,7 +182,7 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
 
             {community && canViewLinks && !isMobile && <AnnouncementsBell />}
 
-            {!isMobile && <ProfileMenu />}
+            {!isMobile && !onAppRoot && <ProfileMenu />}
 
             {isMobile && community && links && (
               <Box

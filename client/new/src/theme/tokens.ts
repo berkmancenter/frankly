@@ -32,6 +32,7 @@ export const colors = {
   onInverseSurface: "#f4f0ef",
   outline: "#747878",
   outlineVariant: "#c4c7c7",
+  transparent: "transparent",
 } as const;
 
 export type ColorName = keyof typeof colors;

@@ -2,6 +2,7 @@ import { createBrowserRouter, type RouteObject } from "react-router";
 import migrated from "../../migrated-routes.json";
 import { CommunityHome } from "@/features/community/CommunityHome";
 import { EventsPage } from "@/features/events/EventsPage";
+import { HomePage } from "@/features/home/HomePage";
 import { NotFoundPage } from "@/features/NotFoundPage";
 import {
   CommunityLayout,
@@ -27,13 +28,17 @@ interface Entry {
   route: RouteObject;
 }
 
+/** Pages outside a community. They are children of the root layout, next to `/space/:displayId`. */
+const TOP_LEVEL_PAGES: Entry[] = [
+  { pattern: "/", route: { index: true, element: <HomePage /> } },
+];
+
 /**
- * Every page built so far, keyed by its full URL pattern. They all live under a community
- * (`/space/:displayId`). Behind the dev proxy / at the edge only the patterns listed in
+ * Every page built inside a community (`/space/:displayId`), keyed by its full URL pattern. Behind the dev proxy / at the edge only the patterns listed in
  * `migrated-routes.json` are served from here; every other URL belongs to Flutter.
  *
- * Migrating another page: build it, add an entry here (pages outside a community go in the
- * top-level `children` below), then add its pattern to the JSON.
+ * Migrating another page: build it, add an entry here (or to `TOP_LEVEL_PAGES` if it is outside
+ * a community), then add its pattern to the JSON.
  */
 const COMMUNITY_PAGES: Entry[] = [
   {
@@ -71,7 +76,9 @@ const COMMUNITY_PAGES: Entry[] = [
   },
 ];
 
-const known = new Set(COMMUNITY_PAGES.map((e) => e.pattern));
+const known = new Set(
+  [...TOP_LEVEL_PAGES, ...COMMUNITY_PAGES].map((e) => e.pattern),
+);
 const unknown = migrated.routes.filter((p) => !known.has(p));
 if (unknown.length > 0) {
   throw new Error(
@@ -80,7 +87,7 @@ if (unknown.length > 0) {
 }
 
 const NOT_MIGRATED =
-  "This page is not in the React app yet. Behind the dev proxy, Flutter serves it.";
+  "This page is not in the React app yet. Soon, this would fall back to the Flutter app.";
 
 /**
  * `migratedOnly: true`  — behind the proxy / at the edge: register only the patterns in
@@ -94,24 +101,21 @@ export function buildRoutes({
   migratedOnly: boolean;
 }): RouteObject[] {
   const enabled = new Set(migrated.routes);
-  const registered = COMMUNITY_PAGES.filter(
-    (e) => !migratedOnly || enabled.has(e.pattern),
-  ).map((e) => e.route);
+  const registered = (entries: Entry[]) =>
+    entries
+      .filter((e) => !migratedOnly || enabled.has(e.pattern))
+      .map((e) => e.route);
 
   return [
     {
       element: <RootLayout />,
       errorElement: <NotFoundPage />,
       children: [
-        ...(migratedOnly
-          ? []
-          : [
-              { index: true, element: <NotFoundPage message={NOT_MIGRATED} /> },
-            ]),
+        ...registered(TOP_LEVEL_PAGES),
         {
           path: "space/:displayId",
           element: <CommunityLayout />,
-          children: registered,
+          children: registered(COMMUNITY_PAGES),
         },
         // Anything not served here (including client-side navigations to it) is Flutter's: do a
         // real page load so the edge / proxy serves it from the right app. Standalone there is no

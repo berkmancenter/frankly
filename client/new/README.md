@@ -8,6 +8,7 @@ falls back to Flutter:
 
 | URL                                  | Page                                                               | Entry                                  |
 | ------------------------------------ | ------------------------------------------------------------------ | -------------------------------------- |
+| `/`                                  | Sign-in / sign-up form, or the signed-in user's communities        | `features/home/HomePage.tsx`           |
 | `/space/:displayId`                  | Community home: hero, about, contact/share/follow, upcoming events | `features/community/CommunityHome.tsx` |
 | `/space/:displayId/posts`            | Posts                                                              | `features/posts/PostsPage.tsx`         |
 | `/space/:displayId/resources`        | Resources                                                          | `features/resources/ResourcesPage.tsx` |
@@ -34,7 +35,7 @@ admin…) are real page loads, so the proxy / hosting rewrites serve them from F
 ```bash
 cd client/new
 npm install
-npm run dev          # http://localhost:5173 — standalone; "/" goes to a seeded community
+npm run dev          # http://localhost:5173 — standalone; "/" is the sign-in page or your communities
 npm test             # machines + router ↔ migrated-routes.json
 npm run typecheck    # tsc, strict + noUnused*
 npm run build        # tsc + vite build
@@ -121,13 +122,15 @@ src/
   api/              the seam to the backend
     api.ts            `Api` interface (the HTTP surface Fastify will implement), only what the pages call
     realtime.ts       `RealtimeTransport` + `ServerMessage` (the socket protocol the connection machine speaks)
-    ApiProvider.tsx   dependency injection (a context, not state)
+    auth.ts           `AuthService` + `AuthSession` (Firebase-free interface; Flutter's `UserService`)
+    firebaseAuthService.ts  its Firebase implementation (anonymous sign-in, returning-user flag, public profile)
+    ApiProvider.tsx   dependency injection (a context, not state): `useApi()`, `useAuthService()`
 
   queries/          query keys + `queryOptions` + hooks, grouped by domain
   machines/         connection / outbox / media + retry policy (+ tests)
   scopes/           CommunityScope
   components/       shared UI (ActionButton, dialogs, avatars…) and shell/ (nav, sidebar, scaffold)
-  features/         community, events, posts, resources, profile drawer, not-found
+  features/         auth, community, events, posts, resources, profile drawer, not-found
   app/              router, route layouts, typed path builders, hand-off to Flutter
   theme/            tokens.ts (typed colors, font sizes, layout sizes) + a small MUI theme
   lib/              clock, formatting, permissions, responsive hook, placeholders…
@@ -146,6 +149,24 @@ src/
 | `clockService.now()`                                   | `useClock()` (see `lib/clock.ts`); elapsed time uses plain deltas                   |
 | `ResponsiveLayoutService` (breakpoint 1000 px)         | `useIsMobile()`                                                                     |
 | `CustomScaffold`                                       | `AppScaffold` (+ `ScaffoldFab` portal slot)                                         |
+
+## Auth
+
+Port of `client/lib/features/auth`. Every visitor has a Firebase user: someone without an account is
+signed in anonymously, and "signing in" replaces that user with a registered one. Flutter and React
+share the session when the visitor moves between them (same origin, same Firebase persistence; in
+emulator mode both keep it in `sessionStorage`), and the "returning visitor" flag lives in
+`localStorage["flutter.is-returning-user"]` so both apps agree on it.
+
+- `AuthService` (`api/auth.ts`) is injected next to `Api`; read the session with `useAuthSession()`
+  (`useSyncExternalStore`, no store of our own). `RootLayout` waits for it and drops the query cache
+  when the user changes.
+- `features/auth`: `SignInForm` (email/password, Google, reset password), `AccountErrorMessage`,
+  `SignInDialog` + `useSignInDialog()` (the opener owns the dialog), `useGuardSignedIn()` (Flutter's
+  `guardSignedIn`), `SignInButtons` (shown by `ProfileMenu` to visitors without an account).
+- Strings use the Flutter ARB keys as ids (`<Trans id="signIn">`), so the existing translations apply.
+- Branding comes from `VITE_APP_NAME`, `VITE_SUPPORT_EMAIL`, `VITE_TERMS_URL` (`utils/appInfo.ts`).
+- Not ported yet: the verify-email page and its gate, handling of the `?mode=verifyEmail&oobCode=` link.
 
 ## Theme
 

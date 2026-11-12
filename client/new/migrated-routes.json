@@ -3,6 +3,7 @@
   "assetBase": "/_new/",
   "staticPrefixes": ["/media/"],
   "routes": [
+    "/",
     "/space/:displayId",
     "/space/:displayId/posts",
     "/space/:displayId/resources",
