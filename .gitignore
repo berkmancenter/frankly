@@ -4,3 +4,5 @@ logs/
 docs/output
 *.log
 .local/
+*.env.production
+*.env.local
