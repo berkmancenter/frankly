@@ -13,6 +13,7 @@ import { i18n } from "@lingui/core";
 import { defaultLocale, dynamicActivate } from "./i18n";
 
 import { createAppRouter } from "./router";
+import { colors } from "@/theme/tokens";
 
 // Opt in with `?devtools` so the floating button never covers the UI being reviewed.
 const devtoolsRequested =
@@ -65,21 +66,33 @@ export function App() {
           <CssBaseline />
           <ToastProvider>
             <I18nProvider i18n={i18n}>
-              {process.env.NODE_ENV === "development" && (
-                <Box
-                  sx={{
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    zIndex: 1300,
-                    padding: "1rem",
-                    backgroundColor: "rgba(255, 94, 0, 0.7)",
-                    borderRadius: "0.5rem",
-                  }}
-                >
-                  React App
-                </Box>
-              )}
+              <Box
+                sx={{
+                  position: "fixed",
+                  top: "3rem",
+                  right: "-8rem",
+                  zIndex: 1300,
+                  transition: "transform 0.3s ease-in-out",
+                  transform: "rotate(45deg)",
+                  width: "400px",
+                  textAlign: "center",
+                  paddingY: "0.5rem",
+                  backgroundColor: "rgba(255, 94, 0, 0.95)",
+                  color: colors.onPrimary,
+                  fontWeight: "bold",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.transform =
+                    "rotate(45deg) scale(1.4)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.transform =
+                    "rotate(45deg) scale(1)";
+                }}
+              >
+                React App
+              </Box>
+
               <RouterProvider router={router} />
             </I18nProvider>
           </ToastProvider>
