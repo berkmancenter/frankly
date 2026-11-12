@@ -1,4 +1,3 @@
-import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
@@ -11,14 +10,17 @@ import { useLocation, useNavigate } from "react-router";
 import type { Community } from "@/api/types";
 import { paths } from "@/app/paths";
 import { ActionButton } from "@/components/ActionButton";
-import { CircleIconButton } from "@/components/CircleIconButton";
 import { CommunityCircleIcon } from "@/components/CommunityCircleIcon";
 import { CommunityMembershipButton } from "@/components/CommunityMembershipButton";
 import { LoadingState } from "@/components/States";
 import { computeCommunityPermissions } from "@/utils/permissions";
+import {
+  CreateCommunityButton,
+  useCanCreateCommunity,
+} from "@/features/community/CreateCommunity";
 import { useMyCommunities, useUnfollowCommunity } from "@/queries/communities";
 import { useResources } from "@/queries/content";
-import { useCurrentUser, useMembership } from "@/queries/me";
+import { useMembership } from "@/queries/me";
 import { useCommunityScopeOrNull } from "@/scopes/CommunityScope";
 import { appSize, colors, fontSizes } from "@/theme/tokens";
 import { useConfirm } from "../ConfirmDialog";
@@ -83,7 +85,12 @@ function SidebarCommunityItem({
           maxTextWidth={200}
           text={community.name || "Unnamed Community"}
           minWidth={0}
-          sx={{ py: "12px", px: "6px", fontSize: fontSizes.md, fontWeight: 500 }}
+          sx={{
+            py: "12px",
+            px: "6px",
+            fontSize: fontSizes.md,
+            fontWeight: 500,
+          }}
           onPress={() => go(links.home)}
         />
         <Box sx={{ flex: 1 }} />
@@ -155,7 +162,7 @@ function SidebarCommunityItem({
 
 /** The end drawer: the user's communities on top, global links below. */
 export function SideBar({ onClose }: { onClose: () => void }) {
-  const me = useCurrentUser();
+  const canCreate = useCanCreateCommunity();
   const mine = useMyCommunities();
   const scope = useCommunityScopeOrNull();
   const navigate = useNavigate();
@@ -212,34 +219,20 @@ export function SideBar({ onClose }: { onClose: () => void }) {
                 />
               </Box>
             ))}
-            {me?.isAppOwner && (
+            {canCreate && (
               <>
                 {communities.length > 0 && <Divider sx={{ my: "8px" }} />}
-                <Box
-                  sx={{ display: "flex", alignItems: "center", gap: "11px" }}
-                >
-                  {/* Creating a community is not migrated: this hands off to Flutter. */}
-                  <CircleIconButton
-                    tooltip="Start a community"
-                    icon={<AddIcon />}
-                    onClick={() => {
-                      onClose();
-                      navigate(paths.newSpace);
-                    }}
-                  />
-                  <Typography
-                    sx={{ fontSize: fontSizes.md, color: colors.onSurface, letterSpacing: 0 }}
-                  >
-                    Start a community
-                  </Typography>
-                </Box>
+                {/* The dialog opens over the drawer; the drawer closes once it is done. */}
+                <CreateCommunityButton onDone={onClose} />
               </>
             )}
           </>
         )}
       </Box>
 
-      <Box sx={{ bgcolor: colors.surface, p: "20px", pt: "32px", flexShrink: 0 }}>
+      <Box
+        sx={{ bgcolor: colors.surface, p: "20px", pt: "32px", flexShrink: 0 }}
+      >
         <ActionButton
           type="text"
           contentAlign="start"
@@ -283,7 +276,9 @@ export function SideBar({ onClose }: { onClose: () => void }) {
         <Typography
           component="div"
           sx={{
-            fontSize: fontSizes.xs, fontWeight: 500, color: colors.onSurfaceVariant,
+            fontSize: fontSizes.xs,
+            fontWeight: 500,
+            color: colors.onSurfaceVariant,
             px: "8px",
             py: "24px",
             whiteSpace: "pre-line",
@@ -293,9 +288,15 @@ export function SideBar({ onClose }: { onClose: () => void }) {
         </Typography>
         <Typography
           component="div"
-          sx={{ fontSize: fontSizes.xs, fontWeight: 500, color: colors.onSurfaceVariant, px: "8px", textAlign: "right" }}
+          sx={{
+            fontSize: fontSizes.xs,
+            fontWeight: 500,
+            color: colors.onSurfaceVariant,
+            px: "8px",
+            textAlign: "right",
+          }}
         >
-          v0.1.0 (prototype)
+          v3.0.0
         </Typography>
       </Box>
     </Box>

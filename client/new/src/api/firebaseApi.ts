@@ -150,6 +150,21 @@ function mapPublicUser(
   };
 }
 
+/**
+ * The server turned the request down, as opposed to failing. The SDK reports `functions/failed-precondition`;
+ * the same-origin path reports the HTTP status name, `FAILED_PRECONDITION`.
+ */
+function isCallableRefusal(error: unknown): error is Error {
+  const code = (error as { code?: unknown } | null)?.code;
+  return (
+    error instanceof Error &&
+    typeof code === "string" &&
+    /(^|\/)(failed-precondition|invalid-argument)$/.test(
+      code.toLowerCase().replaceAll("_", "-"),
+    )
+  );
+}
+
 async function getPublicUser(
   client: FirebaseClient,
   userId: string,
@@ -599,6 +614,35 @@ export function createFirebaseApi(client: FirebaseClient): Api {
             user.uid,
           ),
         );
+      },
+
+      async create({ name, displayId, isPublic }) {
+        await requireUser(client);
+        // The server assigns the real id; the client sends one only because the model requires it.
+        const draftId = doc(collection(client.firestore, "community")).id;
+        try {
+          const response = await client.functions.call<
+            { community: Record<string, unknown> },
+            { communityId: string }
+          >("createCommunity", {
+            community: {
+              id: draftId,
+              name: name.trim(),
+              displayIds: displayId ? [displayId] : [],
+              isPublic,
+              isOnboardingOverviewEnabled: true,
+            },
+          });
+          return {
+            communityId: response.communityId,
+            displayId: displayId || response.communityId,
+          };
+        } catch (error) {
+          if (isCallableRefusal(error)) {
+            throw new ApiError("invalid", error.message);
+          }
+          throw error;
+        }
       },
 
       async listMembers(communityId) {

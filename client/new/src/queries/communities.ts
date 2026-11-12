@@ -1,6 +1,6 @@
 import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useApi } from '@/api/ApiProvider';
-import type { Api } from '@/api/api';
+import type { Api, NewCommunityInput } from '@/api/api';
 import { qk } from './keys';
 
 export const communityByDisplayIdQuery = (api: Api, displayId: string) =>
@@ -35,6 +35,15 @@ function useInvalidateMembership() {
       qc.invalidateQueries({ queryKey: qk.me() }),
       qc.invalidateQueries({ queryKey: qk.myCommunities() }),
     ]);
+}
+
+export function useCreateCommunity() {
+  const api = useApi();
+  const invalidate = useInvalidateMembership();
+  return useMutation({
+    mutationFn: (input: NewCommunityInput) => api.communities.create(input),
+    onSuccess: invalidate,
+  });
 }
 
 export function useFollowCommunity() {

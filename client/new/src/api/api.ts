@@ -26,6 +26,13 @@ export class ApiError extends Error {
   }
 }
 
+export interface NewCommunityInput {
+  name: string;
+  /** URL slug: `/space/:displayId`. */
+  displayId: string;
+  isPublic: boolean;
+}
+
 export interface ParticipantWithUser {
   participant: Participant;
   user: PublicUser;
@@ -49,6 +56,13 @@ export interface Api {
     follow(communityId: string): Promise<Membership>;
     unfollow(communityId: string): Promise<void>;
     listMembers(communityId: string): Promise<MemberDetails[]>;
+    /**
+     * Creates a community owned by the current user. Rejects with `ApiError("invalid")` (and a
+     * readable message) when the server refuses it, e.g. the URL is already taken.
+     */
+    create(
+      input: NewCommunityInput,
+    ): Promise<{ communityId: string; displayId: string }>;
   };
 
   templates: {

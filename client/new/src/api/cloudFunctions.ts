@@ -21,6 +21,7 @@ const emulatorConnections = new WeakSet<Functions>();
 // These callable names have same-origin hosting rewrites in firebase.json.
 const sameOriginCallables = new Set([
 	'GetMembersData',
+	'createCommunity',
 	'createEvent',
 	'sendAnnouncement',
 	'updateMembership',
