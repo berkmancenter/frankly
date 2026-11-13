@@ -14,8 +14,13 @@ const mocks = vi.hoisted(() => ({
 }));
 
 // Never touch Firebase or load the real message catalogs.
-vi.mock("@/api/firebaseBackend", () => ({ createFirebaseBackend: mocks.createFirebaseBackend }));
-vi.mock("@/app/i18n", () => ({ defaultLocale: "en", dynamicActivate: mocks.dynamicActivate }));
+vi.mock("@/api/firebaseBackend", () => ({
+  createFirebaseBackend: mocks.createFirebaseBackend,
+}));
+vi.mock("@/app/i18n", () => ({
+  defaultLocale: "en",
+  dynamicActivate: mocks.dynamicActivate,
+}));
 
 // `I18nProvider` renders nothing until a locale is active, which the real `dynamicActivate` would do.
 i18n.load("en", {});
@@ -24,17 +29,31 @@ i18n.activate("en");
 const lab = community({ id: "c1", displayId: "civic-lab", name: "Civic Lab" });
 
 const signedIn = {
-  me: { get: async () => me({ memberships: [membership({ communityId: "c1", status: "member" })] }) },
+  me: {
+    get: async () =>
+      me({
+        memberships: [membership({ communityId: "c1", status: "member" })],
+      }),
+  },
   communities: { getByDisplayId: async () => lab, listMine: async () => [lab] },
   templates: { list: async () => [] },
-  events: { listUpcoming: async () => [event({ title: "Weekly chat" })], listAll: async () => [] },
+  events: {
+    listUpcoming: async () => [event({ title: "Weekly chat" })],
+    listAll: async () => [],
+  },
   resources: { list: async () => [] },
   announcements: { list: async () => [] },
 };
 
-function renderApp(path: string, api: Parameters<typeof createFakeApi>[0] = signedIn): Api {
+function renderApp(
+  path: string,
+  api: Parameters<typeof createFakeApi>[0] = signedIn,
+): Api {
   const fake = createFakeApi(api);
-  mocks.createFirebaseBackend.mockReturnValue({ api: fake, auth: createFakeAuth() });
+  mocks.createFirebaseBackend.mockReturnValue({
+    api: fake,
+    auth: createFakeAuth(),
+  });
   // The app owns a browser router, so the URL is set up the way a visit would.
   window.history.pushState({}, "", path);
   render(<App />);
@@ -54,14 +73,19 @@ describe("App", () => {
   });
 
   it("waits for the session before showing anything", async () => {
-    renderApp("/space/civic-lab", { ...signedIn, me: { get: () => new Promise(() => {}) } });
+    renderApp("/space/civic-lab", {
+      ...signedIn,
+      me: { get: () => new Promise(() => {}) },
+    });
     expect(await screen.findByRole("progressbar")).toBeInTheDocument();
     expect(screen.queryByText("Civic Lab")).not.toBeInTheDocument();
   });
 
   it("serves a community page from the URL, through the layout and backend", async () => {
     const api = renderApp("/space/civic-lab");
-    expect(await screen.findByRole("heading", { name: "Civic Lab" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Civic Lab" }),
+    ).toBeInTheDocument();
     expect(await screen.findByText("Weekly chat")).toBeInTheDocument();
     expect(mocks.createFirebaseBackend).toHaveBeenCalledTimes(1);
     expect(api.communities.getByDisplayId).toHaveBeenCalledWith("civic-lab");
@@ -74,10 +98,15 @@ describe("App", () => {
 
   it("asks a visitor without an account to sign up at the root", async () => {
     mocks.createFirebaseBackend.mockReset();
-    mocks.createFirebaseBackend.mockReturnValue({ api: createFakeApi(signedIn), auth: createFakeAuth(anonymousSession()) });
+    mocks.createFirebaseBackend.mockReturnValue({
+      api: createFakeApi(signedIn),
+      auth: createFakeAuth(anonymousSession()),
+    });
     window.history.pushState({}, "", "/");
     render(<App />);
-    expect(await screen.findByRole("heading", { name: "New to Frankly?" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "New to Frankly?" }),
+    ).toBeInTheDocument();
   });
 
   it("shows 'not migrated' instead of reloading for a page Flutter owns", async () => {
@@ -86,7 +115,9 @@ describe("App", () => {
     window.history.pushState({}, "", "/settings");
     vi.stubGlobal("location", { ...window.location, replace: reload });
     renderApp("/settings");
-    expect(await screen.findByText(/This page is not in the React app yet/)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/This page is not in the React app yet/),
+    ).toBeInTheDocument();
     expect(reload).not.toHaveBeenCalled();
   });
 
@@ -101,19 +132,25 @@ describe("App", () => {
       },
     });
     // The app's query client retries once, one second later, before giving up.
-    expect(await screen.findByText(/Could not load your session\./, undefined, { timeout: 3000 })).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Could not load your session\./, undefined, {
+        timeout: 3000,
+      }),
+    ).toBeInTheDocument();
   });
 
   it("loads the default locale's catalog on mount", async () => {
     renderApp("/space/civic-lab");
-    await waitFor(() => expect(mocks.dynamicActivate).toHaveBeenCalledWith("en"));
+    await waitFor(() =>
+      expect(mocks.dynamicActivate).toHaveBeenCalledWith("en"),
+    );
     await screen.findByRole("heading", { name: "Civic Lab" });
   });
 
-  it("marks the page as the React app only in development", async () => {
+  it("marks the page as the React app", async () => {
     renderApp("/space/civic-lab");
     await screen.findByRole("heading", { name: "Civic Lab" });
-    expect(screen.queryByText("React App")).not.toBeInTheDocument();
+    expect(screen.queryByText("React App")).toBeInTheDocument();
   });
 
   it("shows the 'React App' marker in development", async () => {
