@@ -142,6 +142,8 @@ function mapPublicUser(
     displayName:
       stringValue(data.displayName) ??
       fallback?.displayName ??
+      // This is a fallback value, exempt it:
+      // eslint-disable-next-line lingui/no-unlocalized-strings
       `User-${userId.slice(0, 4)}`,
     ...((stringValue(data.imageUrl) ?? fallback?.imageUrl)
       ? { imageUrl: stringValue(data.imageUrl) ?? fallback?.imageUrl }
@@ -461,7 +463,8 @@ async function getCommunity(
   const snapshot = await getDoc(
     doc(client.firestore, "community", communityId),
   );
-  if (!snapshot.exists()) throw new ApiError("notFound", t`Community not found`);
+  if (!snapshot.exists())
+    throw new ApiError("notFound", t`Community not found`);
   return mapCommunity(snapshot.id, snapshot.data());
 }
 
@@ -497,6 +500,8 @@ export function createFirebaseApi(client: FirebaseClient): Api {
         );
         const userFallback: PublicUser = {
           id: user.uid,
+          // This is a fallback value, exempt it:
+          // eslint-disable-next-line lingui/no-unlocalized-strings
           displayName: user.displayName ?? `User-${user.uid.slice(0, 4)}`,
           ...(user.photoURL ? { imageUrl: user.photoURL } : {}),
         };
@@ -787,6 +792,8 @@ export function createFirebaseApi(client: FirebaseClient): Api {
           status: "active",
           eventType: input.eventType,
           title:
+            // This is a fallback value, exempt it:
+            // eslint-disable-next-line lingui/no-unlocalized-strings
             input.title ?? stringValue(template.title) ?? "My custom event",
           description: stringValue(template.description) ?? "",
           image: stringValue(template.image) ?? "",
@@ -1131,6 +1138,7 @@ export function createFirebaseApi(client: FirebaseClient): Api {
           resourceId,
         );
         const changes: Record<string, unknown> = {};
+        // eslint-disable-next-line lingui/no-unlocalized-strings -- link-preview field names
         for (const key of ["title", "url", "image"] as const) {
           if (key in patch) changes[key] = patch[key] ?? deleteField();
         }

@@ -18,7 +18,7 @@ import { Upload } from '@/components/Upload';
 import { useToast } from '@/components/Toast';
 import { useCreateResource, useUpdateResource } from '@/queries/content';
 import { useCommunityScope } from '@/scopes/CommunityScope';
-import { colors, fontSizes } from "@/theme/tokens";
+import { colors } from "@/theme/tokens";
 
 /**
  * "Add a resource": paste a URL, press ✓ to look up its preview, edit the title,
@@ -94,7 +94,7 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
             )}
           </Box>
           {error && (
-            <Typography sx={{ fontSize: fontSizes.xs, color: colors.error, mt: '8px' }}>
+            <Typography variant="body2" sx={{ color: colors.error, mt: '8px' }}>
               {error}
             </Typography>
           )}

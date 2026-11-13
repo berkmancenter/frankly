@@ -1,3 +1,5 @@
+import { t } from "@lingui/core/macro";
+
 /** "Ada Lovelace" -> "Ada L"; a single word stays as is. Port of `firstAndLastInitial` (data_models). */
 export function firstAndLastInitial(
   fullName: string | null | undefined,
@@ -34,10 +36,11 @@ export function defaultDisplayName(input: {
   profileName?: string | null;
   email?: string | null;
 }): string {
+  const suffix = input.uid.slice(0, 4);
   return (
     firstAndLastInitial(input.registrationName) ??
     firstAndLastInitial(input.profileName) ??
     firstAndLastInitial(input.email) ??
-    `User-${input.uid.slice(0, 4)}`
+    t`User-${suffix}`
   );
 }

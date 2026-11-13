@@ -137,13 +137,13 @@ export function EventsPage() {
                 "&.Mui-disabled": { opacity: 1 },
               }}
             >
-              <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500, color: "inherit" }}>
+              <Typography component="div" sx={{ fontWeight: 500, color: "inherit" }}>
                 {formatMonthShortUpper(day)}
               </Typography>
               <Typography component="h2" sx={{ fontSize: fontSizes["4xl"], color: "inherit" }}>
                 {day.getDate()}
               </Typography>
-              <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500, color: "inherit" }}>
+              <Typography component="div" sx={{ fontWeight: 500, color: "inherit" }}>
                 {formatWeekdayShort(day)}
               </Typography>
             </ButtonBase>

@@ -80,7 +80,6 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
   const links = community ? paths.community(community.displayId) : null;
 
   const isAt = (p: string) => pathname === p;
-  const onAppRoot = isAt(paths.root);
   const showMembershipButton = !!community && !canViewLinks && !isMobile;
 
   const onboarding =

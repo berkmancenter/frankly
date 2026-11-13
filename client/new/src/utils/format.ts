@@ -48,11 +48,6 @@ export function startOfDay(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
-/** `1 Comment` / `3 Comments` / `No Comments` */
-export function pluralize(count: number, singular: string, plural = `${singular}s`): string {
-  return `${count} ${count === 1 ? singular : plural}`;
-}
-
 export function compactNumber(n: number): string {
   return new Intl.NumberFormat(LOCALE, { notation: 'compact' }).format(n);
 }

@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { t } from "@lingui/core/macro";
 import { useState } from "react";
 import { isSameCalendarDay, startOfDay } from "@/utils/format";
-import { colors, fontSizes } from "@/theme/tokens";
+import { colors } from "@/theme/tokens";
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
 const monthName = new Intl.DateTimeFormat("en-US", {
@@ -61,7 +61,7 @@ export function MonthCalendar({
           mb: "8px",
         }}
       >
-        <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500 }}>{monthName.format(cursor)}</Typography>
+        <Typography component="div" sx={{ fontWeight: 500 }}>{monthName.format(cursor)}</Typography>
         <Box>
           <IconButton
             aria-label={t({ id: "monthCalendar.previousMonth", message: "Previous month" })}
@@ -96,8 +96,9 @@ export function MonthCalendar({
       >
         {WEEKDAYS.map((d, i) => (
           <Typography
+            variant="body2"
             key={i}
-            sx={{ fontSize: fontSizes.xs, color: colors.onSurface, height: 40, lineHeight: "40px" }}
+            sx={{ color: colors.onSurface, height: 40, lineHeight: "40px" }}
           >
             {d}
           </Typography>
@@ -203,7 +204,7 @@ function TimeField({
           "&:focus": { borderColor: "primary.main" },
         }}
       />
-      <Typography sx={{ fontSize: fontSizes.xs, display: "block", mt: "4px" }}>
+      <Typography variant="body2" sx={{ display: "block", mt: "4px" }}>
         {label}
       </Typography>
     </Box>

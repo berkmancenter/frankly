@@ -1,3 +1,4 @@
+/* eslint-disable lingui/no-unlocalized-strings */
 import {
   assign,
   fromCallback,

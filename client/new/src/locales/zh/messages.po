@@ -38,7 +38,7 @@ msgstr ""
 msgid "termsOfService"
 msgstr "{appName} 的服务条款"
 
-#: src/api/firebaseApi.ts:431
+#: src/api/firebaseApi.ts:433
 msgid "{entity} not found"
 msgstr ""
 
@@ -60,7 +60,7 @@ msgid "100"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:344
+#: src/components/layout/SideBar.tsx:359
 msgid "sidebar.aboutFrankly"
 msgstr ""
 
@@ -88,7 +88,7 @@ msgid "Admin"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:182
+#: src/components/layout/SideBar.tsx:188
 msgid "sidebar.admin"
 msgstr ""
 
@@ -178,7 +178,7 @@ msgid "Cancel"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:168
+#: src/components/layout/SideBar.tsx:171
 msgid "sidebar.cancel"
 msgstr ""
 
@@ -213,12 +213,12 @@ msgid "Close"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:237
+#: src/components/layout/SideBar.tsx:244
 msgid "sidebar.close"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:327
+#: src/components/layout/SideBar.tsx:342
 msgid "sidebar.closeDialog"
 msgstr ""
 
@@ -227,7 +227,7 @@ msgid "Cloudinary isn't configured. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOU
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:114
+#: src/components/layout/SideBar.tsx:117
 msgid "sidebar.collapse"
 msgstr ""
 
@@ -244,8 +244,8 @@ msgstr ""
 msgid "communityName"
 msgstr "社区名称"
 
-#: src/api/firebaseApi.ts:464
-#: src/api/firebaseApi.ts:574
+#: src/api/firebaseApi.ts:467
+#: src/api/firebaseApi.ts:577
 msgid "Community not found"
 msgstr ""
 
@@ -346,7 +346,7 @@ msgstr ""
 msgid "Create your first event"
 msgstr ""
 
-#: src/api/firebaseApi.ts:829
+#: src/api/firebaseApi.ts:832
 msgid "Created event was not found"
 msgstr ""
 
@@ -408,7 +408,7 @@ msgid "email"
 msgstr "电子邮箱"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:322
+#: src/components/layout/SideBar.tsx:337
 msgid "sidebar.english"
 msgstr ""
 
@@ -432,7 +432,7 @@ msgid "Events"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:134
+#: src/components/layout/SideBar.tsx:137
 msgid "sidebar.events"
 msgstr ""
 
@@ -441,7 +441,7 @@ msgid "Exclamation"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:115
+#: src/components/layout/SideBar.tsx:118
 msgid "sidebar.expand"
 msgstr ""
 
@@ -495,7 +495,7 @@ msgid "Frankly home"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:296
+#: src/components/layout/SideBar.tsx:305
 msgid "sidebar.franklyHome"
 msgstr ""
 
@@ -520,7 +520,7 @@ msgid "Heart eyes"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:337
+#: src/components/layout/SideBar.tsx:352
 msgid "sidebar.helpCenter"
 msgstr ""
 
@@ -558,7 +558,7 @@ msgstr ""
 msgid "invalidEmail"
 msgstr "无效的电子邮件"
 
-#: src/api/firebaseApi.ts:779
+#: src/api/firebaseApi.ts:782
 msgid "Invalid event schedule"
 msgstr ""
 
@@ -577,12 +577,12 @@ msgid "communityHome.shareSubject"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:304
+#: src/components/layout/SideBar.tsx:315
 msgid "sidebar.languageIconLabel"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:309
+#: src/components/layout/SideBar.tsx:324
 msgid "sidebar.language"
 msgstr ""
 
@@ -599,12 +599,12 @@ msgstr ""
 msgid "shareSection.linkCopied"
 msgstr ""
 
-#: src/api/firebaseApi.ts:1054
+#: src/api/firebaseApi.ts:1057
 msgid "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
 msgstr ""
 
 #. placeholder {0}: response.status
-#: src/api/firebaseApi.ts:1068
+#: src/api/firebaseApi.ts:1071
 msgid "Link preview request failed ({0})"
 msgstr ""
 
@@ -656,7 +656,7 @@ msgstr "设此为私密空间"
 msgid "Member"
 msgstr ""
 
-#: src/api/firebaseApi.ts:596
+#: src/api/firebaseApi.ts:599
 msgid "Membership update was not saved"
 msgstr ""
 
@@ -762,7 +762,7 @@ msgstr ""
 msgid "onboardingBanner.progress"
 msgstr ""
 
-#: src/api/firebaseApi.ts:1061
+#: src/api/firebaseApi.ts:1064
 msgid "Only HTTP and HTTPS links can be previewed."
 msgstr ""
 
@@ -855,7 +855,7 @@ msgstr ""
 msgid "Post has been updated"
 msgstr ""
 
-#: src/api/firebaseApi.ts:971
+#: src/api/firebaseApi.ts:974
 msgid "Post not found"
 msgstr ""
 
@@ -869,7 +869,7 @@ msgid "Posts"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:139
+#: src/components/layout/SideBar.tsx:142
 msgid "sidebar.posts"
 msgstr ""
 
@@ -884,7 +884,7 @@ msgid "monthCalendar.previousMonth"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:351
+#: src/components/layout/SideBar.tsx:366
 msgid "sidebar.privacyPolicy"
 msgstr ""
 
@@ -902,7 +902,7 @@ msgstr ""
 msgid "Public or private?"
 msgstr ""
 
-#: src/app/App.tsx:96
+#: src/app/layouts/RootLayout.tsx:64
 msgid "React App"
 msgstr ""
 
@@ -934,7 +934,7 @@ msgstr "重置您的密码"
 msgid "Resource added"
 msgstr ""
 
-#: src/api/firebaseApi.ts:1141
+#: src/api/firebaseApi.ts:1145
 msgid "Resource not found"
 msgstr ""
 
@@ -956,7 +956,7 @@ msgid "Resources"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:145
+#: src/components/layout/SideBar.tsx:148
 msgid "sidebar.resources"
 msgstr ""
 
@@ -1103,7 +1103,7 @@ msgid "Something went wrong. Please try again."
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/app/layouts/RootLayout.tsx:37
+#: src/app/layouts/RootLayout.tsx:105
 #: src/features/community/CreateCommunity.tsx:183
 msgid "somethingWentWrongTryAgain"
 msgstr "出现错误，请重试。"
@@ -1114,7 +1114,7 @@ msgid "startCommunity"
 msgstr "创建社区"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:317
+#: src/components/layout/SideBar.tsx:332
 msgid "sidebar.supportedLanguages"
 msgstr ""
 
@@ -1123,7 +1123,7 @@ msgid "Templates"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:150
+#: src/components/layout/SideBar.tsx:153
 msgid "sidebar.templates"
 msgstr ""
 
@@ -1206,18 +1206,18 @@ msgid "Type something"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:155
+#: src/components/layout/SideBar.tsx:158
 msgid "sidebar.unfollow"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:169
+#: src/components/layout/SideBar.tsx:175
 msgid "sidebar.unfollowConfirmAction"
 msgstr ""
 
 #. js-lingui-explicit-id
 #. placeholder {0}: community.name
-#: src/components/layout/SideBar.tsx:159
+#: src/components/layout/SideBar.tsx:162
 msgid "sidebar.unfollowConfirmTitle"
 msgstr ""
 
@@ -1226,7 +1226,7 @@ msgid "Unknown VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\". Use \"cloudinary\" or
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:99
+#: src/components/layout/SideBar.tsx:101
 msgid "sidebar.unnamedCommunity"
 msgstr ""
 
@@ -1256,6 +1256,10 @@ msgstr ""
 #: src/features/resources/ResourceDialog.tsx:148
 msgid "Upload image"
 msgstr ""
+
+#: src/utils/users.ts:44
+msgid "User-{suffix}"
+msgstr "用户-{suffix}"
 
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:22
@@ -1310,7 +1314,7 @@ msgid "You don't belong to any communities"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/app/layouts/RootLayout.tsx:52
+#: src/app/layouts/RootLayout.tsx:120
 msgid "signedOutRefreshPrompt"
 msgstr "您已退出登录。请刷新页面以重新登录"
 
@@ -1319,7 +1323,7 @@ msgid "You must be signed in to continue."
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:163
+#: src/components/layout/SideBar.tsx:166
 msgid "sidebar.unfollowConfirmBody"
 msgstr ""
 

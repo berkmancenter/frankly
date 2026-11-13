@@ -105,7 +105,8 @@ export function EventCard({ event }: { event: Event }) {
               <>
                 {event.eventType === "livestream" && (
                   <Typography
-                    sx={{ fontSize: fontSizes.xs, color: "rgba(28,27,27,0.75)" }}
+                    variant="body2"
+                    sx={{ color: "rgba(28,27,27,0.75)" }}
                   >
                     <Trans>Livestream</Trans>
                   </Typography>

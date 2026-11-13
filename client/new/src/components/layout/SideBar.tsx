@@ -14,7 +14,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import type { Community } from "@/api/types";
+import type { Community, MembershipStatus } from "@/api/types";
 import { paths } from "@/app/paths";
 import { ActionButton } from "@/components/ActionButton";
 import { CommunityCircleIcon } from "@/components/CommunityCircleIcon";
@@ -78,7 +78,7 @@ function SidebarCommunityItem({
   const resources = useResources(community.id);
   const unfollow = useUnfollowCommunity();
   const { confirm, dialog } = useConfirm();
-  const status = membership?.status ?? "nonmember";
+  const status: MembershipStatus = membership?.status ?? "nonmember";
   const permissions = computeCommunityPermissions(community, status, true);
   const links = paths.community(community.displayId);
   const go = (to: string) => {
@@ -96,7 +96,10 @@ function SidebarCommunityItem({
           type="text"
           contentAlign="start"
           maxTextWidth={200}
-          text={community.name || t({ id: "sidebar.unnamedCommunity", message: "Unnamed Community" })}
+          text={
+            community.name ||
+            t({ id: "sidebar.unnamedCommunity", message: "Unnamed Community" })
+          }
           minWidth={0}
           sx={{
             py: "12px",
@@ -165,7 +168,10 @@ function SidebarCommunityItem({
                         message:
                           "You will stop receiving updates and lose access to its events.",
                       }),
-                      cancelText: t({ id: "sidebar.cancel", message: "Cancel" }),
+                      cancelText: t({
+                        id: "sidebar.cancel",
+                        message: "Cancel",
+                      }),
                       confirmText: t({
                         id: "sidebar.unfollowConfirmAction",
                         message: "Unfollow",
@@ -234,7 +240,10 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           pr: "26px",
         }}
       >
-        <IconButton aria-label={t({ id: "sidebar.close", message: "Close" })} onClick={onClose}>
+        <IconButton
+          aria-label={t({ id: "sidebar.close", message: "Close" })}
+          onClick={onClose}
+        >
           <CloseIcon sx={{ fontSize: 34, color: "secondary.main" }} />
         </IconButton>
       </Box>
@@ -301,7 +310,13 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           contentAlign="start"
           onPress={() => setLanguageDialogOpen(true)}
           icon={
-            <span role="img" aria-label={t({ id: "sidebar.languageIconLabel", message: "language" })}>
+            <span
+              role="img"
+              aria-label={t({
+                id: "sidebar.languageIconLabel",
+                message: "language",
+              })}
+            >
               🌐
             </span>
           }
@@ -351,9 +366,9 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           <Trans id="sidebar.privacyPolicy">Privacy Policy</Trans>
         </ActionButton>
         <Typography
+          variant="body2"
           component="div"
           sx={{
-            fontSize: fontSizes.xs,
             fontWeight: 500,
             color: colors.onSurfaceVariant,
             px: "8px",
@@ -374,6 +389,7 @@ export function SideBar({ onClose }: { onClose: () => void }) {
             px: "8px",
           }}
         >
+          {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
           <a href={REPO_LINK_URL} target="_blank" rel="noopener noreferrer">
             v{version}
           </a>

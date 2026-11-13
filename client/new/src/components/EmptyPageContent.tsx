@@ -68,7 +68,7 @@ export function EmptyPageContent({
       <Typography component="h3" sx={{ fontSize: fontSizes.xl, mt: '10px' }}>
         {titleText ?? t`No ${type}`}
       </Typography>
-      <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500, mt: '20px', width: 205 }}>
+      <Typography component="div" sx={{ fontWeight: 500, mt: '20px', width: 205 }}>
         {subtitleText ?? t`When new ${type} are added, you'll see them here.`}
       </Typography>
       {onButtonPress && (

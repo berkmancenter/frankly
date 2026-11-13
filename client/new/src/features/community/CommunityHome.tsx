@@ -264,7 +264,6 @@ function ContactSection({ community }: { community: Community }) {
             component="a"
             href={`mailto:${email}`}
             sx={{
-              fontSize: fontSizes.sm,
               color: "primary.main",
               textDecoration: "none",
             }}
@@ -359,7 +358,7 @@ function EventsBlock({
               borderColor: colors.onSurface,
             }}
           >
-            <Typography sx={{ fontSize: fontSizes.sm }}>
+            <Typography>
               <Trans id="seeMoreEvents">See More Events</Trans>
             </Typography>
           </ButtonBase>

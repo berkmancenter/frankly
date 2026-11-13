@@ -21,7 +21,7 @@ import {
 } from "@/queries/content";
 import { useCommunityScope } from "@/scopes/CommunityScope";
 import { TextField } from "@mui/material";
-import { colors, fontSizes } from "@/theme/tokens";
+import { colors } from "@/theme/tokens";
 
 /** `AnnouncementsIcon`: bell in the nav bar; opens a popover with the community's announcements. */
 export function AnnouncementsBell() {
@@ -65,7 +65,7 @@ export function AnnouncementsBell() {
           },
         }}
       >
-        <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500 }}><Trans>Announcements</Trans></Typography>
+        <Typography component="div" sx={{ fontWeight: 500 }}><Trans>Announcements</Trans></Typography>
         {permissions.canEditCommunity && (
           <Box sx={{ mt: "16px" }}>
             <ThickOutlineButton
@@ -94,7 +94,7 @@ export function AnnouncementsBell() {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500 }}>
+                  <Typography component="div" sx={{ fontWeight: 500 }}>
                     {/* Fallback title shown when an announcement was saved without one. */}
                     {a.title || t`Announcement`}
                   </Typography>

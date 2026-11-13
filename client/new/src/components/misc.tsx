@@ -2,7 +2,7 @@ import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Trans } from '@lingui/react/macro';
-import { colors, fontSizes } from "@/theme/tokens";
+import { colors } from "@/theme/tokens";
 
 /** `PrerequisiteBadge`: shown in place of the participants on an event the user can't open yet. */
 export function PrerequisiteBadge() {
@@ -34,7 +34,7 @@ export function PrerequisiteBadge() {
         >
           <SchoolOutlinedIcon sx={{ fontSize: 20 }} />
         </Box>
-        <Typography sx={{ fontWeight: 500, color: colors.onErrorContainer, fontSize: fontSizes.sm }}>
+        <Typography sx={{ fontWeight: 500, color: colors.onErrorContainer, }}>
           <Trans id="prerequisiteBadge.text">Prerequisite Required</Trans>
         </Typography>
       </Box>

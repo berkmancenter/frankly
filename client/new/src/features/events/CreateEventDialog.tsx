@@ -90,7 +90,9 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
         paths.community(community.displayId).event(event.templateId, event.id),
       );
     } catch {
-      toast.error(t`Something went wrong creating the event. Please try again.`);
+      toast.error(
+        t`Something went wrong creating the event. Please try again.`,
+      );
     }
   };
 
@@ -145,14 +147,13 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
         {step === "time" && (
           <Box>
             <TimeInput value={time} onChange={setTime} />
-            <Typography
-              sx={{ fontSize: fontSizes.xs, textAlign: "right", mt: "12px" }}
-            >
+            <Typography variant="body2" sx={{ textAlign: "right", mt: "12px" }}>
               <Trans>Time shown in {timeZoneAbbreviation(now)}</Trans>
             </Typography>
             {inPast && (
               <Typography
-                sx={{ fontSize: fontSizes.xs, color: colors.error, mt: "8px" }}
+                variant="body2"
+                sx={{ color: colors.error, mt: "8px" }}
               >
                 <Trans>Please choose a time in the future.</Trans>
               </Typography>
@@ -180,7 +181,11 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
             >
               <ChevronLeftIcon sx={{ color: "primary.main" }} />
               <Typography
-                sx={{ fontSize: fontSizes.md, ml: "10px", color: "primary.main" }}
+                sx={{
+                  fontSize: fontSizes.md,
+                  ml: "10px",
+                  color: "primary.main",
+                }}
               >
                 {/* Button that returns to the previous step of the create-event flow. */}
                 <Trans>Back</Trans>
@@ -294,10 +299,13 @@ function TemplateStep({
               sx={{
                 bgcolor:
                   category === c ? "primary.main" : colors.surfaceContainer,
-                color: category === c ? "primary.contrastText" : colors.onSurface,
+                color:
+                  category === c ? "primary.contrastText" : colors.onSurface,
                 "&:hover": {
                   bgcolor:
-                    category === c ? "primary.main" : colors.surfaceContainerHigh,
+                    category === c
+                      ? "primary.main"
+                      : colors.surfaceContainerHigh,
                 },
               }}
             />

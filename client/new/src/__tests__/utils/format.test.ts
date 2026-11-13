@@ -8,7 +8,6 @@ import {
   formatWeekdayShort,
   initials,
   isSameCalendarDay,
-  pluralize,
   startOfDay,
   timeZoneAbbreviation,
 } from "@/utils/format";
@@ -71,18 +70,6 @@ describe("calendar day helpers", () => {
     expect(result.getFullYear()).toBe(2026);
     expect(result.getDate()).toBe(4);
     expect([result.getHours(), result.getMinutes(), result.getSeconds()]).toEqual([0, 0, 0]);
-  });
-});
-
-describe("pluralize", () => {
-  it("uses the singular only for exactly one", () => {
-    expect(pluralize(1, "Comment")).toBe("1 Comment");
-    expect(pluralize(0, "Comment")).toBe("0 Comments");
-    expect(pluralize(3, "Comment")).toBe("3 Comments");
-  });
-
-  it("accepts an irregular plural", () => {
-    expect(pluralize(2, "person", "people")).toBe("2 people");
   });
 });
 

@@ -181,7 +181,7 @@ export function SignInForm({
         />
       )}
       {message && (
-        <Typography role="status" sx={{ mt: "9px", fontSize: fontSizes.xs }}>
+        <Typography variant="body2" role="status" sx={{ mt: "9px", }}>
           {message}
         </Typography>
       )}

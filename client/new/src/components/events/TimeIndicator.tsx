@@ -37,7 +37,7 @@ export function VerticalTimeAndDateIndicator({
         flexShrink: 0,
       }}
     >
-      <Typography sx={{ fontSize: fontSizes.xs, color: "inherit" }}>
+      <Typography variant="body2" sx={{ color: "inherit" }}>
         {formatMonthShortUpper(time)}
       </Typography>
       <Typography component="h2" sx={{ fontSize: fontSizes["3xl"], color: "inherit" }}>
@@ -47,7 +47,7 @@ export function VerticalTimeAndDateIndicator({
         {formatWeekdayShort(time)}
       </Typography>
       <Typography
-        sx={{ color: "inherit", fontSize: 14, whiteSpace: "nowrap" }}
+        sx={{ color: "inherit", whiteSpace: "nowrap" }}
       >
         {timeString}
       </Typography>

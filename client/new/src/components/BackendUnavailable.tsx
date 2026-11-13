@@ -94,10 +94,10 @@ export function BackendUnavailable({
       />
       {(failure.code !== "unknown" || failure.message) && (
         <Typography
+          variant="body2"
           component="code"
           sx={{
             maxWidth: 560,
-            fontSize: fontSizes.xs,
             color: colors.onSurfaceVariant,
             wordBreak: "break-word",
           }}

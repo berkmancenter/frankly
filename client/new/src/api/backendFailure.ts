@@ -41,6 +41,9 @@ const NETWORK_CODES = new Set([
   "deadline-exceeded",
 ]);
 
+/** Code reported when a failure carries none. */
+const UNKNOWN = "unknown";
+
 const SERVICE_CODES = new Set(["internal-error", "service-unavailable"]);
 
 /** Messages that mean "wrong project" even when the code is a generic `permission-denied` or `not-found`. */
@@ -64,15 +67,19 @@ function messageOf(error: unknown): string {
 export function classifyBackendFailure(error: unknown): BackendFailure | null {
   const code = codeOf(error);
   const message = messageOf(error);
-  const kind: BackendFailureKind | null =
-    CONFIG_CODES.has(code) || CONFIG_MESSAGE.test(message)
-      ? "config"
-      : NETWORK_CODES.has(code) || NETWORK_MESSAGE.test(message)
-        ? "network"
-        : SERVICE_CODES.has(code)
-          ? "service"
-          : null;
-  return kind ? { kind, code: code || "unknown", message } : null;
+  const failure = (kind: BackendFailureKind): BackendFailure => ({
+    kind,
+    code: code || UNKNOWN,
+    message,
+  });
+  if (CONFIG_CODES.has(code) || CONFIG_MESSAGE.test(message)) {
+    return failure("config");
+  }
+  if (NETWORK_CODES.has(code) || NETWORK_MESSAGE.test(message)) {
+    return failure("network");
+  }
+  if (SERVICE_CODES.has(code)) return failure("service");
+  return null;
 }
 
 /** Like `classifyBackendFailure`, but any error becomes a failure (`unknown` when it is not a known kind). */
@@ -80,7 +87,7 @@ export function describeBackendFailure(error: unknown): BackendFailure {
   return (
     classifyBackendFailure(error) ?? {
       kind: "unknown",
-      code: codeOf(error) || "unknown",
+      code: codeOf(error) || UNKNOWN,
       message: messageOf(error),
     }
   );

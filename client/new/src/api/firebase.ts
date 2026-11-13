@@ -35,6 +35,7 @@ function firebaseOptions(useEmulators: boolean): FirebaseOptions {
 		storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
 		databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
 	};
+	// eslint-disable-next-line lingui/no-unlocalized-strings -- Firebase config key names
 	const required = ['apiKey', 'appId', 'authDomain', 'projectId'] as const;
 	const missing = required.filter((key) => !options[key]);
 	if (missing.length > 0) {

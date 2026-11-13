@@ -54,7 +54,7 @@ export function CurrentCommunityIconOrLogo() {
             borderRadius: "64px",
             px: "12px",
             py: "2px",
-            fontSize: 14,
+
             lineHeight: 1.2,
           }}
         >
