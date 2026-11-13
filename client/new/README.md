@@ -20,7 +20,7 @@ admin…) are real page loads, so the proxy / hosting rewrites serve them from F
 
 | Concern                   | Choice                                                                              |
 | ------------------------- | ----------------------------------------------------------------------------------- |
-| UI                        | React 19, MUI (`@mui/material` 9) minimal theme, Inter                   |
+| UI                        | React 19, MUI (`@mui/material` 9) minimal theme, Inter                              |
 | Server state              | TanStack Query v5                                                                   |
 | Connection, media, outbox | XState v5 machines (`src/machines`), not wired to a page yet                        |
 | UI state                  | React local state (`useState` / `useReducer`)                                       |
@@ -29,6 +29,15 @@ admin…) are real page loads, so the proxy / hosting rewrites serve them from F
 
 **No global store.** There is no Redux/Zustand/Jotai/module-level mutable state. See
 [State model](#state-model).
+
+## Custom package commands
+
+| CMD                 | Descripton                                                       |
+| ------------------- | ---------------------------------------------------------------- |
+| `build:proxied`     | Make a build in proxy mode.                                      |
+| `dev:proxied`       | Run dev build in proxy mode.                                     |
+| `locales:transpile` | Transpile Flutter ARB catalog files to PO format. (Temp)         |
+| `skill:translate`   | Use Claude CLI to run the `lingui:find-unwrapped-strings` skill. |
 
 ## Run it
 
@@ -187,8 +196,6 @@ Material 3 theme one-to-one.
 
 ## Not here (on purpose)
 
-- Every page Flutter still owns: home, new space, settings, templates, the event page and live
-  meeting, a single post, admin, instant events. Links to them hand off to Flutter.
-- Auth/sign-in/sign-up, billing, donations, email delivery, localization (English only).
-- Creating a community or a template, language selection: the sidebar and the create-event dialog
-  link to the Flutter pages for those.
+- Every page Flutter still owns: home, settings, templates, the event page and live
+  meeting, a single post, admin, events. Links to them hand off to Flutter.
+- Billing, donations, email delivery.
