@@ -8,6 +8,11 @@ export const locales = {
 };
 export const defaultLocale = "en";
 
+// `I18nProvider` renders nothing until a locale is active, which would hide the root layout's
+// loading indicator while the real catalog downloads. Activate an empty catalog right away;
+// `RootLayout` holds back the app until `dynamicActivate` has loaded the real one.
+i18n.loadAndActivate({ locale: defaultLocale, messages: {} });
+
 /**
  * Do a dynamic import of just the catalog that we need
  * @param locale any locale string

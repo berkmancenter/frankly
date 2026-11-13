@@ -1,21 +1,17 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { RouterProvider } from "react-router";
 import { BackendProvider } from "@/api/ApiProvider";
 import { isConfigFailure } from "@/api/backendFailure";
 import { ToastProvider } from "@/components/Toast";
 import { appTheme } from "@/theme/theme";
-import Box from "@mui/material/Box";
 
 import { I18nProvider } from "@lingui/react";
-import { Trans } from "@lingui/react/macro";
 import { i18n } from "@lingui/core";
-import { defaultLocale, dynamicActivate } from "./i18n";
 
 import { createAppRouter } from "./router";
-import { colors } from "@/theme/tokens";
 
 // Opt in with `?devtools` so the floating button never covers the UI being reviewed.
 const devtoolsRequested =
@@ -56,12 +52,6 @@ export function App() {
   );
   const [router] = useState(() => createAppRouter());
 
-  useEffect(() => {
-    // Dynamically load the catalogs;
-    // this keeps the initial bundle small and only loads the necessary locale.
-    dynamicActivate(defaultLocale);
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <BackendProvider>
@@ -69,33 +59,6 @@ export function App() {
           <CssBaseline />
           <ToastProvider>
             <I18nProvider i18n={i18n}>
-              <Box
-                sx={{
-                  position: "fixed",
-                  top: "3rem",
-                  right: "-8rem",
-                  zIndex: 1300,
-                  transition: "transform 0.3s ease-in-out",
-                  transform: "rotate(45deg)",
-                  width: "400px",
-                  textAlign: "center",
-                  paddingY: "0.5rem",
-                  backgroundColor: "rgba(255, 94, 0, 0.95)",
-                  color: colors.onPrimary,
-                  fontWeight: "bold",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.transform =
-                    "rotate(45deg) scale(1.4)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.transform =
-                    "rotate(45deg) scale(1)";
-                }}
-              >
-                <Trans>React App</Trans>
-              </Box>
-
               <RouterProvider router={router} />
             </I18nProvider>
           </ToastProvider>

@@ -77,7 +77,11 @@ describe("App", () => {
       ...signedIn,
       me: { get: () => new Promise(() => {}) },
     });
-    expect(await screen.findByRole("progressbar")).toBeInTheDocument();
+    // The locale spinner is replaced by the session spinner, so wait for the catalog first.
+    await waitFor(() => expect(mocks.dynamicActivate).toHaveBeenCalled());
+    await waitFor(() =>
+      expect(screen.getByRole("progressbar")).toBeInTheDocument(),
+    );
     expect(screen.queryByText("Civic Lab")).not.toBeInTheDocument();
   });
 
