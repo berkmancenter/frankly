@@ -40,6 +40,13 @@ jobs:
             npm install
           fi
 
+      # TEMP: Install root dependencies for ESLint
+      # The ESLint config lives at the repo root and imports its plugins from there, so the
+      # root dev dependencies must be installed for `npm run lint` below.
+      - name: Install root dependencies (ESLint config)
+        if: steps.client.outputs.exists == 'true'
+        run: npm ci
+
       - name: Run all tests
         if: steps.client.outputs.exists == 'true'
         working-directory: client/new
