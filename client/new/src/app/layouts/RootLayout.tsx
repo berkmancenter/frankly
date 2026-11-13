@@ -2,6 +2,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { t } from "@lingui/core/macro";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
+import { describeBackendFailure } from "@/api/backendFailure";
+import { BackendUnavailable } from "@/components/BackendUnavailable";
 import { LoadingState } from "@/components/States";
 import { useToast } from "@/components/Toast";
 import { useAuthSession } from "@/features/auth/useAuthSession";
@@ -40,6 +42,9 @@ export function RootLayout() {
     }
   }, [redirectError, toast]);
 
+  if (session.status === "error" && session.failure) {
+    return <BackendUnavailable failure={session.failure} />;
+  }
   if (session.status === "signedOut") {
     return (
       <LoadingState
@@ -60,12 +65,9 @@ export function RootLayout() {
 function SessionBoundary() {
   const me = useMe();
   if (me.isPending) return <LoadingState height="100dvh" />;
-  if (me.isError)
-    return (
-      <LoadingState
-        height="100dvh"
-        message={`Could not load your session.${isDev ? " Are you running the local proxy, and did you first authenticate with the Flutter app? " : ""}`}
-      />
-    );
+  if (me.isError) {
+    console.error(`  me.error: `, me.error);
+    return <BackendUnavailable failure={describeBackendFailure(me.error)} />;
+  }
   return <Outlet />;
 }

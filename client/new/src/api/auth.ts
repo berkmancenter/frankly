@@ -6,6 +6,8 @@
  * is what separates the two.
  */
 
+import type { BackendFailure } from "./backendFailure";
+
 export interface AuthUser {
   id: string;
   email: string | null;
@@ -15,7 +17,8 @@ export interface AuthUser {
   photoUrl: string | null;
 }
 
-export type AuthStatus = "loading" | "signedIn" | "signedOut";
+/** `error`: no session could be established because the backend is misconfigured or unreachable. */
+export type AuthStatus = "loading" | "signedIn" | "signedOut" | "error";
 
 /** An immutable snapshot; the service returns the same object until something changes. */
 export interface AuthSession {
@@ -23,6 +26,8 @@ export interface AuthSession {
   user: AuthUser | null;
   /** Set when a Google redirect sign-in came back with an error. */
   redirectError: string | null;
+  /** Why there is no session; set only while `status` is `error`. */
+  failure?: BackendFailure;
 }
 
 /** A user who has an account (not the anonymous placeholder). */

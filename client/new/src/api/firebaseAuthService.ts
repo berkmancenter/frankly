@@ -17,6 +17,7 @@ import {
 } from "firebase/auth";
 import { doc, runTransaction, type Firestore } from "firebase/firestore";
 import { defaultDisplayName, uidToInt } from "@/utils/users";
+import { describeBackendFailure } from "./backendFailure";
 import {
   AuthError,
   type AuthService,
@@ -34,6 +35,9 @@ const RETURNING_USER_KEY = "flutter.is-returning-user";
 /** How long to wait for Firebase to restore a returning user before signing in anonymously. */
 const RETURNING_USER_TIMEOUT_MS = 8_000;
 
+/** How long to wait for any session at all before reporting that the backend cannot be reached. */
+const STARTUP_TIMEOUT_MS = 20_000;
+
 export interface FirebaseAuthServiceOptions {
   /**
    * Keep the session in `sessionStorage` instead of IndexedDB. Flutter does this against the
@@ -44,6 +48,7 @@ export interface FirebaseAuthServiceOptions {
   /** For tests. */
   storage?: Pick<Storage, "getItem" | "setItem">;
   returningUserTimeoutMs?: number;
+  startupTimeoutMs?: number;
   reload?: () => void;
   origin?: string;
 }
@@ -89,6 +94,7 @@ export function createFirebaseAuthService(
   const { auth, firestore } = client;
   const storage = options.storage ?? safeLocalStorage();
   const timeoutMs = options.returningUserTimeoutMs ?? RETURNING_USER_TIMEOUT_MS;
+  const startupTimeoutMs = options.startupTimeoutMs ?? STARTUP_TIMEOUT_MS;
   const reload = options.reload ?? (() => window.location.reload());
   const origin = options.origin ?? window.location.origin;
 
@@ -124,6 +130,7 @@ export function createFirebaseAuthService(
     if (
       merged.status === session.status &&
       merged.redirectError === session.redirectError &&
+      merged.failure === session.failure &&
       sameUser(merged.user, session.user)
     ) {
       return;
@@ -171,7 +178,7 @@ export function createFirebaseAuthService(
 
     // Publish before the Firestore write: it can hang when the browser blocks Firestore's
     // WebChannel, and the UI must not wait on it.
-    publish({ status: "signedIn", user: toAuthUser(user) });
+    publish({ status: "signedIn", user: toAuthUser(user), failure: undefined });
 
     if (!user.isAnonymous) {
       try {
@@ -190,13 +197,30 @@ export function createFirebaseAuthService(
     try {
       await signInAnonymously(auth);
     } catch (error) {
+      // Without a user there is no session, so the app cannot start: say why, rather than spin.
       console.error("Anonymous sign-in failed", error);
+      publish({ status: "error", user: null, failure: describeBackendFailure(error) });
     } finally {
       signingInAnonymously = false;
     }
   }
 
   async function start() {
+    // A backend that never answers fails nothing, so give up waiting for a session.
+    setTimeout(() => {
+      if (session.status === "loading") {
+        publish({
+          status: "error",
+          user: null,
+          failure: {
+            kind: "network",
+            code: "timeout",
+            message: `No response from the backend after ${Math.round(startupTimeoutMs / 1000)} seconds.`,
+          },
+        });
+      }
+    }, startupTimeoutMs);
+
     if (options.sessionPersistence) {
       try {
         await setPersistence(auth, browserSessionPersistence);

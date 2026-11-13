@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { RouterProvider } from "react-router";
 import { BackendProvider } from "@/api/ApiProvider";
+import { isConfigFailure } from "@/api/backendFailure";
 import { ToastProvider } from "@/components/Toast";
 import { appTheme } from "@/theme/theme";
 import Box from "@mui/material/Box";
@@ -45,7 +46,8 @@ export function App() {
             staleTime: 15_000,
             // Unobserved queries are garbage-collected after this: "auto-disposed" server state.
             gcTime: 5 * 60_000,
-            retry: 1,
+            // One retry for a flaky network; none for a backend that is misconfigured.
+            retry: (count, error) => count < 1 && !isConfigFailure(error),
             refetchOnWindowFocus: false,
           },
         },
