@@ -1,8 +1,13 @@
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
 import Divider from "@mui/material/Divider";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
@@ -23,9 +28,15 @@ import { useResources } from "@/queries/content";
 import { useMembership } from "@/queries/me";
 import { useCommunityScopeOrNull } from "@/scopes/CommunityScope";
 import { appSize, colors, fontSizes } from "@/theme/tokens";
+import { version } from "../../../package.json";
 import { useConfirm } from "../ConfirmDialog";
 
-const HELP_URL = "https://berkmancenter.github.io/frankly";
+const COPYRIGHT_STATEMENT = import.meta.env.VITE_COPYRIGHT_STATEMENT;
+const HELP_URL = import.meta.env.VITE_HELP_CENTER_URL;
+const SIDEBAR_FOOTER = import.meta.env.VITE_SIDEBAR_FOOTER;
+const ABOUT_URL = import.meta.env.VITE_ABOUT_URL;
+const PRIVACY_POLICY_URL = import.meta.env.VITE_PRIVACY_POLICY_URL;
+const REPO_LINK_URL = import.meta.env.VITE_REPO_LINK_URL;
 
 function SidebarLink({
   label,
@@ -162,6 +173,7 @@ function SidebarCommunityItem({
 
 /** The end drawer: the user's communities on top, global links below. */
 export function SideBar({ onClose }: { onClose: () => void }) {
+  const [languageDialogOpen, setLanguageDialogOpen] = useState(false);
   const canCreate = useCanCreateCommunity();
   const mine = useMyCommunities();
   const scope = useCommunityScopeOrNull();
@@ -231,7 +243,14 @@ export function SideBar({ onClose }: { onClose: () => void }) {
       </Box>
 
       <Box
-        sx={{ bgcolor: colors.surface, p: "20px", pt: "32px", flexShrink: 0 }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          bgcolor: colors.surface,
+          p: "20px",
+          pt: "32px",
+          flexShrink: 0,
+        }}
       >
         <ActionButton
           type="text"
@@ -252,6 +271,35 @@ export function SideBar({ onClose }: { onClose: () => void }) {
         >
           Frankly Home
         </ActionButton>
+
+        <ActionButton
+          type="text"
+          contentAlign="start"
+          onPress={() => setLanguageDialogOpen(true)}
+          icon={
+            <span role="img" aria-label="language">
+              🌐
+            </span>
+          }
+        >
+          Language
+        </ActionButton>
+        <Dialog
+          open={languageDialogOpen}
+          onClose={() => setLanguageDialogOpen(false)}
+          aria-labelledby="sidebar-language-dialog-title"
+        >
+          <DialogTitle id="sidebar-language-dialog-title">
+            Supported languages
+          </DialogTitle>
+          <DialogContent>
+            <Typography>English</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setLanguageDialogOpen(false)}>Close</Button>
+          </DialogActions>
+        </Dialog>
+
         <ActionButton
           type="text"
           contentAlign="start"
@@ -262,14 +310,14 @@ export function SideBar({ onClose }: { onClose: () => void }) {
         <ActionButton
           type="text"
           contentAlign="start"
-          onPress={() => openExternal(HELP_URL)}
+          onPress={() => openExternal(ABOUT_URL)}
         >
           About Frankly
         </ActionButton>
         <ActionButton
           type="text"
           contentAlign="start"
-          onPress={() => openExternal(HELP_URL)}
+          onPress={() => openExternal(PRIVACY_POLICY_URL)}
         >
           Privacy Policy
         </ActionButton>
@@ -284,19 +332,22 @@ export function SideBar({ onClose }: { onClose: () => void }) {
             whiteSpace: "pre-line",
           }}
         >
-          {`Open-source deliberation software (AGPL-3.0).\n© ${new Date().getFullYear()} Frankly contributors`}
+          {SIDEBAR_FOOTER}
+          <br />
+          {COPYRIGHT_STATEMENT}
         </Typography>
         <Typography
           component="div"
+          variant="body2"
           sx={{
-            fontSize: fontSizes.xs,
             fontWeight: 500,
             color: colors.onSurfaceVariant,
             px: "8px",
-            textAlign: "right",
           }}
         >
-          v3.0.0
+          <a href={REPO_LINK_URL} target="_blank" rel="noopener noreferrer">
+            v{version}
+          </a>
         </Typography>
       </Box>
     </Box>
