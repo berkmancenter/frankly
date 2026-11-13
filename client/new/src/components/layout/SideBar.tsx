@@ -32,6 +32,7 @@ import { useCommunityScopeOrNull } from "@/scopes/CommunityScope";
 import { appSize, colors, fontSizes } from "@/theme/tokens";
 import { version } from "../../../package.json";
 import { useConfirm } from "../ConfirmDialog";
+import { dynamicActivate, locales } from "@/app/i18n";
 
 const COPYRIGHT_STATEMENT = import.meta.env.VITE_COPYRIGHT_STATEMENT;
 const HELP_URL = import.meta.env.VITE_HELP_CENTER_URL;
@@ -329,13 +330,22 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           aria-labelledby="sidebar-language-dialog-title"
         >
           <DialogTitle id="sidebar-language-dialog-title">
-            <Trans id="sidebar.supportedLanguages">Supported languages</Trans>
+            <Trans id="sidebar.supportedLanguages">Select Language</Trans>
           </DialogTitle>
-          <DialogContent>
-            {/* Only English is wired up so far; this list grows as locales are added. */}
-            <Typography>
-              <Trans id="sidebar.english">English</Trans>
-            </Typography>
+          <DialogContent sx={{ display: "flex", flexDirection: "column" }}>
+            {Object.keys(locales).map((locale) => (
+              <ActionButton
+                key={locale}
+                type="text"
+                contentAlign="start"
+                onPress={async () => {
+                  await dynamicActivate(locale);
+                  setLanguageDialogOpen(false);
+                }}
+              >
+                {locales[locale as keyof typeof locales]}
+              </ActionButton>
+            ))}
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setLanguageDialogOpen(false)}>

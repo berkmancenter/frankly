@@ -18,7 +18,11 @@ i18n.loadAndActivate({ locale: defaultLocale, messages: {} });
  * @param locale any locale string
  */
 export async function dynamicActivate(locale: string) {
-  const { messages } = await import(`../locales/${locale}/messages.po`);
-  i18n.load(locale, messages);
-  i18n.activate(locale);
+  try {
+    const { messages } = await import(`../locales/${locale}/messages.po`);
+    i18n.load(locale, messages);
+    i18n.activate(locale);
+  } catch (error) {
+    console.error(`Failed to load locale ${locale}:`, error);
+  }
 }
