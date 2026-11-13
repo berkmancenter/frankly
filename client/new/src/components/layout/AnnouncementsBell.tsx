@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { ActionButton } from "@/components/ActionButton";
 import { AppDialog } from "@/components/AppDialog";
@@ -38,7 +40,7 @@ export function AnnouncementsBell() {
   return (
     <Box sx={{ width: 50, display: "flex", justifyContent: "center" }}>
       <IconButton
-        aria-label="Show Announcements Button"
+        aria-label={t`Show Announcements Button`}
         onClick={(e) => setAnchor(e.currentTarget)}
         sx={{ color: anchor ? colors.onSurface : colors.onSurfaceVariant }}
       >
@@ -63,11 +65,11 @@ export function AnnouncementsBell() {
           },
         }}
       >
-        <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500 }}>Announcements</Typography>
+        <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500 }}><Trans>Announcements</Trans></Typography>
         {permissions.canEditCommunity && (
           <Box sx={{ mt: "16px" }}>
             <ThickOutlineButton
-              text="New Announcement"
+              text={t`New Announcement`}
               onPress={() => {
                 setAnchor(null);
                 setCreateOpen(true);
@@ -78,10 +80,10 @@ export function AnnouncementsBell() {
         <Box sx={{ mt: "30px" }}>
           {isError ? (
             <Typography>
-              There was an error while loading Announcements
+              <Trans>There was an error while loading Announcements</Trans>
             </Typography>
           ) : isPending ? null : announcements.length === 0 ? (
-            <Typography>No announcements yet.</Typography>
+            <Typography><Trans>No announcements yet.</Trans></Typography>
           ) : (
             announcements.map((a) => (
               <Box key={a.id} sx={{ mb: "25px" }}>
@@ -93,23 +95,23 @@ export function AnnouncementsBell() {
                   }}
                 >
                   <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500 }}>
-                    {a.title || "Announcement"}
+                    {/* Fallback title shown when an announcement was saved without one. */}
+                    {a.title || t`Announcement`}
                   </Typography>
                   {permissions.canEditCommunity && (
                     <IconButton
                       size="small"
-                      aria-label="Delete announcement"
+                      aria-label={t`Delete announcement`}
                       onClick={async () => {
                         if (
                           await confirm({
-                            title:
-                              "Are you sure you want to delete this announcement?",
-                            cancelText: "No",
-                            confirmText: "Yes",
+                            title: t`Are you sure you want to delete this announcement?`,
+                            cancelText: t`No`,
+                            confirmText: t`Yes`,
                           })
                         ) {
                           await remove.mutateAsync(a.id);
-                          toast.show("Announcement deleted");
+                          toast.show(t`Announcement deleted`);
                         }
                       }}
                     >
@@ -174,15 +176,15 @@ function CreateAnnouncementDialog({
         }}
       >
         <Typography sx={{ fontSize: 26, fontWeight: 700 }}>
-          Create New Announcement
+          <Trans>Create New Announcement</Trans>
         </Typography>
         <TextField
-          label="Enter a title"
+          label={t`Enter a title`}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <TextField
-          label="Enter a message"
+          label={t`Enter a message`}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           multiline
@@ -191,7 +193,7 @@ function CreateAnnouncementDialog({
         />
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: "3px" }}>
           <ActionButton
-            text="Create"
+            text={t`Create`}
             disabled={isBlank(message)}
             onPress={async () => {
               try {
@@ -199,10 +201,10 @@ function CreateAnnouncementDialog({
                   title: title.trim() || undefined,
                   message: message.trim(),
                 });
-                toast.success("Announcement created");
+                toast.success(t`Announcement created`);
                 onClose();
               } catch {
-                toast.error("Something went wrong. Please try again.");
+                toast.error(t`Something went wrong. Please try again.`);
               }
             }}
           />

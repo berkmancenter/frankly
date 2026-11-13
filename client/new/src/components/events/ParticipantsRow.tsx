@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { t } from '@lingui/core/macro';
 import type { Event } from '@/api/types';
 import { Avatar } from '@/components/Avatar';
 import { useEventParticipants } from '@/queries/events';
@@ -33,13 +34,13 @@ export function ParticipantsRow({ event, iconSize = 30, maxAvatars = 6 }: Partic
 
   const text = isParticipant
     ? total > 1
-      ? `You + ${total - 1}`
-      : 'You'
+      ? t`You + ${total - 1}`
+      : t`You`
     : total > shown.length
-      ? `+${total - shown.length}`
+      ? t`+${total - shown.length}`
       : total > 1
-        ? `${total} People`
-        : (data[0]?.user.displayName ?? '1 person');
+        ? t`${total} People`
+        : (data[0]?.user.displayName ?? t`1 person`);
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', minHeight: iconSize, minWidth: 0 }}>

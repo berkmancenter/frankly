@@ -10,6 +10,7 @@ import { appTheme } from "@/theme/theme";
 import Box from "@mui/material/Box";
 
 import { I18nProvider } from "@lingui/react";
+import { Trans } from "@lingui/react/macro";
 import { i18n } from "@lingui/core";
 import { defaultLocale, dynamicActivate } from "./i18n";
 
@@ -92,7 +93,7 @@ export function App() {
                     "rotate(45deg) scale(1)";
                 }}
               >
-                React App
+                <Trans>React App</Trans>
               </Box>
 
               <RouterProvider router={router} />

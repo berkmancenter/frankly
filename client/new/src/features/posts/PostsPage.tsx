@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import { t } from "@lingui/core/macro";
 import { useState } from "react";
 import type { DiscussionThread } from "@/api/types";
 import { ConstrainedBody } from "@/components/ConstrainedBody";
@@ -26,7 +27,7 @@ export function PostsPage() {
       {threads.isPending ? (
         <LoadingState height={300} />
       ) : threads.isError ? (
-        <ErrorState message="Something went wrong loading posts." />
+        <ErrorState message={t`Something went wrong loading posts.`} />
       ) : list.length === 0 ? (
         <Box sx={{ pt: "30px", display: "flex", justifyContent: "center" }}>
           <EmptyPageContent
@@ -58,7 +59,7 @@ export function PostsPage() {
         </ConstrainedBody>
       )}
       <Box sx={{ height: 100 }} />
-      <ScaffoldFab text="Create post" onClick={() => setCreateOpen(true)} />
+      <ScaffoldFab text={t`Create post`} onClick={() => setCreateOpen(true)} />
       {createOpen && <CreatePostDialog onClose={() => setCreateOpen(false)} />}
       {replyTo && (
         <AddCommentDialog thread={replyTo} onClose={() => setReplyTo(null)} />

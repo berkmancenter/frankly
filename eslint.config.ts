@@ -1,6 +1,7 @@
 import eslint from "@eslint/js";
 import type { Rule } from "eslint";
 import { defineConfig } from "eslint/config";
+import pluginLingui from "eslint-plugin-lingui";
 import tseslint from "typescript-eslint";
 import {
   COLOR_KEYWORDS,
@@ -34,6 +35,7 @@ const NO_VARIANT = ':not(:has(> JSXAttribute[name.name="variant"]))';
 const NOT_OTHER_VARIANT =
   ':not(:has(> JSXAttribute[name.name="variant"][value.value!="body1"]))';
 
+// Rule to catch redundant default font sizes in MUI Typography components
 const redundantDefaultFontSize: Rule.RuleModule = {
   meta: { type: "suggestion", schema: [] },
   create: (context) => ({
@@ -61,10 +63,109 @@ export default defineConfig(
   {
     files: ["./client/new/src/**/*.{ts,tsx}"],
     plugins: {
-      frankly: { rules: { "redundant-default-font-size": redundantDefaultFontSize } },
+      frankly: {
+        rules: { "redundant-default-font-size": redundantDefaultFontSize },
+      },
+      // eslint-plugin-lingui's rule types predate the installed `eslint` version's Plugin type.
+      lingui: pluginLingui as unknown as {
+        rules: Record<string, Rule.RuleModule>;
+      },
     },
     rules: {
       "frankly/redundant-default-font-size": "warn",
+      "lingui/no-unlocalized-strings": [
+        "warn",
+        {
+          ignore: ["^[A-Z0-9_-]+$"],
+          ignoreNames: [
+            "className",
+            "styleName",
+            "src",
+            "data-testid",
+            // MUI `sx` shorthand / CSS property names and JSX layout props — values here are
+            // CSS keywords or theme palette paths, never UI copy a translator would touch.
+            "display",
+            "flexDirection",
+            "flexWrap",
+            "flexShrink",
+            "flexGrow",
+            "flex",
+            "alignItems",
+            "alignSelf",
+            "justifyContent",
+            "overflow",
+            "overflowX",
+            "overflowY",
+            "borderRadius",
+            "border",
+            "borderColor",
+            "borderStyle",
+            "textAlign",
+            "textOverflow",
+            "textTransform",
+            "textDecoration",
+            "whiteSpace",
+            "wordBreak",
+            "position",
+            "cursor",
+            "objectFit",
+            "background",
+            "bgcolor",
+            "color",
+            "boxShadow",
+            "outline",
+            "gap",
+            "p",
+            "px",
+            "py",
+            "pt",
+            "pb",
+            "pl",
+            "pr",
+            "m",
+            "mx",
+            "my",
+            "mt",
+            "mb",
+            "ml",
+            "mr",
+            "width",
+            "height",
+            "minWidth",
+            "maxWidth",
+            "minHeight",
+            "maxHeight",
+            "fontSize",
+            "fontWeight",
+            "fontStyle",
+            "lineHeight",
+            "letterSpacing",
+            "zIndex",
+            "top",
+            "right",
+            "bottom",
+            "left",
+            "transition",
+            "transform",
+            "backgroundColor",
+            "paddingX",
+            "paddingY",
+            "marginX",
+            "marginY",
+            "boxSizing",
+            "padding",
+            "margin",
+            "WebkitBoxOrient",
+            "WebkitLineClamp",
+            "gridTemplateColumns",
+            "rowGap",
+            "justifyItems",
+            "fontFamily",
+            "borderTop",
+          ],
+          ignoreFunctions: ["console.*", "cn", "cva", "clsx"],
+        },
+      ],
       // MUI types `sx` colors as an open string, so a typo like "primary.mian" compiles and
       // silently renders nothing. Reject string literals that aren't theme palette paths.
       "no-restricted-syntax": [
@@ -77,6 +178,14 @@ export default defineConfig(
           }),
         ),
       ],
+    },
+  },
+  {
+    // Test code is full of testing-library selectors as well as test descriptions/fixture strings
+    // that look like UI copy to the AST but aren't messages to translate.
+    files: ["./client/new/src/__tests__/**/*.{ts,tsx}"],
+    rules: {
+      "lingui/no-unlocalized-strings": "off",
     },
   },
 );

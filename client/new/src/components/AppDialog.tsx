@@ -1,6 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
+import { t } from "@lingui/core/macro";
 import type { ReactNode } from "react";
 import { useIsMobile } from "@/utils/useResponsive";
 import { colors } from "@/theme/tokens";
@@ -35,7 +36,8 @@ export function AppDialog({
   padding = 50,
   hideClose,
   background = colors.surfaceContainerLowest,
-  closeLabel = "Close",
+  // i18n: accessible name for the dialog's close button, announced by screen readers
+  closeLabel = t`Close`,
   ariaLabel,
 }: AppDialogProps) {
   const isMobile = useIsMobile();

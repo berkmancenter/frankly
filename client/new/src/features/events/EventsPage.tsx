@@ -2,6 +2,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
 import { useMemo, useState } from "react";
 import { ConstrainedBody } from "@/components/ConstrainedBody";
 import { EmptyPageContent } from "@/components/EmptyPageContent";
@@ -73,8 +74,8 @@ export function EventsPage() {
             <SearchIcon sx={{ mx: "10px", color: colors.onSurface }} />
             <Box
               component="input"
-              aria-label="Search events"
-              placeholder="Search events"
+              aria-label={t`Search events`}
+              placeholder={t`Search events`}
               value={search}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSearch(e.target.value)
@@ -155,7 +156,7 @@ export function EventsPage() {
         {events.isPending ? (
           <LoadingState height={100} />
         ) : events.isError ? (
-          <ErrorState message="Something went wrong loading events." />
+          <ErrorState message={t`Something went wrong loading events.`} />
         ) : filtered.length === 0 ? (
           <Box sx={{ pt: "30px" }}>
             <EmptyPageContent

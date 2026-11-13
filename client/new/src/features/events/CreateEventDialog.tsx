@@ -8,6 +8,8 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { paths } from "@/app/paths";
@@ -66,10 +68,10 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
     (step === "time" && !!scheduled && !inPast);
 
   const titles: Record<StepId, string> = {
-    template: "Choose Template",
-    visibility: "Public or private?",
-    date: "Select a day",
-    time: "Select a time",
+    template: t`Choose Template`,
+    visibility: t`Public or private?`,
+    date: t`Select a day`,
+    time: t`Select a time`,
   };
 
   const submit = async () => {
@@ -88,7 +90,7 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
         paths.community(community.displayId).event(event.templateId, event.id),
       );
     } catch {
-      toast.error("Something went wrong creating the event. Please try again.");
+      toast.error(t`Something went wrong creating the event. Please try again.`);
     }
   };
 
@@ -146,13 +148,13 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
             <Typography
               sx={{ fontSize: fontSizes.xs, textAlign: "right", mt: "12px" }}
             >
-              Time shown in {timeZoneAbbreviation(now)}
+              <Trans>Time shown in {timeZoneAbbreviation(now)}</Trans>
             </Typography>
             {inPast && (
               <Typography
                 sx={{ fontSize: fontSizes.xs, color: colors.error, mt: "8px" }}
               >
-                Please choose a time in the future.
+                <Trans>Please choose a time in the future.</Trans>
               </Typography>
             )}
           </Box>
@@ -180,14 +182,15 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
               <Typography
                 sx={{ fontSize: fontSizes.md, ml: "10px", color: "primary.main" }}
               >
-                Back
+                {/* Button that returns to the previous step of the create-event flow. */}
+                <Trans>Back</Trans>
               </Typography>
             </ButtonBase>
           ) : (
             <span />
           )}
           <ActionButton
-            text={isLast ? "Create Event" : "Next"}
+            text={isLast ? t`Create Event` : t`Next`}
             disabled={!canAdvance}
             onPress={next}
           />
@@ -215,7 +218,7 @@ function VisibilityStep({
         control={<Radio color="primary" />}
         label={
           <Typography sx={{ fontSize: 15, color: "primary.main" }}>
-            Allow the community to join
+            <Trans>Allow the community to join</Trans>
           </Typography>
         }
       />
@@ -224,7 +227,7 @@ function VisibilityStep({
         control={<Radio color="primary" />}
         label={
           <Typography sx={{ fontSize: 15, color: "primary.main" }}>
-            I'll share this with a private group
+            <Trans>I'll share this with a private group</Trans>
           </Typography>
         }
       />
@@ -262,7 +265,7 @@ function TemplateStep({
     <Box>
       <TextField
         fullWidth
-        label="Search templates"
+        label={t`Search templates`}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         sx={{
@@ -334,7 +337,7 @@ function TemplateStep({
                 px: 1,
               }}
             >
-              Create a new template
+              <Trans>Create a new template</Trans>
             </Typography>
           </ButtonBase>
         )}
@@ -428,7 +431,7 @@ function TemplateStep({
           <Typography
             sx={{ fontSize: fontSizes.md, color: colors.onPrimaryContainer }}
           >
-            No templates found.
+            <Trans>No templates found.</Trans>
           </Typography>
         )}
       </Box>

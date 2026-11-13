@@ -1,3 +1,5 @@
+import { msg } from '@lingui/core/macro';
+import type { MessageDescriptor } from '@lingui/core';
 import type { MembershipStatus } from '@/api/types';
 
 /** Port of `MembershipStatusExtension` (membership.dart): each level implies the ones below it. */
@@ -18,14 +20,14 @@ export const isFacilitator = (s: MembershipStatus) => RANK[s] >= RANK.facilitato
 export const isMod = (s: MembershipStatus) => RANK[s] >= RANK.moderator;
 export const isAdmin = (s: MembershipStatus) => RANK[s] >= RANK.admin;
 
-export const roleLabel = (s: MembershipStatus): string =>
+export const roleLabel = (s: MembershipStatus): MessageDescriptor =>
   ({
-    owner: 'Owner',
-    admin: 'Admin',
-    moderator: 'Moderator',
-    facilitator: 'Facilitator',
-    member: 'Member',
-    banned: 'Banned',
-    nonmember: 'Non-member',
-    attendee: 'Attendee',
+    owner: msg`Owner`,
+    admin: msg`Admin`,
+    moderator: msg`Moderator`,
+    facilitator: msg`Facilitator`,
+    member: msg`Member`,
+    banned: msg`Banned`,
+    nonmember: msg`Non-member`,
+    attendee: msg`Attendee`,
   })[s];

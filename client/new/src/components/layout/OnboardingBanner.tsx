@@ -5,7 +5,10 @@ import ButtonBase from "@mui/material/ButtonBase";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
+import { i18n } from "@lingui/core";
+import { msg, t } from "@lingui/core/macro";
 import { useNavigate } from "react-router";
+import type { MessageDescriptor } from "@lingui/core";
 import type { Community, OnboardingStep } from "@/api/types";
 import { paths } from "@/app/paths";
 import { ConstrainedBody } from "@/components/ConstrainedBody";
@@ -23,27 +26,27 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
 
 const COPY: Record<
   OnboardingStep,
-  { icon: string; title: string; section: string }
+  { icon: string; title: MessageDescriptor; section: MessageDescriptor }
 > = {
   brandSpace: {
     icon: "emoji-sparkle.png",
-    title: "Looking good",
-    section: "Brand your space",
+    title: msg`Looking good`,
+    section: msg`Brand your space`,
   },
   createTemplate: {
     icon: "emoji-notepad.png",
-    title: "Looking good",
-    section: "Create a template",
+    title: msg`Looking good`,
+    section: msg`Create a template`,
   },
   hostEvent: {
     icon: "emoji-megaphone.png",
-    title: "Get people talking",
-    section: "Schedule an event",
+    title: msg`Get people talking`,
+    section: msg`Schedule an event`,
   },
   inviteSomeone: {
     icon: "emoji-calendar.png",
-    title: "Get it on the books",
-    section: "Invite your people",
+    title: msg`Get it on the books`,
+    section: msg`Invite your people`,
   },
 };
 
@@ -91,7 +94,7 @@ export function OnboardingBanner({
       <LinearProgress
         variant="determinate"
         value={(done / total) * 100}
-        aria-label="Onboarding progress"
+        aria-label={t({ id: "onboardingBanner.progress", message: "Onboarding progress" })}
         sx={{
           bgcolor: "primary.contrastText",
           "& .MuiLinearProgress-bar": { bgcolor: colors.primaryFixedDim },
@@ -111,12 +114,12 @@ export function OnboardingBanner({
       <Typography
         sx={{ fontSize: 16, fontWeight: 600, color: "inherit" }}
       >
-        {copy.title}
+        {i18n._(copy.title)}
       </Typography>
       <Typography
         sx={{ fontSize: 16, fontWeight: 600, color: "inherit", ml: "5px" }}
       >
-        {copy.section}
+        {i18n._(copy.section)}
       </Typography>
       <ArrowForwardIosIcon sx={{ fontSize: 12 }} />
     </ButtonBase>
@@ -125,7 +128,7 @@ export function OnboardingBanner({
   return (
     <Box
       role="region"
-      aria-label="Community onboarding"
+      aria-label={t({ id: "onboardingBanner.region", message: "Community onboarding" })}
       sx={{ bgcolor: colors.primaryContainer, py: "5px", px: "10px" }}
     >
       {isMobile ? (
@@ -137,7 +140,7 @@ export function OnboardingBanner({
             </Typography>
             <IconButton
               size="small"
-              aria-label="Dismiss onboarding"
+              aria-label={t({ id: "onboardingBanner.dismiss", message: "Dismiss onboarding" })}
               onClick={onDismiss}
               sx={{ color: "primary.contrastText" }}
             >
@@ -158,7 +161,7 @@ export function OnboardingBanner({
               {done}/{total}
             </Typography>
             <IconButton
-              aria-label="Dismiss onboarding"
+              aria-label={t({ id: "onboardingBanner.dismiss", message: "Dismiss onboarding" })}
               onClick={onDismiss}
               sx={{ color: "primary.contrastText", ml: "12px" }}
             >

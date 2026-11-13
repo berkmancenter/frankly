@@ -7,6 +7,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { t } from '@lingui/core/macro';
 import { useState } from 'react';
 import { useApi } from '@/api/ApiProvider';
 import type { CommunityResource } from '@/api/types';
@@ -51,7 +52,7 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
       setTitle(preview.title);
       setImage(preview.image);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not load that link.');
+      setError(e instanceof Error ? e.message : t`Could not load that link.`);
     } finally {
       setLoading(false);
     }
@@ -61,10 +62,10 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
     try {
       if (resource) await update.mutateAsync({ resourceId: resource.id, patch: { url: loadedUrl, title, image } });
       else await create.mutateAsync({ url: loadedUrl, title, image });
-      toast.success(resource ? 'Resource updated' : 'Resource added');
+      toast.success(resource ? t`Resource updated` : t`Resource added`);
       onClose();
     } catch {
-      toast.error('Something went wrong. Please try again.');
+      toast.error(t`Something went wrong. Please try again.`);
     }
   };
 
@@ -75,16 +76,16 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <TextField
               fullWidth
-              placeholder="Paste or enter URL"
+              placeholder={t`Paste or enter URL`}
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               error={!!error}
-              slotProps={{ htmlInput: { 'aria-label': 'Resource URL' } }}
+              slotProps={{ htmlInput: { 'aria-label': t`Resource URL` } }}
               sx={{ '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: error ? colors.error : 'primary.main' }, bgcolor: error ? colors.errorContainer : undefined } }}
             />
             {dirty && url.trim() && (
               <IconButton
-                aria-label="Load link"
+                aria-label={t`Load link`}
                 onClick={load}
                 sx={{ width: 50, height: 50, bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.main', opacity: 0.9 } }}
               >
@@ -107,7 +108,7 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
         {loaded && !loading && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', mt: '-30px' }}>
             <ButtonBase
-              aria-label="Change image"
+              aria-label={t`Change image`}
               onClick={() => setUploadingImage(true)}
               sx={{ position: 'relative', display: 'block', borderRadius: '10px' }}
             >
@@ -119,15 +120,15 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
             <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
               {editingTitle ? (
                 <>
-                  <TextField fullWidth multiline maxRows={3} value={title} onChange={(e) => setTitle(e.target.value)} slotProps={{ htmlInput: { 'aria-label': 'Resource title' } }} />
-                  <IconButton aria-label="Save title" onClick={() => setEditingTitle(false)} sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.main' } }}>
+                  <TextField fullWidth multiline maxRows={3} value={title} onChange={(e) => setTitle(e.target.value)} slotProps={{ htmlInput: { 'aria-label': t`Resource title` } }} />
+                  <IconButton aria-label={t`Save title`} onClick={() => setEditingTitle(false)} sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.main' } }}>
                     <CheckIcon />
                   </IconButton>
                 </>
               ) : (
                 <>
                   <Typography sx={{ fontSize: 16, fontWeight: 500, flex: 1 }}>{title}</Typography>
-                  <IconButton aria-label="Edit title" onClick={() => setEditingTitle(true)}>
+                  <IconButton aria-label={t`Edit title`} onClick={() => setEditingTitle(true)}>
                     <EditIcon sx={{ fontSize: 18 }} />
                   </IconButton>
                 </>
@@ -139,12 +140,12 @@ export function ResourceDialog({ resource, onClose }: { resource?: CommunityReso
         <Box sx={{ mt: loaded ? '-30px' : '-30px' }}>
           <Divider sx={{ borderColor: colors.onPrimaryContainer, mb: '20px' }} />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <ActionButton text="Post" disabled={!loaded || title.trim() === ''} onPress={post} />
+            <ActionButton text={t`Post`} disabled={!loaded || title.trim() === ''} onPress={post} />
           </Box>
         </Box>
       </Box>
       {/* A second dialog stacked above this one; closing it leaves this one open. */}
-      <AppDialog open={uploadingImage} onClose={() => setUploadingImage(false)} maxWidth={500} padding={30} ariaLabel="Upload image">
+      <AppDialog open={uploadingImage} onClose={() => setUploadingImage(false)} maxWidth={500} padding={30} ariaLabel={t`Upload image`}>
         <Box sx={{ pt: '20px' }}>
           <Upload
             onUploaded={({ url }) => {

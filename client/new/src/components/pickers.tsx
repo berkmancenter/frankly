@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
 import { useState } from "react";
 import { isSameCalendarDay, startOfDay } from "@/utils/format";
 import { colors, fontSizes } from "@/theme/tokens";
@@ -63,7 +64,7 @@ export function MonthCalendar({
         <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500 }}>{monthName.format(cursor)}</Typography>
         <Box>
           <IconButton
-            aria-label="Previous month"
+            aria-label={t({ id: "monthCalendar.previousMonth", message: "Previous month" })}
             disabled={!canGoBack}
             onClick={() =>
               setCursor(
@@ -74,7 +75,7 @@ export function MonthCalendar({
             <ChevronLeftIcon />
           </IconButton>
           <IconButton
-            aria-label="Next month"
+            aria-label={t({ id: "monthCalendar.nextMonth", message: "Next month" })}
             onClick={() =>
               setCursor(
                 new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1),
@@ -227,7 +228,7 @@ export function TimeInput({
       }}
     >
       <TimeField
-        label="Hour"
+        label={t({ id: "timeInput.hour", message: "Hour" })}
         value={value.hour}
         min={1}
         max={12}
@@ -235,7 +236,7 @@ export function TimeInput({
       />
       <Typography sx={{ fontSize: 45, lineHeight: "72px" }}>:</Typography>
       <TimeField
-        label="Minute"
+        label={t({ id: "timeInput.minute", message: "Minute" })}
         value={value.minute}
         min={0}
         max={59}
@@ -243,7 +244,7 @@ export function TimeInput({
       />
       <Box
         role="group"
-        aria-label="AM or PM"
+        aria-label={t({ id: "timeInput.amOrPm", message: "AM or PM" })}
         sx={{
           ml: "12px",
           border: "1px solid",
@@ -253,12 +254,16 @@ export function TimeInput({
           height: 72,
         }}
       >
-        {(["AM", "PM"] as const).map((label) => {
-          const selected = (label === "PM") === value.pm;
+        {(["AM", "PM"] as const).map((periodKey) => {
+          const selected = (periodKey === "PM") === value.pm;
+          const periodLabel =
+            periodKey === "PM"
+              ? t({ id: "timeInput.pm", message: "PM" })
+              : t({ id: "timeInput.am", message: "AM" });
           return (
             <ButtonBase
-              key={label}
-              onClick={() => onChange({ ...value, pm: label === "PM" })}
+              key={periodKey}
+              onClick={() => onChange({ ...value, pm: periodKey === "PM" })}
               aria-pressed={selected}
               sx={{
                 display: "flex",
@@ -270,11 +275,11 @@ export function TimeInput({
                 color: selected
                   ? colors.onSecondaryContainer
                   : colors.onSurfaceVariant,
-                borderTop: label === "PM" ? "1px solid" : "none",
+                borderTop: periodKey === "PM" ? "1px solid" : "none",
                 borderColor: colors.outline,
               }}
             >
-              {label}
+              {periodLabel}
             </ButtonBase>
           );
         })}

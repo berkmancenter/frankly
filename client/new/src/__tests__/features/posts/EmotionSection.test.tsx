@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { i18n } from "@lingui/core";
 import { describe, expect, it, vi } from "vitest";
 import type { EmotionVote } from "@/api/types";
 import { renderWithProviders } from "@/__tests__/support/renderWithProviders";
@@ -43,7 +44,7 @@ describe("EmotionSection", () => {
     await user.click(screen.getByRole("button", { name: "Add reaction" }));
 
     for (const { label } of EMOTIONS) {
-      expect(screen.getByRole("button", { name: label })).toHaveAttribute("aria-pressed", "false");
+      expect(screen.getByRole("button", { name: i18n._(label) })).toHaveAttribute("aria-pressed", "false");
     }
     expect(EMOTIONS).toHaveLength(7);
   });

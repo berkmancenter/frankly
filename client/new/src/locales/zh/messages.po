@@ -8,4074 +8,1332 @@ msgstr ""
 "Language: zh\n"
 
 #. js-lingui-explicit-id
-msgid "aVIssues"
-msgstr "音视频问题？"
+#: src/components/ProfileChip.tsx:60
+msgid "profileChip.youSuffix"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "about"
-msgstr "关于"
-
-#. js-lingui-explicit-id
-msgid "aboutHint"
-msgstr "添加更多关于此社区目标的详细信息"
-
-#. js-lingui-explicit-id
-msgid "aboutMe"
-msgstr "关于我"
-
-#. js-lingui-explicit-id
-msgid "aboutUs"
-msgstr "关于我们"
-
-#. js-lingui-explicit-id
-msgid "accentColor"
-msgstr "强调色"
-
-#. js-lingui-explicit-id
-msgid "accentColorMustBeDarker"
-msgstr "强调色必须更深"
-
-#. js-lingui-explicit-id
-msgid "accountExistsWithSameEmail"
-msgstr "已存在使用相同电子邮件地址但不同登录方式的帐户。请使用电子邮件登录，如果不知道密码请点击忘记密码。或者，使用其他电子邮件重新注册。"
-
-#. js-lingui-explicit-id
-msgid "addACategory"
-msgstr "添加一个类别"
-
-#. js-lingui-explicit-id
-msgid "addAComment"
-msgstr "添加评论"
-
-#. js-lingui-explicit-id
-msgid "addAPrerequisiteTemplate"
-msgstr "添加先决条件模板"
-
-#. js-lingui-explicit-id
-msgid "addAQuestion"
-msgstr "添加一个问题"
-
-#. js-lingui-explicit-id
-msgid "addAResource"
-msgstr "添加资源"
-
-#. js-lingui-explicit-id
-msgid "addActionLink"
-msgstr "添加行动链接"
-
-#. js-lingui-explicit-id
-msgid "addActionLinksAfter"
-msgstr "添加参与者应在活动结束后访问的行动链接"
-
-#. js-lingui-explicit-id
-msgid "addActionLinksBefore"
-msgstr "添加参与者应在活动开始前访问的行动链接"
-
-#. js-lingui-explicit-id
-msgid "addAgendaItem"
-msgstr "添加议程项"
-
-#. js-lingui-explicit-id
-msgid "addBreakouts"
-msgstr "添加分组讨论"
-
-#. js-lingui-explicit-id
-msgid "addCategory"
-msgstr "添加类别"
-
-#. js-lingui-explicit-id
-msgid "addComment"
-msgstr "添加评论"
-
-#. js-lingui-explicit-id
-msgid "addCommunityImages"
-msgstr "添加社区图片"
-
-#. js-lingui-explicit-id
-msgid "addNew"
-msgstr "+ 添加新的"
-
-#. js-lingui-explicit-id
-msgid "addNewLabel"
-msgstr "新增"
-
-#. js-lingui-explicit-id
-msgid "addNewTag"
-msgstr "添加新标签"
-
-#. js-lingui-explicit-id
-msgid "addOption"
-msgstr "添加选项"
-
-#. js-lingui-explicit-id
-msgid "addPrerequisiteTemplate"
-msgstr "添加先决条件模板"
-
-#. js-lingui-explicit-id
-msgid "addQuestion"
-msgstr "添加问题"
-
-#. js-lingui-explicit-id
-msgid "addRoom"
-msgstr "添加房间"
-
-#. js-lingui-explicit-id
-msgid "addRoomNumber"
-msgstr "添加房间 {number}"
-
-#. js-lingui-explicit-id
-msgid "addSomethingHere"
-msgstr "在此处添加内容"
-
-#. js-lingui-explicit-id
-msgid "addTag"
-msgstr "添加标签"
-
-#. js-lingui-explicit-id
-msgid "addTags"
-msgstr "添加标签"
-
-#. js-lingui-explicit-id
-msgid "addToCalendar"
-msgstr "添加到日历"
-
-#. js-lingui-explicit-id
-msgid "addUrlParameter"
-msgstr "添加 URL 参数"
-
-#. js-lingui-explicit-id
-msgid "addVideoOrImage"
-msgstr "添加视频或图片"
-
-#. js-lingui-explicit-id
-msgid "admin"
-msgstr "管理员"
-
-#. js-lingui-explicit-id
-msgid "adminBadge"
-msgstr "管理员"
-
-#. js-lingui-explicit-id
-msgid "adminBilling"
-msgstr "管理员账单"
-
-#. js-lingui-explicit-id
-msgid "adminEventPagination"
-msgstr "{start} - {end}，共 {total}"
-
-#. js-lingui-explicit-id
-msgid "adminLiveStreamSetup"
-msgstr "管理员直播设置"
-
-#. js-lingui-explicit-id
-msgid "agendaItemJustStartedConfirm"
-msgstr "本议程项目刚刚开始！您确定要继续吗？"
-
-#. js-lingui-explicit-id
-msgid "agendaItemWasDeleted"
-msgstr "议程项已删除"
-
-#. js-lingui-explicit-id
-msgid "agendaItemWasDuplicated"
-msgstr "议程项已复制！"
-
-#. js-lingui-explicit-id
-msgid "agendaItemWasSaved"
-msgstr "议程项已保存"
-
-#. js-lingui-explicit-id
-msgid "agendaItemsWereRemoved"
-msgstr "议程项已移除"
-
-#. js-lingui-explicit-id
-msgid "agendaPromptReady"
-msgstr "您的活动已准备好开始！"
-
-#. js-lingui-explicit-id
-msgid "agendaPromptWaiting"
-msgstr "等待主持人开始活动..."
-
-#. js-lingui-explicit-id
-msgid "agendaSuggestionsDescription"
-msgstr "让参与者提出议程项目，然后进行赞成或反对投票。"
-
-#. js-lingui-explicit-id
-msgid "agendaTitle"
-msgstr "议程"
-
-#. js-lingui-explicit-id
-msgid "agreeAndContinue"
-msgstr "同意并继续"
-
-#. js-lingui-explicit-id
-msgid "alertsOnly"
-msgstr "仅限警报"
-
-#. js-lingui-explicit-id
-msgid "allParticipantsMutedDuringVideo"
-msgstr "视频播放期间所有参与者均已静音！"
-
-#. js-lingui-explicit-id
-msgid "allRooms"
-msgstr "所有房间"
-
-#. js-lingui-explicit-id
-msgid "alreadyAtFirstMeetingGuideEntry"
-msgstr "已经是第一个会议指南条目。"
-
-#. js-lingui-explicit-id
-msgid "alreadyUserSignIn"
-msgstr "已有账户？"
-
-#. js-lingui-explicit-id
-msgid "and"
-msgstr "和"
-
-#. js-lingui-explicit-id
-msgid "announcement"
-msgstr "公告"
-
-#. js-lingui-explicit-id
-msgid "announcements"
-msgstr "公告"
-
-#. js-lingui-explicit-id
-msgid "anonymous"
-msgstr "匿名"
-
-#. js-lingui-explicit-id
-msgid "appDescription"
-msgstr "线上审议平台"
-
-#. js-lingui-explicit-id
-msgid "appNameHome"
-msgstr "{appName} - 首页"
-
-#. js-lingui-explicit-id
-msgid "appNameTermsOfService"
-msgstr "{appName} 服务条款"
-
-#. js-lingui-explicit-id
-msgid "appNameTitle"
-msgstr "{appName}"
-
-#. js-lingui-explicit-id
-msgid "appNameUnsubscribe"
-msgstr "{appName} - 取消订阅"
-
-#. js-lingui-explicit-id
-msgid "appNameUserSettings"
-msgstr "{appName} - 用户设置"
-
-#. js-lingui-explicit-id
-msgid "appNameWelcome"
-msgstr "{appName} - 欢迎"
-
-#. js-lingui-explicit-id
-msgid "appTitle"
-msgstr "Frankly"
-
-#. js-lingui-explicit-id
-msgid "appTitleHome"
-msgstr "{appName} - 首页"
-
-#. js-lingui-explicit-id
-msgid "appTitleUnsubscribe"
-msgstr "{appName} - 取消订阅"
-
-#. js-lingui-explicit-id
-msgid "appTitleUserSettings"
-msgstr "{appName} - 用户设置"
-
-#. js-lingui-explicit-id
-msgid "appTitleWelcome"
-msgstr "{appName} - 欢迎"
-
-#. js-lingui-explicit-id
-msgid "approveAll"
-msgstr "全部批准"
-
-#. js-lingui-explicit-id
-msgid "areYouSure"
-msgstr "您确定吗？"
-
-#. js-lingui-explicit-id
-msgid "areYouSureYouWantToDeleteMedia"
-msgstr "您确定要删除媒体吗？"
-
-#. js-lingui-explicit-id
-msgid "areYouSureYouWantToRefreshTheTemplate"
-msgstr "您确定要刷新模板吗？"
-
-#. js-lingui-explicit-id
-msgid "aspectRatioClipped"
-msgstr "纵横比裁剪"
-
-#. js-lingui-explicit-id
-msgid "attendThisFirst"
-msgstr "请先参加："
-
-#. js-lingui-explicit-id
-msgid "attendee"
-msgstr "参与者"
-
-#. js-lingui-explicit-id
-msgid "audioDeviceUpdated"
-msgstr "音频设备已更新。"
-
-#. js-lingui-explicit-id
-msgid "audioInputDevice"
-msgstr "音频输入设备："
-
-#. js-lingui-explicit-id
-msgid "audioVideoSettings"
-msgstr "音频/视频设置"
-
-#. js-lingui-explicit-id
-msgid "audiovisualSettings"
-msgstr "影音设置"
-
-#. js-lingui-explicit-id
-msgid "autoEndMeeting"
-msgstr "自动结束会议"
-
-#. js-lingui-explicit-id
-msgid "avAudioErrorNotFound"
-msgstr "Frankly 无法访问您的麦克风。请修改您的权限/设备设置并刷新页面，以允许使用麦克风。"
-
-#. js-lingui-explicit-id
-msgid "avConnecting"
-msgstr "连接中..."
-
-#. js-lingui-explicit-id
-msgid "avErrorConstraints"
-msgstr "媒体约束错误。"
-
-#. js-lingui-explicit-id
-msgid "avErrorDisconnected"
-msgstr "音频/视频设备已断开连接。"
-
-#. js-lingui-explicit-id
-msgid "avErrorDuplicateIdentity"
-msgstr "您已经从另一个设备或浏览器连接。"
-
-#. js-lingui-explicit-id
-msgid "avErrorMediaAccess"
-msgstr "无法访问媒体设备。"
-
-#. js-lingui-explicit-id
-msgid "avErrorNetwork"
-msgstr "音频/视频连接网络错误。"
-
-#. js-lingui-explicit-id
-msgid "avErrorNotFound"
-msgstr "未找到音频/视频设备。请检查权限。"
-
-#. js-lingui-explicit-id
-msgid "avErrorNotReadable"
-msgstr "无法读取音频/视频设备或该设备正忙。"
-
-#. js-lingui-explicit-id
-msgid "avErrorPermissionRequired"
-msgstr "需要权限使用音频/视频设备。"
-
-#. js-lingui-explicit-id
-msgid "avErrorSaveDeviceSettings"
-msgstr "保存音频/视频设备设置时出错。请重试或联系支持。"
-
-#. js-lingui-explicit-id
-msgid "avIssues"
-msgstr "音视频问题？"
-
-#. js-lingui-explicit-id
-msgid "avVideoErrorNotFound"
-msgstr "Frankly 无法访问您的摄像头。请修改您的权限/设备设置并刷新页面，以允许使用摄像头。"
-
-#. js-lingui-explicit-id
-msgid "awaitingResponses"
-msgstr "等待回应中..."
-
-#. js-lingui-explicit-id
-msgid "back"
-msgstr "返回"
-
-#. js-lingui-explicit-id
-msgid "background"
-msgstr "背景"
-
-#. js-lingui-explicit-id
-msgid "backgroundColor"
-msgstr "背景颜色"
-
-#. js-lingui-explicit-id
-msgid "banned"
-msgstr "已禁止"
-
-#. js-lingui-explicit-id
-msgid "basicInformation"
-msgstr "基本信息"
-
-#. js-lingui-explicit-id
-msgid "beta"
-msgstr "BETA"
-
-#. js-lingui-explicit-id
-msgid "billing"
-msgstr "账单"
-
-#. js-lingui-explicit-id
-msgid "brandYourSpace"
-msgstr "打造您的空间品牌"
-
-#. js-lingui-explicit-id
-msgid "brandingAndTheme"
-msgstr "品牌和主题"
-
-#. js-lingui-explicit-id
-msgid "breakoutRoomTransitionTimeout"
-msgstr "找不到该分组讨论室！返回主会议。"
-
-#. js-lingui-explicit-id
-msgid "breakoutRooms"
-msgstr "分组讨论室"
-
-#. js-lingui-explicit-id
-msgid "breakoutUpdated"
-msgstr "分组讨论已更新！"
-
-#. js-lingui-explicit-id
-msgid "breakouts"
-msgstr "分组讨论"
-
-#. js-lingui-explicit-id
-msgid "broadcast"
-msgstr "广播"
-
-#. js-lingui-explicit-id
-msgid "bufferAndIntroTime"
-msgstr "分组讨论前约{buffer}的缓冲时间和{intro}的介绍时间"
-
-#. js-lingui-explicit-id
-msgid "bufferTimeDescription"
-msgstr "事件开始前约{duration}的缓冲时间"
-
-#. js-lingui-explicit-id
-msgid "buildCommunitySpace"
-msgstr "构建您的社区空间"
-
-#. js-lingui-explicit-id
-msgid "buildYourCommunitySpace"
-msgstr "构建您的社区空间"
-
-#. js-lingui-explicit-id
-msgid "buttonText"
-msgstr "按钮文字"
-
-#. js-lingui-explicit-id
-msgid "buttonTextCannotBeEmpty"
-msgstr "按钮文字不能为空"
-
-#. js-lingui-explicit-id
-msgid "byCategory"
-msgstr "按类别"
-
-#. js-lingui-explicit-id
-msgid "bySigningInRegisteringOrUsing"
-msgstr "通过登录、注册或使用 {appName}，我同意遵守"
-
-#. js-lingui-explicit-id
-msgid "bySize"
-msgstr "按大小"
-
-#. js-lingui-explicit-id
-msgid "cameraInput"
-msgstr "摄像头输入"
-
-#. js-lingui-explicit-id
-msgid "cancel"
-msgstr "取消"
-
-#. js-lingui-explicit-id
-msgid "cancelCurrentPlan"
-msgstr "取消当前计划？"
-
-#. js-lingui-explicit-id
-msgid "cancelEmailEdit"
-msgstr "取消"
-
-#. js-lingui-explicit-id
-msgid "cancelEvent"
-msgstr "取消活动"
-
-#. js-lingui-explicit-id
-msgid "cancelEventConfirmation"
-msgstr "您确定要取消此活动吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "cancelHelpNeeded"
-msgstr "取消求助"
-
-#. js-lingui-explicit-id
-msgid "cancelParticipation"
-msgstr "取消参与"
-
-#. js-lingui-explicit-id
-msgid "cannotPlayVimeoVideo"
-msgstr "无法播放 Vimeo 视频"
-
-#. js-lingui-explicit-id
-msgid "cannotPlayYouTubeVideo"
-msgstr "无法播放 YouTube 视频"
-
-#. js-lingui-explicit-id
-msgid "cannotPlayYoutubeVideo"
-msgstr "无法播放 YouTube 视频"
-
-#. js-lingui-explicit-id
-msgid "category"
-msgstr "类别"
-
-#. js-lingui-explicit-id
-msgid "changeLanguage"
-msgstr "更改语言"
-
-#. js-lingui-explicit-id
-msgid "changedFromDefault"
-msgstr "已从默认值更改"
-
-#. js-lingui-explicit-id
-msgid "changesSaved"
-msgstr "更改已保存"
-
-#. js-lingui-explicit-id
-msgid "chat"
-msgstr "聊天"
-
-#. js-lingui-explicit-id
-msgid "chatData"
-msgstr "聊天数据"
-
-#. js-lingui-explicit-id
-msgid "chatIntroduceYourself"
-msgstr "请自我介绍以打破僵局。"
-
-#. js-lingui-explicit-id
-msgid "chatMessage"
-msgstr "聊天消息"
-
-#. js-lingui-explicit-id
-msgid "chatWelcome"
-msgstr "欢迎！"
-
-#. js-lingui-explicit-id
-msgid "chatWithParticipants"
-msgstr "与参与者聊天"
-
-#. js-lingui-explicit-id
-msgid "chooseABackgroundAndAccentColor"
-msgstr "选择浅色背景和深色强调色，提供足够的对比度，使包括视力中度低下的用户在内的广泛用户都能阅读文本。我们将检查其可读性。"
-
-#. js-lingui-explicit-id
-msgid "chooseDuration"
-msgstr "选择时长"
-
-#. js-lingui-explicit-id
-msgid "chooseTemplate"
-msgstr "选择模板"
-
-#. js-lingui-explicit-id
-msgid "clearAll"
-msgstr "全部清除"
-
-#. js-lingui-explicit-id
-msgid "clickNextWhenReady"
-msgstr "准备好继续后点击“下一步”。"
-
-#. js-lingui-explicit-id
-msgid "close"
-msgstr "关闭"
-
-#. js-lingui-explicit-id
-msgid "closeEdit"
-msgstr "关闭编辑"
-
-#. js-lingui-explicit-id
-msgid "comment"
-msgstr "评论"
-
-#. js-lingui-explicit-id
-msgid "commentCannotBeEmpty"
-msgstr "评论不能为空"
-
-#. js-lingui-explicit-id
-msgid "commentCount"
-msgstr "{count} 条评论"
-
-#. js-lingui-explicit-id
-msgid "commentDeleted"
-msgstr "评论已删除"
-
-#. js-lingui-explicit-id
-msgid "commentWasDeleted"
-msgstr "评论已删除"
-
-#. js-lingui-explicit-id
-msgid "communities"
-msgstr "社区"
-
-#. js-lingui-explicit-id
-msgid "communityDescription"
-msgstr "社区描述"
-
-#. js-lingui-explicit-id
-msgid "communityDescriptionHint"
-msgstr "添加更多关于此社区目标的详细信息"
-
-#. js-lingui-explicit-id
-msgid "communityName"
-msgstr "社区名称"
-
-#. js-lingui-explicit-id
-msgid "communitySettings"
-msgstr "社区设置"
-
-#. js-lingui-explicit-id
-msgid "communitySuccessPrefix"
-msgstr "你已成功创建了你的社区。"
-
-#. js-lingui-explicit-id
-msgid "communitySuccessSuffix"
-msgstr "点击右上角的齿轮图标以编辑您的社区设置。"
-
-#. js-lingui-explicit-id
-msgid "communityTagline"
-msgstr "社区标语"
-
-#. js-lingui-explicit-id
-msgid "communityUrl"
-msgstr "社区URL"
-
-#. js-lingui-explicit-id
-msgid "confirm"
-msgstr "确认"
-
-#. js-lingui-explicit-id
-msgid "confirmCancelQuestion"
-msgstr "您确定要取消吗？"
-
-#. js-lingui-explicit-id
-msgid "confirmCancelUserParticipation"
-msgstr "确定要取消此用户对此活动的参与吗？"
-
-#. js-lingui-explicit-id
-msgid "confirmCancelYourParticipation"
-msgstr "确定要取消你对此活动的参与吗？"
-
-#. js-lingui-explicit-id
-msgid "confirmDelete"
-msgstr "确定要删除吗？"
-
-#. js-lingui-explicit-id
-msgid "confirmDeleteAgendaItem"
-msgstr "您确定要删除此议程项吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "confirmDeleteAllAgendaItems"
-msgstr "您确定要删除此活动的所有议程项吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "confirmDeleteAnnouncement"
-msgstr "您确定要删除此公告吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "confirmDeleteComment"
-msgstr "确定要删除此评论吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "confirmDeleteEventAnnouncement"
-msgstr "您确定要删除此活动公告吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "confirmDeleteMedia"
-msgstr "您确定要删除媒体吗？"
-
-#. js-lingui-explicit-id
-msgid "confirmDeletePost"
-msgstr "您确定要删除此帖子吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "confirmDeletePostEventItem"
-msgstr "您确定要删除此活动后议程项吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "confirmDeletePreEventItem"
-msgstr "您确定要删除此活动前议程项吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "confirmDeleteResource"
-msgstr "您确定要删除此资源吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "confirmDiscardChanges"
-msgstr "您确定要放弃更改吗？"
-
-#. js-lingui-explicit-id
-msgid "confirmMakeOwner"
-msgstr "您确定要将 {userName} 变更为 {communityName} 的拥有者吗？这将赋予他们在此社区中的所有可能权限，包括删除社区的能力。"
-
-#. js-lingui-explicit-id
-msgid "confirmRefreshTemplate"
-msgstr "您确定要刷新模板吗？"
-
-#. js-lingui-explicit-id
-msgid "confirmRemoveParticipant"
-msgstr "您确定要从此活动中移除{name}吗？"
-
-#. js-lingui-explicit-id
-msgid "confirmRemoveTemplate"
-msgstr "您确定要删除此模板吗？此操作无法撤销。"
-
-#. js-lingui-explicit-id
-msgid "confirmUnsubscribeFrom"
-msgstr "确定要取消订阅 {communityName} 吗？"
-
-#. js-lingui-explicit-id
-msgid "congratulations"
-msgstr "恭喜"
-
-#. js-lingui-explicit-id
-msgid "connectingToRoom"
-msgstr "正在连接房间……"
-
-#. js-lingui-explicit-id
-msgid "contact"
-msgstr "联系方式"
-
-#. js-lingui-explicit-id
-msgid "contactEmail"
-msgstr "联系邮箱"
-
-#. js-lingui-explicit-id
-msgid "contactUs"
-msgstr "联系我们"
-
-#. js-lingui-explicit-id
-msgid "contactUsDot"
-msgstr "联系我们。"
-
-#. js-lingui-explicit-id
-msgid "content"
-msgstr "内容"
-
-#. js-lingui-explicit-id
-msgid "continueAfterVerification"
-msgstr "我已验证我的电子邮件"
-
-#. js-lingui-explicit-id
-msgid "continueButton"
-msgstr "继续"
-
-#. js-lingui-explicit-id
-msgid "copiedToClipboard"
-msgstr "已复制到剪贴板"
-
-#. js-lingui-explicit-id
-msgid "couldntFindAccount"
-msgstr "我們找不到此電子郵件對應的帳戶。嘗試 "
-
-#. js-lingui-explicit-id
-msgid "create"
-msgstr "创建"
-
-#. js-lingui-explicit-id
-msgid "createACommunity"
-msgstr "创建社区"
-
-#. js-lingui-explicit-id
-msgid "createANewTemplate"
-msgstr "创建新模板"
-
-#. js-lingui-explicit-id
-msgid "createAPost"
-msgstr "创建一篇文章"
-
-#. js-lingui-explicit-id
-msgid "createAResource"
-msgstr "创建一个资源"
-
-#. js-lingui-explicit-id
-msgid "createATemplate"
-msgstr "创建一个模板"
-
-#. js-lingui-explicit-id
-msgid "createAccount"
-msgstr "创建账户"
-
-#. js-lingui-explicit-id
-msgid "createAction"
-msgstr "创建"
-
-#. js-lingui-explicit-id
-msgid "createAnAnnouncement"
-msgstr "创建一个公告"
-
-#. js-lingui-explicit-id
-msgid "createAnEvent"
-msgstr "创建一个活动"
-
-#. js-lingui-explicit-id
-msgid "createEvent"
-msgstr "创建活动"
-
-#. js-lingui-explicit-id
-msgid "createEventButton"
-msgstr "创建活动"
-
-#. js-lingui-explicit-id
-msgid "createEventFromThisTemplate"
-msgstr "使用此模板创建活动"
-
-#. js-lingui-explicit-id
-msgid "createNewAnnouncement"
-msgstr "创建新公告"
-
-#. js-lingui-explicit-id
-msgid "createPost"
-msgstr "创建帖子"
-
-#. js-lingui-explicit-id
-msgid "createTemplateFromEvent"
-msgstr "从活动创建模板"
-
-#. js-lingui-explicit-id
-msgid "createYourFirstEvent"
-msgstr "创建你的第一个活动！"
-
-#. js-lingui-explicit-id
-msgid "currentParticipants"
-msgstr "当前\n参与者"
-
-#. js-lingui-explicit-id
-msgid "custom"
-msgstr "自定义"
-
-#. js-lingui-explicit-id
-msgid "darkColorHex"
-msgstr "深色十六进制值"
-
-#. js-lingui-explicit-id
-msgid "data"
-msgstr "数据"
-
-#. js-lingui-explicit-id
-msgid "dataDownload"
-msgstr "数据下载"
-
-#. js-lingui-explicit-id
-msgid "date"
-msgstr "日期"
-
-#. js-lingui-explicit-id
-msgid "defineBreakoutsOptional"
-msgstr "定义分组讨论（可选）"
-
-#. js-lingui-explicit-id
-msgid "delete"
-msgstr "删除"
-
-#. js-lingui-explicit-id
-msgid "deleteAgendaItem"
-msgstr "删除{title}议程项"
-
-#. js-lingui-explicit-id
-msgid "deleteAgendaItemGeneral"
-msgstr "删除议程项"
-
-#. js-lingui-explicit-id
-msgid "deleteAllAgendaItems"
-msgstr "删除所有议程项"
-
-#. js-lingui-explicit-id
-msgid "deleteAnnouncement"
-msgstr "删除公告"
-
-#. js-lingui-explicit-id
-msgid "deleteComment"
-msgstr "删除评论"
-
-#. js-lingui-explicit-id
-msgid "deleteEventAnnouncement"
-msgstr "删除活动公告"
-
-#. js-lingui-explicit-id
-msgid "deleteOption"
-msgstr "删除选项"
-
-#. js-lingui-explicit-id
-msgid "deletePost"
-msgstr "删除帖子"
-
-#. js-lingui-explicit-id
-msgid "deletePostEventItem"
-msgstr "删除活动后项目"
-
-#. js-lingui-explicit-id
-msgid "deletePreEventItem"
-msgstr "删除活动前项目"
-
-#. js-lingui-explicit-id
-msgid "deletePrerequisiteTemplate"
-msgstr "删除先决条件模板"
-
-#. js-lingui-explicit-id
-msgid "deleteResource"
-msgstr "删除资源"
-
-#. js-lingui-explicit-id
-msgid "deleteTitleAgendaItem"
-msgstr "删除 $title 议程项"
-
-#. js-lingui-explicit-id
-msgid "description"
-msgstr "描述"
-
-#. js-lingui-explicit-id
-msgid "devSettings"
-msgstr "开发者设置"
-
-#. js-lingui-explicit-id
-msgid "discard"
-msgstr "放弃"
-
-#. js-lingui-explicit-id
-msgid "displayIdWarning"
-msgstr "URL 显示名称只能包含字母、数字和连字符。"
-
-#. js-lingui-explicit-id
-msgid "donate"
-msgstr "捐赠"
-
-#. js-lingui-explicit-id
-msgid "donateAmount"
-msgstr "捐赠 ${amount}"
-
-#. js-lingui-explicit-id
-msgid "donationSupportPrompt"
-msgstr "如果您喜欢此活动，请支持 {name}。"
-
-#. js-lingui-explicit-id
-msgid "download"
-msgstr "下载"
-
-#. js-lingui-explicit-id
-msgid "downloadComplete"
-msgstr "下载完成"
-
-#. js-lingui-explicit-id
-msgid "downloadMembersData"
-msgstr "下载成员数据"
-
-#. js-lingui-explicit-id
-msgid "downloadMembersRegistrationData"
-msgstr "下载成员注册数据"
-
-#. js-lingui-explicit-id
-msgid "duplicateAction"
-msgstr "复制"
-
-#. js-lingui-explicit-id
-msgid "duplicateEvent"
-msgstr "复制活动"
-
-#. js-lingui-explicit-id
-msgid "duplicateItem"
-msgstr "复制项目"
-
-#. js-lingui-explicit-id
-msgid "duplicateTemplate"
-msgstr "复制模板"
-
-#. js-lingui-explicit-id
-msgid "edit"
-msgstr "编辑"
-
-#. js-lingui-explicit-id
-msgid "editEvent"
-msgstr "编辑活动"
-
-#. js-lingui-explicit-id
-msgid "editImage"
-msgstr "编辑图片"
-
-#. js-lingui-explicit-id
-msgid "editItem"
-msgstr "编辑项目"
-
-#. js-lingui-explicit-id
-msgid "editProfile"
-msgstr "编辑个人资料"
-
-#. js-lingui-explicit-id
-msgid "editSettings"
-msgstr "编辑设置"
-
-#. js-lingui-explicit-id
-msgid "editTemplate"
-msgstr "编辑模板"
-
-#. js-lingui-explicit-id
-msgid "editTheTemplate"
-msgstr "编辑模板。"
-
-#. js-lingui-explicit-id
-msgid "editYourAddressLink"
-msgstr "编辑地址"
-
-#. js-lingui-explicit-id
-msgid "editYourEmailAddressLink"
-msgstr "编辑您的邮箱地址"
-
-#. js-lingui-explicit-id
-msgid "editYourProfile"
-msgstr "编辑您的个人资料"
-
-#. js-lingui-explicit-id
-msgid "editingEventNotice"
-msgstr "您正在编辑活动。 \n"
-
-#. js-lingui-explicit-id
-msgid "editingFutureInstancesNotice"
-msgstr "如果您想编辑未来的实例， "
-
-#. js-lingui-explicit-id
-msgid "email"
-msgstr "电子邮箱"
-
-#. js-lingui-explicit-id
-msgid "emailAddressAlreadyInUse"
-msgstr "您已经创建了一个与此电子邮件地址关联的帐户。请使用电子邮件登录，如果不知道密码请点击忘记密码。或者，使用其他电子邮件重新注册。"
-
-#. js-lingui-explicit-id
-msgid "emailAddressAlreadyInUseLoginError"
-msgstr "此邮箱已被使用。请尝试"
-
-#. js-lingui-explicit-id
-msgid "emailAndPasswordMismatch"
-msgstr "您的电子邮件和密码组合与 {appName} 帐户不匹配。"
-
-#. js-lingui-explicit-id
-msgid "emailAndPasswordMismatchCheck"
-msgstr "您可以检查您输入的内容并重试。"
-
-#. js-lingui-explicit-id
-msgid "emailCannotBeUsedBody"
-msgstr "你当前正在使用此地址。"
-
-#. js-lingui-explicit-id
-msgid "emailCannotBeUsedFieldError"
-msgstr "此电子邮件地址不可用。"
-
-#. js-lingui-explicit-id
-msgid "emailCannotBeUsedTitle"
-msgstr "此电子邮件地址已被使用。"
-
-#. js-lingui-explicit-id
-msgid "emailCannotBeVerifiedBodyAfterLink"
-msgstr "以获取帮助。"
-
-#. js-lingui-explicit-id
-msgid "emailCannotBeVerifiedBodyBeforeLink"
-msgstr "出现了问题。请稍后再试。\n仍然无法验证？"
-
-#. js-lingui-explicit-id
-msgid "emailCannotBeVerifiedTitle"
-msgstr "您的电子邮件暂时无法验证。"
-
-#. js-lingui-explicit-id
-msgid "emailNotYetVerified"
-msgstr "您的电子邮件尚未验证。请检查您的收件箱并点击验证链接。"
-
-#. js-lingui-explicit-id
-msgid "emailNotYetVerifiedHeader"
-msgstr "您的电子邮件尚未验证。"
-
-#. js-lingui-explicit-id
-msgid "emailUpdatedResent"
-msgstr "查看您的邮件以获取验证消息。\n\n如果此地址尚未被其他账户使用，您将很快收到来自 no-reply@frankly.org 的消息。如果未出现在收件箱中，请检查垃圾邮件文件夹。"
-
-#. js-lingui-explicit-id
-msgid "emailVerifiedInAnotherTab"
-msgstr "我已在另一个标签页或窗口中验证了我的电子邮件"
-
-#. js-lingui-explicit-id
-msgid "endBreakoutRooms"
-msgstr "结束分组讨论"
-
-#. js-lingui-explicit-id
-msgid "endBreakoutRoomsConfirm"
-msgstr "确定要为所有参与者结束分组讨论室吗？\n\n这将立即把所有参与者送回主会议室。"
-
-#. js-lingui-explicit-id
-msgid "endBreakouts"
-msgstr "结束分组讨论"
-
-#. js-lingui-explicit-id
-msgid "endMeeting"
-msgstr "结束会议"
-
-#. js-lingui-explicit-id
-msgid "endMeetingConfirmation"
-msgstr "为所有参与者结束此活动？所有人将被断开连接。"
-
-#. js-lingui-explicit-id
-msgid "endTime"
-msgstr "结束时间"
-
-#. js-lingui-explicit-id
-msgid "enterAMessage"
-msgstr "输入消息"
-
-#. js-lingui-explicit-id
-msgid "enterATitle"
-msgstr "输入标题"
-
-#. js-lingui-explicit-id
-msgid "enterAmount"
-msgstr "输入金额"
-
-#. js-lingui-explicit-id
-msgid "enterCategoryNum"
-msgstr "输入类别 {number}"
-
-#. js-lingui-explicit-id
-msgid "enterEvent"
-msgstr "进入活动"
-
-#. js-lingui-explicit-id
-msgid "enterHeadline"
-msgstr "输入标题"
-
-#. js-lingui-explicit-id
-msgid "enterImageTitle"
-msgstr "输入图片标题"
-
-#. js-lingui-explicit-id
-msgid "enterMessage"
-msgstr "输入消息"
-
-#. js-lingui-explicit-id
-msgid "enterMessageExampleAfter"
-msgstr "输入消息（例如：“在活动结束后进行此调查”）"
-
-#. js-lingui-explicit-id
-msgid "enterMessageExampleBefore"
-msgstr "输入消息（例如：“在活动开始前进行此调查”）"
-
-#. js-lingui-explicit-id
-msgid "enterQuestionWithNumber"
-msgstr "输入问题 {number}"
-
-#. js-lingui-explicit-id
-msgid "enterReason"
-msgstr "输入原因"
-
-#. js-lingui-explicit-id
-msgid "enterRoom"
-msgstr "进入房间"
-
-#. js-lingui-explicit-id
-msgid "enterRoomNumber"
-msgstr "例如：2"
-
-#. js-lingui-explicit-id
-msgid "enterUrl"
-msgstr "输入 URL"
-
-#. js-lingui-explicit-id
-msgid "enterValidCommunityUrl"
-msgstr "请输入有效的社区URL"
-
-#. js-lingui-explicit-id
-msgid "enterValidName"
-msgstr "請輸入有效的名稱"
-
-#. js-lingui-explicit-id
-msgid "enterValidSocialUrl"
-msgstr "请输入包含“{url}”的有效{platform}网址"
-
-#. js-lingui-explicit-id
-msgid "enterValidWebsiteUrl"
-msgstr "请输入有效的网址（例如：“https://websitename.com”）"
-
-#. js-lingui-explicit-id
-msgid "enterVideoTitle"
-msgstr "输入视频标题"
-
-#. js-lingui-explicit-id
-msgid "enterWaitingRoomText"
-msgstr "输入等候室文本（可选）"
-
-#. js-lingui-explicit-id
-msgid "enterWaitingRoomTextOptional"
-msgstr "输入等候室文本（可选）"
-
-#. js-lingui-explicit-id
-msgid "enterWord"
-msgstr "输入词语"
-
-#. js-lingui-explicit-id
-msgid "enterWordCloudPrompt"
-msgstr "输入词云提示"
-
-#. js-lingui-explicit-id
-msgid "enterWordCloudPromptHint"
-msgstr "输入词云提示"
-
-#. js-lingui-explicit-id
-msgid "error"
-msgstr "错误"
-
-#. js-lingui-explicit-id
-msgid "errorCommunityNameEmpty"
-msgstr "社区名称不能为空。"
-
-#. js-lingui-explicit-id
-msgid "errorCommunityProfile"
-msgstr "一个或多个个人资料设置的条目需要更改。请更正任何错误并重试。"
-
-#. js-lingui-explicit-id
-msgid "errorCommunityUrlEmpty"
-msgstr "社区 URL 不能为空。"
-
-#. js-lingui-explicit-id
-msgid "errorConnectingToRoom"
-msgstr "连接房间时出错。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingAnnouncements"
-msgstr "加载公告时出错"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingBreakoutRooms"
-msgstr "加载分组讨论室时出错。请刷新"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingChatMessages"
-msgstr "加载聊天消息时出错。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingCommunities"
-msgstr "加载社区时出错。请刷新。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingEmail"
-msgstr "加载电子邮件时出错。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingEventDetails"
-msgstr "加载活动详情时出错。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingEvents"
-msgstr "加载事件时出错。请刷新。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingEventsRefresh"
-msgstr "加载活动时出错。请刷新！"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingEventsShort"
-msgstr "加载活动时出错。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingMemberships"
-msgstr "加载会员资格时出错。请刷新。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingNotificationSettings"
-msgstr "加载通知设置时出错。请刷新。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingParticipants"
-msgstr "加载参与者时出错。请刷新。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingProfileInfo"
-msgstr "加载个人资料时出错。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingRequests"
-msgstr "加载请求时出错。请刷新。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingTemplates"
-msgstr "加载模板时出错。"
-
-#. js-lingui-explicit-id
-msgid "errorLoadingWordCloudResponses"
-msgstr "加载词云响应时出错"
-
-#. js-lingui-explicit-id
-msgid "errorOccurred"
-msgstr "发生错误"
-
-#. js-lingui-explicit-id
-msgid "errorSettingUpEvent"
-msgstr "设置你的活动时出错。请刷新。"
-
-#. js-lingui-explicit-id
-msgid "eventData"
-msgstr "活动数据"
-
-#. js-lingui-explicit-id
-msgid "eventDescription"
-msgstr "活动描述"
-
-#. js-lingui-explicit-id
-msgid "eventDetails"
-msgstr "活动详情"
-
-#. js-lingui-explicit-id
-msgid "eventEnded"
-msgstr "活动已结束"
-
-#. js-lingui-explicit-id
-msgid "eventFull"
-msgstr "已满"
-
-#. js-lingui-explicit-id
-msgid "eventHasNotStartedYet"
-msgstr "活动尚未开始。我们很快就会见到您！"
-
-#. js-lingui-explicit-id
-msgid "eventIsLocked"
-msgstr "此活动已锁定"
-
-#. js-lingui-explicit-id
-msgid "eventLocked"
-msgstr "此活动已锁定"
-
-#. js-lingui-explicit-id
-msgid "eventSettings"
-msgstr "活动设置"
-
-#. js-lingui-explicit-id
-msgid "eventSettingsDescription"
-msgstr "定义社区内活动的默认设置。这些设置可以针对个别活动和模板进行覆盖。"
-
-#. js-lingui-explicit-id
-msgid "eventTabsContent"
-msgstr "事件选项卡内容"
-
-#. js-lingui-explicit-id
-msgid "eventTemplate"
-msgstr "活动模板"
-
-#. js-lingui-explicit-id
-msgid "eventTitle"
-msgstr "活动标题"
-
-#. js-lingui-explicit-id
-msgid "eventWasNotEntered"
-msgstr "未进入活动。"
-
-#. js-lingui-explicit-id
-msgid "events"
-msgstr "活动"
-
-#. js-lingui-explicit-id
-msgid "everyoneReadyToMoveOn"
-msgstr "所有人都已准备好继续。"
-
-#. js-lingui-explicit-id
-msgid "ex2"
-msgstr "例如：2"
-
-#. js-lingui-explicit-id
-msgid "exTwo"
-msgstr "例：2"
-
-#. js-lingui-explicit-id
-msgid "exceedsTwentyCharacterLimit"
-msgstr "超过20个字符限制"
-
-#. js-lingui-explicit-id
-msgid "explorePlans"
-msgstr "浏览方案"
-
-#. js-lingui-explicit-id
-msgid "explorePlansCta"
-msgstr "探索方案"
-
-#. js-lingui-explicit-id
-msgid "facebookUrl"
-msgstr "Facebook链接"
-
-#. js-lingui-explicit-id
-msgid "facilitator"
-msgstr "引导者"
-
-#. js-lingui-explicit-id
-msgid "fakeParticipantCount"
-msgstr "虚拟参与者数量"
-
-#. js-lingui-explicit-id
-msgid "featureOnCommunityHomepage"
-msgstr "在{communityName}主页上推荐"
-
-#. js-lingui-explicit-id
-msgid "featured"
-msgstr "精选"
-
-#. js-lingui-explicit-id
-msgid "featuredTags"
-msgstr "精选标签"
-
-#. js-lingui-explicit-id
-msgid "featuredTemplatesAndEventsHint"
-msgstr "精选模板和活动将显示在主页顶部。"
-
-#. js-lingui-explicit-id
-msgid "filter"
-msgstr "筛选"
-
-#. js-lingui-explicit-id
-msgid "filterMemberListByName"
-msgstr "按姓名筛选成员列表"
-
-#. js-lingui-explicit-id
-msgid "findEventWithTemplate"
-msgstr "查找使用此模板的活动。"
-
-#. js-lingui-explicit-id
-msgid "finish"
-msgstr "完成"
-
-#. js-lingui-explicit-id
-msgid "finishRsvp"
-msgstr "完成 RSVP"
-
-#. js-lingui-explicit-id
-msgid "floatingChat"
-msgstr "浮动聊天"
-
-#. js-lingui-explicit-id
-msgid "follow"
-msgstr "关注"
-
-#. js-lingui-explicit-id
-msgid "followCommunityAccess"
-msgstr "关注{communityName}即可访问所有活动和资源。"
-
-#. js-lingui-explicit-id
-msgid "followCommunityButton"
-msgstr "关注社区按钮"
-
-#. js-lingui-explicit-id
-msgid "followCommunityNamed"
-msgstr "关注{communityName}"
-
-#. js-lingui-explicit-id
-msgid "followRequestSent"
-msgstr "关注请求已发送"
-
-#. js-lingui-explicit-id
-msgid "followerRequest"
-msgstr "追踪请求"
-
-#. js-lingui-explicit-id
-msgid "forgotAccountEmailOrNeedHelp"
-msgstr "忘记您的帐户电子邮件或需要其他登录帮助？"
-
-#. js-lingui-explicit-id
-msgid "forgotEmail"
-msgstr "忘记与您的帐户相关联的电子邮件？"
-
-#. js-lingui-explicit-id
-msgid "forgotPasswordEnterEmail"
-msgstr "输入您的电子邮件"
-
-#. js-lingui-explicit-id
-msgid "forgotPasswordPrefix"
-msgstr "忘记密码？"
-
-#. js-lingui-explicit-id
-msgid "forgotPasswordSuffix"
-msgstr "重置您的密码"
-
-#. js-lingui-explicit-id
-msgid "forgotPasswordThen"
-msgstr "然后 "
-
-#. js-lingui-explicit-id
-msgid "franklyLogo"
-msgstr "Frankly 标志"
-
-#. js-lingui-explicit-id
-msgid "galleryView"
-msgstr "画廊视图"
-
-#. js-lingui-explicit-id
-msgid "getCustomColors"
-msgstr "获取自定义颜色"
-
-#. js-lingui-explicit-id
-msgid "goTo"
-msgstr "前往"
-
-#. js-lingui-explicit-id
-msgid "googleCalendar"
-msgstr "Google 日历"
-
-#. js-lingui-explicit-id
-msgid "googleMeet"
-msgstr "Google Meet"
-
-#. js-lingui-explicit-id
-msgid "gracePeriodMinutes"
-msgstr "宽限期 (0-120 分钟)："
-
-#. js-lingui-explicit-id
-msgid "headline"
-msgstr "标题"
-
-#. js-lingui-explicit-id
-msgid "headlineCannotBeEmpty"
-msgstr "大标题不能为空"
-
-#. js-lingui-explicit-id
-msgid "headlineIsRequired"
-msgstr "大标题为必填项"
-
-#. js-lingui-explicit-id
-msgid "helpCenter"
-msgstr "帮助中心"
-
-#. js-lingui-explicit-id
-msgid "hideAgendaItem"
-msgstr "隐藏议程项"
-
-#. js-lingui-explicit-id
-msgid "hidePassword"
-msgstr "隱藏密碼"
-
-#. js-lingui-explicit-id
-msgid "historyHeader"
-msgstr "历史"
-
-#. js-lingui-explicit-id
-msgid "homeWithAppName"
-msgstr "{appName} 首页"
-
-#. js-lingui-explicit-id
-msgid "hostBeganRecording"
-msgstr "主持人已开始录制此活动。他们将在此时间后收到可下载的音频和视频副本。"
-
-#. js-lingui-explicit-id
-msgid "hostMessagesWillShowHere"
-msgstr "如果主持人发送消息，你会在这里看到。"
-
-#. js-lingui-explicit-id
-msgid "hostSendingToBreakout"
-msgstr "主持人正在将您送往分组讨论室。要加入分组讨论室吗？"
-
-#. js-lingui-explicit-id
-msgid "hostWillReceiveDownloadableCopy"
-msgstr "主持人将收到可下载的音频和视频副本。"
-
-#. js-lingui-explicit-id
-msgid "hosted"
-msgstr "有主持人"
-
-#. js-lingui-explicit-id
-msgid "hostingOption"
-msgstr "主持方式"
-
-#. js-lingui-explicit-id
-msgid "hostless"
-msgstr "无主持人"
-
-#. js-lingui-explicit-id
-msgid "howManyPeople"
-msgstr "多少人"
-
-#. js-lingui-explicit-id
-msgid "howWasTheEvent"
-msgstr "活动感觉如何？"
-
-#. js-lingui-explicit-id
-msgid "iAgreeToThe"
-msgstr "我同意"
-
-#. js-lingui-explicit-id
-msgid "iCalCalendar"
-msgstr "iCal 日历"
-
-#. js-lingui-explicit-id
-msgid "illBeThere"
-msgstr "我会去！"
-
-#. js-lingui-explicit-id
-msgid "imReadyToMoveOn"
-msgstr "我已准备好继续"
-
-#. js-lingui-explicit-id
-msgid "image"
-msgstr "图片"
-
-#. js-lingui-explicit-id
-msgid "imageUrl"
-msgstr "图片链接"
-
-#. js-lingui-explicit-id
-msgid "imageUrlIsNotSet"
-msgstr "（图片URL未设置。）"
-
-#. js-lingui-explicit-id
-msgid "imageUrlIsRequired"
-msgstr "图片网址为必填项"
-
-#. js-lingui-explicit-id
-msgid "imageUrlNotSet"
-msgstr "(图片URL未设置。)"
-
-#. js-lingui-explicit-id
-msgid "incorrectEmailOrPassword"
-msgstr "电子邮件或密码不正确"
-
-#. js-lingui-explicit-id
-msgid "initializationError"
-msgstr "初始化过程中发生意外错误。"
-
-#. js-lingui-explicit-id
-msgid "instagramUrl"
-msgstr "Instagram链接"
-
-#. js-lingui-explicit-id
-msgid "instantMeeting"
-msgstr "即时会议"
-
-#. js-lingui-explicit-id
-msgid "insteadSuffix"
-msgstr "替代"
-
-#. js-lingui-explicit-id
-msgid "interactiveEventsWithTemplates"
-msgstr "使用模板快速创建互动活动。 "
-
-#. js-lingui-explicit-id
-msgid "introBeforeBreakouts"
-msgstr "分组讨论前约{duration}的介绍时间"
-
-#. js-lingui-explicit-id
-msgid "introImageVideo"
-msgstr "介绍图片/视频"
-
-#. js-lingui-explicit-id
-msgid "introLength"
-msgstr "介绍时长"
-
-#. js-lingui-explicit-id
-msgid "introText"
-msgstr "介绍文字"
-
-#. js-lingui-explicit-id
-msgid "introductionContent"
-msgstr "_介绍一下自己！每个人花一分钟回答下列问题之一。_\n\n* 最近做了什么有趣的事情？\n* 你最喜欢的动画角色是谁，为什么？\n* 在你离开这个世界之前，有什么事情想要完成？\n* 你不喜欢哪部电影？\n"
-
-#. js-lingui-explicit-id
-msgid "introductions"
-msgstr "介绍"
-
-#. js-lingui-explicit-id
-msgid "invalidCharacters"
-msgstr "无效字符"
-
-#. js-lingui-explicit-id
-msgid "invalidEmail"
-msgstr "无效的电子邮件"
-
-#. js-lingui-explicit-id
-msgid "items"
-msgstr "项目"
-
-#. js-lingui-explicit-id
-msgid "joinCommunity"
-msgstr "加入{communityName}？"
-
-#. js-lingui-explicit-id
-msgid "joinEvent"
-msgstr "加入活动"
-
-#. js-lingui-explicit-id
-msgid "joinNow"
-msgstr "立即加入"
-
-#. js-lingui-explicit-id
-msgid "joinSpacePrompt"
-msgstr "您必须是此空间的成员才能参与。是否要加入？"
-
-#. js-lingui-explicit-id
-msgid "joinUppercase"
-msgstr "加入"
-
-#. js-lingui-explicit-id
-msgid "jumpTo"
-msgstr "跳转至"
-
-#. js-lingui-explicit-id
-msgid "jumpToRoom"
-msgstr "跳转至房间"
-
-#. js-lingui-explicit-id
-msgid "keepEvent"
-msgstr "保留活动"
-
-#. js-lingui-explicit-id
-msgid "keepItShortHint"
-msgstr "简短一点！您不会希望人们花时间阅读。"
-
-#. js-lingui-explicit-id
-msgid "kick"
-msgstr "踢出"
-
-#. js-lingui-explicit-id
-msgid "kickOutUser"
-msgstr "踢出{displayName}？"
-
-#. js-lingui-explicit-id
-msgid "kickReasonHint"
-msgstr "例如：他们试图破坏活动"
-
-#. js-lingui-explicit-id
-msgid "kickVoteConfirmation"
-msgstr "你确定要发起投票踢出{displayName}吗？只有在参与者行为不当时才执行此操作。"
-
-#. js-lingui-explicit-id
-msgid "kickVoteStarted"
-msgstr "{initiatorName}发起了投票，要将{targetName}踢出活动。你要将其踢出吗？他们将无法重新加入。"
-
-#. js-lingui-explicit-id
-msgid "language"
-msgstr "语言"
-
-#. js-lingui-explicit-id
-msgid "languageSelector"
-msgstr "语言选择器"
-
-#. js-lingui-explicit-id
-msgid "lastSession"
-msgstr "上次会话"
-
-#. js-lingui-explicit-id
-msgid "learnMore"
-msgstr "了解更多"
-
-#. js-lingui-explicit-id
-msgid "leave"
-msgstr "离开"
-
-#. js-lingui-explicit-id
-msgid "leaveRoom"
-msgstr "离开房间"
-
-#. js-lingui-explicit-id
-msgid "leaveWithoutEnding"
-msgstr "离开但不结束"
-
-#. js-lingui-explicit-id
-msgid "length"
-msgstr "时长"
-
-#. js-lingui-explicit-id
-msgid "less"
-msgstr "收起"
-
-#. js-lingui-explicit-id
-msgid "lightColorHex"
-msgstr "浅色十六进制值"
-
-#. js-lingui-explicit-id
-msgid "linkCopied"
-msgstr "链接已复制！"
-
-#. js-lingui-explicit-id
-msgid "linkMustBeMp4"
-msgstr "链接必须为 MP4"
-
-#. js-lingui-explicit-id
-msgid "linkedPayeeAccountEdit"
-msgstr "编辑关联收款账户"
-
-#. js-lingui-explicit-id
-msgid "linkedPayeeAccountSet"
-msgstr "设置关联收款账户"
-
-#. js-lingui-explicit-id
-msgid "linkedinUrl"
-msgstr "LinkedIn链接"
-
-#. js-lingui-explicit-id
-msgid "links"
-msgstr "链接"
-
-#. js-lingui-explicit-id
-msgid "liveStreamSetupInstructions"
-msgstr "准备开始直播时，请在您的直播应用（例如 Zoom）的直播设置中输入直播网址和直播密钥。"
-
-#. js-lingui-explicit-id
-msgid "livestream"
-msgstr "直播"
-
-#. js-lingui-explicit-id
-msgid "loading"
-msgstr "加载中"
-
-#. js-lingui-explicit-id
-msgid "loadingBreakoutRoomPleaseWait"
-msgstr "正在加载分组讨论室，请稍候……"
-
-#. js-lingui-explicit-id
-msgid "loadingEllipsis"
-msgstr "加载中..."
-
-#. js-lingui-explicit-id
-msgid "loadingRoomPleaseWait"
-msgstr "正在加载房间，请稍候……"
-
-#. js-lingui-explicit-id
-msgid "lockMeeting"
-msgstr "锁定会议"
-
-#. js-lingui-explicit-id
-msgid "lockRoomPrompt"
-msgstr "锁定房间以阻止任何新注册者加入？"
-
-#. js-lingui-explicit-id
-msgid "locked"
-msgstr "已锁定"
-
-#. js-lingui-explicit-id
-msgid "logInInsteadLink"
-msgstr "改为登录"
-
-#. js-lingui-explicit-id
-msgid "logInWithGoogle"
-msgstr "使用 Google 登入"
-
-#. js-lingui-explicit-id
-msgid "logInto"
-msgstr "登入"
-
-#. js-lingui-explicit-id
-msgid "logIntoApp"
-msgstr "登入 {appName}"
-
-#. js-lingui-explicit-id
-msgid "loggingIn"
-msgstr "登入中"
-
-#. js-lingui-explicit-id
-msgid "login"
-msgstr "登入"
-
-#. js-lingui-explicit-id
-msgid "logo"
-msgstr "标志"
-
-#. js-lingui-explicit-id
-msgid "logout"
-msgstr "退出登录"
-
-#. js-lingui-explicit-id
-msgid "loopVideo"
-msgstr "循环播放视频"
-
-#. js-lingui-explicit-id
-msgid "lowBandwidth"
-msgstr "低带宽"
-
-#. js-lingui-explicit-id
-msgid "lowBandwidthExplanation"
-msgstr "尝试关闭摄像头，让体验更流畅"
-
-#. js-lingui-explicit-id
-msgid "majorityOfParticipants"
-msgstr "大多数参与者必须同意才能进入下一项活动。"
-
-#. js-lingui-explicit-id
-msgid "majorityOfParticipantsExample"
-msgstr "在此活动中，参与的 {count} 人中有 {total} 人必须表示他们已准备好才能开始下一项内容。"
-
-#. js-lingui-explicit-id
-msgid "makeASuggestion"
-msgstr "提出建议"
-
-#. js-lingui-explicit-id
-msgid "makeThisSpacePrivate"
-msgstr "设此为私密空间"
-
-#. js-lingui-explicit-id
-msgid "manageCommunity"
-msgstr "管理社区"
-
-#. js-lingui-explicit-id
-msgid "manageJoinRequests"
-msgstr "管理加入请求 ({count})"
-
-#. js-lingui-explicit-id
-msgid "maps"
-msgstr "地图"
-
-#. js-lingui-explicit-id
-msgid "matchingOptions"
-msgstr "配对选项"
-
-#. js-lingui-explicit-id
-msgid "matchingQuestions"
-msgstr "配对问题"
-
-#. js-lingui-explicit-id
-msgid "maximum"
-msgstr "最大值"
-
-#. js-lingui-explicit-id
-msgid "meantToUseExistingAccount"
-msgstr "想使用现有账户吗？"
-
-#. js-lingui-explicit-id
-msgid "meetingEndMessage"
-msgstr "会议已结束。您可以关闭此窗口。"
-
-#. js-lingui-explicit-id
-msgid "meetingEndWithFollowMessage"
-msgstr "会议已结束。您可以关闭此窗口或访问{name}继续对话。"
-
-#. js-lingui-explicit-id
-msgid "meetingGuideCard"
-msgstr "会议指南卡"
-
-#. js-lingui-explicit-id
-msgid "meetingGuideEntryNotFound"
-msgstr "未找到会议指南条目。"
-
-#. js-lingui-explicit-id
-msgid "meetingGuideTutorial"
-msgstr "准备好时\n点击这里\n开始使用"
-
-#. js-lingui-explicit-id
-msgid "member"
-msgstr "成员"
-
-#. js-lingui-explicit-id
-msgid "memberRolesHelpMessage"
-msgstr "查看帮助中心以获取按角色划分的权限详细信息。"
-
-#. js-lingui-explicit-id
-msgid "members"
-msgstr "成员"
-
-#. js-lingui-explicit-id
-msgid "memberships"
-msgstr "会员资格"
-
-#. js-lingui-explicit-id
-msgid "message"
-msgstr "消息"
-
-#. js-lingui-explicit-id
-msgid "messageCannotBeEmpty"
-msgstr "消息不能为空"
-
-#. js-lingui-explicit-id
-msgid "messageFrom"
-msgstr "发信人"
-
-#. js-lingui-explicit-id
-msgid "messageIsRequired"
-msgstr "消息为必填项"
-
-#. js-lingui-explicit-id
-msgid "messageParticipants"
-msgstr "发送消息给参与者"
-
-#. js-lingui-explicit-id
-msgid "messageRemoved"
-msgstr "此消息已被删除。"
-
-#. js-lingui-explicit-id
-msgid "messageTime"
-msgstr "消息时间"
-
-#. js-lingui-explicit-id
-msgid "micAndCameraEnabled"
-msgstr "通话开始时麦克风和摄像头已启用"
-
-#. js-lingui-explicit-id
-msgid "micAndCameraEnabledNotHosted"
-msgstr "麦克风和摄像头将在分组讨论室开始时启用"
-
-#. js-lingui-explicit-id
-msgid "microphoneInput"
-msgstr "麦克风输入"
-
-#. js-lingui-explicit-id
-msgid "microsoftTeams"
-msgstr "Microsoft Teams"
-
-#. js-lingui-explicit-id
-msgid "mins"
-msgstr "分钟"
-
-#. js-lingui-explicit-id
-msgid "miscellaneous"
-msgstr "其他"
-
-#. js-lingui-explicit-id
-msgid "modBadge"
-msgstr "版主"
-
-#. js-lingui-explicit-id
-msgid "moderator"
-msgstr "版主"
-
-#. js-lingui-explicit-id
-msgid "moreFromName"
-msgstr "来自 {name} 的更多内容"
-
-#. js-lingui-explicit-id
-msgid "moreUpcomingEvents"
-msgstr "更多即将举行的活动"
-
-#. js-lingui-explicit-id
-msgid "movingOntoNextAgendaItem"
-msgstr "进入下一项议程"
-
-#. js-lingui-explicit-id
-msgid "mustAddAtLeastTwoCategories"
-msgstr "您必须至少添加两个（2）类别。"
-
-#. js-lingui-explicit-id
-msgid "mustBeAdminToAccessSection"
-msgstr "必须登录并具有管理员权限才能访问此部分"
-
-#. js-lingui-explicit-id
-msgid "mustBeLoggedInToAccessThisSection"
-msgstr "必须登录才能访问此部分。"
-
-#. js-lingui-explicit-id
-msgid "mustBeValidHexColor"
-msgstr "必须是有效的十六进制颜色值。"
-
-#. js-lingui-explicit-id
-msgid "mute"
-msgstr "静音"
-
-#. js-lingui-explicit-id
-msgid "muteAll"
-msgstr "全部静音"
-
-#. js-lingui-explicit-id
-msgid "myCommunities"
-msgstr "我的社区"
-
-#. js-lingui-explicit-id
-msgid "myCustomEvent"
-msgstr "我的自定义活动"
-
-#. js-lingui-explicit-id
-msgid "myEvents"
-msgstr "我的活动"
-
-#. js-lingui-explicit-id
-msgid "myProfile"
-msgstr "我的个人资料"
-
-#. js-lingui-explicit-id
-msgid "myResponses"
-msgstr "我的回应"
-
-#. js-lingui-explicit-id
-msgid "myUpcomingEvents"
-msgstr "我的即将举行的活动"
-
-#. js-lingui-explicit-id
-msgid "name"
-msgstr "名称"
-
-#. js-lingui-explicit-id
-msgid "nameHintExample"
-msgstr "例如：Jane Doe"
-
-#. js-lingui-explicit-id
-msgid "needHelp"
-msgstr "Need help? "
-
-#. js-lingui-explicit-id
-msgid "needHelpButton"
-msgstr "需要帮助吗？"
-
-#. js-lingui-explicit-id
-msgid "needMoreHelp"
-msgstr "需要更多帮助？ "
-
-#. js-lingui-explicit-id
-msgid "networkRequestBlocked"
-msgstr "无法连接到服务器。VPN、DNS 过滤器或隐私/广告拦截扩展程序可能正在阻止请求。请尝试其他网络或浏览器，或禁用拦截程序后重试。"
-
-#. js-lingui-explicit-id
-msgid "newAnnouncement"
-msgstr "新公告"
-
-#. js-lingui-explicit-id
-msgid "newRoomNumber"
-msgstr "新房间号码："
-
-#. js-lingui-explicit-id
-msgid "newSubscription"
-msgstr "新订阅"
-
-#. js-lingui-explicit-id
-msgid "newToApp"
-msgstr "新来到 {appName}？"
-
-#. js-lingui-explicit-id
-msgid "newUserRegister"
-msgstr "新用户？ 注册"
-
-#. js-lingui-explicit-id
-msgid "newestFirst"
-msgstr "最新优先"
-
-#. js-lingui-explicit-id
-msgid "next"
-msgstr "下一步"
-
-#. js-lingui-explicit-id
-msgid "no"
-msgstr "否"
-
-#. js-lingui-explicit-id
-msgid "noAccountFound"
-msgstr "未找到帐户。请尝试使用其他电子邮件地址登录。或者，使用此电子邮件注册。"
-
-#. js-lingui-explicit-id
-msgid "noAgendaForEvent"
-msgstr "此活动没有议程。"
-
-#. js-lingui-explicit-id
-msgid "noAnnouncementsSentYet"
-msgstr "尚未发送任何公告"
-
-#. js-lingui-explicit-id
-msgid "noAnnouncementsYet"
-msgstr "暂无公告。"
-
-#. js-lingui-explicit-id
-msgid "noCameraAvailable"
-msgstr "没有可用的摄像头"
-
-#. js-lingui-explicit-id
-msgid "noCameraDetected"
-msgstr "未检测到摄像头"
-
-#. js-lingui-explicit-id
-msgid "noCancel"
-msgstr "取消"
-
-#. js-lingui-explicit-id
-msgid "noChatDataForEvent"
-msgstr "此活动没有聊天数据。"
-
-#. js-lingui-explicit-id
-msgid "noDescriptionForEvent"
-msgstr "此活动没有描述"
-
-#. js-lingui-explicit-id
-msgid "noDevicesFound"
-msgstr "未找到设备"
-
-#. js-lingui-explicit-id
-msgid "noEvents"
-msgstr "暂无活动"
-
-#. js-lingui-explicit-id
-msgid "noEventsFound"
-msgstr "未找到活动。"
-
-#. js-lingui-explicit-id
-msgid "noFollowRequestsCurrently"
-msgstr "目前没有追踪请求"
-
-#. js-lingui-explicit-id
-msgid "noItems"
-msgstr "没有{name}"
-
-#. js-lingui-explicit-id
-msgid "noLetThemStay"
-msgstr "不，让他们留下"
-
-#. js-lingui-explicit-id
-msgid "noMatchingMembersFound"
-msgstr "未找到匹配的成员。"
-
-#. js-lingui-explicit-id
-msgid "noMeetingGuideForThisMeeting"
-msgstr "本次会议没有会议指南"
-
-#. js-lingui-explicit-id
-msgid "noMembersFoundToExport"
-msgstr "未找到可导出的成员。"
-
-#. js-lingui-explicit-id
-msgid "noMicrophoneAvailable"
-msgstr "没有可用的麦克风"
-
-#. js-lingui-explicit-id
-msgid "noOneIsHereYet"
-msgstr "还没有人在这里。"
-
-#. js-lingui-explicit-id
-msgid "noOneIsHereYet1"
-msgstr "还没有人在这里。"
-
-#. js-lingui-explicit-id
-msgid "noPendingJoinRequests"
-msgstr "没有待处理的加入请求"
-
-#. js-lingui-explicit-id
-msgid "noPollsOrSuggestionsDataForEvent"
-msgstr "此活动没有投票或建议数据。"
-
-#. js-lingui-explicit-id
-msgid "noRoomsFound"
-msgstr "未找到房间。"
-
-#. js-lingui-explicit-id
-msgid "noRoomsNeedHelp"
-msgstr "没有房间需要帮助。"
-
-#. js-lingui-explicit-id
-msgid "noSkip"
-msgstr "不，跳过"
-
-#. js-lingui-explicit-id
-msgid "noTemplatesAvailable"
-msgstr "没有可用的模板"
-
-#. js-lingui-explicit-id
-msgid "noTemplatesFound"
-msgstr "未找到模板。"
-
-#. js-lingui-explicit-id
-msgid "noThanks"
-msgstr "不用了，谢谢"
-
-#. js-lingui-explicit-id
-msgid "noTitle"
-msgstr "无标题"
-
-#. js-lingui-explicit-id
-msgid "noUpcomingEvents"
-msgstr "没有即将举行的活动。"
-
-#. js-lingui-explicit-id
-msgid "noUpcomingEventsMessage"
-msgstr "您尚未注册任何即将举行的活动。"
-
-#. js-lingui-explicit-id
-msgid "none"
-msgstr "无"
-
-#. js-lingui-explicit-id
-msgid "notAuthorized"
-msgstr "抱歉，您没有权限执行此操作。"
-
-#. js-lingui-explicit-id
-msgid "notBillingManager"
-msgstr "您不是任何社区的账单管理员"
-
-#. js-lingui-explicit-id
-msgid "notNow"
-msgstr "暂不"
-
-#. js-lingui-explicit-id
-msgid "notUserSignUp"
-msgstr "沒有賬戶？"
-
-#. js-lingui-explicit-id
-msgid "notifications"
-msgstr "通知"
-
-#. js-lingui-explicit-id
-msgid "notifyMeAboutNewAnnouncements"
-msgstr "通知我新公告"
-
-#. js-lingui-explicit-id
-msgid "notifyMeAboutNewEvents"
-msgstr "通知我新活动。"
-
-#. js-lingui-explicit-id
-msgid "odometer"
-msgstr "里程表"
-
-#. js-lingui-explicit-id
-msgid "ofTotal"
-msgstr "共 {count} 步"
-
-#. js-lingui-explicit-id
-msgid "office365Calendar"
-msgstr "Office 365 日历"
-
-#. js-lingui-explicit-id
-msgid "ok"
-msgstr "好的"
-
-#. js-lingui-explicit-id
-msgid "onboardingBrandSpaceSubtitle"
-msgstr "用自定义颜色、图片和标志打造专属空间"
-
-#. js-lingui-explicit-id
-msgid "onboardingCreateStripeAccountSubtitle"
-msgstr "为您的社区启用捐款功能。"
-
-#. js-lingui-explicit-id
-msgid "onboardingCreateTemplateSubtitle"
-msgstr "您想讨论什么？选择模板并组织活动。"
-
-#. js-lingui-explicit-id
-msgid "onboardingHostEventSubtitle"
-msgstr "您可以主持活动，也可以让成员直接互相交流。"
-
-#. js-lingui-explicit-id
-msgid "onboardingInviteSomeoneSubtitle"
-msgstr "关注即将到来的活动、资源等更多内容。"
-
-#. js-lingui-explicit-id
-msgid "onePerson"
-msgstr "1 人"
-
-#. js-lingui-explicit-id
-msgid "onlyOneFreeTextQuestionNotice"
-msgstr "您可以添加一个自由文字问题。所有其他问题必须是多项选择。"
-
-#. js-lingui-explicit-id
-msgid "openLink"
-msgstr "打开链接"
-
-#. js-lingui-explicit-id
-msgid "optional"
-msgstr "可选"
-
-#. js-lingui-explicit-id
-msgid "or"
-msgstr "或者"
-
-#. js-lingui-explicit-id
-msgid "orCheckAndTryAgain"
-msgstr " or you can check what you entered and "
-
-#. js-lingui-explicit-id
-msgid "other"
-msgstr "其他"
-
-#. js-lingui-explicit-id
-msgid "otherDataDownload"
-msgstr "投票、建议和聊天可以从活动页面下载。"
-
-#. js-lingui-explicit-id
-msgid "otherDataDownloadAction"
-msgstr "前往活动页面"
-
-#. js-lingui-explicit-id
-msgid "outlookCalendar"
-msgstr "Outlook 日历"
-
-#. js-lingui-explicit-id
-msgid "owner"
-msgstr "所有者"
-
-#. js-lingui-explicit-id
-msgid "participant"
-msgstr "参与者"
-
-#. js-lingui-explicit-id
-msgid "participantActions"
-msgstr "参与者操作"
-
-#. Semantic label for participant actions, with userId as parameter.
-#. js-lingui-explicit-id
-msgid "participantActionsForUserWithId"
-msgstr "ID为{userId}的用户的参与者操作"
-
-#. js-lingui-explicit-id
-msgid "participantCount"
-msgstr "{count}位参与者"
-
-#. js-lingui-explicit-id
-msgid "participantReassigned"
-msgstr "参与者已重新分配"
-
-#. js-lingui-explicit-id
-msgid "participants"
-msgstr "参与者"
-
-#. js-lingui-explicit-id
-msgid "participantsLoadError"
-msgstr "加载参与者时出现问题。请刷新。"
-
-#. js-lingui-explicit-id
-msgid "participantsReadyToMoveOn"
-msgstr "共有 {readyCount} 位（共 {participantCount} 位）参与者准备继续。"
-
-#. js-lingui-explicit-id
-msgid "participantsSentToRoomsAt"
-msgstr "参与者将在 {time} 被分配到各个房间。"
-
-#. js-lingui-explicit-id
-msgid "participateInBreakoutAssignments"
-msgstr "您想参加分组讨论室的分配吗？"
-
-#. js-lingui-explicit-id
-msgid "password"
-msgstr "密码"
-
-#. js-lingui-explicit-id
-msgid "passwordInvalid"
-msgstr "密码无效。点击忘记密码进行重置。或者，使用其他电子邮件重新注册。"
-
-#. js-lingui-explicit-id
-msgid "passwordRequirements"
-msgstr "長度必須至少為 12 個字符，並且包含一個小寫字母和一個大寫字母。"
-
-#. js-lingui-explicit-id
-msgid "passwordResetLinkSent"
-msgstr "密码重置链接已发送至 {email}"
-
-#. js-lingui-explicit-id
-msgid "pasteOrEnterAUrl"
-msgstr "粘贴或输入URL"
-
-#. js-lingui-explicit-id
-msgid "pasteOrEnterUrl"
-msgstr "粘贴或输入URL"
-
-#. js-lingui-explicit-id
-msgid "paymentTerms"
-msgstr "付款条款"
-
-#. js-lingui-explicit-id
-msgid "people"
-msgstr "人"
-
-#. js-lingui-explicit-id
-msgid "peopleReady"
-msgstr "人已准备好"
-
-#. js-lingui-explicit-id
-msgid "peopleRequiredToMoveOn"
-msgstr "{count} / {total} 人需要继续"
-
-#. js-lingui-explicit-id
-msgid "permissionsAdminDescription"
-msgstr "对社区设置、成员角色和所有内容的完全控制。"
-
-#. js-lingui-explicit-id
-msgid "permissionsFacilitatorDescription"
-msgstr "可以根据现有模板安排和主持活动。"
-
-#. js-lingui-explicit-id
-msgid "permissionsMemberDescription"
-msgstr "已加入社区的人。可以参加活动、创建帖子并接收社区公告。"
-
-#. js-lingui-explicit-id
-msgid "permissionsModeratorDescription"
-msgstr "可以创建/编辑模板和事件，删除不需要的内容，移动参与者到不同的房间，并回应帮助请求。"
-
-#. js-lingui-explicit-id
-msgid "permissionsOwnerDescription"
-msgstr "拥有所有管理功能，可以添加/删除其他管理员。"
-
-#. js-lingui-explicit-id
-msgid "person"
-msgstr "人"
-
-#. js-lingui-explicit-id
-msgid "pickAColor"
-msgstr "选择颜色"
-
-#. js-lingui-explicit-id
-msgid "pin"
-msgstr "固定"
-
-#. js-lingui-explicit-id
-msgid "playsAt"
-msgstr "在{time}播放"
-
-#. js-lingui-explicit-id
-msgid "pleaseAddSomeAnswers"
-msgstr "请添加一些答案"
-
-#. js-lingui-explicit-id
-msgid "pleaseAnswerQuestions"
-msgstr "请回答几个问题，以便我们将您与合适的小组匹配。"
-
-#. js-lingui-explicit-id
-msgid "pleaseCompleteAllYourQuestionsAndAnswers"
-msgstr "请完成所有问题和答案！"
-
-#. js-lingui-explicit-id
-msgid "pleaseCompletePreviousQuestionAndBothAnswers"
-msgstr "请先完成上一个问题和两个答案"
-
-#. js-lingui-explicit-id
-msgid "pleaseConfirmAvailability"
-msgstr "请确认您在 {eventTime} 的 {eventDate} 可参加此活动。"
-
-#. js-lingui-explicit-id
-msgid "pleaseEnterPassword"
-msgstr "請輸入密碼"
-
-#. js-lingui-explicit-id
-msgid "pleaseEnterValidAmount"
-msgstr "请输入有效金额"
-
-#. js-lingui-explicit-id
-msgid "pleaseEnterValidEmail"
-msgstr "请输入有效的电子邮件地址。"
-
-#. js-lingui-explicit-id
-msgid "pleaseEnterValidPassword"
-msgstr "請輸入有效的密碼"
-
-#. js-lingui-explicit-id
-msgid "pleaseEnterValidUrl"
-msgstr "请输入有效的URL。"
-
-#. js-lingui-explicit-id
-msgid "pleaseFixErrorsBeforeSaving"
-msgstr "请在保存前修正表单错误。"
-
-#. js-lingui-explicit-id
-msgid "pleaseLogInOrSignUp"
-msgstr "请登录或注册"
-
-#. js-lingui-explicit-id
-msgid "pleaseProvideAdditionalFeedbackFor"
-msgstr "请在此处为 {communityName} 提供更多反馈。"
-
-#. js-lingui-explicit-id
-msgid "pleaseProvideFeedbackFor"
-msgstr "请花一点时间为 {communityName} 提供反馈。"
-
-#. js-lingui-explicit-id
-msgid "pleaseRemoveDuplicateAnswers"
-msgstr "请删除重复的答案。"
-
-#. js-lingui-explicit-id
-msgid "pollQuestion"
-msgstr "投票问题"
-
-#. js-lingui-explicit-id
-msgid "pollsSuggestionsData"
-msgstr "投票和建议数据"
-
-#. js-lingui-explicit-id
-msgid "postAction"
-msgstr "发布"
-
-#. js-lingui-explicit-id
-msgid "postEvent"
-msgstr "活动后"
-
-#. js-lingui-explicit-id
-msgid "postHasBeenCreated"
-msgstr "帖子已创建"
-
-#. js-lingui-explicit-id
-msgid "postHasBeenUpdated"
-msgstr "帖子已更新"
-
-#. js-lingui-explicit-id
-msgid "postWasDeleted"
-msgstr "帖子已删除。"
-
-#. js-lingui-explicit-id
-msgid "posts"
-msgstr "帖子"
-
-#. js-lingui-explicit-id
-msgid "preEvent"
-msgstr "活动前"
-
-#. js-lingui-explicit-id
-msgid "prereqRequired"
-msgstr "需要先决条件"
-
-#. js-lingui-explicit-id
-msgid "prerequisiteRequired"
-msgstr "需要先决条件"
-
-#. js-lingui-explicit-id
-msgid "prerequisiteTemplate"
-msgstr "先决条件模板"
-
-#. js-lingui-explicit-id
-msgid "presets"
-msgstr "预设"
-
-#. js-lingui-explicit-id
-msgid "pressToPromote"
-msgstr "点击推广"
-
-#. js-lingui-explicit-id
-msgid "preview"
-msgstr "预览"
-
-#. js-lingui-explicit-id
-msgid "previewAgenda"
-msgstr "预览议程"
-
-#. js-lingui-explicit-id
-msgid "previewVideo"
-msgstr "视频预览"
-
-#. js-lingui-explicit-id
-msgid "primaryContent"
-msgstr "主要内容"
-
-#. js-lingui-explicit-id
-msgid "privacyPolicy"
-msgstr "隐私政策"
-
-#. js-lingui-explicit-id
-msgid "privateVisibility"
-msgstr "私密"
-
-#. js-lingui-explicit-id
-msgid "profile"
-msgstr "个人资料"
-
-#. js-lingui-explicit-id
-msgid "profileButton"
-msgstr "个人资料按钮"
-
-#. js-lingui-explicit-id
-msgid "profileUpdated"
-msgstr "个人资料已更新"
-
-#. js-lingui-explicit-id
-msgid "proposeToRemoveUser"
-msgstr "提议移除用户？"
-
-#. js-lingui-explicit-id
-msgid "proposeToRemoveUserAction"
-msgstr "提议移除用户"
-
-#. js-lingui-explicit-id
-msgid "publicOrPrivate"
-msgstr "公开还是私密？"
-
-#. js-lingui-explicit-id
-msgid "publicVisibility"
-msgstr "公开"
-
-#. js-lingui-explicit-id
-msgid "question"
-msgstr "问题"
-
-#. js-lingui-explicit-id
-msgid "questionDeleted"
-msgstr "问题已删除！"
-
-#. js-lingui-explicit-id
-msgid "questionGoesHere"
-msgstr "问题写在这里"
-
-#. js-lingui-explicit-id
-msgid "questionIsRequired"
-msgstr "问题为必填项"
-
-#. js-lingui-explicit-id
-msgid "questionSaved"
-msgstr "问题已保存！"
-
-#. js-lingui-explicit-id
-msgid "questionTypeFreeText"
-msgstr "自由文字"
-
-#. js-lingui-explicit-id
-msgid "questionTypeMultipleChoice"
-msgstr "多项选择"
-
-#. js-lingui-explicit-id
-msgid "questionWithNumber"
-msgstr "问题 {number}"
-
-#. js-lingui-explicit-id
-msgid "raiseHandJoinSpeakerQueue"
-msgstr "举手加入发言队列"
-
-#. js-lingui-explicit-id
-msgid "raiseHandToJoin"
-msgstr "举手加入发言队列"
-
-#. js-lingui-explicit-id
-msgid "raiseHandToJoinSpeakerQueue"
-msgstr "举手加入发言队列"
-
-#. js-lingui-explicit-id
-msgid "raiseYourHandToJoinTheSpeakerQueue"
-msgstr "举手加入发言队列"
-
-#. js-lingui-explicit-id
-msgid "randomlyAssign"
-msgstr "随机分配"
-
-#. js-lingui-explicit-id
-msgid "reactivate"
-msgstr "重新激活"
-
-#. js-lingui-explicit-id
-msgid "readMore"
-msgstr "阅读更多"
-
-#. js-lingui-explicit-id
-msgid "ready"
-msgstr "准备就绪"
-
-#. js-lingui-explicit-id
-msgid "readyIn"
-msgstr "我们将在以下时间后准备就绪："
-
-#. js-lingui-explicit-id
-msgid "reassign"
-msgstr "重新分配"
-
-#. js-lingui-explicit-id
-msgid "reassignUser"
-msgstr "重新分配{displayName}"
-
-#. js-lingui-explicit-id
-msgid "reassignedToRoom"
-msgstr "已重新分配到房间 {roomName}"
-
-#. js-lingui-explicit-id
-msgid "recentRooms"
-msgstr "最近的房间"
-
-#. js-lingui-explicit-id
-msgid "record"
-msgstr "录制"
-
-#. js-lingui-explicit-id
-msgid "recording"
-msgstr "录制中  "
-
-#. js-lingui-explicit-id
-msgid "recordingIndicator"
-msgstr "正在录制"
-
-#. js-lingui-explicit-id
-msgid "recordingPreparing"
-msgstr "正在准备录制..."
-
-#. js-lingui-explicit-id
-msgid "recordingStatusChecking"
-msgstr "(检查中...)"
-
-#. js-lingui-explicit-id
-msgid "recordingStatusFailed"
-msgstr "(失败)"
-
-#. js-lingui-explicit-id
-msgid "recordingStatusFile"
-msgstr "个文件"
-
-#. js-lingui-explicit-id
-msgid "recordingStatusFiles"
-msgstr "个文件"
-
-#. js-lingui-explicit-id
-msgid "recordingStatusInProgress"
-msgstr "正在录制"
-
-#. js-lingui-explicit-id
-msgid "recordingStatusParts"
-msgstr "({count} 部分)"
-
-#. js-lingui-explicit-id
-msgid "recordingStatusPreparing"
-msgstr "(准备中...)"
-
-#. js-lingui-explicit-id
-msgid "recordingStatusProcessing"
-msgstr "正在处理录制"
-
-#. js-lingui-explicit-id
-msgid "refresh"
-msgstr "刷新"
-
-#. js-lingui-explicit-id
-msgid "refreshConnection"
-msgstr "刷新连接"
-
-#. js-lingui-explicit-id
-msgid "refreshTemplate"
-msgstr "刷新模板"
-
-#. js-lingui-explicit-id
-msgid "registered"
-msgstr "已注册"
-
-#. js-lingui-explicit-id
-msgid "registrantList"
-msgstr "报名者名单"
-
-#. js-lingui-explicit-id
-msgid "registrationCountLabel"
-msgstr "{count}个注册"
-
-#. js-lingui-explicit-id
-msgid "registrationCountWithActive"
-msgstr "{regCount}个注册（{activeCount}位活跃）"
-
-#. js-lingui-explicit-id
-msgid "registrationCountWithAttended"
-msgstr "{regCount}个注册（{attendedCount}位出席）"
-
-#. js-lingui-explicit-id
-msgid "registrationDataDownload"
-msgstr "注册数据下载"
-
-#. js-lingui-explicit-id
-msgid "reload"
-msgstr "重新加载"
-
-#. js-lingui-explicit-id
-msgid "remove"
-msgstr "移除"
-
-#. js-lingui-explicit-id
-msgid "removeParticipant"
-msgstr "移除参与者"
-
-#. js-lingui-explicit-id
-msgid "removeSuggestion"
-msgstr "删除建议"
-
-#. js-lingui-explicit-id
-msgid "removeTemplate"
-msgstr "删除模板"
-
-#. js-lingui-explicit-id
-msgid "removedFromEvent"
-msgstr "您已被从此活动中移除，无法重新加入。"
-
-#. js-lingui-explicit-id
-msgid "reorderingNotSavedUntilQuestionsCompleted"
-msgstr "在所有问题完成之前，重新排序不会被保存。"
-
-#. js-lingui-explicit-id
-msgid "reply"
-msgstr "回复"
-
-#. js-lingui-explicit-id
-msgid "requestToFollow"
-msgstr "请求关注"
-
-#. js-lingui-explicit-id
-msgid "requests"
-msgstr "请求"
-
-#. js-lingui-explicit-id
-msgid "required"
-msgstr "必填"
-
-#. js-lingui-explicit-id
-msgid "requiredToMoveOn"
-msgstr "必填以继续"
-
-#. js-lingui-explicit-id
-msgid "resendCooldownLabel"
-msgstr "{label}（{seconds}秒）"
-
-#. js-lingui-explicit-id
-msgid "resendEmailAndTryAgain"
-msgstr "Resend the verification email and try again."
-
-#. js-lingui-explicit-id
-msgid "resendVerificationEmail"
-msgstr "重新发送邮件"
-
-#. js-lingui-explicit-id
-msgid "resendVerificationEmailLink"
-msgstr "重新发送邮件"
-
-#. js-lingui-explicit-id
-msgid "resetEventToTemplateWarning"
-msgstr "你的活动将重置为原始模板。参会者名单不会受到影响。"
-
-#. js-lingui-explicit-id
-msgid "resetGuide"
-msgstr "重置指南"
-
-#. js-lingui-explicit-id
-msgid "resetMeetingConfirm"
-msgstr "这将删除所有现有的会议数据。确定要重置吗？"
-
-#. js-lingui-explicit-id
-msgid "resources"
-msgstr "资源"
-
-#. js-lingui-explicit-id
-msgid "restoreSettings"
-msgstr "恢复默认设置"
-
-#. js-lingui-explicit-id
-msgid "rewatch"
-msgstr "重新观看"
-
-#. js-lingui-explicit-id
-msgid "role"
-msgstr "角色"
-
-#. js-lingui-explicit-id
-msgid "roleAdmin"
-msgstr "管理员"
-
-#. js-lingui-explicit-id
-msgid "roleAttendee"
-msgstr "参与者"
-
-#. js-lingui-explicit-id
-msgid "roleFacilitator"
-msgstr "引导者"
-
-#. js-lingui-explicit-id
-msgid "roleMember"
-msgstr "成员"
-
-#. js-lingui-explicit-id
-msgid "roleModerator"
-msgstr "主持人"
-
-#. js-lingui-explicit-id
-msgid "roleOwner"
-msgstr "所有者"
-
-#. js-lingui-explicit-id
-msgid "rolesTooltip"
-msgstr "成员角色决定社群内的权限和访问。"
-
-#. js-lingui-explicit-id
-msgid "roomNumber"
-msgstr "房间号码"
-
-#. js-lingui-explicit-id
-msgid "roomsCountMayChange"
-msgstr "如果参与者退出，房间数量可能会变化。"
-
-#. js-lingui-explicit-id
-msgid "rsvp"
-msgstr "RSVP"
-
-#. js-lingui-explicit-id
-msgid "save"
-msgstr "保存"
-
-#. js-lingui-explicit-id
-msgid "saveAgendaItem"
-msgstr "保存议程项"
-
-#. js-lingui-explicit-id
-msgid "saveAndClose"
-msgstr "保存并关闭"
-
-#. js-lingui-explicit-id
-msgid "saveAndJoin"
-msgstr "保存并加入"
-
-#. js-lingui-explicit-id
-msgid "saveChangesQuestion"
-msgstr "保存更改？"
-
-#. js-lingui-explicit-id
-msgid "saveEvent"
-msgstr "保存活动"
-
-#. js-lingui-explicit-id
-msgid "saveSettings"
-msgstr "保存设置"
-
-#. js-lingui-explicit-id
-msgid "saveTemplate"
-msgstr "保存模板"
-
-#. js-lingui-explicit-id
-msgid "saved"
-msgstr "已保存"
-
-#. js-lingui-explicit-id
-msgid "saySomething"
-msgstr "说点什么"
-
-#. js-lingui-explicit-id
-msgid "scheduledEvent"
-msgstr "已安排的活动"
-
-#. js-lingui-explicit-id
-msgid "search"
-msgstr "搜索"
-
-#. js-lingui-explicit-id
-msgid "searchEvents"
-msgstr "搜索活动"
-
-#. js-lingui-explicit-id
-msgid "searchTemplates"
-msgstr "搜索模板"
-
-#. js-lingui-explicit-id
-msgid "sec"
-msgstr "秒"
-
-#. js-lingui-explicit-id
-msgid "sectionNotFilledYet"
-msgstr "该部分尚未填写。"
-
-#. js-lingui-explicit-id
-msgid "seeAll"
-msgstr "查看全部"
-
-#. js-lingui-explicit-id
-msgid "seeManagingYourCommunity"
-msgstr "查看管理您的社区以获取详细信息。"
-
-#. js-lingui-explicit-id
-msgid "seeMore"
-msgstr "查看更多"
-
-#. js-lingui-explicit-id
-msgid "seeMoreEvents"
-msgstr "查看更多活动"
-
-#. js-lingui-explicit-id
-msgid "selectADay"
-msgstr "选择日期"
-
-#. js-lingui-explicit-id
-msgid "selectATime"
-msgstr "选择时间"
-
-#. js-lingui-explicit-id
-msgid "selectAudioInputDevice"
-msgstr "选择音频输入设备"
-
-#. js-lingui-explicit-id
-msgid "selectData"
-msgstr "选择数据"
-
-#. js-lingui-explicit-id
-msgid "selectLanguage"
-msgstr "选择语言"
-
-#. js-lingui-explicit-id
-msgid "selectMaxParticipantCount"
-msgstr "选择最大参与者数量"
-
-#. js-lingui-explicit-id
-msgid "selectSpace"
-msgstr "选择空间："
-
-#. js-lingui-explicit-id
-msgid "selectVideoInput"
-msgstr "选择视频输入"
-
-#. js-lingui-explicit-id
-msgid "selectedColorsContrastError"
-msgstr "所选颜色的对比度不足。请选用其他颜色。"
-
-#. js-lingui-explicit-id
-msgid "send"
-msgstr "发送"
-
-#. js-lingui-explicit-id
-msgid "sendMessage"
-msgstr "发送消息"
-
-#. js-lingui-explicit-id
-msgid "sendMessageToAllParticipantsInGroup"
-msgstr "向群组中的所有参与者发送消息"
-
-#. js-lingui-explicit-id
-msgid "sendVerification"
-msgstr "发送验证"
-
-#. js-lingui-explicit-id
-msgid "sessionExpiredSignInAgain"
-msgstr "您的会话已过期，请重新登录。"
-
-#. js-lingui-explicit-id
-msgid "setPayeeAccountDetails"
-msgstr "设置您的收款账户详细信息"
-
-#. js-lingui-explicit-id
-msgid "setYourPayeeAccountDetails"
-msgstr "设置您的收款账户详情"
-
-#. js-lingui-explicit-id
-msgid "settingAgendaPreview"
-msgstr "议程预览"
-
-#. js-lingui-explicit-id
-msgid "settingAllowMembersToCreateEvents"
-msgstr "允许成员创建活动"
-
-#. js-lingui-explicit-id
-msgid "settingAllowMembersToCreateTemplates"
-msgstr "允许成员创建模板"
-
-#. js-lingui-explicit-id
-msgid "settingAllowUsersToDonateFunds"
-msgstr "允许用户捐款"
-
-#. js-lingui-explicit-id
-msgid "settingEnableWeeklyEmailDigestsOfUpcomingEvents"
-msgstr "启用即将举行活动的每周邮件摘要"
-
-#. js-lingui-explicit-id
-msgid "settingHelperAgendaPreview"
-msgstr "使活动议程在活动介绍页面上可见。当关闭时，议程仅在活动会议中可见。"
-
-#. js-lingui-explicit-id
-msgid "settingHelperChat"
-msgstr "允许参与者在活动页面和活动期间（包括小组讨论室）之间相互发送消息。"
-
-#. js-lingui-explicit-id
-msgid "settingHelperDonationWarning"
-msgstr "您的收款账户尚未完全设置，因此目前无法接受捐款。您可能需要链接银行账户或接受 Stripe 的服务条款。"
-
-#. js-lingui-explicit-id
-msgid "settingHelperEnableWeeklyEmail"
-msgstr "自动向成员发送即将举行活动的每周摘要，让他们保持知情和参与。"
-
-#. js-lingui-explicit-id
-msgid "settingHelperFloatingChat"
-msgstr "在活动期间于屏幕底部以气泡形式显示临时聊天通知。"
-
-#. js-lingui-explicit-id
-msgid "settingHelperMemberEvents"
-msgstr "允许社区成员使用您社区的模板创建和组织活动。"
-
-#. js-lingui-explicit-id
-msgid "settingHelperMemberTemplates"
-msgstr "允许成员在您的社区内创建和保存可重复使用的活动模板。"
-
-#. js-lingui-explicit-id
-msgid "settingHelperRecord"
-msgstr "捕获活动视频，管理员可于稍后下载。（目前限于有主持人活动的主要会议室录制；小组讨论室录制即将推出。）"
-
-#. js-lingui-explicit-id
-msgid "settingHelperRequireMembershipApproval"
-msgstr "所有会员申请都必须经过社区管理员审核和批准才能获得访问权限。活动参与将仅限于会员。"
-
-#. js-lingui-explicit-id
-msgid "settingHelperTalkTimer"
-msgstr "向参与者显示发言时间指示器，并提供细微提醒以鼓励平衡讨论。"
-
-#. js-lingui-explicit-id
-msgid "settingRequireApprovalForNewMembers"
-msgstr "新成员需要审批"
-
-#. js-lingui-explicit-id
-msgid "settings"
-msgstr "设置"
-
-#. js-lingui-explicit-id
-msgid "settingsFor"
-msgstr "{communityName} 的设置"
-
-#. js-lingui-explicit-id
-msgid "share"
-msgstr "分享"
-
-#. js-lingui-explicit-id
-msgid "shareYourCommunityWithOthers"
-msgstr "与他人分享您的社区"
-
-#. js-lingui-explicit-id
-msgid "showAgendaItem"
-msgstr "显示议程项"
-
-#. js-lingui-explicit-id
-msgid "showAnnouncementsButton"
-msgstr "显示公告按钮"
-
-#. js-lingui-explicit-id
-msgid "showOptions"
-msgstr "显示选项"
-
-#. js-lingui-explicit-id
-msgid "showPassword"
-msgstr "顯示密碼"
-
-#. js-lingui-explicit-id
-msgid "showQuestions"
-msgstr "显示问题"
-
-#. js-lingui-explicit-id
-msgid "showResults"
-msgstr "显示结果"
-
-#. js-lingui-explicit-id
-msgid "showSidebarButton"
-msgstr "显示侧边栏按钮"
-
-#. js-lingui-explicit-id
-msgid "sidebarFollowCommunityButton"
-msgstr "侧边栏关注社区按钮"
-
-#. js-lingui-explicit-id
-msgid "sidebarUnfollowButton"
-msgstr "侧边栏取消关注按钮"
-
-#. js-lingui-explicit-id
-msgid "signIn"
-msgstr "登录"
-
-#. js-lingui-explicit-id
-msgid "signInToApp"
-msgstr "登录到 {appName}"
-
-#. js-lingui-explicit-id
-msgid "signInWithEmail"
-msgstr "使用邮箱登录"
-
-#. js-lingui-explicit-id
-msgid "signOut"
-msgstr "退出登录"
-
-#. js-lingui-explicit-id
-msgid "signUp"
-msgstr "注册"
-
-#. js-lingui-explicit-id
-msgid "signUpOrSignInToContinue"
-msgstr "注册（或使用现有账户登录）以继续。"
-
-#. js-lingui-explicit-id
-msgid "signUpToGetStarted"
-msgstr "注册以开始使用。"
-
-#. js-lingui-explicit-id
-msgid "signUpWithEmail"
-msgstr "使用邮箱注册"
-
-#. js-lingui-explicit-id
-msgid "signUpWithGoogle"
-msgstr "使用 Google 注册"
-
-#. js-lingui-explicit-id
-msgid "signedOutRefreshPrompt"
-msgstr "您已退出登录。请刷新页面以重新登录"
-
-#. js-lingui-explicit-id
-msgid "signingUp"
-msgstr "報名"
-
-#. js-lingui-explicit-id
-msgid "skip"
-msgstr "跳过"
-
-#. js-lingui-explicit-id
-msgid "skipStripeAccountSetupForNow"
-msgstr "暂时跳过 Stripe 账户设置"
-
-#. js-lingui-explicit-id
-msgid "smartMatch"
-msgstr "智能匹配"
-
-#. js-lingui-explicit-id
-msgid "smartMatchParticipants"
-msgstr "智能匹配参与者"
-
-#. js-lingui-explicit-id
-msgid "socialFacebook"
-msgstr "Facebook"
-
-#. js-lingui-explicit-id
-msgid "socialInstagram"
-msgstr "Instagram"
-
-#. js-lingui-explicit-id
-msgid "socialLinkedIn"
-msgstr "LinkedIn"
-
-#. js-lingui-explicit-id
-msgid "socialTwitter"
-msgstr "Twitter"
-
-#. js-lingui-explicit-id
-msgid "someStillFinishingVideo"
-msgstr "部分人员仍在观看视频。"
-
-#. js-lingui-explicit-id
-msgid "somethingWentWrong"
-msgstr "出了点问题"
-
-#. js-lingui-explicit-id
-msgid "somethingWentWrongLoadingCommunity"
-msgstr "加载此社区时出错。"
-
-#. js-lingui-explicit-id
-msgid "somethingWentWrongLoadingEvents"
-msgstr "加载活动时出错。"
-
-#. js-lingui-explicit-id
-msgid "somethingWentWrongLoadingRoom"
-msgstr "加载房间时出错，请刷新！"
-
-#. js-lingui-explicit-id
-msgid "somethingWentWrongLongMiddle"
-msgstr "请刷新页面并重新尝试登录 Frankly。\n\n如果您继续遇到问题，可以"
-
-#. js-lingui-explicit-id
-msgid "somethingWentWrongLongPrefix"
-msgstr "抱歉，出现了问题。"
-
-#. js-lingui-explicit-id
-msgid "somethingWentWrongLongSuffix"
-msgstr "联系支持团队寻求帮助"
-
-#. js-lingui-explicit-id
-msgid "somethingWentWrongTryAgain"
-msgstr "出现错误，请重试。"
-
-#. js-lingui-explicit-id
-msgid "sorryVimeoVideoLookupFailed"
-msgstr "抱歉，Vimeo 视频查找失败。"
-
-#. js-lingui-explicit-id
-msgid "sorryYoutubeVideoLookupFailed"
-msgstr "抱歉，YouTube 视频查找失败。"
-
-#. js-lingui-explicit-id
-msgid "spaceNotAllowed"
-msgstr "不允许空格"
-
-#. js-lingui-explicit-id
-msgid "spreadTheWord"
-msgstr "传播信息"
-
-#. js-lingui-explicit-id
-msgid "stageView"
-msgstr "舞台视图"
-
-#. js-lingui-explicit-id
-msgid "start"
-msgstr "开始"
-
-#. js-lingui-explicit-id
-msgid "startCommunity"
-msgstr "创建社区"
-
-#. js-lingui-explicit-id
-msgid "startEvent"
-msgstr "开始活动"
-
-#. js-lingui-explicit-id
-msgid "startTime"
-msgstr "开始时间"
-
-#. js-lingui-explicit-id
-msgid "startVideo"
-msgstr "开启视频"
-
-#. js-lingui-explicit-id
-msgid "startingNextAgendaItem"
-msgstr "开始下一项议程"
-
-#. js-lingui-explicit-id
-msgid "startsTomorrow"
-msgstr "明天开始"
-
-#. js-lingui-explicit-id
-msgid "stepXOfY"
-msgstr "第 {currentIndex} 步，共 {lastIndex} 步"
-
-#. js-lingui-explicit-id
-msgid "stopVideo"
-msgstr "关闭视频"
-
-#. js-lingui-explicit-id
-msgid "streamKey"
-msgstr "直播密钥："
-
-#. js-lingui-explicit-id
-msgid "streamKeyWarning"
-msgstr "警告：任何拥有此直播密钥的人都可以在您的直播中播放内容。请妥善保密。"
-
-#. js-lingui-explicit-id
-msgid "streamUrl"
-msgstr "直播网址："
-
-#. js-lingui-explicit-id
-msgid "streamWaitingText"
-msgstr "直播开始后将在此处显示。"
-
-#. js-lingui-explicit-id
-msgid "submitChatButton"
-msgstr "提交聊天按钮"
-
-#. js-lingui-explicit-id
-msgid "submitMessageButton"
-msgstr "提交消息按钮"
-
-#. js-lingui-explicit-id
-msgid "submitTagButton"
-msgstr "提交"
-
-#. js-lingui-explicit-id
-msgid "suggest"
-msgstr "建议"
-
-#. js-lingui-explicit-id
-msgid "suggestAgendaItemHint"
-msgstr "您可以提出议程项目，每个人都可以投票"
-
-#. js-lingui-explicit-id
-msgid "suggestionCannotBeEmpty"
-msgstr "建议不能为空"
-
-#. js-lingui-explicit-id
-msgid "suggestions"
-msgstr "建议"
-
-#. js-lingui-explicit-id
-msgid "suggestionsWillShowUpHere"
-msgstr "建议将显示在这里"
-
-#. js-lingui-explicit-id
-msgid "tag"
-msgstr "标签"
-
-#. js-lingui-explicit-id
-msgid "tagline"
-msgstr "标语"
-
-#. js-lingui-explicit-id
-msgid "taglineHint"
-msgstr "例：保护地球免受所有入侵者的侵害"
-
-#. js-lingui-explicit-id
-msgid "tags"
-msgstr "标签"
-
-#. js-lingui-explicit-id
-msgid "takeRateDescription"
-msgstr "在我们的免费方案中，任何终端用户付款都将产生 {percentage}% 的佣金。升级方案以享受更低费率。"
-
-#. js-lingui-explicit-id
-msgid "targetParticipantsPerRoom"
-msgstr "每个分组的\n目标参与者"
-
-#. js-lingui-explicit-id
-msgid "targetSize"
-msgstr "目标大小"
-
-#. js-lingui-explicit-id
-msgid "targetSizeQuestion"
-msgstr "目标大小？"
-
-#. js-lingui-explicit-id
-msgid "template"
-msgstr "模板"
-
-#. js-lingui-explicit-id
-msgid "templateName"
-msgstr "模板名称"
-
-#. js-lingui-explicit-id
-msgid "templateSettings"
-msgstr "模板设置"
-
-#. js-lingui-explicit-id
-msgid "templates"
-msgstr "模板"
-
-#. js-lingui-explicit-id
-msgid "termsAgreementPrefix"
-msgstr "通过登录、注册或使用 {appName}，我同意遵守 "
-
-#. js-lingui-explicit-id
-msgid "termsOfService"
-msgstr "{appName} 的服务条款"
-
-#. js-lingui-explicit-id
-msgid "textCopied"
-msgstr "文本已复制！"
-
-#. js-lingui-explicit-id
-msgid "textTitle"
-msgstr "文字标题"
-
-#. js-lingui-explicit-id
-msgid "thatsIt"
-msgstr "就这些！"
-
-#. js-lingui-explicit-id
-msgid "theme"
-msgstr "主题"
-
-#. js-lingui-explicit-id
-msgid "thereWasAnErrorLoadingEventTemplates"
-msgstr "加载活动模板时出错。"
-
-#. js-lingui-explicit-id
-msgid "thisEventIsBeingRecorded"
-msgstr "此活动正在录制中"
-
-#. js-lingui-explicit-id
-msgid "thisEventIsLocked"
-msgstr "此活动已锁定"
-
-#. js-lingui-explicit-id
-msgid "thisEventIsNowBeingRecorded"
-msgstr "此活动现在正在录制中"
-
-#. js-lingui-explicit-id
-msgid "thisUrlWasNotFound"
-msgstr "未找到此URL。"
-
-#. js-lingui-explicit-id
-msgid "thisUser"
-msgstr "该用户"
-
-#. js-lingui-explicit-id
-msgid "thisWillUnsubscribeFromUpdates"
-msgstr "这将取消订阅 {appName} 的更新："
-
-#. js-lingui-explicit-id
-msgid "time"
-msgstr "时间"
-
-#. js-lingui-explicit-id
-msgid "timeShownIn"
-msgstr "时间显示为 {timezone}"
-
-#. js-lingui-explicit-id
-msgid "title"
-msgstr "标题"
-
-#. js-lingui-explicit-id
-msgid "titleCannotBeEmpty"
-msgstr "标题不能为空"
-
-#. js-lingui-explicit-id
-msgid "titleIsRequired"
-msgstr "标题为必填项"
-
-#. js-lingui-explicit-id
-msgid "tooManyRequests"
-msgstr "请求失败次数过多。请稍后再试。"
-
-#. js-lingui-explicit-id
-msgid "transcription"
-msgstr "转录"
-
-#. js-lingui-explicit-id
-msgid "transcriptsCsv"
-msgstr "转录（CSV）"
-
-#. js-lingui-explicit-id
-msgid "transcriptsNotAvailable"
-msgstr "暂无转录。"
-
-#. js-lingui-explicit-id
-msgid "troubleshoot"
-msgstr "故障排除"
-
-#. js-lingui-explicit-id
-msgid "troubleshootingGuide"
-msgstr "故障排除指南"
-
-#. js-lingui-explicit-id
-msgid "tryAgain"
-msgstr "请再试一次"
-
-#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:219
 msgid "tryAgainLater"
 msgstr "请稍后再试"
 
 #. js-lingui-explicit-id
-msgid "tryAgainLink"
-msgstr "try again"
+#: src/features/auth/AccountErrorMessage.tsx:137
+#: src/features/auth/AccountErrorMessage.tsx:149
+msgid "insteadSuffix"
+msgstr "替代"
+
+#. placeholder {0}: thread.commentCount
+#: src/features/posts/PostCards.tsx:174
+msgid "{0, plural, one {# Comment} other {# Comments}}"
+msgstr ""
+
+#. placeholder {0}: expanded ? "Less" : "Read More"
+#: src/features/community/CommunityHome.tsx:232
+msgid "{0}"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "turnOnAudioVideo"
-msgstr "开启音频/视频？"
+#: src/features/auth/SignInForm.tsx:333
+msgid "termsOfService"
+msgstr "{appName} 的服务条款"
+
+#: src/api/firebaseApi.ts:431
+msgid "{entity} not found"
+msgstr ""
+
+#: src/components/events/ParticipantsRow.tsx:42
+msgid "{total} People"
+msgstr ""
+
+#. placeholder {0}: total - shown.length
+#: src/components/events/ParticipantsRow.tsx:40
+msgid "+{0}"
+msgstr ""
+
+#: src/components/events/ParticipantsRow.tsx:43
+msgid "1 person"
+msgstr ""
+
+#: src/features/posts/EmotionSection.tsx:16
+msgid "100"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "twitterUrl"
-msgstr "Twitter链接"
+#: src/components/layout/SideBar.tsx:344
+msgid "sidebar.aboutFrankly"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "typeSomething"
-msgstr "输入内容"
+#: src/features/community/CommunityHome.tsx:219
+msgid "aboutUs"
+msgstr "关于我们"
+
+#: src/features/resources/ResourcesPage.tsx:124
+msgid "Add a resource"
+msgstr ""
+
+#: src/features/posts/AddCommentDialog.tsx:64
+#: src/features/posts/AddCommentDialog.tsx:85
+msgid "Add comment"
+msgstr ""
+
+#: src/features/posts/EmotionSection.tsx:51
+msgid "Add reaction"
+msgstr ""
+
+#: src/components/layout/NavBar.tsx:232
+#: src/utils/membership.ts:26
+msgid "Admin"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "unfollow"
-msgstr "取消关注"
+#: src/components/layout/SideBar.tsx:182
+msgid "sidebar.admin"
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:221
+msgid "Allow the community to join"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "uniqueUrlDisplayName"
-msgstr "唯一URL显示名称（可选）"
+#: src/features/auth/SignInForm.tsx:161
+msgid "alreadyUserSignIn"
+msgstr "已有账户？"
 
 #. js-lingui-explicit-id
-msgid "uniqueUrlDisplayNameOptional"
-msgstr "唯一URL显示名称（可选）"
+#: src/components/pickers.tsx:262
+msgid "timeInput.am"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "unknownUser"
-msgstr "未知用户"
+#: src/components/pickers.tsx:247
+msgid "timeInput.amOrPm"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:99
+msgid "Announcement"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:204
+msgid "Announcement created"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:114
+msgid "Announcement deleted"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:68
+msgid "Announcements"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "unlockMeeting"
-msgstr "解锁会议"
+#: src/components/ProfileChip.tsx:42
+msgid "profileChip.anonymous"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:108
+msgid "Are you sure you want to delete this announcement?"
+msgstr ""
+
+#: src/features/resources/ResourcesPage.tsx:101
+msgid "Are you sure you want to delete this resource?"
+msgstr ""
+
+#: src/features/posts/CreatePostDialog.tsx:162
+msgid "Attach image"
+msgstr ""
+
+#: src/features/posts/CreatePostDialog.tsx:102
+msgid "Attached"
+msgstr ""
+
+#: src/utils/membership.ts:32
+msgid "Attendee"
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:186
+msgid "Back"
+msgstr ""
+
+#: src/utils/membership.ts:30
+msgid "Banned"
+msgstr ""
+
+#: src/components/layout/BottomNavBar.tsx:39
+msgid "Bottom navigation"
+msgstr ""
+
+#: src/components/layout/OnboardingBanner.tsx:34
+msgid "Brand your space"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "unmute"
-msgstr "取消静音"
+#: src/features/auth/SignInForm.tsx:322
+msgid "termsAgreementPrefix"
+msgstr "通过登录、注册或使用 {appName}，我同意遵守 "
+
+#: src/components/Upload.tsx:163
+msgid "Cancel"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "unnamedCommunity"
-msgstr "未命名社区"
+#: src/components/layout/SideBar.tsx:168
+msgid "sidebar.cancel"
+msgstr ""
+
+#: src/features/resources/ResourceDialog.tsx:111
+msgid "Change image"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "unpin"
-msgstr "取消固定"
+#: src/components/BackendUnavailable.tsx:23
+msgid "backendUnreachableBody"
+msgstr ""
+
+#: src/components/Upload.tsx:136
+msgid "Choose a photo"
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:71
+msgid "Choose Template"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "unsubscribeNow"
-msgstr "立即取消订阅"
+#: src/features/community/CreateCommunity.tsx:305
+msgid "communitySuccessSuffix"
+msgstr "点击右上角的齿轮图标以编辑您的社区设置。"
+
+#: src/components/AppDialog.tsx:40
+#: src/components/ConfirmDialog.tsx:79
+#: src/features/posts/AddCommentDialog.tsx:66
+#: src/features/posts/CreatePostDialog.tsx:93
+#: src/features/profile/ProfileDrawer.tsx:38
+msgid "Close"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "upcomingEvent"
-msgstr "即将举行的活动"
+#: src/components/layout/SideBar.tsx:237
+msgid "sidebar.close"
+msgstr ""
 
 #. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:327
+msgid "sidebar.closeDialog"
+msgstr ""
+
+#: src/utils/imageUpload.ts:150
+msgid "Cloudinary isn't configured. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_IMAGE_PRESET."
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:114
+msgid "sidebar.collapse"
+msgstr ""
+
+#: src/features/posts/AddCommentDialog.tsx:72
+msgid "Comment"
+msgstr ""
+
+#: src/features/posts/AddCommentDialog.tsx:81
+msgid "Comment cannot be empty"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:203
+msgid "communityName"
+msgstr "社区名称"
+
+#: src/api/firebaseApi.ts:464
+#: src/api/firebaseApi.ts:574
+msgid "Community not found"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/OnboardingBanner.tsx:131
+msgid "onboardingBanner.region"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:224
+msgid "communityUrl"
+msgstr "社区URL"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:295
+msgid "congratulations"
+msgstr "恭喜"
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:260
+msgid "contact"
+msgstr "联系方式"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:34
+#: src/features/auth/SignInForm.tsx:315
+msgid "contactUs"
+msgstr "联系我们"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:215
+msgid "somethingWentWrongLongSuffix"
+msgstr "联系支持团队寻求帮助"
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:76
+msgid "shareSection.copyLink"
+msgstr ""
+
+#: src/features/resources/ResourceDialog.tsx:55
+msgid "Could not load that link."
+msgstr ""
+
+#: src/features/profile/ProfileDrawer.tsx:45
+msgid "Could not load this profile."
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:39
+msgid "backendUnknownBody"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:196
+msgid "Create"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:117
+#: src/features/community/CreateCommunity.tsx:123
+msgid "createACommunity"
+msgstr "创建社区"
+
+#: src/features/events/CreateEventDialog.tsx:340
+msgid "Create a new template"
+msgstr ""
+
+#: src/components/EmptyPageContent.tsx:18
+msgid "Create a post"
+msgstr ""
+
+#: src/components/EmptyPageContent.tsx:22
+msgid "Create a resource"
+msgstr ""
+
+#: src/components/layout/OnboardingBanner.tsx:39
+msgid "Create a template"
+msgstr ""
+
+#: src/app/layouts/CommunityLayout.tsx:56
+#: src/components/EmptyPageContent.tsx:20
+#: src/components/layout/BottomNavBar.tsx:57
+msgid "Create an event"
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:193
+msgid "Create Event"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:179
+msgid "Create New Announcement"
+msgstr ""
+
+#: src/features/posts/PostsPage.tsx:62
+msgid "Create post"
+msgstr ""
+
+#: src/features/community/CommunityHome.tsx:325
+msgid "Create your first event"
+msgstr ""
+
+#: src/api/firebaseApi.ts:829
+msgid "Created event was not found"
+msgstr ""
+
+#. placeholder {0}: r.title
+#: src/features/resources/ResourcesPage.tsx:97
+msgid "Delete {0}"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:104
+msgid "Delete announcement"
+msgstr ""
+
+#: src/features/posts/PostCards.tsx:64
+msgid "Dislike"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/OnboardingBanner.tsx:143
+#: src/components/layout/OnboardingBanner.tsx:164
+msgid "onboardingBanner.dismiss"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:163
+msgid "notUserSignUp"
+msgstr "沒有賬戶？"
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:290
+msgid "communityHome.donate"
+msgstr ""
+
+#: src/components/Upload.tsx:136
+msgid "Drag and drop an image here"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:201
+msgid "nameHintExample"
+msgstr "例如：Jane Doe"
+
+#. placeholder {0}: r.title
+#: src/features/resources/ResourcesPage.tsx:91
+msgid "Edit {0}"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:142
+msgid "communityHome.editCommunity"
+msgstr ""
+
+#: src/features/resources/ResourceDialog.tsx:131
+msgid "Edit title"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:212
+msgid "email"
+msgstr "电子邮箱"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:322
+msgid "sidebar.english"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:187
+msgid "Enter a message"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:182
+msgid "Enter a title"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:62
+#: src/features/auth/AccountErrorMessage.tsx:68
+msgid "forgotPasswordEnterEmail"
+msgstr "输入您的电子邮件"
+
+#: src/components/layout/NavBar.tsx:157
+#: src/components/layout/NavBar.tsx:202
+msgid "Events"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:134
+msgid "sidebar.events"
+msgstr ""
+
+#: src/features/posts/EmotionSection.tsx:17
+msgid "Exclamation"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:115
+msgid "sidebar.expand"
+msgstr ""
+
+#: src/utils/membership.ts:28
+msgid "Facilitator"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:311
+msgid "finish"
+msgstr "完成"
+
+#: src/utils/imageUpload.ts:156
+msgid "Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET."
+msgstr ""
+
+#: src/components/CommunityMembershipButton.tsx:32
+#: src/components/CommunityMembershipButton.tsx:36
+msgid "Follow"
+msgstr ""
+
+#: src/components/CommunityMembershipButton.tsx:45
+msgid "Follow community"
+msgstr ""
+
+#: src/components/CommunityMembershipButton.tsx:49
+msgid "Follow request sent"
+msgstr ""
+
+#: src/components/CommunityMembershipButton.tsx:34
+msgid "Follow Request Sent"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:170
+msgid "forgotEmail"
+msgstr "忘记与您的帐户相关联的电子邮件？"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:307
+msgid "forgotAccountEmailOrNeedHelp"
+msgstr "忘记您的帐户电子邮件或需要其他登录帮助？"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:58
+msgid "forgotPasswordPrefix"
+msgstr "忘记密码？"
+
+#: src/components/layout/CurrentCommunityIconOrLogo.tsx:36
+msgid "Frankly home"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:296
+msgid "sidebar.franklyHome"
+msgstr ""
+
+#: src/components/layout/CurrentCommunityIconOrLogo.tsx:42
+msgid "Frankly Logo"
+msgstr ""
+
+#: src/components/layout/OnboardingBanner.tsx:48
+msgid "Get it on the books"
+msgstr ""
+
+#: src/components/layout/OnboardingBanner.tsx:43
+msgid "Get people talking"
+msgstr ""
+
+#: src/features/posts/EmotionSection.tsx:14
+msgid "Heart"
+msgstr ""
+
+#: src/features/posts/EmotionSection.tsx:20
+msgid "Heart eyes"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:337
+msgid "sidebar.helpCenter"
+msgstr ""
+
+#. js-lingui-explicit-id
+#. placeholder {0}: community.name
+#: src/features/community/CommunityHome.tsx:249
+msgid "communityHome.shareBody"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:235
+msgid "hidePassword"
+msgstr "隱藏密碼"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:231
+msgid "timeInput.hour"
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:230
+msgid "I'll share this with a private group"
+msgstr ""
+
+#: src/features/posts/CreatePostDialog.tsx:166
+msgid "Image"
+msgstr ""
+
+#. placeholder {0}: i18n._(e.label)
+#: src/features/posts/CreatePostDialog.tsx:193
+msgid "Insert {0}"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:184
+msgid "invalidEmail"
+msgstr "无效的电子邮件"
+
+#: src/api/firebaseApi.ts:779
+msgid "Invalid event schedule"
+msgstr ""
+
+#: src/api/firebaseApi.ts:116
+msgid "Invalid or missing {field}"
+msgstr ""
+
+#: src/components/layout/OnboardingBanner.tsx:49
+msgid "Invite your people"
+msgstr ""
+
+#. js-lingui-explicit-id
+#. placeholder {0}: community.name
+#: src/features/community/CommunityHome.tsx:245
+msgid "communityHome.shareSubject"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:304
+msgid "sidebar.languageIconLabel"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:309
+msgid "sidebar.language"
+msgstr ""
+
+#: src/features/posts/EmotionSection.tsx:19
+msgid "Laughing"
+msgstr ""
+
+#: src/features/posts/PostCards.tsx:45
+msgid "Like"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:80
+msgid "shareSection.linkCopied"
+msgstr ""
+
+#: src/api/firebaseApi.ts:1054
+msgid "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
+msgstr ""
+
+#. placeholder {0}: response.status
+#: src/api/firebaseApi.ts:1068
+msgid "Link preview request failed ({0})"
+msgstr ""
+
+#: src/components/events/EventCards.tsx:110
+msgid "Livestream"
+msgstr ""
+
+#: src/features/resources/ResourceDialog.tsx:88
+msgid "Load link"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInButtons.tsx:17
+#: src/features/auth/SignInForm.tsx:274
+msgid "signIn"
+msgstr "登录"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:300
+msgid "logInWithGoogle"
+msgstr "使用 Google 登入"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:155
+msgid "logIntoApp"
+msgstr "登入 {appName}"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:135
+msgid "loggingIn"
+msgstr "登入中"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:167
+msgid "login"
+msgstr "登入"
+
+#: src/components/layout/OnboardingBanner.tsx:33
+#: src/components/layout/OnboardingBanner.tsx:38
+msgid "Looking good"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:248
+msgid "makeThisSpacePrivate"
+msgstr "设此为私密空间"
+
+#: src/utils/membership.ts:29
+msgid "Member"
+msgstr ""
+
+#: src/api/firebaseApi.ts:596
+msgid "Membership update was not saved"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:239
+msgid "timeInput.minute"
+msgstr ""
+
+#: src/utils/membership.ts:27
+msgid "Moderator"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:251
+msgid "passwordRequirements"
+msgstr "長度必須至少為 12 個字符，並且包含一個小寫字母和一個大寫字母。"
+
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:47
+msgid "myCommunities"
+msgstr "我的社区"
+
+#: src/components/layout/BottomNavBar.tsx:50
+msgid "My events"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/ProfileMenu.tsx:64
+msgid "profileMenu.myEvents"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/ProfileMenu.tsx:56
+msgid "profileMenu.myProfile"
+msgstr ""
+
+#: src/utils/imageUpload.ts:72
+msgid "Network error during upload"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:72
+msgid "New Announcement"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:153
+msgid "newToApp"
+msgstr "新来到 {appName}？"
+
+#: src/features/events/CreateEventDialog.tsx:193
+msgid "Next"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:259
+msgid "next"
+msgstr "下一步"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:78
+msgid "monthCalendar.nextMonth"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:109
+msgid "No"
+msgstr ""
+
+#: src/components/EmptyPageContent.tsx:69
+msgid "No {type}"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:86
+msgid "No announcements yet."
+msgstr ""
+
+#: src/features/posts/PostCards.tsx:173
+msgid "No Comments"
+msgstr ""
+
+#: src/features/community/CommunityHome.tsx:325
+msgid "No events found"
+msgstr ""
+
+#: src/utils/imageUpload.ts:171
+msgid "No image upload provider is configured. Set the VITE_CLOUDINARY_* variables or VITE_FIREBASE_STORAGE_BUCKET."
+msgstr ""
+
+#. placeholder {0}: Math.round(startupTimeoutMs / 1000)
+#: src/api/firebaseAuthService.ts:219
+msgid "No response from the backend after {0} seconds."
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:434
+msgid "No templates found."
+msgstr ""
+
+#: src/utils/membership.ts:31
+msgid "Non-member"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/OnboardingBanner.tsx:97
+msgid "onboardingBanner.progress"
+msgstr ""
+
+#: src/api/firebaseApi.ts:1061
+msgid "Only HTTP and HTTPS links can be previewed."
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:280
+msgid "or"
+msgstr "或者"
+
+#: src/components/Upload.tsx:140
+msgid "or click to browse"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:31
+msgid "backendDownBody"
+msgstr ""
+
+#: src/utils/membership.ts:25
+msgid "Owner"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:223
+msgid "password"
+msgstr "密码"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:110
+msgid "passwordResetLinkSent"
+msgstr "密码重置链接已发送至 {email}"
+
+#: src/features/resources/ResourceDialog.tsx:79
+msgid "Paste or enter URL"
+msgstr ""
+
+#: src/features/home/HomePage.tsx:53
+msgid "Placeholder: the home page is not built yet. This is a plain list of your communities."
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:157
+msgid "Please choose a time in the future."
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:73
+msgid "pleaseEnterPassword"
+msgstr "請輸入密碼"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:167
+msgid "enterValidCommunityUrl"
+msgstr "请输入有效的社区URL"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:193
+#: src/features/auth/SignInForm.tsx:61
+msgid "pleaseEnterValidEmail"
+msgstr "请输入有效的电子邮件地址。"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:55
+#: src/features/community/CreateCommunity.tsx:163
+msgid "enterValidName"
+msgstr "請輸入有效的名稱"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:68
+msgid "pleaseEnterValidPassword"
+msgstr "請輸入有效的密碼"
+
+#: src/features/posts/EmotionSection.tsx:18
+msgid "Plus one"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:261
+msgid "timeInput.pm"
+msgstr ""
+
+#: src/features/posts/CreatePostDialog.tsx:202
+#: src/features/resources/ResourceDialog.tsx:143
+msgid "Post"
+msgstr ""
+
+#: src/features/posts/CreatePostDialog.tsx:58
+msgid "Post has been created"
+msgstr ""
+
+#: src/features/posts/CreatePostDialog.tsx:58
+msgid "Post has been updated"
+msgstr ""
+
+#: src/api/firebaseApi.ts:971
+msgid "Post not found"
+msgstr ""
+
+#: src/features/posts/CreatePostDialog.tsx:135
+msgid "Post text"
+msgstr ""
+
+#: src/components/layout/NavBar.tsx:163
+#: src/components/layout/NavBar.tsx:209
+msgid "Posts"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:139
+msgid "sidebar.posts"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/misc.tsx:38
+msgid "prerequisiteBadge.text"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:67
+msgid "monthCalendar.previousMonth"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:351
+msgid "sidebar.privacyPolicy"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/ProfileMenu.tsx:34
+msgid "profileMenu.profileButton"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/ProfileChip.tsx:71
+msgid "profileChip.ariaLabel"
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:72
+msgid "Public or private?"
+msgstr ""
+
+#: src/app/App.tsx:96
+msgid "React App"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:206
+msgid "somethingWentWrongLongMiddle"
+msgstr "请刷新页面并重新尝试登录 Frankly。\n"
+"\n"
+"如果您继续遇到问题，可以"
+
+#: src/features/posts/CreatePostDialog.tsx:111
+msgid "Remove image"
+msgstr ""
+
+#: src/features/posts/PostCards.tsx:231
+msgid "Reply"
+msgstr ""
+
+#: src/components/CommunityMembershipButton.tsx:37
+msgid "Request To Follow"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:72
+msgid "forgotPasswordSuffix"
+msgstr "重置您的密码"
+
+#: src/features/resources/ResourceDialog.tsx:65
+msgid "Resource added"
+msgstr ""
+
+#: src/api/firebaseApi.ts:1141
+msgid "Resource not found"
+msgstr ""
+
+#: src/features/resources/ResourceDialog.tsx:123
+msgid "Resource title"
+msgstr ""
+
+#: src/features/resources/ResourceDialog.tsx:65
+msgid "Resource updated"
+msgstr ""
+
+#: src/features/resources/ResourceDialog.tsx:83
+msgid "Resource URL"
+msgstr ""
+
+#: src/components/layout/NavBar.tsx:170
+#: src/components/layout/NavBar.tsx:217
+msgid "Resources"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:145
+msgid "sidebar.resources"
+msgstr ""
+
+#: src/features/resources/ResourceDialog.tsx:124
+msgid "Save title"
+msgstr ""
+
+#: src/components/layout/OnboardingBanner.tsx:44
+msgid "Schedule an event"
+msgstr ""
+
+#: src/components/events/EventCards.tsx:99
+msgid "Scheduled event"
+msgstr ""
+
+#: src/features/events/EventsPage.tsx:77
+#: src/features/events/EventsPage.tsx:78
+msgid "Search events"
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:268
+msgid "Search templates"
+msgstr ""
+
+#: src/features/posts/PostCards.tsx:209
+msgid "See more"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:363
+msgid "seeMoreEvents"
+msgstr "查看更多活动"
+
+#: src/features/events/CreateEventDialog.tsx:73
+msgid "Select a day"
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:74
+msgid "Select a time"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:68
+msgid "shareSection.email"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:50
+msgid "shareSection.facebook"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:62
+msgid "shareSection.linkedin"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:56
+msgid "shareSection.twitter"
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:43
+msgid "Show Announcements Button"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:236
+msgid "showPassword"
+msgstr "顯示密碼"
+
+#: src/components/layout/NavBar.tsx:239
+msgid "Show sidebar"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInDialog.tsx:29
+msgid "signInDialog.ariaLabel"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/ProfileMenu.tsx:72
+msgid "profileMenu.signOut"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInButtons.tsx:23
+#: src/features/auth/SignInForm.tsx:169
+#: src/features/auth/SignInForm.tsx:273
+msgid "signUp"
+msgstr "注册"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:299
+msgid "signUpWithGoogle"
+msgstr "使用 Google 注册"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:147
+msgid "signingUp"
+msgstr "報名"
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:38
+msgid "backendUnknownTitle"
+msgstr ""
+
+#: src/features/events/CreateEventDialog.tsx:93
+msgid "Something went wrong creating the event. Please try again."
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:62
+msgid "errorLoadingCommunitiesMessage"
+msgstr ""
+
+#: src/features/events/EventsPage.tsx:159
+msgid "Something went wrong loading events."
+msgstr ""
+
+#: src/features/posts/PostsPage.tsx:30
+msgid "Something went wrong loading posts."
+msgstr ""
+
+#: src/features/resources/ResourcesPage.tsx:40
+msgid "Something went wrong loading resources."
+msgstr ""
+
+#: src/scopes/CommunityScope.tsx:72
+msgid "Something went wrong loading the community."
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/States.tsx:28
+msgid "errorState.default"
+msgstr ""
+
+#: src/components/CommunityMembershipButton.tsx:51
+#: src/components/layout/AnnouncementsBell.tsx:207
+#: src/features/posts/AddCommentDialog.tsx:93
+#: src/features/posts/CreatePostDialog.tsx:62
+#: src/features/resources/ResourceDialog.tsx:68
+#: src/features/resources/ResourcesPage.tsx:107
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/app/layouts/RootLayout.tsx:37
+#: src/features/community/CreateCommunity.tsx:183
+msgid "somethingWentWrongTryAgain"
+msgstr "出现错误，请重试。"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:75
+msgid "startCommunity"
+msgstr "创建社区"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:317
+msgid "sidebar.supportedLanguages"
+msgstr ""
+
+#: src/components/layout/NavBar.tsx:176
+msgid "Templates"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:150
+msgid "sidebar.templates"
+msgstr ""
+
+#. placeholder {0}: Math.round(maxBytes / 1024 / 1024)
+#: src/components/Upload.tsx:187
+msgid "That file is too large (max {0} MB)."
+msgstr ""
+
+#: src/components/Upload.tsx:185
+msgid "That file type isn't supported."
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:13
+msgid "backendMisconfiguredTitle"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:14
+msgid "backendMisconfiguredBody"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:30
+msgid "backendDownTitle"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:64
+msgid "forgotPasswordThen"
+msgstr "然后 "
+
+#: src/features/community/CommunityHome.tsx:316
+msgid "There was an error loading events."
+msgstr ""
+
+#: src/components/layout/AnnouncementsBell.tsx:83
+msgid "There was an error while loading Announcements"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:83
+msgid "backendEmulatorsHint"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:131
+msgid "emailAddressAlreadyInUseLoginError"
+msgstr "此邮箱已被使用。请尝试"
+
+#: src/app/router.tsx:91
+msgid "This page is not in the React app yet. Soon, this would fall back to the Flutter app."
+msgstr ""
+
+#: src/features/NotFoundPage.tsx:8
+msgid "This URL was not found"
+msgstr ""
+
+#: src/features/posts/EmotionSection.tsx:13
+msgid "Thumbs up"
+msgstr ""
+
+#. placeholder {0}: timeZoneAbbreviation(now)
+#: src/features/events/CreateEventDialog.tsx:151
+msgid "Time shown in {0}"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:187
+msgid "tooManyRequests"
+msgstr "请求失败次数过多。请稍后再试。"
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:90
+msgid "tryAgain"
+msgstr "请再试一次"
+
+#: src/features/posts/CreatePostDialog.tsx:136
+msgid "Type something"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:155
+msgid "sidebar.unfollow"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:169
+msgid "sidebar.unfollowConfirmAction"
+msgstr ""
+
+#. js-lingui-explicit-id
+#. placeholder {0}: community.name
+#: src/components/layout/SideBar.tsx:159
+msgid "sidebar.unfollowConfirmTitle"
+msgstr ""
+
+#: src/utils/imageUpload.ts:164
+msgid "Unknown VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\". Use \"cloudinary\" or \"firebase\"."
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:99
+msgid "sidebar.unnamedCommunity"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:342
 msgid "upcomingEvents"
 msgstr "即将举行的活动"
 
-#. js-lingui-explicit-id
-msgid "upcomingHeader"
-msgstr "即将举行"
-
-#. js-lingui-explicit-id
-msgid "updateAction"
-msgstr "更新"
-
-#. js-lingui-explicit-id
-msgid "updateBilling"
-msgstr "更新账单"
-
-#. js-lingui-explicit-id
-msgid "updateButton"
-msgstr "更新"
-
-#. js-lingui-explicit-id
-msgid "updateEmail"
-msgstr "更新邮箱"
-
-#. js-lingui-explicit-id
-msgid "updateEvent"
-msgstr "更新活动"
-
-#. js-lingui-explicit-id
-msgid "updatePlan"
-msgstr "更新方案"
-
-#. js-lingui-explicit-id
-msgid "updatePost"
-msgstr "更新帖子"
-
-#. js-lingui-explicit-id
-msgid "updateProfile"
-msgstr "更新个人资料"
-
-#. js-lingui-explicit-id
-msgid "updateTemplate"
-msgstr "更新模板"
-
-#. js-lingui-explicit-id
-msgid "updateToPlan"
-msgstr "更新到{name}计划"
-
-#. js-lingui-explicit-id
-msgid "upgrade"
-msgstr "升级"
-
-#. js-lingui-explicit-id
-msgid "upgradeForAccess"
-msgstr "升级以获取访问权限"
-
-#. js-lingui-explicit-id
-msgid "upgradeForMore"
-msgstr "升级以获取更多"
-
-#. js-lingui-explicit-id
-msgid "upload"
-msgstr "上传"
-
-#. js-lingui-explicit-id
-msgid "uploadImage"
-msgstr "上传图片"
-
-#. js-lingui-explicit-id
-msgid "uploadNewImage"
-msgstr "上传新图片"
-
-#. js-lingui-explicit-id
-msgid "upvoteDownvoteSuggestions"
-msgstr "您可以对建议的议程项目进行投票和反对投票"
-
-#. js-lingui-explicit-id
-msgid "urlCannotBeEmptyIfAttributesAreEntered"
-msgstr "如果输入了某些属性，URL不能为空"
-
-#. js-lingui-explicit-id
-msgid "urlIsNotValid"
-msgstr "网址无效"
-
-#. js-lingui-explicit-id
-msgid "urlParameter"
-msgstr "URL参数"
-
-#. js-lingui-explicit-id
-msgid "urlParameterCannotBeEmpty"
-msgstr "URL参数不能为空"
-
-#. js-lingui-explicit-id
-msgid "urlPreview"
-msgstr "URL 预览"
-
-#. js-lingui-explicit-id
-msgid "useDarkerAccentColor"
-msgstr "使用更深的强调色。"
-
-#. js-lingui-explicit-id
-msgid "useDarkerBackgroundColor"
-msgstr "使用更深的背景颜色。"
-
-#. js-lingui-explicit-id
-msgid "useLighterAccentColor"
-msgstr "使用更浅的强调色。"
-
-#. js-lingui-explicit-id
-msgid "useLighterBackgroundColor"
-msgstr "使用更浅的背景颜色。"
-
-#. js-lingui-explicit-id
-msgid "usersAreInBreakoutRooms"
-msgstr "用户在分组讨论室中。"
-
-#. js-lingui-explicit-id
-msgid "verificationAccountInstructions"
-msgstr "使用邮件中的链接验证并继续。"
-
-#. js-lingui-explicit-id
-msgid "verificationEmailResent"
-msgstr "验证邮件已重新发送至 {email}。"
-
-#. js-lingui-explicit-id
-msgid "verificationEmailSent"
-msgstr "我们已向 {email} 发送验证邮件。请使用邮件中的链接验证您的账户并继续。"
-
-#. js-lingui-explicit-id
-msgid "verificationEmailSentTo"
-msgstr "我们已向 {email} 发送验证邮件。"
-
-#. js-lingui-explicit-id
-msgid "verificationLinkExpired"
-msgstr "您的验证链接已过期。请重新发送新的链接。"
-
-#. js-lingui-explicit-id
-msgid "verificationLinkExpiredTitle"
-msgstr "您的验证链接已过期。"
-
-#. js-lingui-explicit-id
-msgid "verificationLinkExpiresIn"
-msgstr "此邮件链接将在30分钟内过期。"
-
-#. js-lingui-explicit-id
-msgid "verifyYourEmail"
-msgstr "验证您的电子邮件"
-
-#. js-lingui-explicit-id
-msgid "video"
-msgstr "视频"
-
-#. js-lingui-explicit-id
-msgid "videoDeviceUpdated"
-msgstr "视频设备已更新。"
-
-#. js-lingui-explicit-id
-msgid "videoDisabled"
-msgstr "视频关闭"
-
-#. js-lingui-explicit-id
-msgid "videoElement"
-msgstr "{label}-视频元素"
-
-#. js-lingui-explicit-id
-msgid "videoInputDevice"
-msgstr "视频输入设备："
+#: src/features/posts/CreatePostDialog.tsx:202
+msgid "Update"
+msgstr ""
 
-#. js-lingui-explicit-id
-msgid "videoPreview"
-msgstr "视频预览"
-
-#. js-lingui-explicit-id
-msgid "videoTabUpload"
-msgstr "上传"
-
-#. js-lingui-explicit-id
-msgid "videoTabUrl"
-msgstr "URL"
-
-#. js-lingui-explicit-id
-msgid "videoTabVimeo"
-msgstr "VIMEO"
-
-#. js-lingui-explicit-id
-msgid "videoTabYoutube"
-msgstr "YOUTUBE"
-
-#. js-lingui-explicit-id
-msgid "videoUpdating"
-msgstr "正在更新您的会议视频..."
-
-#. js-lingui-explicit-id
-msgid "videoUrlIsRequired"
-msgstr "视频网址为必填项"
-
-#. js-lingui-explicit-id
-msgid "view"
-msgstr "查看"
-
-#. js-lingui-explicit-id
-msgid "viewCurrentRoom"
-msgstr "查看当前房间"
-
-#. js-lingui-explicit-id
-msgid "viewMoreTemplates"
-msgstr "查看更多模板"
-
-#. js-lingui-explicit-id
-msgid "viewProfile"
-msgstr "查看个人资料"
-
-#. js-lingui-explicit-id
-msgid "vimeoUrl"
-msgstr "Vimeo链接"
-
-#. js-lingui-explicit-id
-msgid "vimeoVideoLookupFailed"
-msgstr "抱歉，Vimeo 视频查找失败。"
-
-#. js-lingui-explicit-id
-msgid "waitingRoom"
-msgstr "等候室"
-
-#. js-lingui-explicit-id
-msgid "waitingRoomImageVideo"
-msgstr "等候室图片/视频"
-
-#. js-lingui-explicit-id
-msgid "websiteUrl"
-msgstr "网站网址"
-
-#. js-lingui-explicit-id
-msgid "welcome"
-msgstr "欢迎来到 Frankly"
-
-#. js-lingui-explicit-id
-msgid "welcomeClickToEnterEvent"
-msgstr "欢迎！点击此处进入活动："
-
-#. js-lingui-explicit-id
-msgid "welcomeName"
-msgstr "您好，{name}"
-
-#. js-lingui-explicit-id
-msgid "welcomeToApp"
-msgstr "欢迎来到 {appName}"
-
-#. js-lingui-explicit-id
-msgid "whatMessageToShowParticipantsAfter"
-msgstr "您想在活动结束后向参与者显示什么消息？"
+#: src/utils/imageUpload.ts:27
+msgid "Upload aborted"
+msgstr ""
 
-#. js-lingui-explicit-id
-msgid "whatMessageToShowParticipantsBefore"
-msgstr "您想在活动开始前向参与者显示什么消息？"
-
-#. js-lingui-explicit-id
-msgid "whenNewEventsAreAdded"
-msgstr "添加新活动后，你会在这里看到。"
-
-#. js-lingui-explicit-id
-msgid "whenNewItemsAdded"
-msgstr "当添加新的{name}时，您将在此处看到它们。"
-
-#. js-lingui-explicit-id
-msgid "whenYouUpgrade"
-msgstr "当您升级时"
-
-#. js-lingui-explicit-id
-msgid "wordCloud"
-msgstr "词云"
-
-#. js-lingui-explicit-id
-msgid "wordCloudDescription"
-msgstr "参与者将被要求以一系列词语或短语作答。"
-
-#. js-lingui-explicit-id
-msgid "wordCloudLabelText"
-msgstr "词云提示"
-
-#. js-lingui-explicit-id
-msgid "wordCloudParticipantsInfo"
-msgstr "参与者将被要求回复一系列单词或短语"
-
-#. js-lingui-explicit-id
-msgid "wordCloudPrompt"
-msgstr "词云提示"
-
-#. js-lingui-explicit-id
-msgid "wordCloudPromptRequired"
-msgstr "词云提示是必填项"
-
-#. js-lingui-explicit-id
-msgid "wordList"
-msgstr "词语列表"
-
-#. js-lingui-explicit-id
-msgid "wouldYouLikeToTurnOnAv"
-msgstr "您想要开启音频和视频吗？"
-
-#. js-lingui-explicit-id
-msgid "wrongEmail"
-msgstr "邮箱不对？编辑"
-
-#. js-lingui-explicit-id
-msgid "wrongEmailEditAddress"
-msgstr "（想为您的账户使用不同的地址吗？编辑地址。）"
-
-#. js-lingui-explicit-id
-msgid "yes"
-msgstr "是"
-
-#. js-lingui-explicit-id
-msgid "yesCancel"
-msgstr "是的，取消"
-
-#. js-lingui-explicit-id
-msgid "yesCancelPlan"
-msgstr "是的，取消方案"
-
-#. js-lingui-explicit-id
-msgid "yesClear"
-msgstr "是的，清除"
+#: src/components/Upload.tsx:86
+msgid "Upload failed"
+msgstr ""
 
-#. js-lingui-explicit-id
-msgid "yesDelete"
-msgstr "是的，删除"
+#. placeholder {0}: xhr.status
+#: src/utils/imageUpload.ts:68
+msgid "Upload failed ({0})"
+msgstr ""
 
-#. js-lingui-explicit-id
-msgid "yesJoin"
-msgstr "是的，加入"
+#: src/features/posts/CreatePostDialog.tsx:213
+#: src/features/resources/ResourceDialog.tsx:148
+msgid "Upload image"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "yesJoinCommunity"
-msgstr "是的，加入！"
+#: src/components/BackendUnavailable.tsx:22
+msgid "backendUnreachableTitle"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "yesKickThemOut"
-msgstr "是的，踢出他们"
+#: src/features/auth/AccountErrorMessage.tsx:143
+msgid "couldntFindAccount"
+msgstr "我們找不到此電子郵件對應的帳戶。嘗試 "
 
 #. js-lingui-explicit-id
-msgid "yesPollParticipants"
-msgstr "是的，对参与者投票"
+#: src/features/auth/AccountErrorMessage.tsx:201
+msgid "somethingWentWrongLongPrefix"
+msgstr "抱歉，出现了问题。"
 
-#. js-lingui-explicit-id
-msgid "yesRefresh"
-msgstr "是的，刷新"
+#: src/components/EmptyPageContent.tsx:72
+msgid "When new {type} are added, you'll see them here."
+msgstr ""
 
-#. js-lingui-explicit-id
-msgid "yesUpdatePlan"
-msgstr "是的，更新方案"
+#: src/components/ConfirmDialog.tsx:44
+#: src/components/layout/AnnouncementsBell.tsx:110
+msgid "Yes"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "you"
-msgstr "你"
+#: src/components/ProfileChip.tsx:41
+msgid "profileChip.you"
+msgstr ""
 
-#. js-lingui-explicit-id
-msgid "youAreInTheWaitingRoom"
-msgstr "您在等候室中。"
+#: src/components/events/ParticipantsRow.tsx:38
+msgid "You"
+msgstr ""
 
-#. js-lingui-explicit-id
-msgid "youAreInWaitingRoom"
-msgstr "您在等候室中。"
+#. placeholder {0}: total - 1
+#: src/components/events/ParticipantsRow.tsx:37
+msgid "You + {0}"
+msgstr ""
 
 #. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:214
 msgid "youCanChangeThisLater"
 msgstr "你以后可以更改这个"
 
 #. js-lingui-explicit-id
-msgid "youHaveUnsubscribedFromUpdates"
-msgstr "您已取消订阅 {appName} 的更新。"
+#: src/features/auth/AccountErrorMessage.tsx:164
+msgid "emailAndPasswordMismatchCheck"
+msgstr "您可以检查您输入的内容并重试。"
+
+#: src/features/home/HomePage.tsx:76
+msgid "You don't belong to any communities"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "youHaventJoinedAnyCommunities"
-msgstr "您尚未加入任何社区"
+#: src/app/layouts/RootLayout.tsx:52
+msgid "signedOutRefreshPrompt"
+msgstr "您已退出登录。请刷新页面以重新登录"
+
+#: src/api/firebaseApi.ts:130
+msgid "You must be signed in to continue."
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "youLeftTheEvent"
-msgstr "您已离开活动。"
+#: src/components/layout/SideBar.tsx:163
+msgid "sidebar.unfollowConfirmBody"
+msgstr ""
 
 #. js-lingui-explicit-id
-msgid "youNeedToBeLoggedInToDoThis"
-msgstr "您需要登录才能执行此操作。"
+#: src/features/community/CreateCommunity.tsx:298
+msgid "communitySuccessPrefix"
+msgstr "你已成功创建了你的社区。"
 
 #. js-lingui-explicit-id
-msgid "youWereRemovedFromThisEventAndCannotRejoin"
-msgstr "您已被从此活动中移除，无法重新加入。"
+#: src/features/auth/AccountErrorMessage.tsx:157
+msgid "emailAndPasswordMismatch"
+msgstr "您的电子邮件和密码组合与 {appName} 帐户不匹配。"
 
 #. js-lingui-explicit-id
-msgid "yourChangesToProfileCantBeSaved"
-msgstr "无法保存您对个人资料所做的更改。"
-
-#. js-lingui-explicit-id
-msgid "yourEvent"
-msgstr "你的活动"
-
-#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:200
 msgid "yourName"
 msgstr "您的名字"
-
-#. js-lingui-explicit-id
-msgid "youreReadyToMoveOn"
-msgstr "您已准备好继续"
-
-#. js-lingui-explicit-id
-msgid "youtubeUrl"
-msgstr "YouTube链接"
-
-#. js-lingui-explicit-id
-msgid "youtubeVideoLookupFailed"
-msgstr "抱歉，YouTube 视频查找失败。"
-
-#. js-lingui-explicit-id
-msgid "zoom"
-msgstr "放大"

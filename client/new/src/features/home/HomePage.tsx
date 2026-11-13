@@ -50,8 +50,10 @@ function MyCommunities() {
         <CreateCommunityButton showLabel={!isMobile} />
       </Box>
       <Typography sx={{ mt: "8px", color: colors.onSurfaceVariant }}>
-        Placeholder: the home page is not built yet. This is a plain list of
-        your communities.
+        <Trans>
+          Placeholder: the home page is not built yet. This is a plain list of
+          your communities.
+        </Trans>
       </Typography>
       {communities.isPending ? (
         <LoadingState height="40vh" />
@@ -71,7 +73,7 @@ function MyCommunities() {
             color: colors.onSurfaceVariant,
           }}
         >
-          You don't belong to any communities
+          <Trans>You don't belong to any communities</Trans>
         </Typography>
       ) : (
         <Box

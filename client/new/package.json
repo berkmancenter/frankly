@@ -16,9 +16,10 @@
     "lint": "eslint src",
     "locales:transpile": "node src/locales/flutterTranspile.ts",
     "preview": "vite preview",
-    "typecheck": "tsc -b",
+    "skill:translate": "command -v claude >/dev/null 2>&1 || { echo 'Warning: Claude CLI is required.' >&2; exit 1; }; claude \"/lingui:find-unwrapped-strings\"",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsc -b"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

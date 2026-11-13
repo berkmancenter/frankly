@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import {
   useCallback,
   useRef,
@@ -25,7 +26,7 @@ export function SignInDialog({
       maxWidth={400}
       padding={40}
       fullscreenOnMobile
-      ariaLabel="Sign in"
+      ariaLabel={t({ id: "signInDialog.ariaLabel", message: "Sign in" })}
     >
       <SignInForm showSignUp={showSignUp} onSignedIn={onClose} />
     </AppDialog>

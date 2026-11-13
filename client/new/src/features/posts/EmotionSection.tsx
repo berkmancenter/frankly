@@ -2,18 +2,22 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
+import { i18n } from '@lingui/core';
+import { msg, t } from '@lingui/core/macro';
 import { useState } from 'react';
+import type { MessageDescriptor } from '@lingui/core';
 import type { EmotionType, EmotionVote } from '@/api/types';
 import { colors } from "@/theme/tokens";
 
-export const EMOTIONS: { id: EmotionType; src: string; label: string }[] = [
-  { id: 'thumbsUp', src: 'emoji-thumbs-up.png', label: 'Thumbs up' },
-  { id: 'heart', src: 'emoji-heart.png', label: 'Heart' },
-  { id: 'hundred', src: 'emoji-hundred.png', label: '100' },
-  { id: 'exclamation', src: 'emoji-exclamation.png', label: 'Exclamation' },
-  { id: 'plusOne', src: 'emoji-plus-one.png', label: 'Plus one' },
-  { id: 'laughWithTears', src: 'emoji-laugh-tears.png', label: 'Laughing' },
-  { id: 'heartEyes', src: 'emoji-heart-eyes.png', label: 'Heart eyes' },
+export const EMOTIONS: { id: EmotionType; src: string; label: MessageDescriptor }[] = [
+  { id: 'thumbsUp', src: 'emoji-thumbs-up.png', label: msg`Thumbs up` },
+  { id: 'heart', src: 'emoji-heart.png', label: msg`Heart` },
+  // Translators: name of the "100" emoji reaction.
+  { id: 'hundred', src: 'emoji-hundred.png', label: msg`100` },
+  { id: 'exclamation', src: 'emoji-exclamation.png', label: msg`Exclamation` },
+  { id: 'plusOne', src: 'emoji-plus-one.png', label: msg`Plus one` },
+  { id: 'laughWithTears', src: 'emoji-laugh-tears.png', label: msg`Laughing` },
+  { id: 'heartEyes', src: 'emoji-heart-eyes.png', label: msg`Heart eyes` },
 ];
 
 const asset = (id: EmotionType) => EMOTIONS.find((e) => e.id === id)!.src;
@@ -44,7 +48,7 @@ export function EmotionSection({
           ))}
         </Box>
       )}
-      <ButtonBase aria-label="Add reaction" onClick={(e) => setAnchor(e.currentTarget)} sx={{ borderRadius: '50%', p: '2px' }}>
+      <ButtonBase aria-label={t`Add reaction`} onClick={(e) => setAnchor(e.currentTarget)} sx={{ borderRadius: '50%', p: '2px' }}>
         <img src="/media/smiley-with-plus.png" alt="" width={20} height={20} />
       </ButtonBase>
       {emotions.length > 0 && (
@@ -63,7 +67,7 @@ export function EmotionSection({
         {EMOTIONS.map((e) => (
           <ButtonBase
             key={e.id}
-            aria-label={e.label}
+            aria-label={i18n._(e.label)}
             aria-pressed={mine === e.id}
             onClick={() => {
               onSelect(mine === e.id ? null : e.id);

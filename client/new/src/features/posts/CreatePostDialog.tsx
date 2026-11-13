@@ -5,6 +5,9 @@ import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { i18n } from "@lingui/core";
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import type { DiscussionThread } from "@/api/types";
 import { ActionButton } from "@/components/ActionButton";
@@ -52,11 +55,11 @@ export function CreatePostDialog({
         });
       else await create.mutateAsync({ content: text.trim(), imageUrl });
       toast.success(
-        editing ? "Post has been updated" : "Post has been created",
+        editing ? t`Post has been updated` : t`Post has been created`,
       );
       onClose();
     } catch {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t`Something went wrong. Please try again.`);
     }
   };
 
@@ -87,7 +90,7 @@ export function CreatePostDialog({
         }}
       >
         <Avatar name={me?.displayName} imageUrl={me?.imageUrl} size={42} />
-        <IconButton aria-label="Close" onClick={onClose}>
+        <IconButton aria-label={t`Close`} onClick={onClose}>
           <img src="/media/x.png" alt="" width={30} height={30} />
         </IconButton>
       </Box>
@@ -96,7 +99,7 @@ export function CreatePostDialog({
           <Box sx={{ mb: "20px", position: "relative" }}>
             <img
               src={imageUrl}
-              alt="Attached"
+              alt={t`Attached`}
               style={{
                 width: "100%",
                 maxHeight: 400,
@@ -105,7 +108,7 @@ export function CreatePostDialog({
               }}
             />
             <ButtonBase
-              aria-label="Remove image"
+              aria-label={t`Remove image`}
               onClick={() => setImageUrl(undefined)}
               sx={{
                 position: "absolute",
@@ -129,8 +132,8 @@ export function CreatePostDialog({
         <Box
           component="textarea"
           autoFocus
-          aria-label="Post text"
-          placeholder="Type something"
+          aria-label={t`Post text`}
+          placeholder={t`Type something`}
           value={text}
           rows={4}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -156,10 +159,12 @@ export function CreatePostDialog({
           <IconButton
             onClick={() => setUploadingImage(true)}
             sx={{ gap: "10px", borderRadius: 1, color: "primary.main" }}
-            aria-label="Attach image"
+            aria-label={t`Attach image`}
           >
             <AttachFileRoundedIcon />
-            <Typography sx={{ color: "primary.main" }}>Image</Typography>
+            <Typography sx={{ color: "primary.main" }}>
+              <Trans>Image</Trans>
+            </Typography>
           </IconButton>
         </Box>
       </Box>
@@ -185,7 +190,7 @@ export function CreatePostDialog({
           {EMOTIONS.map((e, i) => (
             <ButtonBase
               key={e.id}
-              aria-label={`Insert ${e.label}`}
+              aria-label={t`Insert ${i18n._(e.label)}`}
               onClick={() => setText((t) => `${t}${EMOJI_CHARS[i]}`)}
               sx={{ p: "6px", borderRadius: "8px", flexShrink: 0 }}
             >
@@ -194,7 +199,7 @@ export function CreatePostDialog({
           ))}
         </Box>
         <ActionButton
-          text={editing ? "Update" : "Post"}
+          text={editing ? t`Update` : t`Post`}
           disabled={isBlank(text)}
           onPress={submit}
         />
@@ -205,7 +210,7 @@ export function CreatePostDialog({
         onClose={() => setUploadingImage(false)}
         maxWidth={500}
         padding={30}
-        ariaLabel="Upload image"
+        ariaLabel={t`Upload image`}
       >
         <Box sx={{ pt: "20px" }}>
           <Upload

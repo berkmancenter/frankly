@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
+import { t } from '@lingui/core/macro';
 import { useState } from 'react';
 import { ProfileDrawer } from '@/features/profile/ProfileDrawer';
 import { useCurrentUserId, useUser } from '@/queries/me';
@@ -35,7 +36,10 @@ export function ProfileChip({
   const [open, setOpen] = useState(false);
 
   const isMe = !!userId && userId === meId;
-  const name = showIsYou && isMe ? 'You' : (user?.displayName ?? 'Anonymous');
+  const name =
+    showIsYou && isMe
+      ? t({ id: 'profileChip.you', message: 'You' })
+      : (user?.displayName ?? t({ id: 'profileChip.anonymous', message: 'Anonymous' }));
 
   const content = (
     <Box sx={{ display: 'inline-flex', alignItems: 'center', minWidth: 0 }}>
@@ -53,7 +57,7 @@ export function ProfileChip({
           }}
         >
           {name}
-          {youSuffix && isMe ? ' (you)' : ''}
+          {youSuffix && isMe ? t({ id: 'profileChip.youSuffix', message: ' (you)' }) : ''}
         </Typography>
       )}
     </Box>
@@ -64,7 +68,7 @@ export function ProfileChip({
     <>
       <ButtonBase
         onClick={() => setOpen(true)}
-        aria-label={showName ? undefined : `Profile of ${name}`}
+        aria-label={showName ? undefined : t({ id: 'profileChip.ariaLabel', message: `Profile of ${name}` })}
         sx={{ borderRadius: `${size / 2}px`, textAlign: 'left', maxWidth: '100%' }}
       >
         {content}

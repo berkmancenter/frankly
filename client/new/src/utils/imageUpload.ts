@@ -1,3 +1,6 @@
+import { msg, t } from "@lingui/core/macro";
+import type { MessageDescriptor } from "@lingui/core";
+
 /** What an uploaded image looks like once the provider has stored it. */
 export interface UploadedImage {
   /** Public URL to save on the document (e.g. `Community.profileImageUrl`). */
@@ -21,7 +24,7 @@ export interface ImageUploadProvider {
 }
 
 function abortError(): DOMException {
-  return new DOMException("Upload aborted", "AbortError");
+  return new DOMException(t`Upload aborted`, "AbortError");
 }
 
 export function isAbortError(error: unknown): boolean {
@@ -62,11 +65,11 @@ export function cloudinaryProvider(config: {
             resolve({ url: body.secure_url });
           } else {
             reject(
-              new Error(body.error?.message ?? `Upload failed (${xhr.status})`),
+              new Error(body.error?.message ?? t`Upload failed (${xhr.status})`),
             );
           }
         };
-        xhr.onerror = () => reject(new Error("Network error during upload"));
+        xhr.onerror = () => reject(new Error(t`Network error during upload`));
         xhr.onabort = () => reject(abortError());
 
         if (signal) {
@@ -123,7 +126,7 @@ type ImageUploadEnv = Record<string, string | undefined>;
 /** Either a ready provider or a human-readable reason there isn't one. */
 export type ImageUploadProviderResult =
   | { provider: ImageUploadProvider; error?: undefined }
-  | { provider?: undefined; error: string };
+  | { provider?: undefined; error: MessageDescriptor };
 
 /**
  * Picks the image host from the environment:
@@ -142,15 +145,15 @@ export function resolveImageUploadProvider(
     cloudName && uploadPreset
       ? { provider: cloudinaryProvider({ cloudName, uploadPreset }) }
       : {
-          error:
-            "Cloudinary isn't configured. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_IMAGE_PRESET.",
+          // Setup guidance for whoever is configuring the deployment, not end-user copy, but it
+          // does render in the drop zone (see `Upload.tsx`), so it still needs a locale.
+          error: msg`Cloudinary isn't configured. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_IMAGE_PRESET.`,
         };
   const firebase = (): ImageUploadProviderResult =>
     env.VITE_FIREBASE_STORAGE_BUCKET
       ? { provider: firebaseStorageProvider() }
       : {
-          error:
-            "Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET.",
+          error: msg`Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET.`,
         };
 
   const requested = env.VITE_IMAGE_UPLOAD_PROVIDER?.trim().toLowerCase();
@@ -158,14 +161,13 @@ export function resolveImageUploadProvider(
   if (requested === "firebase") return firebase();
   if (requested) {
     return {
-      error: `Unknown VITE_IMAGE_UPLOAD_PROVIDER "${requested}". Use "cloudinary" or "firebase".`,
+      error: msg`Unknown VITE_IMAGE_UPLOAD_PROVIDER "${requested}". Use "cloudinary" or "firebase".`,
     };
   }
 
   if (cloudName && uploadPreset) return cloudinary();
   if (env.VITE_FIREBASE_STORAGE_BUCKET) return firebase();
   return {
-    error:
-      "No image upload provider is configured. Set the VITE_CLOUDINARY_* variables or VITE_FIREBASE_STORAGE_BUCKET.",
+    error: msg`No image upload provider is configured. Set the VITE_CLOUDINARY_* variables or VITE_FIREBASE_STORAGE_BUCKET.`,
   };
 }

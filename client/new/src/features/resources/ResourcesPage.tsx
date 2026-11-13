@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
 import { useState } from "react";
 import type { CommunityResource } from "@/api/types";
 import { ConstrainedBody } from "@/components/ConstrainedBody";
@@ -36,7 +37,7 @@ export function ResourcesPage() {
           {resources.isPending ? (
             <LoadingState height={300} />
           ) : resources.isError ? (
-            <ErrorState message="Something went wrong loading resources." />
+            <ErrorState message={t`Something went wrong loading resources.`} />
           ) : resources.data.length === 0 ? (
             <Box sx={{ pt: "30px", display: "flex", justifyContent: "center" }}>
               <EmptyPageContent
@@ -87,24 +88,23 @@ export function ResourcesPage() {
                   {permissions.canEditCommunity && (
                     <>
                       <IconButton
-                        aria-label={`Edit ${r.title}`}
+                        aria-label={t`Edit ${r.title}`}
                         onClick={() => setEditing(r)}
                       >
                         <EditIcon />
                       </IconButton>
                       <IconButton
-                        aria-label={`Delete ${r.title}`}
+                        aria-label={t`Delete ${r.title}`}
                         onClick={async () => {
                           if (
                             await confirm({
-                              mainText:
-                                "Are you sure you want to delete this resource?",
+                              mainText: t`Are you sure you want to delete this resource?`,
                             })
                           ) {
                             try {
                               await remove.mutateAsync(r.id);
                             } catch {
-                              toast.error("Something went wrong. Please try again.");
+                              toast.error(t`Something went wrong. Please try again.`);
                             }
                           }
                         }}
@@ -121,7 +121,7 @@ export function ResourcesPage() {
       </ConstrainedBody>
       <Box sx={{ height: 100 }} />
       {permissions.canEditCommunity && (
-        <ScaffoldFab text="Add a resource" onClick={() => setEditing("new")} />
+        <ScaffoldFab text={t`Add a resource`} onClick={() => setEditing("new")} />
       )}
       {dialog}
       {editing && (

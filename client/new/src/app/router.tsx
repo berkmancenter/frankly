@@ -1,3 +1,5 @@
+import { i18n } from "@lingui/core";
+import { msg } from "@lingui/core/macro";
 import { createBrowserRouter, type RouteObject } from "react-router";
 import migrated from "../../migrated-routes.json";
 import { CommunityHome } from "@/features/community/CommunityHome";
@@ -86,8 +88,12 @@ if (unknown.length > 0) {
   );
 }
 
-const NOT_MIGRATED =
-  "This page is not in the React app yet. Soon, this would fall back to the Flutter app.";
+const NOT_MIGRATED = msg`This page is not in the React app yet. Soon, this would fall back to the Flutter app.`;
+
+// Resolves `NOT_MIGRATED` on every render rather than once at import time, so it tracks locale changes.
+function NotMigratedPage() {
+  return <NotFoundPage message={i18n._(NOT_MIGRATED)} />;
+}
 
 /**
  * `migratedOnly: true`  — behind the proxy / at the edge: register only the patterns in
@@ -122,11 +128,7 @@ export function buildRoutes({
         // Flutter to hand it to.
         {
           path: "*",
-          element: migratedOnly ? (
-            <LegacyFallback />
-          ) : (
-            <NotFoundPage message={NOT_MIGRATED} />
-          ),
+          element: migratedOnly ? <LegacyFallback /> : <NotMigratedPage />,
         },
       ],
     },

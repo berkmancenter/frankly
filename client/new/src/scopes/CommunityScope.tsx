@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { createContext, useContext, useMemo, type ReactNode } from "react";
 import type { Community, MembershipStatus, Template } from "@/api/types";
 import { ErrorState, LoadingState } from "@/components/States";
@@ -68,7 +69,7 @@ export function CommunityScope({
     return (
       <ErrorState
         height="60vh"
-        message="Something went wrong loading the community."
+        message={t`Something went wrong loading the community.`}
       />
     );
   }

@@ -22,6 +22,7 @@ import {
   type QueryDocumentSnapshot,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { t } from "@lingui/core/macro";
 import type { Api, ParticipantWithUser } from "./api";
 import { ApiError } from "./api";
 import type { FirebaseClient } from "./firebase";
@@ -112,7 +113,7 @@ function optionalIsoDate(value: unknown): string | undefined {
 
 function requiredString(value: unknown, field: string): string {
   const result = stringValue(value);
-  if (!result) throw new ApiError("invalid", `Invalid or missing ${field}`);
+  if (!result) throw new ApiError("invalid", t`Invalid or missing ${field}`);
   return result;
 }
 
@@ -126,7 +127,7 @@ async function requireUser(client: FirebaseClient) {
   const user = client.auth.currentUser;
   console.log("Current user:", user);
   if (!user)
-    throw new ApiError("invalid", "You must be signed in to continue.");
+    throw new ApiError("invalid", t`You must be signed in to continue.`);
   return user;
 }
 
@@ -427,7 +428,7 @@ function requiredReference(
   snapshot: QueryDocumentSnapshot<DocumentData> | undefined,
   entity: string,
 ): DocumentReference<DocumentData> {
-  if (!snapshot) throw new ApiError("notFound", `${entity} not found`);
+  if (!snapshot) throw new ApiError("notFound", t`${entity} not found`);
   return snapshot.ref;
 }
 
@@ -460,7 +461,7 @@ async function getCommunity(
   const snapshot = await getDoc(
     doc(client.firestore, "community", communityId),
   );
-  if (!snapshot.exists()) throw new ApiError("notFound", "Community not found");
+  if (!snapshot.exists()) throw new ApiError("notFound", t`Community not found`);
   return mapCommunity(snapshot.id, snapshot.data());
 }
 
@@ -570,7 +571,7 @@ export function createFirebaseApi(client: FirebaseClient): Api {
           doc(client.firestore, "community", displayId),
         );
         if (!byId.exists())
-          throw new ApiError("notFound", "Community not found");
+          throw new ApiError("notFound", t`Community not found`);
         return mapCommunity(byId.id, byId.data());
       },
 
@@ -592,7 +593,7 @@ export function createFirebaseApi(client: FirebaseClient): Api {
           ),
         );
         if (!snapshot.exists()) {
-          throw new ApiError("invalid", "Membership update was not saved");
+          throw new ApiError("invalid", t`Membership update was not saved`);
         }
         return mapMembership(user.uid, communityId, snapshot.data());
       },
@@ -775,7 +776,7 @@ export function createFirebaseApi(client: FirebaseClient): Api {
         const eventRef = doc(eventCollection);
         const scheduledTime = new Date(input.scheduledTime);
         if (Number.isNaN(scheduledTime.getTime())) {
-          throw new ApiError("invalid", "Invalid event schedule");
+          throw new ApiError("invalid", t`Invalid event schedule`);
         }
         const eventData: DocumentData = {
           id: eventRef.id,
@@ -825,7 +826,7 @@ export function createFirebaseApi(client: FirebaseClient): Api {
         });
         const savedEvent = await getDoc(eventRef);
         if (!savedEvent.exists()) {
-          throw new ApiError("notFound", "Created event was not found");
+          throw new ApiError("notFound", t`Created event was not found`);
         }
         return mapEvent(savedEvent.id, savedEvent.data(), community.displayId);
       },
@@ -967,7 +968,7 @@ export function createFirebaseApi(client: FirebaseClient): Api {
         await runTransaction(client.firestore, async (transaction) => {
           const snapshot = await transaction.get(threadRef);
           if (!snapshot.exists()) {
-            throw new ApiError("notFound", "Post not found");
+            throw new ApiError("notFound", t`Post not found`);
           }
           const emotions = mapEmotions(snapshot.data().emotions).filter(
             (item) => item.userId !== user.uid,
@@ -1047,23 +1048,24 @@ export function createFirebaseApi(client: FirebaseClient): Api {
       async preview(url) {
         const key = import.meta.env.VITE_LINK_PREVIEW_API_KEY;
         if (!key) {
+          // i18n: shown to the site admin configuring link previews, not a typical end user
           throw new ApiError(
             "invalid",
-            "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY.",
+            t`Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY.`,
           );
         }
         const parsedUrl = new URL(url);
         if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
           throw new ApiError(
             "invalid",
-            "Only HTTP and HTTPS links can be previewed.",
+            t`Only HTTP and HTTPS links can be previewed.`,
           );
         }
         const response = await fetch(
           `https://api.linkpreview.net/?key=${encodeURIComponent(key)}&q=${encodeURIComponent(url)}`,
         );
         if (!response.ok) {
-          throw new Error(`Link preview request failed (${response.status})`);
+          throw new Error(t`Link preview request failed (${response.status})`);
         }
         const preview = asRecord(await response.json());
         return {
@@ -1136,7 +1138,7 @@ export function createFirebaseApi(client: FirebaseClient): Api {
           await updateDoc(resourceRef, changes);
         const snapshot = await getDoc(resourceRef);
         if (!snapshot.exists())
-          throw new ApiError("notFound", "Resource not found");
+          throw new ApiError("notFound", t`Resource not found`);
         return mapResource(resourceId, communityId, snapshot.data());
       },
 

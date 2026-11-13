@@ -139,7 +139,7 @@ function EditCommunityButton({ displayId }: { displayId: string }) {
     <IconButton
       component={Link}
       to={paths.community(displayId).admin()}
-      aria-label="Edit community"
+      aria-label={t({ id: "communityHome.editCommunity", message: "Edit community" })}
       sx={{
         bgcolor: "primary.main",
         color: "primary.contrastText",
@@ -242,8 +242,14 @@ function ContactSection({ community }: { community: Community }) {
   const isMember =
     status !== "nonmember" && status !== "banned" && status !== "attendee";
   const email = community.contactEmail;
-  const subject = `Join ${community.name} on Frankly`;
-  const body = `Hey, check out ${community.name} on Frankly!`;
+  const subject = t({
+    id: "communityHome.shareSubject",
+    message: `Join ${community.name} on Frankly`,
+  });
+  const body = t({
+    id: "communityHome.shareBody",
+    message: `Hey, check out ${community.name} on Frankly!`,
+  });
   return (
     <Box>
       {email && (
@@ -281,7 +287,7 @@ function ContactSection({ community }: { community: Community }) {
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
         {!isMember && <CommunityMembershipButton community={community} />}
         {community.settings.allowDonations && (
-          <ThickOutlineButton text="Donate" />
+          <ThickOutlineButton text={t({ id: "communityHome.donate", message: "Donate" })} />
         )}
       </Box>
     </Box>

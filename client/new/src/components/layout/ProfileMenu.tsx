@@ -2,6 +2,8 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { paths } from '@/app/paths';
@@ -28,7 +30,11 @@ export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
   if (!user) return null;
   return (
     <Box sx={{ px: '8px' }}>
-      <IconButton aria-label="Profile Button" onClick={(e) => setAnchor(e.currentTarget)} sx={{ p: '4px' }}>
+      <IconButton
+        aria-label={t({ id: 'profileMenu.profileButton', message: 'Profile Button' })}
+        onClick={(e) => setAnchor(e.currentTarget)}
+        sx={{ p: '4px' }}
+      >
         <Avatar name={user.displayName} imageUrl={user.imageUrl} size={42} />
       </IconButton>
       <Menu
@@ -47,7 +53,7 @@ export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
             navigate(paths.settings({ initialSection: 'profile' }));
           }}
         >
-          My Profile
+          <Trans id="profileMenu.myProfile">My Profile</Trans>
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -55,7 +61,7 @@ export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
             navigate(paths.settings({ initialSection: 'events' }));
           }}
         >
-          My Events
+          <Trans id="profileMenu.myEvents">My Events</Trans>
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -63,7 +69,7 @@ export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
             void auth.signOut();
           }}
         >
-          Sign Out
+          <Trans id="profileMenu.signOut">Sign Out</Trans>
         </MenuItem>
       </Menu>
     </Box>

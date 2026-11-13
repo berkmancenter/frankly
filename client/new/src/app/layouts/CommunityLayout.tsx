@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { useMemo } from "react";
 import { Outlet, useMatches, useParams } from "react-router";
 import { useDocumentTitle } from "@/utils/useDocumentTitle";
@@ -52,7 +53,7 @@ function CommunityFrame() {
     >
       {showCreateEvent && !showBottomNav && (
         <ScaffoldFab
-          text="Create an event"
+          text={t`Create an event`}
           onClick={() => createEvent.open()}
         />
       )}

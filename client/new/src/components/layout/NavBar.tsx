@@ -6,6 +6,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { paths } from "@/app/paths";
@@ -153,26 +154,26 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
             {community && links && !isMobile && (
               <Box>
                 <NavTextButton
-                  title="Events"
+                  title={t`Events`}
                   selected={isAt(links.events)}
                   onClick={() => navigate(links.events)}
                 />
                 {discussionsEnabled && (
                   <NavTextButton
-                    title="Posts"
+                    title={t`Posts`}
                     selected={isAt(links.posts)}
                     onClick={() => navigate(links.posts)}
                   />
                 )}
                 {showResources && (
                   <NavTextButton
-                    title="Resources"
+                    title={t`Resources`}
                     selected={isAt(links.resources)}
                     onClick={() => navigate(links.resources)}
                   />
                 )}
                 <NavTextButton
-                  title="Templates"
+                  title={t`Templates`}
                   selected={isAt(links.templates)}
                   onClick={() => navigate(links.templates)}
                 />
@@ -198,14 +199,14 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
                 ) : (
                   <>
                     <SelectableNavigationIcon
-                      label="Events"
+                      label={t`Events`}
                       selected={isAt(links.events)}
                       icon={<CalendarMonthRoundedIcon sx={{ fontSize: 32 }} />}
                       onClick={() => navigate(links.events)}
                     />
                     {discussionsEnabled && (
                       <SelectableNavigationIcon
-                        label="Posts"
+                        label={t`Posts`}
                         selected={isAt(links.posts)}
                         icon={<ForumOutlinedIcon sx={{ fontSize: 32 }} />}
                         onClick={() => navigate(links.posts)}
@@ -213,7 +214,7 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
                     )}
                     {showResources && (
                       <SelectableNavigationIcon
-                        label="Resources"
+                        label={t`Resources`}
                         selected={isAt(links.resources)}
                         icon={<AssignmentOutlinedIcon sx={{ fontSize: 32 }} />}
                         onClick={() => navigate(links.resources)}
@@ -227,14 +228,15 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
 
             {adminVisible && links && (
               <SelectableNavigationIcon
-                label="Admin"
+                // Nav icon linking to the community's admin settings.
+                label={t`Admin`}
                 selected={pathname.startsWith(`${links.home}/admin`)}
                 icon={<SettingsOutlinedIcon sx={{ fontSize: 30 }} />}
                 onClick={() => navigate(links.admin())}
               />
             )}
             <IconButton
-              aria-label="Show sidebar"
+              aria-label={t`Show sidebar`}
               onClick={onMenuClick}
               sx={{ ml: "8px", color: "secondary.main" }}
             >

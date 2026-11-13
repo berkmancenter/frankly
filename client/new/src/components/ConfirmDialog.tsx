@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
 import { useCallback, useRef, useState, type ReactNode } from "react";
 import { useIsMobile } from "@/utils/useResponsive";
 import { ActionButton } from "./ActionButton";
@@ -40,7 +41,7 @@ export function ConfirmDialogView({
   title,
   mainText,
   subText,
-  confirmText = "Yes",
+  confirmText = t`Yes`,
   cancelText,
   destructive,
   textAlign = "center",
@@ -75,7 +76,7 @@ export function ConfirmDialogView({
         }}
       >
         <IconButton
-          aria-label="Close"
+          aria-label={t`Close`}
           size="small"
           onClick={() => (onDismiss ? onDismiss() : onResolve(false))}
         >

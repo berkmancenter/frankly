@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
 import { Link } from "react-router";
 import { paths } from "@/app/paths";
 import { CommunityCircleIcon } from "@/components/CommunityCircleIcon";
@@ -32,13 +33,13 @@ export function CurrentCommunityIconOrLogo() {
     <IconButton
       component={Link}
       to={paths.home}
-      aria-label="Frankly home"
+      aria-label={t`Frankly home`}
       sx={{ p: "8px", pl: isMobile ? "1px" : "8px", borderRadius: "8px" }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <img
           src="/media/logo.png"
-          alt="Frankly Logo"
+          alt={t`Frankly Logo`}
           style={{
             width: 100,
             height: isMobile ? 40 : 80,

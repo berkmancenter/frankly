@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
+import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { useEffect, useRef, useState, type DragEvent } from "react";
 import { colors, fontSizes } from "@/theme/tokens";
@@ -60,7 +61,7 @@ export function Upload({
   if (!configured.provider) {
     return (
       <Typography role="alert" sx={{ color: colors.error }}>
-        {configured.error}
+        {i18n._(configured.error)}
       </Typography>
     );
   }

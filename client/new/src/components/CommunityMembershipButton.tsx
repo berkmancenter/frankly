@@ -1,4 +1,5 @@
 import CircularProgress from '@mui/material/CircularProgress';
+import { t } from '@lingui/core/macro';
 import type { Community } from '@/api/types';
 import { useFollowCommunity } from '@/queries/communities';
 import { useMembership } from '@/queries/me';
@@ -28,12 +29,12 @@ export function CommunityMembershipButton({
   const status = membership?.requestStatus;
   const pending = requiresApproval && status === 'pending';
   const label = !requiresApproval
-    ? 'Follow'
+    ? t`Follow`
     : pending
-      ? 'Follow Request Sent'
+      ? t`Follow Request Sent`
       : status === 'approved'
-        ? 'Follow'
-        : 'Request To Follow';
+        ? t`Follow`
+        : t`Request To Follow`;
 
   return (
     <ActionButton
@@ -41,13 +42,13 @@ export function CommunityMembershipButton({
       height={height}
       minWidth={minWidth}
       disabled={pending}
-      ariaLabel="Follow community"
+      ariaLabel={t`Follow community`}
       onPress={async () => {
         try {
           await follow.mutateAsync(community.id);
-          if (requiresApproval) toast.show('Follow request sent');
+          if (requiresApproval) toast.show(t`Follow request sent`);
         } catch {
-          toast.error('Something went wrong. Please try again.');
+          toast.error(t`Something went wrong. Please try again.`);
         }
       }}
     />

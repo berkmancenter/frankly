@@ -1,6 +1,7 @@
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { t } from '@lingui/core/macro';
 import type { ReactNode } from 'react';
 import { colors, fontSizes } from "@/theme/tokens";
 
@@ -24,7 +25,7 @@ export function LoadingState({ height = 300, message }: { height?: number | stri
 }
 
 export function ErrorState({
-  message = 'Something went wrong. Please refresh.',
+  message = t({ id: 'errorState.default', message: 'Something went wrong. Please refresh.' }),
   action,
   height = 200,
 }: {

@@ -3,6 +3,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Tooltip from '@mui/material/Tooltip';
+import { t } from '@lingui/core/macro';
 import type { ReactNode } from 'react';
 import { FacebookF, LinkedInIn, XLogo } from './BrandIcons';
 import { useToast } from './Toast';
@@ -46,25 +47,25 @@ export function ShareSection({
   const buttons: { type: ShareType; label: string; icon: ReactNode; run: () => void }[] = [
     {
       type: 'facebook',
-      label: 'Share on Facebook',
+      label: t({ id: 'shareSection.facebook', message: 'Share on Facebook' }),
       icon: <FacebookF sx={{ fontSize: iconSize }} />,
       run: () => open(`https://www.facebook.com/sharer/sharer.php?u=${enc(href)}`),
     },
     {
       type: 'twitter',
-      label: 'Share on X',
+      label: t({ id: 'shareSection.twitter', message: 'Share on X' }),
       icon: <XLogo sx={{ fontSize: iconSize }} />,
       run: () => open(`https://twitter.com/intent/tweet?url=${enc(href)}&text=${enc(body)}`),
     },
     {
       type: 'linkedin',
-      label: 'Share on LinkedIn',
+      label: t({ id: 'shareSection.linkedin', message: 'Share on LinkedIn' }),
       icon: <LinkedInIn sx={{ fontSize: iconSize }} />,
       run: () => open(`https://www.linkedin.com/sharing/share-offsite/?url=${enc(href)}`),
     },
     {
       type: 'email',
-      label: 'Share by email',
+      label: t({ id: 'shareSection.email', message: 'Share by email' }),
       icon: <EmailIcon sx={{ fontSize: iconSize }} />,
       run: () => {
         window.location.href = `mailto:?subject=${enc(subject)}&body=${enc(`${body}\n\n${href}`)}`;
@@ -72,11 +73,11 @@ export function ShareSection({
     },
     {
       type: 'link',
-      label: 'Copy link',
+      label: t({ id: 'shareSection.copyLink', message: 'Copy link' }),
       icon: <LinkIcon sx={{ fontSize: iconSize }} />,
       run: () => {
         void navigator.clipboard?.writeText(href);
-        toast.success('Link Copied!');
+        toast.success(t({ id: 'shareSection.linkCopied', message: 'Link Copied!' }));
       },
     },
   ];

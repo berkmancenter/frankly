@@ -1,3 +1,4 @@
+import { i18n } from "@lingui/core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   cloudinaryProvider,
@@ -296,7 +297,8 @@ describe("resolveImageUploadProvider", () => {
 
   /** Which host the provider writes to, found by running an upload against the fakes. */
   async function hostOf(result: ImageUploadProviderResult): Promise<string> {
-    if (!result.provider) throw new Error(`expected a provider, got: ${result.error}`);
+    if (!result.provider)
+      throw new Error(`expected a provider, got: ${i18n._(result.error!)}`);
     fb.uploadBytesResumable.mockReset();
     fb.uploadBytesResumable.mockReturnValue(finishedTask());
     fb.getDownloadURL.mockResolvedValue("https://firebasestorage.test/x.png");
@@ -316,7 +318,7 @@ describe("resolveImageUploadProvider", () => {
       const result = resolveImageUploadProvider({});
 
       expect(result.provider).toBeUndefined();
-      expect(result.error).toMatch(/^No image upload provider is configured/);
+      expect(i18n._(result.error!)).toMatch(/^No image upload provider is configured/);
     });
 
     it("uses Cloudinary when its cloud name and preset are set", async () => {
@@ -338,7 +340,7 @@ describe("resolveImageUploadProvider", () => {
 
       const onlyPreset = resolveImageUploadProvider({ VITE_CLOUDINARY_IMAGE_PRESET: "preset" });
       expect(onlyPreset.provider).toBeUndefined();
-      expect(onlyPreset.error).toMatch(/^No image upload provider is configured/);
+      expect(i18n._(onlyPreset.error!)).toMatch(/^No image upload provider is configured/);
     });
 
     it("treats empty values as unset", () => {
@@ -349,7 +351,7 @@ describe("resolveImageUploadProvider", () => {
         VITE_IMAGE_UPLOAD_PROVIDER: "",
       });
 
-      expect(result.error).toMatch(/^No image upload provider is configured/);
+      expect(i18n._(result.error!)).toMatch(/^No image upload provider is configured/);
     });
 
     it("ignores a blank VITE_IMAGE_UPLOAD_PROVIDER and picks automatically", async () => {
@@ -386,7 +388,7 @@ describe("resolveImageUploadProvider", () => {
       });
 
       expect(result.provider).toBeUndefined();
-      expect(result.error).toBe(
+      expect(i18n._(result.error!)).toBe(
         "Cloudinary isn't configured. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_IMAGE_PRESET.",
       );
     });
@@ -395,14 +397,14 @@ describe("resolveImageUploadProvider", () => {
       const result = resolveImageUploadProvider({ ...cloudinaryEnv, VITE_IMAGE_UPLOAD_PROVIDER: "firebase" });
 
       expect(result.provider).toBeUndefined();
-      expect(result.error).toBe("Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET.");
+      expect(i18n._(result.error!)).toBe("Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET.");
     });
 
     it("rejects an unknown provider, naming it in lower case", () => {
       const result = resolveImageUploadProvider({ ...cloudinaryEnv, VITE_IMAGE_UPLOAD_PROVIDER: "S3" });
 
       expect(result.provider).toBeUndefined();
-      expect(result.error).toBe('Unknown VITE_IMAGE_UPLOAD_PROVIDER "s3". Use "cloudinary" or "firebase".');
+      expect(i18n._(result.error!)).toBe('Unknown VITE_IMAGE_UPLOAD_PROVIDER "s3". Use "cloudinary" or "firebase".');
     });
   });
 
@@ -417,6 +419,6 @@ describe("resolveImageUploadProvider", () => {
     expect(xhr().url).toContain("/v1_1/from-env/");
 
     vi.stubEnv("VITE_CLOUDINARY_CLOUD_NAME", "");
-    expect(resolveImageUploadProvider().error).toMatch(/^No image upload provider is configured/);
+    expect(i18n._(resolveImageUploadProvider().error!)).toMatch(/^No image upload provider is configured/);
   });
 });

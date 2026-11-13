@@ -49,7 +49,9 @@ beforeEach(() => {
 
 describe("Upload", () => {
   it("shows the configuration error instead of the drop zone when no provider is set up", async () => {
-    const { container } = await renderUpload({ error: "No image upload provider is configured." });
+    const { container } = await renderUpload({
+      error: { id: "No image upload provider is configured." },
+    });
 
     expect(screen.getByRole("alert")).toHaveTextContent("No image upload provider is configured.");
     expect(container.querySelector('input[type="file"]')).not.toBeInTheDocument();

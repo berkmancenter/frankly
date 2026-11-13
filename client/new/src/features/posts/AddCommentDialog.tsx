@@ -3,6 +3,8 @@ import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import type { DiscussionThread } from "@/api/types";
 import { ActionButton } from "@/components/ActionButton";
@@ -59,15 +61,15 @@ export function AddCommentDialog({
           component="h2"
           sx={{ fontSize: isMobile ? fontSizes["3xl"] : fontSizes["2xl"] }}
         >
-          Add comment
+          <Trans>Add comment</Trans>
         </Typography>
-        <IconButton aria-label="Close" onClick={onClose}>
+        <IconButton aria-label={t`Close`} onClick={onClose}>
           <img src="/media/x.png" alt="" width={32} height={32} />
         </IconButton>
       </Box>
       <TextField
         sx={{ mt: "16px" }}
-        label="Comment"
+        label={t`Comment`}
         autoFocus
         multiline
         minRows={3}
@@ -76,11 +78,11 @@ export function AddCommentDialog({
         onChange={(e) => setText(e.target.value)}
         onBlur={() => setTouched(true)}
         error={touched && empty}
-        helperText={touched && empty ? "Comment cannot be empty" : undefined}
+        helperText={touched && empty ? t`Comment cannot be empty` : undefined}
       />
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: "16px" }}>
         <ActionButton
-          text="Add comment"
+          text={t`Add comment`}
           onPress={async () => {
             setTouched(true);
             if (empty) return;
@@ -88,7 +90,7 @@ export function AddCommentDialog({
               await add.mutateAsync({ comment: text.trim(), replyToCommentId });
               onClose();
             } catch {
-              toast.error("Something went wrong. Please try again.");
+              toast.error(t`Something went wrong. Please try again.`);
             }
           }}
         />

@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { t } from '@lingui/core/macro';
 import { ActionButton, type ActionButtonType } from './ActionButton';
 import { colors, fontSizes } from "@/theme/tokens";
 
@@ -11,11 +12,16 @@ const ICONS: Record<EmptyPageType, string> = {
   resources: '📋',
 };
 
-const BUTTONS: Record<EmptyPageType, string> = {
-  posts: 'Create a post',
-  events: 'Create an event',
-  resources: 'Create a resource',
-};
+function buttonLabel(type: EmptyPageType): string {
+  switch (type) {
+    case 'posts':
+      return t`Create a post`;
+    case 'events':
+      return t`Create an event`;
+    case 'resources':
+      return t`Create a resource`;
+  }
+}
 
 interface EmptyPageContentProps {
   type: EmptyPageType;
@@ -60,15 +66,15 @@ export function EmptyPageContent({
         {ICONS[type]}
       </Box>
       <Typography component="h3" sx={{ fontSize: fontSizes.xl, mt: '10px' }}>
-        {titleText ?? `No ${type}`}
+        {titleText ?? t`No ${type}`}
       </Typography>
       <Typography component="div" sx={{ fontSize: fontSizes.sm, fontWeight: 500, mt: '20px', width: 205 }}>
-        {subtitleText ?? `When new ${type} are added, you'll see them here.`}
+        {subtitleText ?? t`When new ${type} are added, you'll see them here.`}
       </Typography>
       {onButtonPress && (
         <Box sx={{ mt: '20px' }}>
           <ActionButton type={buttonType} onPress={onButtonPress}>
-            {buttonText ?? BUTTONS[type]}
+            {buttonText ?? buttonLabel(type)}
           </ActionButton>
         </Box>
       )}

@@ -2,6 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
+import { t } from '@lingui/core/macro';
 import { useNavigate } from 'react-router';
 import { paths } from '@/app/paths';
 import { useCreateEventDialog } from '@/features/events/CreateEventDialog';
@@ -35,7 +36,7 @@ export function CommunityBottomNavBar({ showCreateEventButton }: { showCreateEve
   return (
     <Box
       component="nav"
-      aria-label="Bottom navigation"
+      aria-label={t`Bottom navigation`}
       sx={{
         bgcolor: colors.surfaceContainer,
         py: '16px',
@@ -46,14 +47,14 @@ export function CommunityBottomNavBar({ showCreateEventButton }: { showCreateEve
       }}
     >
       <SelectableNavigationIcon
-        label="My events"
+        label={t`My events`}
         selected={false}
         icon={<TodayRoundedIcon sx={{ fontSize: 30 }} />}
         onClick={() => navigate(paths.settings({ initialSection: 'events' }))}
       />
       {showCreateEventButton && (
         <IconButton
-          aria-label="Create an event"
+          aria-label={t`Create an event`}
           onClick={() => createEvent.open()}
           sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.main', opacity: 0.9 } }}
         >

@@ -1,3 +1,4 @@
+import { i18n } from "@lingui/core";
 import { describe, expect, it } from "vitest";
 import type { MembershipStatus } from "@/api/types";
 import { isAdmin, isFacilitator, isMember, isMod, isNotBanned, roleLabel } from "@/utils/membership";
@@ -36,8 +37,8 @@ describe("membership hierarchy", () => {
 
 describe("roleLabel", () => {
   it("has a human-readable label for every status", () => {
-    expect(roleLabel("owner")).toBe("Owner");
-    expect(roleLabel("nonmember")).toBe("Non-member");
-    for (const status of ALL) expect(roleLabel(status)).toMatch(/^[A-Z]/);
+    expect(i18n._(roleLabel("owner"))).toBe("Owner");
+    expect(i18n._(roleLabel("nonmember"))).toBe("Non-member");
+    for (const status of ALL) expect(i18n._(roleLabel(status))).toMatch(/^[A-Z]/);
   });
 });

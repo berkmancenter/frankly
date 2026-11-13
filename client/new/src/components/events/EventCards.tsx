@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { Link } from "react-router";
 import type { Event } from "@/api/types";
 import { Img } from "@/components/Img";
@@ -94,7 +96,7 @@ export function EventCard({ event }: { event: Event }) {
               overflow: "hidden",
             }}
           >
-            {event.title ?? "Scheduled event"}
+            {event.title ?? t`Scheduled event`}
           </Typography>
           <Box sx={{ mt: "20px" }}>
             {locked ? (
@@ -105,7 +107,7 @@ export function EventCard({ event }: { event: Event }) {
                   <Typography
                     sx={{ fontSize: fontSizes.xs, color: "rgba(28,27,27,0.75)" }}
                   >
-                    Livestream
+                    <Trans>Livestream</Trans>
                   </Typography>
                 )}
                 <ParticipantsRow

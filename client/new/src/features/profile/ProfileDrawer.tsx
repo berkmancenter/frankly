@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { i18n } from "@lingui/core";
+import { t } from "@lingui/core/macro";
 import { Avatar } from "@/components/Avatar";
 import { ErrorState, LoadingState } from "@/components/States";
 import { roleLabel } from "@/utils/membership";
@@ -33,14 +35,14 @@ export function ProfileDrawer({
       slotProps={{ paper: { sx: { width: "min(420px, 100vw)", px: "20px" } } }}
     >
       <Box sx={{ display: "flex", justifyContent: "flex-end", pt: "12px" }}>
-        <IconButton aria-label="Close" onClick={onClose}>
+        <IconButton aria-label={t`Close`} onClick={onClose}>
           <CloseIcon />
         </IconButton>
       </Box>
       {isPending ? (
         <LoadingState height={200} />
       ) : !user ? (
-        <ErrorState message="Could not load this profile." />
+        <ErrorState message={t`Could not load this profile.`} />
       ) : (
         <Box
           sx={{
@@ -98,6 +100,6 @@ function RoleRow({
   const status = members?.find((m) => m.user.id === userId)?.membership.status;
   if (!status) return null;
   return (
-    <Typography sx={{ fontSize: fontSizes.md }}>{roleLabel(status)}</Typography>
+    <Typography sx={{ fontSize: fontSizes.md }}>{i18n._(roleLabel(status))}</Typography>
   );
 }

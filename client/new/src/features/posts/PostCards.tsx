@@ -1,12 +1,14 @@
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
+import { plural, t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { useNavigate } from "react-router";
 import type { DiscussionThread } from "@/api/types";
 import { paths } from "@/app/paths";
 import { Avatar } from "@/components/Avatar";
 import { ProfileChip } from "@/components/ProfileChip";
-import { compactNumber, pluralize } from "@/utils/format";
+import { compactNumber } from "@/utils/format";
 import { useIsMobile } from "@/utils/useResponsive";
 import {
   useSetThreadEmotion,
@@ -40,7 +42,7 @@ export function VoteCluster({
         {compactNumber(count)}
       </Typography>
       <ButtonBase
-        aria-label="Like"
+        aria-label={t`Like`}
         aria-pressed={liked}
         onClick={(e) => {
           e.stopPropagation();
@@ -59,7 +61,7 @@ export function VoteCluster({
         />
       </ButtonBase>
       <ButtonBase
-        aria-label="Dislike"
+        aria-label={t`Dislike`}
         aria-pressed={disliked}
         onClick={(e) => {
           e.stopPropagation();
@@ -168,8 +170,8 @@ export function PostPreviewCard({
       >
         <Typography sx={{ color: colors.onSurfaceVariant }}>
           {thread.commentCount === 0
-            ? "No Comments"
-            : pluralize(thread.commentCount, "Comment")}
+            ? t`No Comments`
+            : plural(thread.commentCount, { one: "# Comment", other: "# Comments" })}
         </Typography>
         <Box onClick={(e) => e.stopPropagation()}>
           <EmotionSection
@@ -204,7 +206,7 @@ export function PostPreviewCard({
             <Typography
               sx={{ textDecoration: "underline", mt: "4px" }}
             >
-              See more
+              <Trans>See more</Trans>
             </Typography>
           </Box>
         </Box>
@@ -226,7 +228,7 @@ export function PostPreviewCard({
           <Typography
             sx={{ color: colors.onSurfaceVariant }}
           >
-            Reply
+            <Trans>Reply</Trans>
           </Typography>
         </ButtonBase>
       </Box>

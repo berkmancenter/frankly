@@ -10,6 +10,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import type { Community } from "@/api/types";
@@ -94,7 +96,7 @@ function SidebarCommunityItem({
           type="text"
           contentAlign="start"
           maxTextWidth={200}
-          text={community.name || "Unnamed Community"}
+          text={community.name || t({ id: "sidebar.unnamedCommunity", message: "Unnamed Community" })}
           minWidth={0}
           sx={{
             py: "12px",
@@ -107,7 +109,11 @@ function SidebarCommunityItem({
         <Box sx={{ flex: 1 }} />
         {collapsible && (
           <IconButton
-            aria-label={open ? "Collapse" : "Expand"}
+            aria-label={
+              open
+                ? t({ id: "sidebar.collapse", message: "Collapse" })
+                : t({ id: "sidebar.expand", message: "Expand" })
+            }
             onClick={() => setOpen((o) => !o)}
             sx={{ p: "8px" }}
           >
@@ -124,31 +130,46 @@ function SidebarCommunityItem({
       <Collapse in={open} unmountOnExit>
         {permissions.canViewCommunityLinks ? (
           <Box sx={{ pt: "12px", display: "flex", flexDirection: "column" }}>
-            <SidebarLink label="Events" onClick={() => go(links.events)} />
+            <SidebarLink
+              label={t({ id: "sidebar.events", message: "Events" })}
+              onClick={() => go(links.events)}
+            />
             {community.settings.enableDiscussionThreads && (
-              <SidebarLink label="Posts" onClick={() => go(links.posts)} />
+              <SidebarLink
+                label={t({ id: "sidebar.posts", message: "Posts" })}
+                onClick={() => go(links.posts)}
+              />
             )}
             {showResources && (
               <SidebarLink
-                label="Resources"
+                label={t({ id: "sidebar.resources", message: "Resources" })}
                 onClick={() => go(links.resources)}
               />
             )}
             <SidebarLink
-              label="Templates"
+              label={t({ id: "sidebar.templates", message: "Templates" })}
               onClick={() => go(links.templates)}
             />
             {!permissions.canEditCommunity && (
               <SidebarLink
-                label="Unfollow"
+                label={t({ id: "sidebar.unfollow", message: "Unfollow" })}
                 onClick={async () => {
                   if (
                     await confirm({
-                      title: `Unfollow ${community.name}?`,
-                      mainText:
-                        "You will stop receiving updates and lose access to its events.",
-                      cancelText: "Cancel",
-                      confirmText: "Unfollow",
+                      title: t({
+                        id: "sidebar.unfollowConfirmTitle",
+                        message: `Unfollow ${community.name}?`,
+                      }),
+                      mainText: t({
+                        id: "sidebar.unfollowConfirmBody",
+                        message:
+                          "You will stop receiving updates and lose access to its events.",
+                      }),
+                      cancelText: t({ id: "sidebar.cancel", message: "Cancel" }),
+                      confirmText: t({
+                        id: "sidebar.unfollowConfirmAction",
+                        message: "Unfollow",
+                      }),
                     })
                   ) {
                     await unfollow.mutateAsync(community.id);
@@ -157,7 +178,10 @@ function SidebarCommunityItem({
               />
             )}
             {permissions.canEditCommunity && (
-              <SidebarLink label="Admin" onClick={() => go(links.admin())} />
+              <SidebarLink
+                label={t({ id: "sidebar.admin", message: "Admin" })}
+                onClick={() => go(links.admin())}
+              />
             )}
           </Box>
         ) : (
@@ -210,7 +234,7 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           pr: "26px",
         }}
       >
-        <IconButton aria-label="Close" onClick={onClose}>
+        <IconButton aria-label={t({ id: "sidebar.close", message: "Close" })} onClick={onClose}>
           <CloseIcon sx={{ fontSize: 34, color: "secondary.main" }} />
         </IconButton>
       </Box>
@@ -269,7 +293,7 @@ export function SideBar({ onClose }: { onClose: () => void }) {
             />
           }
         >
-          Frankly Home
+          <Trans id="sidebar.franklyHome">Frankly Home</Trans>
         </ActionButton>
 
         <ActionButton
@@ -277,12 +301,12 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           contentAlign="start"
           onPress={() => setLanguageDialogOpen(true)}
           icon={
-            <span role="img" aria-label="language">
+            <span role="img" aria-label={t({ id: "sidebar.languageIconLabel", message: "language" })}>
               🌐
             </span>
           }
         >
-          Language
+          <Trans id="sidebar.language">Language</Trans>
         </ActionButton>
         <Dialog
           open={languageDialogOpen}
@@ -290,13 +314,18 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           aria-labelledby="sidebar-language-dialog-title"
         >
           <DialogTitle id="sidebar-language-dialog-title">
-            Supported languages
+            <Trans id="sidebar.supportedLanguages">Supported languages</Trans>
           </DialogTitle>
           <DialogContent>
-            <Typography>English</Typography>
+            {/* Only English is wired up so far; this list grows as locales are added. */}
+            <Typography>
+              <Trans id="sidebar.english">English</Trans>
+            </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setLanguageDialogOpen(false)}>Close</Button>
+            <Button onClick={() => setLanguageDialogOpen(false)}>
+              <Trans id="sidebar.closeDialog">Close</Trans>
+            </Button>
           </DialogActions>
         </Dialog>
 
@@ -305,21 +334,21 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           contentAlign="start"
           onPress={() => openExternal(HELP_URL)}
         >
-          Help Center
+          <Trans id="sidebar.helpCenter">Help Center</Trans>
         </ActionButton>
         <ActionButton
           type="text"
           contentAlign="start"
           onPress={() => openExternal(ABOUT_URL)}
         >
-          About Frankly
+          <Trans id="sidebar.aboutFrankly">About Frankly</Trans>
         </ActionButton>
         <ActionButton
           type="text"
           contentAlign="start"
           onPress={() => openExternal(PRIVACY_POLICY_URL)}
         >
-          Privacy Policy
+          <Trans id="sidebar.privacyPolicy">Privacy Policy</Trans>
         </ActionButton>
         <Typography
           component="div"

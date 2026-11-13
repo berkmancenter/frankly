@@ -1,4 +1,5 @@
 import { FirebaseError } from "firebase/app";
+import { t } from "@lingui/core/macro";
 import {
   GoogleAuthProvider,
   browserSessionPersistence,
@@ -215,7 +216,7 @@ export function createFirebaseAuthService(
           failure: {
             kind: "network",
             code: "timeout",
-            message: `No response from the backend after ${Math.round(startupTimeoutMs / 1000)} seconds.`,
+            message: t`No response from the backend after ${Math.round(startupTimeoutMs / 1000)} seconds.`,
           },
         });
       }
