@@ -8,11 +8,11 @@
     "node": ">=26.13"
   },
   "scripts": {
-    "build": "npm run locales:transpile && tsc -b && vite build",
+    "build": "tsc -b && vite build",
     "build:proxied": "tsc -b && PROXIED=1 vite build",
     "coverage": "vitest run --coverage",
-    "dev": "npm run locales:transpile && vite",
-    "dev:proxied": "npm run locales:transpile && PROXIED=1 vite",
+    "dev": "vite",
+    "dev:proxied": "PROXIED=1 vite",
     "lint": "eslint src",
     "locales:transpile": "node src/locales/flutterTranspile.ts",
     "preview": "vite preview",
