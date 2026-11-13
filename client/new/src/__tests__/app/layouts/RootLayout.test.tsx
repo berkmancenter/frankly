@@ -8,6 +8,13 @@ import { anonymousSession, authUser, createFakeAuth } from "@/__tests__/support/
 import { renderWithProviders } from "@/__tests__/support/renderWithProviders";
 import { RootLayout } from "@/app/layouts/RootLayout";
 
+// The real catalog loads through a dynamic import, which is not what these tests are about
+// (and which the test that stubs `location` would break).
+vi.mock("@/app/i18n", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/app/i18n")>()),
+  dynamicActivate: vi.fn(async () => {}),
+}));
+
 const page = (
   <Routes>
     <Route element={<RootLayout />}>
@@ -64,7 +71,7 @@ describe("RootLayout", () => {
   });
 
   describe("when the backend cannot be reached", () => {
-    it("explains a session that could not be established, instead of spinning", () => {
+    it("explains a session that could not be established, instead of spinning", async () => {
       renderWithProviders(page, {
         auth: {
           status: "error",
@@ -72,13 +79,13 @@ describe("RootLayout", () => {
           failure: { kind: "network", code: "network-request-failed", message: "offline" },
         },
       });
-      expect(screen.getByRole("heading", { name: "We can't reach the server" })).toBeInTheDocument();
+      expect(await screen.findByRole("heading", { name: "We can't reach the server" })).toBeInTheDocument();
       expect(screen.getByText("network-request-failed: offline")).toBeInTheDocument();
       expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
       expect(screen.queryByText("Child page")).not.toBeInTheDocument();
     });
 
-    it("says the backend is misconfigured when its settings are wrong", () => {
+    it("says the backend is misconfigured when its settings are wrong", async () => {
       renderWithProviders(page, {
         auth: {
           status: "error",
@@ -86,7 +93,7 @@ describe("RootLayout", () => {
           failure: { kind: "config", code: "invalid-api-key", message: "bad key" },
         },
       });
-      expect(screen.getByRole("heading", { name: "The app can't connect to its backend" })).toBeInTheDocument();
+      expect(await screen.findByRole("heading", { name: "The app can't connect to its backend" })).toBeInTheDocument();
     });
 
     it("explains a user whose data cannot be loaded because the service is unreachable", async () => {
@@ -111,7 +118,7 @@ describe("RootLayout", () => {
       renderWithProviders(page, {
         auth: { status: "error", user: null, failure: { kind: "service", code: "internal-error", message: "" } },
       });
-      await userEvent.click(screen.getByRole("button", { name: "Try again" }));
+      await userEvent.click(await screen.findByRole("button", { name: "Try again" }));
       expect(reload).toHaveBeenCalledTimes(1);
       vi.unstubAllGlobals();
     });
@@ -124,9 +131,9 @@ describe("RootLayout", () => {
       expect(api.me.get).not.toHaveBeenCalled();
     });
 
-    it("tells a signed-out visitor to refresh", () => {
+    it("tells a signed-out visitor to refresh", async () => {
       renderWithProviders(page, { auth: { status: "signedOut", user: null } });
-      expect(screen.getByText("You have been signed out. Please refresh to sign back in")).toBeInTheDocument();
+      expect(await screen.findByText("You have been signed out. Please refresh to sign back in")).toBeInTheDocument();
       expect(screen.queryByText("Child page")).not.toBeInTheDocument();
     });
 
