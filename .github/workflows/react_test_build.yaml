@@ -1,60 +1,68 @@
 name: React tests and build (if client/new exists)
 
 on:
-    push:
-    pull_request:
-    workflow_dispatch:
+  push:
+  pull_request:
+  workflow_dispatch:
 
 permissions:
-    contents: read
+  contents: read
 
 jobs:
-    test-and-build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Check out repository
-              uses: actions/checkout@v4
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-            - name: Check for client/new
-              id: client
-              run: |
-                  if [ -d client/new ]; then
-                    echo "exists=true" >> "$GITHUB_OUTPUT"
-                  else
-                    echo "exists=false" >> "$GITHUB_OUTPUT"
-                  fi
+      - name: Check for client/new
+        id: client
+        run: |
+          if [ -d client/new ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
 
-            - name: Set up Node.js
-              if: steps.client.outputs.exists == 'true'
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "26.13.x"
+      - name: Set up Node.js
+        if: steps.client.outputs.exists == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "26.13.x"
 
-            - name: Install dependencies
-              if: steps.client.outputs.exists == 'true'
-              working-directory: client/new
-              run: |
-                  if [ -f package-lock.json ]; then
-                    npm ci
-                  else
-                    npm install
-                  fi
+      - name: Install dependencies
+        if: steps.client.outputs.exists == 'true'
+        working-directory: client/new
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
-            - name: Run all tests
-              if: steps.client.outputs.exists == 'true'
-              working-directory: client/new
-              env:
-                  CI: "true"
-              run: npm test
+      - name: Run all tests
+        if: steps.client.outputs.exists == 'true'
+        working-directory: client/new
+        env:
+          CI: "true"
+        run: npx vitest run --coverage
 
-            #TODO: Parse Vite test results
+      - name: Generate Coverage Badges
+        if: steps.client.outputs.exists == 'true'
+        uses: jpb06/coverage-badges-action@latest
+        with:
+          coverage-summary-path: client/new/coverage/coverage-summary.json
+          badges-icon: vitest
+          commit-message: "build: update coverage badges"
 
-            - name: Lint
-              if: steps.client.outputs.exists == 'true'
-              working-directory: client/new
-              run: npm run lint
+      #TODO: Parse Vite test results
 
-            - name: Build
-              if: steps.client.outputs.exists == 'true'
-              working-directory: client/new
-              run: npm run build
+      - name: Lint
+        if: steps.client.outputs.exists == 'true'
+        working-directory: client/new
+        run: npm run lint
+
+      - name: Build
+        if: steps.client.outputs.exists == 'true'
+        working-directory: client/new
+        run: npm run build
