@@ -33,7 +33,6 @@ describe('router vs migrated-routes.json', () => {
     '/space/civic-lab/instant',
     '/space/civic-lab/posts/extra',
     '/settings',
-    '/newspace',
     '/emailunsubscribe',
     '/somewhere/else',
   ])('hands %s back to Flutter', (path) => {

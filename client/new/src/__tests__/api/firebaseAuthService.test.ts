@@ -180,6 +180,74 @@ describe("createFirebaseAuthService", () => {
     });
   });
 
+  describe("when the backend cannot be used", () => {
+    it("reports why a new visitor could not be signed in, instead of staying on loading", async () => {
+      fb.signInAnonymously.mockRejectedValue(new FirebaseError("auth/network-request-failed", "offline"));
+      const { service, listener } = await started();
+      emitAuthState(null);
+      await settle();
+      expect(service.getSession()).toMatchObject({
+        status: "error",
+        user: null,
+        failure: { kind: "network", code: "network-request-failed", message: "offline" },
+      });
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it("tells a wrong API key from a network problem", async () => {
+      fb.signInAnonymously.mockRejectedValue(new FirebaseError("auth/invalid-api-key", "bad key"));
+      const { service } = await started();
+      emitAuthState(null);
+      await settle();
+      expect(service.getSession().failure?.kind).toBe("config");
+    });
+
+    it("still reports a failure it does not recognize", async () => {
+      fb.signInAnonymously.mockRejectedValue(new Error("who knows"));
+      const { service } = await started();
+      emitAuthState(null);
+      await settle();
+      expect(service.getSession()).toMatchObject({ status: "error", failure: { kind: "unknown" } });
+    });
+
+    it("reports a returning visitor whose anonymous fallback fails", async () => {
+      storage.setItem(KEY, "true");
+      fb.signInAnonymously.mockRejectedValue(new FirebaseError("auth/network-request-failed", "offline"));
+      const { service } = await started({ returningUserTimeoutMs: 8000 });
+      emitAuthState(null);
+      await vi.advanceTimersByTimeAsync(8000);
+      expect(service.getSession().status).toBe("error");
+    });
+
+    it("gives up waiting for a backend that never answers", async () => {
+      fb.signInAnonymously.mockReturnValue(new Promise(() => {}));
+      const { service } = await started({ startupTimeoutMs: 15_000 });
+      emitAuthState(null);
+      await vi.advanceTimersByTimeAsync(14_999);
+      expect(service.getSession().status).toBe("loading");
+      await vi.advanceTimersByTimeAsync(1);
+      expect(service.getSession()).toMatchObject({ status: "error", failure: { kind: "network", code: "timeout" } });
+    });
+
+    it("does not time out a session that arrived in time", async () => {
+      const { service } = await started({ startupTimeoutMs: 15_000 });
+      emitAuthState(firebaseUser());
+      await vi.advanceTimersByTimeAsync(30_000);
+      expect(service.getSession().status).toBe("signedIn");
+    });
+
+    it("recovers when a user turns up after the failure", async () => {
+      fb.signInAnonymously.mockRejectedValue(new FirebaseError("auth/network-request-failed", "offline"));
+      const { service } = await started();
+      emitAuthState(null);
+      await settle();
+      emitAuthState(firebaseUser());
+      await settle();
+      expect(service.getSession().status).toBe("signedIn");
+      expect(service.getSession().failure).toBeUndefined();
+    });
+  });
+
   describe("anonymous visitors", () => {
     it("signs a new visitor in anonymously", async () => {
       await started();

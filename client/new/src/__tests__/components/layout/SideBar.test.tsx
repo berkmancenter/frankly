@@ -7,6 +7,13 @@ import type { Community, MembershipStatus } from "@/api/types";
 import { community, me, membership, user as userFixture } from "@/__tests__/support/fixtures";
 import { renderInCommunity, renderWithProviders } from "@/__tests__/support/renderWithProviders";
 import { SideBar } from "@/components/layout/SideBar";
+import { isLocalhost } from "@/utils/appInfo";
+
+// jsdom is served from localhost, which would offer "Start a community" to everyone.
+vi.mock("@/utils/appInfo", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/utils/appInfo")>()),
+  isLocalhost: vi.fn(() => false),
+}));
 
 function Location() {
   const { pathname } = useLocation();
@@ -47,7 +54,10 @@ function renderSideBar(
   };
 }
 
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.mocked(isLocalhost).mockReturnValue(false);
+});
 
 describe("SideBar", () => {
   it("shows a spinner while the user's communities load", () => {
@@ -190,12 +200,27 @@ describe("SideBar", () => {
   });
 
   describe("start a community", () => {
-    it("is offered to app owners and hands off to the new-space page", async () => {
+    it("is offered to app owners and opens the create dialog over the drawer", async () => {
       const user = userEvent.setup();
       const { onClose } = renderSideBar([[lab, "member"]], { isAppOwner: true });
       await user.click(await screen.findByRole("button", { name: "Start a community" }));
-      expect(onClose).toHaveBeenCalledTimes(1);
-      expect(screen.getByTestId("location")).toHaveTextContent("/newspace");
+      expect(await screen.findByRole("heading", { name: "Create a community" })).toBeInTheDocument();
+      expect(onClose).not.toHaveBeenCalled();
+      expect(screen.getByTestId("location")).toHaveTextContent("/home");
+    });
+
+    it("closes the drawer once the dialog is closed", async () => {
+      const user = userEvent.setup();
+      const { onClose } = renderSideBar([[lab, "member"]], { isAppOwner: true });
+      await user.click(await screen.findByRole("button", { name: "Start a community" }));
+      await user.click(await screen.findByRole("button", { name: "Close" }));
+      await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
+    });
+
+    it("is offered to everyone when running on localhost", async () => {
+      vi.mocked(isLocalhost).mockReturnValue(true);
+      renderSideBar([[lab, "member"]]);
+      expect(await screen.findByRole("button", { name: "Start a community" })).toBeInTheDocument();
     });
 
     it("is not offered to everyone else", async () => {

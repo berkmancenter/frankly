@@ -2,12 +2,18 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { useLocation } from "react-router";
 import { anonymousSession, authUser, createFakeAuth } from "@/__tests__/support/fakeAuth";
 import { community } from "@/__tests__/support/fixtures";
 import { renderWithProviders } from "@/__tests__/support/renderWithProviders";
 import { HomePage } from "@/features/home/HomePage";
+import { isLocalhost } from "@/utils/appInfo";
+
+vi.mock("@/utils/appInfo", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/utils/appInfo")>()),
+  isLocalhost: vi.fn(() => false),
+}));
 
 function Location() {
   const { pathname } = useLocation();
@@ -35,7 +41,7 @@ describe("HomePage", () => {
     renderWithProviders(page, { api: { communities: { listMine: async () => [lab, book] } } });
     expect(await screen.findByRole("heading", { name: "My Communities" })).toBeInTheDocument();
     expect(screen.getByText(/Placeholder/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Civic Lab/ })).toHaveAttribute("href", "/space/civic-lab");
+    expect(await screen.findByRole("link", { name: /Civic Lab/ })).toHaveAttribute("href", "/space/civic-lab");
     expect(screen.getByRole("link", { name: /Book Club/ })).toHaveAttribute("href", "/space/book-club");
     expect(screen.getByText("Talk it through")).toBeInTheDocument();
   });
@@ -46,10 +52,10 @@ describe("HomePage", () => {
     expect(screen.getByTestId("location")).toHaveTextContent("/space/civic-lab");
   });
 
-  it("says so when a user has no communities, without redirecting", async () => {
+  it("says so when a user has no communities, without leaving the page", async () => {
     renderWithProviders(page, { api: { communities: { listMine: async () => [] } } });
     expect(await screen.findByText("You don't belong to any communities")).toBeInTheDocument();
-    expect(screen.getByTestId("location")).not.toHaveTextContent("/newspace");
+    expect(screen.getByTestId("location")).toHaveTextContent("/");
   });
 
   it("explains when the communities cannot be loaded", async () => {
@@ -65,5 +71,14 @@ describe("HomePage", () => {
     expect(screen.getByRole("heading", { name: "New to Frankly?" })).toBeInTheDocument();
     act(() => auth.setSession({ user: authUser() }));
     expect(await screen.findByRole("heading", { name: "My Communities" })).toBeInTheDocument();
+  });
+
+  it("offers to start a community, even to someone with none, and opens the dialog", async () => {
+    vi.mocked(isLocalhost).mockReturnValueOnce(true).mockReturnValue(true);
+    renderWithProviders(page, { api: { communities: { listMine: async () => [] } } });
+    expect(await screen.findByText("You don't belong to any communities")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Start a community" }));
+    expect(await screen.findByRole("heading", { name: "Create a community" })).toBeInTheDocument();
+    vi.mocked(isLocalhost).mockReturnValue(false);
   });
 });

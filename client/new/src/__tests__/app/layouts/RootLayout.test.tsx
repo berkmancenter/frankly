@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { act, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Route, Routes } from "react-router";
 import { me } from "@/__tests__/support/fixtures";
@@ -59,7 +60,61 @@ describe("RootLayout", () => {
       },
     });
     const message = await screen.findByText(/Could not load your session\./);
-    expect(message.textContent).toBe("Could not load your session.");
+    expect(message.textContent).toBe("Could not load your session. Please try again.");
+  });
+
+  describe("when the backend cannot be reached", () => {
+    it("explains a session that could not be established, instead of spinning", () => {
+      renderWithProviders(page, {
+        auth: {
+          status: "error",
+          user: null,
+          failure: { kind: "network", code: "network-request-failed", message: "offline" },
+        },
+      });
+      expect(screen.getByRole("heading", { name: "We can't reach the server" })).toBeInTheDocument();
+      expect(screen.getByText("network-request-failed: offline")).toBeInTheDocument();
+      expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+      expect(screen.queryByText("Child page")).not.toBeInTheDocument();
+    });
+
+    it("says the backend is misconfigured when its settings are wrong", () => {
+      renderWithProviders(page, {
+        auth: {
+          status: "error",
+          user: null,
+          failure: { kind: "config", code: "invalid-api-key", message: "bad key" },
+        },
+      });
+      expect(screen.getByRole("heading", { name: "The app can't connect to its backend" })).toBeInTheDocument();
+    });
+
+    it("explains a user whose data cannot be loaded because the service is unreachable", async () => {
+      vi.spyOn(console, "error").mockImplementation(() => {});
+      renderWithProviders(page, {
+        api: {
+          me: {
+            get: async () => {
+              throw Object.assign(new Error("Failed to get document because the client is offline."), {
+                code: "unavailable",
+              });
+            },
+          },
+        },
+      });
+      expect(await screen.findByRole("heading", { name: "We can't reach the server" }, { timeout: 3000 })).toBeInTheDocument();
+    });
+
+    it("retries by reloading the page", async () => {
+      const reload = vi.fn();
+      vi.stubGlobal("location", { ...window.location, reload });
+      renderWithProviders(page, {
+        auth: { status: "error", user: null, failure: { kind: "service", code: "internal-error", message: "" } },
+      });
+      await userEvent.click(screen.getByRole("button", { name: "Try again" }));
+      expect(reload).toHaveBeenCalledTimes(1);
+      vi.unstubAllGlobals();
+    });
   });
 
   describe("auth session", () => {
