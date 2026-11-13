@@ -56,6 +56,15 @@ export default defineConfig({
     environment: "node",
     include: ["src/**/*.test.{ts,tsx}"],
     setupFiles: ["src/__tests__/support/setup.ts"],
+    // Fixed values for env vars the UI renders
+    env: {
+      VITE_HELP_CENTER_URL: "https://example.test/help",
+      VITE_ABOUT_URL: "https://example.test/about",
+      VITE_PRIVACY_POLICY_URL: "https://example.test/privacy",
+      VITE_REPO_LINK_URL: "https://example.test/repo",
+      VITE_SIDEBAR_FOOTER: "Test footer line",
+      VITE_COPYRIGHT_STATEMENT: "© Test copyright.",
+    },
     coverage: {
       provider: "v8",
       reporter: ["text", "json-summary"],
