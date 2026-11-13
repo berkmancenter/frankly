@@ -62,6 +62,14 @@ export default defineConfig(
   ...tseslint.configs.recommended,
   {
     files: ["./client/new/src/**/*.{ts,tsx}"],
+    // Type information lets `lingui/no-unlocalized-strings` (`useTsTypes`) skip string literals
+    // that are members of a union type, such as the "nonmember" membership status.
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: "/client/new",
+      },
+    },
     plugins: {
       frankly: {
         rules: { "redundant-default-font-size": redundantDefaultFontSize },
@@ -76,12 +84,28 @@ export default defineConfig(
       "lingui/no-unlocalized-strings": [
         "warn",
         {
-          ignore: ["^[A-Z0-9_-]+$"],
+          useTsTypes: true,
+          ignore: [
+            "^[A-Z0-9_-]+$",
+            // All route path segments
+            "^/[a-z0-9/_-]*$",
+            // URLs and image file names
+            "^(https?:|mailto:)",
+            "\\.(png|svg|jpe?g|gif|webp)$",
+          ],
           ignoreNames: [
+            "aria-labelledby",
+            "id",
+            "type",
+            "contentAlign",
             "className",
             "styleName",
             "src",
             "data-testid",
+            // Constants named in SCREAMING_CASE hold codes and identifiers, not copy.
+            { regex: { pattern: "^[A-Z][A-Z0-9_]*$" } },
+            // `this.name` in error classes, and the `name` attribute of form fields.
+            "name",
             // MUI `sx` shorthand / CSS property names and JSX layout props — values here are
             // CSS keywords or theme palette paths, never UI copy a translator would touch.
             "display",
@@ -162,8 +186,120 @@ export default defineConfig(
             "justifyItems",
             "fontFamily",
             "borderTop",
+            "borderLeft",
+            "mixBlendMode",
+            "outlineColor",
+            "scrollbarWidth",
+            "userSelect",
+            "listStyle",
+            "resize",
+            "breakInside",
+            "columnCount",
+            "columnGap",
+            // Component props whose values are enums, ids or URLs: MUI variants/sizes/anchors,
+            // ARIA roles, link attributes, and our own color/shape/option props.
+            "variant",
+            "size",
+            "role",
+            "anchor",
+            "anchorOrigin",
+            "transformOrigin",
+            "vertical",
+            "horizontal",
+            "severity",
+            "component",
+            "edge",
+            "underline",
+            "align",
+            "justify",
+            "target",
+            "rel",
+            "href",
+            "autoComplete",
+            "inputMode",
+            "accept",
+            "value",
+            "fit",
+            "radius",
+            "buttonType",
+            "iconColor",
+            "textColor",
+            "nameColor",
+            "initialSection",
+            "buttonPosition",
+            "font",
+            "verticalAlign",
+            // Router patterns and Intl formatting options.
+            "pattern",
+            "path",
+            "hour",
+            "minute",
+            "hour12",
+            "weekday",
+            "month",
+            "day",
+            "year",
+            "notation",
+            "timeZoneName",
+            "borderBottom",
+            // Firebase config keys, and status/error codes.
+            "apiKey",
+            "appId",
+            "authDomain",
+            "projectId",
+            "region",
+            "required",
+            "status",
+            "announcementStatus",
+            "code",
+            "key",
+            "backgroundImage",
+            "emulatorHost",
           ],
-          ignoreFunctions: ["console.*", "cn", "cva", "clsx"],
+          ignoreFunctions: [
+            "console.*",
+            "cn",
+            "cva",
+            "clsx",
+            "window.open",
+            "Error",
+            "*Error",
+            // DOM event names and form fields, never copy.
+            "*.addEventListener",
+            "*.removeEventListener",
+            "*.append",
+            // Firestore paths, field names and query clauses, and callable-function names.
+            "doc",
+            "collection",
+            "collectionGroup",
+            "where",
+            "orderBy",
+            "getDoc",
+            "*.call",
+            "requiredString",
+            "boolSetting",
+            "findCollectionGroupDocument",
+            // State-machine state names.
+            "*.matches",
+            // Locale/Intl construction, URL and history plumbing, storage and media-query calls.
+            "Intl.*",
+            "DOMException",
+            "useMediaQuery",
+            "ref",
+            "page",
+            "publish",
+            "*.on",
+            "*.has",
+            "*.includes",
+            "*.startsWith",
+            "*.replaceState",
+            "*.setCustomParameters",
+            // State setters that take an enum or error code.
+            "setEditing",
+            "setErrorCode",
+            // `new Set([...])` of codes and identifiers, never copy.
+            "Set",
+          ],
         },
       ],
       // MUI types `sx` colors as an open string, so a typo like "primary.mian" compiles and
@@ -181,9 +317,28 @@ export default defineConfig(
     },
   },
   {
+    // Modules that hold only technical strings (query keys, color and token tables, the
+    // Flutter-catalog transpile script, generated SVG, HTTP plumbing). None contains copy.
+    files: [
+      "./client/new/src/queries/keys.ts",
+      "./client/new/src/theme/colorPaths.ts",
+      "./client/new/src/theme/tokens.ts",
+      "./client/new/src/locales/flutterTranspile.ts",
+      "./client/new/src/utils/placeholder.ts",
+      "./client/new/src/api/cloudFunctions.ts",
+      "./client/new/src/main.tsx",
+    ],
+    rules: {
+      "lingui/no-unlocalized-strings": "off",
+    },
+  },
+  {
     // Test code is full of testing-library selectors as well as test descriptions/fixture strings
     // that look like UI copy to the AST but aren't messages to translate.
-    files: ["./client/new/src/__tests__/**/*.{ts,tsx}"],
+    files: [
+      "./client/new/src/__tests__/**/*.{ts,tsx}",
+      "./client/new/src/app/**/i18n.ts",
+    ],
     rules: {
       "lingui/no-unlocalized-strings": "off",
     },
