@@ -41,7 +41,8 @@ export default defineConfig({
           )
             return "react";
           if (/node_modules\/(@mui|@emotion)\//.test(id)) return "mui";
-          if (/node_modules\/(firebase|@firebase)\//.test(id)) return "firebase";
+          if (/node_modules\/(firebase|@firebase)\//.test(id))
+            return "firebase";
           if (/node_modules\/(@tanstack|xstate|@xstate)\//.test(id))
             return "state";
           return undefined;
@@ -55,5 +56,9 @@ export default defineConfig({
     environment: "node",
     include: ["src/**/*.test.{ts,tsx}"],
     setupFiles: ["src/__tests__/support/setup.ts"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json-summary"],
+    },
   },
 });

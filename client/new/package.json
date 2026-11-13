@@ -8,16 +8,17 @@
     "node": ">=26.13"
   },
   "scripts": {
-    "dev": "npm run locales:transpile && vite",
-    "dev:proxied": "npm run locales:transpile && PROXIED=1 vite",
     "build": "npm run locales:transpile && tsc -b && vite build",
     "build:proxied": "npm run locales:transpile && tsc -b && PROXIED=1 vite build",
+    "coverage": "vitest run --coverage",
+    "dev": "npm run locales:transpile && vite",
+    "dev:proxied": "npm run locales:transpile && PROXIED=1 vite",
+    "lint": "eslint src",
+    "locales:transpile": "node src/locales/flutterTranspile.ts",
     "preview": "vite preview",
     "typecheck": "tsc -b",
-    "lint": "eslint src",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "locales:transpile": "node src/locales/flutterTranspile.ts"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -46,6 +47,7 @@
     "@types/react-dom": "^19.3.0",
     "@typescript/native": "npm:typescript@^7.0.2",
     "@vitejs/plugin-react": "^4.7.0",
+    "@vitest/coverage-v8": "^5.1.0",
     "jiti": "^2.7.0",
     "jsdom": "^31.0.0",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
