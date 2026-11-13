@@ -58,12 +58,9 @@ function MyCommunities() {
       ) : communities.isError ? (
         <ErrorState
           message={t({
-            id: "errorLoadingCommunities",
-            message: t({
-              id: "errorLoadingCommunitiesMessage",
-              message:
-                "Something went wrong loading communities. Please refresh.",
-            }),
+            id: "errorLoadingCommunitiesMessage",
+            message:
+              "Something went wrong loading communities. Please refresh.",
           })}
         />
       ) : communities.data.length === 0 ? (

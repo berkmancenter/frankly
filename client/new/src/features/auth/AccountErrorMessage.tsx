@@ -54,7 +54,7 @@ export function ForgotPasswordMessage({
   onForgotPassword: () => void;
 }) {
   return (
-    <div style={{ textAlign: "left" }}>
+    <p style={{ textAlign: "left" }}>
       <Trans id="forgotPasswordPrefix">Forgot your password?</Trans>{" "}
       {showEmailLink && onEnterEmail ? (
         <>
@@ -72,7 +72,7 @@ export function ForgotPasswordMessage({
         <Trans id="forgotPasswordSuffix">reset your password</Trans>
       </ActionText>
       .
-    </div>
+    </p>
   );
 }
 

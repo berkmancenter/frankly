@@ -182,7 +182,7 @@ export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
 
             {community && canViewLinks && !isMobile && <AnnouncementsBell />}
 
-            {!isMobile && !onAppRoot && <ProfileMenu />}
+            {!isMobile && <ProfileMenu />}
 
             {isMobile && community && links && (
               <Box
