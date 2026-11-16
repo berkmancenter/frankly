@@ -8,11 +8,49 @@
  * Users & membership
  * ------------------------------------------------------------------------- */
 
+// Identifiers stored in Firestore, not UI text.
+// eslint-disable-next-line lingui/no-unlocalized-strings
+export const SOCIAL_PLATFORMS = ['instagram', 'twitter', 'facebook', 'linkedin'] as const;
+export type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
+
+export interface SocialLink {
+  platform: SocialPlatform;
+  url: string;
+}
+
+// What a user changes about their own profile; absent fields are left alone.
+export interface ProfileUpdate {
+  displayName?: string;
+  about?: string;
+  imageUrl?: string;
+  // The full list: platforms left out are removed.
+  socialLinks?: SocialLink[];
+}
+
+// A tag's shared definition: `#title`.
+export interface Tag {
+  id: string;
+  title: string;
+}
+
+// One tag on one template.
+export interface TemplateTag {
+  templateId: string;
+  tag: Tag;
+}
+
+// Which emails a member gets from one community.
+export interface NotificationSettings {
+  notifyAnnouncements: boolean;
+  notifyEvents: boolean;
+}
+
 export interface PublicUser {
   id: string;
   displayName: string;
   imageUrl?: string;
   about?: string;
+  socialLinks?: SocialLink[];
   /** `AppRole.owner` — may create new communities ("Start a community"). */
   isAppOwner?: boolean;
 }

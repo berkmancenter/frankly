@@ -39,11 +39,17 @@ import type {
   Membership,
   MembershipStatus,
   NewEventInput,
+  NotificationSettings,
   OnboardingStep,
   Participant,
+  ProfileUpdate,
   PublicUser,
+  SocialLink,
+  Tag,
   Template,
+  TemplateTag,
 } from "./types";
+import { SOCIAL_PLATFORMS } from "./types";
 
 const membershipStatuses = new Set<MembershipStatus>([
   "owner",
@@ -150,6 +156,62 @@ function mapPublicUser(
       : {}),
     ...(stringValue(data.about) ? { about: stringValue(data.about) } : {}),
     ...(data.appRole === "owner" ? { isAppOwner: true } : {}),
+    ...(socialLinks(data.socialMediaItems).length > 0
+      ? { socialLinks: socialLinks(data.socialMediaItems) }
+      : {}),
+  };
+}
+
+// Social links are stored as `[{socialMediaKey, url}]`; unknown platforms and empty URLs are dropped.
+function socialLinks(value: unknown): SocialLink[] {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((item) => {
+    const { socialMediaKey, url } = asRecord(item);
+    const platform = SOCIAL_PLATFORMS.find((known) => known === socialMediaKey);
+    return platform && typeof url === "string" && url
+      ? [{ platform, url }]
+      : [];
+  });
+}
+
+// An email setting is on unless it is explicitly `none`
+const emailEnabled = (value: unknown) => value !== "none";
+// Firestore field names, not UI text.
+// eslint-disable-next-line lingui/no-unlocalized-strings
+const emailType = (enabled: boolean) => (enabled ? "immediate" : "none");
+
+const TAG_DEFINITIONS = "community-tag-definitions";
+const TAGS = "community-tags";
+
+// Tag definitions are shared across all items, so a lookup of the same id is made only once.
+async function getTagDefinitions(
+  client: FirebaseClient,
+  ids: string[],
+): Promise<Map<string, Tag>> {
+  const unique = [...new Set(ids)];
+  const found = await Promise.all(
+    unique.map(async (id) => {
+      const snapshot = await getDoc(doc(client.firestore, TAG_DEFINITIONS, id));
+      const title = stringValue(snapshot.data()?.title);
+      return title ? ([id, { id, title }] as const) : undefined;
+    }),
+  );
+  return new Map(found.filter((entry) => !!entry));
+}
+
+// Firestore's "starts with" upper bound: the last character bumped by one.
+const startsWithLimit = (text: string) =>
+  text.slice(0, -1) +
+  String.fromCodePoint((text.codePointAt(text.length - 1) ?? 0) + 1);
+
+const normalizeSearchKey = (input: string) =>
+  input.replace(/[^\w\s]+/g, "").toLowerCase();
+
+function mapNotificationSettings(value: unknown): NotificationSettings {
+  const data = asRecord(value);
+  return {
+    notifyAnnouncements: emailEnabled(data.notifyAnnouncements),
+    notifyEvents: emailEnabled(data.notifyEvents),
   };
 }
 
@@ -526,6 +588,188 @@ export function createFirebaseApi(client: FirebaseClient): Api {
         }
         return mapPublicUser(userId, snapshot.data());
       },
+
+      async email(userId, communityId) {
+        const user = await requireUser(client);
+        if (user.uid === userId) return user.email ?? undefined;
+        const response = asRecord(
+          await client.functions.call("GetUserAdminDetails", {
+            userIds: [userId],
+            ...(communityId ? { communityId } : {}),
+          }),
+        );
+        const details = Array.isArray(response.userAdminDetails)
+          ? response.userAdminDetails
+          : [];
+        const match =
+          details.map(asRecord).find((detail) => detail.userId === userId) ??
+          asRecord(details[0]);
+        return stringValue(match.email);
+      },
+
+      async updateMe(patch: ProfileUpdate) {
+        const user = await requireUser(client);
+        const reference = doc(client.firestore, "publicUser", user.uid);
+        const changes: DocumentData = {
+          ...(patch.displayName !== undefined
+            ? { displayName: patch.displayName }
+            : {}),
+          ...(patch.about !== undefined ? { about: patch.about } : {}),
+          ...(patch.imageUrl !== undefined ? { imageUrl: patch.imageUrl } : {}),
+          ...(patch.socialLinks !== undefined
+            ? {
+                socialMediaItems: patch.socialLinks.map(
+                  ({ platform, url }) => ({
+                    socialMediaKey: platform,
+                    url,
+                  }),
+                ),
+              }
+            : {}),
+        };
+        // `merge` creates the document when the user never had one.
+        await setDoc(reference, changes, { merge: true });
+        return mapPublicUser(user.uid, (await getDoc(reference)).data());
+      },
+    },
+
+    tags: {
+      async listForTemplates(communityId) {
+        await requireUser(client);
+        const snapshots = await getDocs(
+          query(
+            collectionGroup(client.firestore, TAGS),
+            where("communityId", "==", communityId),
+            where("taggedItemType", "==", "template"),
+          ),
+        );
+        const assignments = snapshots.docs.flatMap((snapshot) => {
+          const data = snapshot.data();
+          const templateId = stringValue(data.taggedItemId);
+          const definitionId = stringValue(data.definitionId);
+          return templateId && definitionId
+            ? [{ templateId, definitionId }]
+            : [];
+        });
+        const definitions = await getTagDefinitions(
+          client,
+          assignments.map((assignment) => assignment.definitionId),
+        );
+        return assignments.flatMap(
+          ({ templateId, definitionId }): TemplateTag[] => {
+            const tag = definitions.get(definitionId);
+            return tag ? [{ templateId, tag }] : [];
+          },
+        );
+      },
+
+      async listForUser(userId) {
+        await requireUser(client);
+        const snapshots = await getDocs(
+          collection(client.firestore, "publicUser", userId, TAGS),
+        );
+        const ids = snapshots.docs.flatMap(
+          (snapshot) => stringValue(snapshot.data().definitionId) ?? [],
+        );
+        const definitions = await getTagDefinitions(client, ids);
+        return ids.flatMap((id) => definitions.get(id) ?? []);
+      },
+
+      async suggest(input) {
+        await requireUser(client);
+        const key = normalizeSearchKey(input);
+        if (!key) return [];
+        const snapshots = await getDocs(
+          query(
+            collection(client.firestore, TAG_DEFINITIONS),
+            where("searchKey", ">=", key),
+            where("searchKey", "<", startsWithLimit(key)),
+            limit(20),
+          ),
+        );
+        return snapshots.docs.flatMap((snapshot) => {
+          const title = stringValue(snapshot.data().title);
+          return title ? [{ id: snapshot.id, title }] : [];
+        });
+      },
+
+      async addToMyProfile(title) {
+        const user = await requireUser(client);
+        const clean = title.trim();
+        const existing = await getDocs(
+          query(
+            collection(client.firestore, TAG_DEFINITIONS),
+            where("title", "==", clean),
+            limit(1),
+          ),
+        );
+        let id = existing.docs[0]?.id;
+        if (!id) {
+          const reference = doc(collection(client.firestore, TAG_DEFINITIONS));
+          await setDoc(reference, {
+            id: reference.id,
+            title: clean,
+            searchKey: normalizeSearchKey(clean),
+          });
+          id = reference.id;
+        }
+        await setDoc(doc(client.firestore, "publicUser", user.uid, TAGS, id), {
+          // eslint-disable-next-line lingui/no-unlocalized-strings -- Firestore enum value, not UI text
+          taggedItemType: "profile",
+          taggedItemId: user.uid,
+          definitionId: id,
+        });
+        return { id, title: clean };
+      },
+
+      async removeFromMyProfile(tagId) {
+        const user = await requireUser(client);
+        await deleteDoc(
+          doc(client.firestore, "publicUser", user.uid, TAGS, tagId),
+        );
+      },
+    },
+
+    notifications: {
+      async get(communityId) {
+        const user = await requireUser(client);
+        const snapshot = await getDoc(
+          doc(
+            client.firestore,
+            "privateUserData",
+            user.uid,
+            "communityUserSettings",
+            communityId,
+          ),
+        );
+        return mapNotificationSettings(snapshot.data());
+      },
+
+      async update(communityId, patch) {
+        const user = await requireUser(client);
+        const reference = doc(
+          client.firestore,
+          "privateUserData",
+          user.uid,
+          "communityUserSettings",
+          communityId,
+        );
+        await setDoc(
+          reference,
+          {
+            userId: user.uid,
+            communityId,
+            ...(patch.notifyAnnouncements !== undefined
+              ? { notifyAnnouncements: emailType(patch.notifyAnnouncements) }
+              : {}),
+            ...(patch.notifyEvents !== undefined
+              ? { notifyEvents: emailType(patch.notifyEvents) }
+              : {}),
+          },
+          { merge: true },
+        );
+        return mapNotificationSettings((await getDoc(reference)).data());
+      },
     },
 
     communities: {
@@ -768,6 +1012,45 @@ export function createFirebaseApi(client: FirebaseClient): Api {
               Date.parse(right.scheduledTime ?? "") -
               Date.parse(left.scheduledTime ?? ""),
           );
+      },
+
+      async listMine() {
+        const user = await requireUser(client);
+        const participants = await getDocs(
+          query(
+            collectionGroup(client.firestore, "event-participants"),
+            where("id", "==", user.uid),
+            where("status", "==", "active"),
+          ),
+        );
+        // A participant document lives under its event: .../events/{eventId}/event-participants/{id}.
+        const eventSnapshots = await Promise.all(
+          participants.docs.flatMap((participant) => {
+            const event = participant.ref.parent.parent;
+            return event ? [getDoc(event)] : [];
+          }),
+        );
+        const displayIds = new Map<string, string>();
+        const events: Event[] = [];
+        for (const snapshot of eventSnapshots) {
+          if (!snapshot.exists()) continue;
+          const communityId = stringValue(snapshot.data().communityId);
+          if (!communityId) continue;
+          if (!displayIds.has(communityId)) {
+            displayIds.set(
+              communityId,
+              (await getCommunity(client, communityId)).displayId,
+            );
+          }
+          events.push(
+            mapEvent(
+              snapshot.id,
+              snapshot.data(),
+              displayIds.get(communityId)!,
+            ),
+          );
+        }
+        return events.filter((event) => event.status === "active");
       },
 
       async create(input: NewEventInput) {

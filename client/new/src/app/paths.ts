@@ -1,14 +1,11 @@
 /**
- * Typed URL builders — the port of `CommunityPageRoutes` / `UserSettingsLocation`.
+ * Typed URL builders — the port of `CommunityPageRoutes` / `user pages`.
  * Route params and search params are the source of truth for navigation state, so every
  * link in the app goes through here. Several targets (home, settings, templates, events, posts…)
  * are pages Flutter still owns: navigating to them is a hand-off (see `LegacyFallback`).
  */
-export type UserSettingsSection =
-  | "events"
-  | "profile"
-  | "notifications"
-  | "subscriptions";
+export type ProfileSection = "events" | "profile" | "notifications";
+export const PROFILE_SECTIONS: readonly ProfileSection[] = ["events", "profile", "notifications"];
 export type AdminTab = "profile" | "members" | "data" | "settings";
 
 const q = (params: Record<string, string | undefined>) => {
@@ -20,10 +17,10 @@ const q = (params: Record<string, string | undefined>) => {
 
 export const paths = {
   root: "/",
-  settings: (
-    opts: { initialSection?: UserSettingsSection; communityId?: string } = {},
-  ) =>
-    `/settings${q({ initialSection: opts.initialSection, communityId: opts.communityId })}`,
+  // The signed-in user's page: their events, profile and email notifications.
+  profile: (
+    opts: { section?: ProfileSection; communityId?: string } = {},
+  ) => `/profile${q({ section: opts.section, communityId: opts.communityId })}`,
 
   community: (displayId: string) => {
     const base = `/space/${displayId}`;
@@ -31,6 +28,7 @@ export const paths = {
       home: base,
       events: `${base}/discuss/upcoming`,
       templates: `${base}/discuss`,
+      template: (templateId: string) => `${base}/discuss/${templateId}`,
       event: (
         templateId: string,
         eventId: string,

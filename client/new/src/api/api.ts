@@ -11,8 +11,12 @@ import type {
   Membership,
   NewEventInput,
   Participant,
+  NotificationSettings,
+  ProfileUpdate,
   PublicUser,
+  Tag,
   Template,
+  TemplateTag,
 } from "./types";
 
 export type ApiErrorCode = "notFound" | "invalid";
@@ -48,6 +52,30 @@ export interface Api {
 
   users: {
     get(userId: string): Promise<PublicUser>;
+    /** Saves the signed-in user's own profile and returns it as stored. */
+    updateMe(patch: ProfileUpdate): Promise<PublicUser>;
+    /**
+     * A user's email, which only they and the admins of `communityId` may see. Undefined when
+     * it is not available.
+     */
+    email(userId: string, communityId?: string): Promise<string | undefined>;
+  };
+
+  tags: {
+    /** Every tag on the community's templates. */
+    listForTemplates(communityId: string): Promise<TemplateTag[]>;
+    listForUser(userId: string): Promise<Tag[]>;
+    /** Existing tags whose title starts with `input`. */
+    suggest(input: string): Promise<Tag[]>;
+    /** Tags the signed-in user's profile, creating the shared definition when it is new. */
+    addToMyProfile(title: string): Promise<Tag>;
+    removeFromMyProfile(tagId: string): Promise<void>;
+  };
+
+  notifications: {
+    /** The user's email settings for a community (both on until they say otherwise). */
+    get(communityId: string): Promise<NotificationSettings>;
+    update(communityId: string, patch: Partial<NotificationSettings>): Promise<NotificationSettings>;
   };
 
   communities: {
@@ -73,6 +101,8 @@ export interface Api {
   events: {
     listUpcoming(communityId: string): Promise<Event[]>;
     listAll(communityId: string): Promise<Event[]>;
+    /** Active events the signed-in user is registered for, across every community. */
+    listMine(): Promise<Event[]>;
     create(input: NewEventInput): Promise<Event>;
     listParticipants(eventId: string): Promise<ParticipantWithUser[]>;
     hasAttendedTemplate(templateId: string): Promise<boolean>;
