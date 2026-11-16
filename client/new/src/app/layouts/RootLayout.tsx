@@ -19,7 +19,9 @@ function useLocaleReady() {
     let cancelled = false;
     (async () => {
       try {
-        await dynamicActivate(defaultLocale);
+        // Use default (English) locale unless localStorage has a saved locale
+        // eslint-disable-next-line lingui/no-unlocalized-strings
+        await dynamicActivate(localStorage.getItem("locale") ?? defaultLocale);
       } catch (error) {
         console.error("Could not load the locale catalog", error);
       } finally {
