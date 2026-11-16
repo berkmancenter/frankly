@@ -7,9 +7,8 @@ msgstr ""
 "X-Generator: flutterTranspile.ts\n"
 "Language: es\n"
 
-
 #. js-lingui-explicit-id
-#: src/components/ProfileChip.tsx:60
+#: src/components/ProfileChip.tsx:61
 msgid "profileChip.youSuffix"
 msgstr " (tú)"
 
@@ -25,34 +24,44 @@ msgid "insteadSuffix"
 msgstr " en cambio."
 
 #. placeholder {0}: thread.commentCount
-#: src/features/posts/PostCards.tsx:174
+#: src/features/posts/PostCards.tsx:176
 msgid "{0, plural, one {# Comment} other {# Comments}}"
 msgstr "{0, plural, one {# comentario} other {# comentarios}}"
 
 #. placeholder {0}: expanded ? "Less" : "Read More"
-#: src/features/community/CommunityHome.tsx:232
+#: src/features/community/CommunityHome.tsx:236
 msgid "{0}"
 msgstr "{0}"
+
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:26
+msgid "appNameHome"
+msgstr "{appName} - Inicio"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfilePage.tsx:27
+msgid "appNameUserSettings"
+msgstr "{appName} - Configuración de usuario"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:333
 msgid "termsOfService"
 msgstr "Términos de servicio de {appName}"
 
-#: src/api/firebaseApi.ts:433
+#: src/api/firebaseApi.ts:495
 msgid "{entity} not found"
 msgstr "No se encontró {entity}"
 
-#: src/components/events/ParticipantsRow.tsx:42
+#: src/components/events/ParticipantsRow.tsx:43
 msgid "{total} People"
 msgstr "{total} personas"
 
 #. placeholder {0}: total - shown.length
-#: src/components/events/ParticipantsRow.tsx:40
+#: src/components/events/ParticipantsRow.tsx:41
 msgid "+{0}"
 msgstr "+{0}"
 
-#: src/components/events/ParticipantsRow.tsx:43
+#: src/components/events/ParticipantsRow.tsx:44
 msgid "1 person"
 msgstr "1 persona"
 
@@ -61,29 +70,39 @@ msgid "100"
 msgstr "100"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:369
+#: src/components/layout/SideBar.tsx:370
 msgid "sidebar.aboutFrankly"
 msgstr "Acerca de Frankly"
 
 #. js-lingui-explicit-id
-#: src/features/community/CommunityHome.tsx:219
+#: src/features/profile/ProfileTab.tsx:134
+msgid "aboutMe"
+msgstr "Sobre mí"
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:223
 msgid "aboutUs"
 msgstr "Sobre Nosotros"
 
-#: src/features/resources/ResourcesPage.tsx:124
+#: src/features/resources/ResourcesPage.tsx:125
 msgid "Add a resource"
 msgstr "Agregar un recurso"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:215
+msgid "addATag"
+msgstr "Agregar una etiqueta"
 
 #: src/features/posts/AddCommentDialog.tsx:64
 #: src/features/posts/AddCommentDialog.tsx:85
 msgid "Add comment"
 msgstr "Agregar comentario"
 
-#: src/features/posts/EmotionSection.tsx:51
+#: src/features/posts/EmotionSection.tsx:52
 msgid "Add reaction"
 msgstr "Agregar reacción"
 
-#: src/components/layout/NavBar.tsx:231
+#: src/components/layout/NavBar.tsx:232
 #: src/utils/membership.ts:26
 msgid "Admin"
 msgstr "Administrador"
@@ -103,12 +122,12 @@ msgid "alreadyUserSignIn"
 msgstr "¿Ya eres usuario?"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:263
+#: src/components/pickers.tsx:265
 msgid "timeInput.am"
 msgstr "a. m."
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:248
+#: src/components/pickers.tsx:250
 msgid "timeInput.amOrPm"
 msgstr "a. m. o p. m."
 
@@ -116,7 +135,7 @@ msgstr "a. m. o p. m."
 msgid "Announcement"
 msgstr "Anuncio"
 
-#: src/components/layout/AnnouncementsBell.tsx:204
+#: src/components/layout/AnnouncementsBell.tsx:205
 msgid "Announcement created"
 msgstr "Anuncio creado"
 
@@ -129,7 +148,7 @@ msgid "Announcements"
 msgstr "Anuncios"
 
 #. js-lingui-explicit-id
-#: src/components/ProfileChip.tsx:42
+#: src/components/ProfileChip.tsx:43
 msgid "profileChip.anonymous"
 msgstr "Anónimo"
 
@@ -137,15 +156,15 @@ msgstr "Anónimo"
 msgid "Are you sure you want to delete this announcement?"
 msgstr "¿Seguro que quieres eliminar este anuncio?"
 
-#: src/features/resources/ResourcesPage.tsx:101
+#: src/features/resources/ResourcesPage.tsx:102
 msgid "Are you sure you want to delete this resource?"
 msgstr "¿Seguro que quieres eliminar este recurso?"
 
-#: src/features/posts/CreatePostDialog.tsx:162
+#: src/features/posts/CreatePostDialog.tsx:161
 msgid "Attach image"
 msgstr "Adjuntar imagen"
 
-#: src/features/posts/CreatePostDialog.tsx:102
+#: src/features/posts/CreatePostDialog.tsx:101
 msgid "Attached"
 msgstr "Adjunto"
 
@@ -161,7 +180,7 @@ msgstr "Atrás"
 msgid "Banned"
 msgstr "Bloqueado"
 
-#: src/components/layout/BottomNavBar.tsx:39
+#: src/components/layout/BottomNavBar.tsx:44
 msgid "Bottom navigation"
 msgstr "Navegación inferior"
 
@@ -174,7 +193,7 @@ msgstr "Personaliza tu espacio"
 msgid "termsAgreementPrefix"
 msgstr "Al iniciar sesión, registrarme o usar {appName}, acepto estar sujeto a los "
 
-#: src/components/Upload.tsx:163
+#: src/components/Upload.tsx:165
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -183,16 +202,20 @@ msgstr "Cancelar"
 msgid "sidebar.cancel"
 msgstr "Cancelar"
 
-#: src/features/resources/ResourceDialog.tsx:111
+#: src/features/resources/ResourceDialog.tsx:112
 msgid "Change image"
 msgstr "Cambiar imagen"
 
+#: src/features/profile/ProfileTab.tsx:97
+msgid "Change picture"
+msgstr "Cambiar foto"
+
 #. js-lingui-explicit-id
-#: src/components/BackendUnavailable.tsx:23
+#: src/components/BackendUnavailable.tsx:25
 msgid "backendUnreachableBody"
 msgstr "Revisa tu conexión a internet e inténtalo de nuevo."
 
-#: src/components/Upload.tsx:136
+#: src/components/Upload.tsx:138
 msgid "Choose a photo"
 msgstr "Elige una foto"
 
@@ -201,25 +224,25 @@ msgid "Choose Template"
 msgstr "Elegir plantilla"
 
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:305
+#: src/features/community/CreateCommunity.tsx:308
 msgid "communitySuccessSuffix"
 msgstr "Haz clic en el ícono de engranaje en la esquina superior derecha para editar la configuración de tu comunidad."
 
-#: src/components/AppDialog.tsx:40
-#: src/components/ConfirmDialog.tsx:79
+#: src/components/AppDialog.tsx:44
+#: src/components/ConfirmDialog.tsx:81
 #: src/features/posts/AddCommentDialog.tsx:66
-#: src/features/posts/CreatePostDialog.tsx:93
-#: src/features/profile/ProfileDrawer.tsx:38
+#: src/features/posts/CreatePostDialog.tsx:92
+#: src/features/profile/ProfileDrawer.tsx:45
 msgid "Close"
 msgstr "Cerrar"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:245
+#: src/components/layout/SideBar.tsx:246
 msgid "sidebar.close"
 msgstr "Cerrar"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:352
+#: src/components/layout/SideBar.tsx:353
 msgid "sidebar.closeDialog"
 msgstr "Cerrar"
 
@@ -241,32 +264,32 @@ msgid "Comment cannot be empty"
 msgstr "El comentario no puede estar vacío"
 
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:203
+#: src/features/community/CreateCommunity.tsx:205
 msgid "communityName"
 msgstr "Nombre de la comunidad"
 
-#: src/api/firebaseApi.ts:467
-#: src/api/firebaseApi.ts:579
+#: src/api/firebaseApi.ts:529
+#: src/api/firebaseApi.ts:823
 msgid "Community not found"
 msgstr "No se encontró la comunidad"
 
 #. js-lingui-explicit-id
-#: src/components/layout/OnboardingBanner.tsx:131
+#: src/components/layout/OnboardingBanner.tsx:132
 msgid "onboardingBanner.region"
 msgstr "Incorporación a la comunidad"
 
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:224
+#: src/features/community/CreateCommunity.tsx:226
 msgid "communityUrl"
 msgstr "URL de la comunidad"
 
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:295
+#: src/features/community/CreateCommunity.tsx:298
 msgid "congratulations"
 msgstr "¡Felicidades!"
 
 #. js-lingui-explicit-id
-#: src/features/community/CommunityHome.tsx:260
+#: src/features/community/CommunityHome.tsx:266
 msgid "contact"
 msgstr "Contacto"
 
@@ -282,52 +305,53 @@ msgid "somethingWentWrongLongSuffix"
 msgstr "contactar al soporte para obtener ayuda"
 
 #. js-lingui-explicit-id
-#: src/components/ShareSection.tsx:76
+#: src/components/ShareSection.tsx:90
 msgid "shareSection.copyLink"
 msgstr "Copiar enlace"
 
-#: src/features/resources/ResourceDialog.tsx:55
+#: src/features/resources/ResourceDialog.tsx:56
 msgid "Could not load that link."
 msgstr "No se pudo cargar ese enlace."
 
-#: src/features/profile/ProfileDrawer.tsx:45
+#: src/features/profile/ProfileDrawer.tsx:52
 msgid "Could not load this profile."
 msgstr "No se pudo cargar este perfil."
 
 #. js-lingui-explicit-id
-#: src/components/BackendUnavailable.tsx:39
+#: src/components/BackendUnavailable.tsx:41
 msgid "backendUnknownBody"
 msgstr "No se pudo cargar tu sesión. Inténtalo de nuevo."
 
-#: src/components/layout/AnnouncementsBell.tsx:196
+#: src/components/layout/AnnouncementsBell.tsx:197
 msgid "Create"
 msgstr "Crear"
 
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:117
-#: src/features/community/CreateCommunity.tsx:123
+#: src/features/community/CreateCommunity.tsx:118
+#: src/features/community/CreateCommunity.tsx:124
 msgid "createACommunity"
 msgstr "Crear una comunidad"
 
-#: src/features/events/CreateEventDialog.tsx:348
+#: src/features/events/CreateEventDialog.tsx:349
 msgid "Create a new template"
 msgstr "Crear una plantilla nueva"
 
-#: src/components/EmptyPageContent.tsx:18
+#: src/components/EmptyPageContent.tsx:21
 msgid "Create a post"
 msgstr "Crear una publicación"
 
-#: src/components/EmptyPageContent.tsx:22
+#: src/components/EmptyPageContent.tsx:25
 msgid "Create a resource"
 msgstr "Crear un recurso"
 
+#: src/components/EmptyPageContent.tsx:27
 #: src/components/layout/OnboardingBanner.tsx:39
 msgid "Create a template"
 msgstr "Crear una plantilla"
 
-#: src/app/layouts/CommunityLayout.tsx:56
-#: src/components/EmptyPageContent.tsx:20
-#: src/components/layout/BottomNavBar.tsx:57
+#: src/app/layouts/CommunityLayout.tsx:57
+#: src/components/EmptyPageContent.tsx:23
+#: src/components/layout/BottomNavBar.tsx:63
 msgid "Create an event"
 msgstr "Crear un evento"
 
@@ -335,24 +359,24 @@ msgstr "Crear un evento"
 msgid "Create Event"
 msgstr "Crear evento"
 
-#: src/components/layout/AnnouncementsBell.tsx:179
+#: src/components/layout/AnnouncementsBell.tsx:180
 msgid "Create New Announcement"
 msgstr "Crear nuevo anuncio"
 
-#: src/features/posts/PostsPage.tsx:62
+#: src/features/posts/PostsPage.tsx:63
 msgid "Create post"
 msgstr "Crear publicación"
 
-#: src/features/community/CommunityHome.tsx:324
+#: src/features/community/CommunityHome.tsx:333
 msgid "Create your first event"
 msgstr "Crea tu primer evento"
 
-#: src/api/firebaseApi.ts:836
+#: src/api/firebaseApi.ts:1134
 msgid "Created event was not found"
 msgstr "No se encontró el evento creado"
 
 #. placeholder {0}: r.title
-#: src/features/resources/ResourcesPage.tsx:97
+#: src/features/resources/ResourcesPage.tsx:98
 msgid "Delete {0}"
 msgstr "Eliminar {0}"
 
@@ -360,13 +384,13 @@ msgstr "Eliminar {0}"
 msgid "Delete announcement"
 msgstr "Eliminar anuncio"
 
-#: src/features/posts/PostCards.tsx:64
+#: src/features/posts/PostCards.tsx:65
 msgid "Dislike"
 msgstr "No me gusta"
 
 #. js-lingui-explicit-id
-#: src/components/layout/OnboardingBanner.tsx:143
-#: src/components/layout/OnboardingBanner.tsx:164
+#: src/components/layout/OnboardingBanner.tsx:144
+#: src/components/layout/OnboardingBanner.tsx:165
 msgid "onboardingBanner.dismiss"
 msgstr "Descartar la incorporación"
 
@@ -376,11 +400,11 @@ msgid "notUserSignUp"
 msgstr "¿No tienes una cuenta?"
 
 #. js-lingui-explicit-id
-#: src/features/community/CommunityHome.tsx:289
+#: src/features/community/CommunityHome.tsx:296
 msgid "communityHome.donate"
 msgstr "Donar"
 
-#: src/components/Upload.tsx:136
+#: src/components/Upload.tsx:138
 msgid "Drag and drop an image here"
 msgstr "Arrastra y suelta una imagen aquí"
 
@@ -390,16 +414,16 @@ msgid "nameHintExample"
 msgstr "p. ej., Jane Doe"
 
 #. placeholder {0}: r.title
-#: src/features/resources/ResourcesPage.tsx:91
+#: src/features/resources/ResourcesPage.tsx:92
 msgid "Edit {0}"
 msgstr "Editar {0}"
 
 #. js-lingui-explicit-id
-#: src/features/community/CommunityHome.tsx:142
+#: src/features/community/CommunityHome.tsx:143
 msgid "communityHome.editCommunity"
 msgstr "Editar comunidad"
 
-#: src/features/resources/ResourceDialog.tsx:131
+#: src/features/resources/ResourceDialog.tsx:132
 msgid "Edit title"
 msgstr "Editar título"
 
@@ -408,11 +432,11 @@ msgstr "Editar título"
 msgid "email"
 msgstr "Correo electrónico"
 
-#: src/components/layout/AnnouncementsBell.tsx:187
+#: src/components/layout/AnnouncementsBell.tsx:188
 msgid "Enter a message"
 msgstr "Escribe un mensaje"
 
-#: src/components/layout/AnnouncementsBell.tsx:182
+#: src/components/layout/AnnouncementsBell.tsx:183
 msgid "Enter a title"
 msgstr "Escribe un título"
 
@@ -422,8 +446,8 @@ msgstr "Escribe un título"
 msgid "forgotPasswordEnterEmail"
 msgstr "Ingresa tu correo electrónico"
 
-#: src/components/layout/NavBar.tsx:156
-#: src/components/layout/NavBar.tsx:201
+#: src/components/layout/NavBar.tsx:157
+#: src/components/layout/NavBar.tsx:202
 msgid "Events"
 msgstr "Eventos"
 
@@ -441,12 +465,22 @@ msgstr "Exclamación"
 msgid "sidebar.expand"
 msgstr "Expandir"
 
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:68
+msgid "socialFacebook"
+msgstr "URL de Facebook"
+
 #: src/utils/membership.ts:28
 msgid "Facilitator"
 msgstr "Facilitador"
 
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:311
+#: src/features/templates/TemplatesPage.tsx:122
+msgid "filter"
+msgstr "Filtrar"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:314
 msgid "finish"
 msgstr "Finalizar"
 
@@ -454,20 +488,20 @@ msgstr "Finalizar"
 msgid "Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET."
 msgstr "Firebase Storage no está configurado. Define VITE_FIREBASE_STORAGE_BUCKET."
 
-#: src/components/CommunityMembershipButton.tsx:32
-#: src/components/CommunityMembershipButton.tsx:36
+#: src/components/CommunityMembershipButton.tsx:33
+#: src/components/CommunityMembershipButton.tsx:37
 msgid "Follow"
 msgstr "Seguir"
 
-#: src/components/CommunityMembershipButton.tsx:45
+#: src/components/CommunityMembershipButton.tsx:46
 msgid "Follow community"
 msgstr "Seguir comunidad"
 
-#: src/components/CommunityMembershipButton.tsx:49
+#: src/components/CommunityMembershipButton.tsx:50
 msgid "Follow request sent"
 msgstr "Solicitud de seguimiento enviada"
 
-#: src/components/CommunityMembershipButton.tsx:34
+#: src/components/CommunityMembershipButton.tsx:35
 msgid "Follow Request Sent"
 msgstr "Solicitud de seguimiento enviada"
 
@@ -486,16 +520,16 @@ msgstr "¿Olvidaste tu correo electrónico de la cuenta o necesitas otra ayuda p
 msgid "forgotPasswordPrefix"
 msgstr "¿Olvidaste tu contraseña?"
 
-#: src/components/layout/CurrentCommunityIconOrLogo.tsx:36
+#: src/components/layout/CurrentCommunityIconOrLogo.tsx:37
 msgid "Frankly home"
 msgstr "Inicio de Frankly"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:306
+#: src/components/layout/SideBar.tsx:307
 msgid "sidebar.franklyHome"
 msgstr "Inicio de Frankly"
 
-#: src/components/layout/CurrentCommunityIconOrLogo.tsx:42
+#: src/components/layout/CurrentCommunityIconOrLogo.tsx:43
 msgid "Frankly Logo"
 msgstr "Logotipo de Frankly"
 
@@ -516,13 +550,13 @@ msgid "Heart eyes"
 msgstr "Ojos de corazón"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:362
+#: src/components/layout/SideBar.tsx:363
 msgid "sidebar.helpCenter"
 msgstr "Centro de ayuda"
 
 #. js-lingui-explicit-id
 #. placeholder {0}: community.name
-#: src/features/community/CommunityHome.tsx:249
+#: src/features/community/CommunityHome.tsx:255
 msgid "communityHome.shareBody"
 msgstr "¡Oye, mira {0} en Frankly!"
 
@@ -532,7 +566,12 @@ msgid "hidePassword"
 msgstr "Ocultar contraseña"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:232
+#: src/features/profile/EventsTab.tsx:52
+msgid "historyHeader"
+msgstr "HISTORIAL"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:234
 msgid "timeInput.hour"
 msgstr "Hora"
 
@@ -540,25 +579,30 @@ msgstr "Hora"
 msgid "I'll share this with a private group"
 msgstr "Lo compartiré con un grupo privado"
 
-#: src/features/posts/CreatePostDialog.tsx:166
+#: src/features/posts/CreatePostDialog.tsx:165
 msgid "Image"
 msgstr "Imagen"
 
 #. placeholder {0}: i18n._(e.label)
-#: src/features/posts/CreatePostDialog.tsx:193
+#: src/features/posts/CreatePostDialog.tsx:192
 msgid "Insert {0}"
 msgstr "Insertar {0}"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:66
+msgid "socialInstagram"
+msgstr "URL de Instagram"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:184
 msgid "invalidEmail"
 msgstr "Correo electrónico no válido"
 
-#: src/api/firebaseApi.ts:784
+#: src/api/firebaseApi.ts:1082
 msgid "Invalid event schedule"
 msgstr "Horario del evento no válido"
 
-#: src/api/firebaseApi.ts:116
+#: src/api/firebaseApi.ts:122
 msgid "Invalid or missing {field}"
 msgstr "{field} no válido o faltante"
 
@@ -568,17 +612,17 @@ msgstr "Invita a tu gente"
 
 #. js-lingui-explicit-id
 #. placeholder {0}: community.name
-#: src/features/community/CommunityHome.tsx:245
+#: src/features/community/CommunityHome.tsx:251
 msgid "communityHome.shareSubject"
 msgstr "Únete a {0} en Frankly"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:316
+#: src/components/layout/SideBar.tsx:317
 msgid "sidebar.languageIconLabel"
 msgstr "idioma"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:325
+#: src/components/layout/SideBar.tsx:326
 msgid "sidebar.language"
 msgstr "Idioma"
 
@@ -586,34 +630,39 @@ msgstr "Idioma"
 msgid "Laughing"
 msgstr "Jajaja"
 
-#: src/features/posts/PostCards.tsx:45
+#: src/features/posts/PostCards.tsx:46
 msgid "Like"
 msgstr "Me gusta"
 
 #. js-lingui-explicit-id
-#: src/components/ShareSection.tsx:80
+#: src/components/ShareSection.tsx:95
 msgid "shareSection.linkCopied"
 msgstr "¡Enlace copiado!"
 
-#: src/api/firebaseApi.ts:1061
+#: src/api/firebaseApi.ts:1359
 msgid "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
 msgstr "La vista previa de enlaces no está configurada. Define VITE_LINK_PREVIEW_API_KEY."
 
 #. placeholder {0}: response.status
-#: src/api/firebaseApi.ts:1075
+#: src/api/firebaseApi.ts:1373
 msgid "Link preview request failed ({0})"
 msgstr "Falló la solicitud de vista previa del enlace ({0})"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:69
+msgid "socialLinkedIn"
+msgstr "URL de LinkedIn"
 
 #: src/components/events/EventCards.tsx:111
 msgid "Livestream"
 msgstr "Transmisión en vivo"
 
-#: src/features/resources/ResourceDialog.tsx:88
+#: src/features/resources/ResourceDialog.tsx:89
 msgid "Load link"
 msgstr "Cargar enlace"
 
 #. js-lingui-explicit-id
-#: src/features/auth/SignInButtons.tsx:17
+#: src/features/auth/SignInButtons.tsx:18
 #: src/features/auth/SignInForm.tsx:274
 msgid "signIn"
 msgstr "Iniciar sesión"
@@ -644,7 +693,7 @@ msgid "Looking good"
 msgstr "Se ve bien"
 
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:248
+#: src/features/community/CreateCommunity.tsx:250
 msgid "makeThisSpacePrivate"
 msgstr "Hacer este espacio privado"
 
@@ -652,12 +701,12 @@ msgstr "Hacer este espacio privado"
 msgid "Member"
 msgstr "Miembro"
 
-#: src/api/firebaseApi.ts:601
+#: src/api/firebaseApi.ts:845
 msgid "Membership update was not saved"
 msgstr "No se guardó la actualización de la membresía"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:240
+#: src/components/pickers.tsx:242
 msgid "timeInput.minute"
 msgstr "Minuto"
 
@@ -671,23 +720,38 @@ msgid "passwordRequirements"
 msgstr "Debe tener al menos 12 caracteres y contener una letra minúscula y una mayúscula."
 
 #. js-lingui-explicit-id
-#: src/features/home/HomePage.tsx:47
+#: src/features/profile/ProfilePage.tsx:47
+msgid "mustBeLoggedInToAccessThisSection"
+msgstr "Debes iniciar sesión para acceder a esta sección"
+
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:51
 msgid "myCommunities"
 msgstr "Mis comunidades"
 
-#: src/components/layout/BottomNavBar.tsx:50
+#: src/components/layout/BottomNavBar.tsx:55
 msgid "My events"
 msgstr "Mis eventos"
 
 #. js-lingui-explicit-id
-#: src/components/layout/ProfileMenu.tsx:64
+#: src/features/profile/ProfilePage.tsx:37
+msgid "myEvents"
+msgstr "Mis eventos"
+
+#. js-lingui-explicit-id
+#: src/components/layout/ProfileMenu.tsx:82
 msgid "profileMenu.myEvents"
 msgstr "Mis eventos"
 
 #. js-lingui-explicit-id
-#: src/components/layout/ProfileMenu.tsx:56
+#: src/components/layout/ProfileMenu.tsx:73
 msgid "profileMenu.myProfile"
 msgstr "Mi perfil"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:123
+msgid "name"
+msgstr "Nombre"
 
 #: src/utils/imageUpload.ts:72
 msgid "Network error during upload"
@@ -707,12 +771,12 @@ msgid "Next"
 msgstr "Siguiente"
 
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:259
+#: src/features/community/CreateCommunity.tsx:261
 msgid "next"
 msgstr "Siguiente"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:78
+#: src/components/pickers.tsx:79
 msgid "monthCalendar.nextMonth"
 msgstr "Mes siguiente"
 
@@ -720,7 +784,7 @@ msgstr "Mes siguiente"
 msgid "No"
 msgstr "No"
 
-#: src/components/EmptyPageContent.tsx:69
+#: src/components/EmptyPageContent.tsx:74
 msgid "No {type}"
 msgstr "Sin {type}"
 
@@ -728,11 +792,16 @@ msgstr "Sin {type}"
 msgid "No announcements yet."
 msgstr "Aún no hay anuncios."
 
-#: src/features/posts/PostCards.tsx:173
+#: src/features/posts/PostCards.tsx:175
 msgid "No Comments"
 msgstr "Sin comentarios"
 
-#: src/features/community/CommunityHome.tsx:324
+#. js-lingui-explicit-id
+#: src/features/profile/EventsTab.tsx:82
+msgid "noEventsFound"
+msgstr "No se encontraron eventos"
+
+#: src/features/community/CommunityHome.tsx:333
 msgid "No events found"
 msgstr "No se encontraron eventos"
 
@@ -745,7 +814,12 @@ msgstr "No hay ningún proveedor de carga de imágenes configurado. Define las v
 msgid "No response from the backend after {0} seconds."
 msgstr "No hubo respuesta del backend después de {0} segundos."
 
-#: src/features/events/CreateEventDialog.tsx:442
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatesPage.tsx:140
+msgid "noTemplatesFound"
+msgstr "No se encontraron plantillas."
+
+#: src/features/events/CreateEventDialog.tsx:443
 msgid "No templates found."
 msgstr "No se encontraron plantillas."
 
@@ -754,11 +828,26 @@ msgid "Non-member"
 msgstr "No miembro"
 
 #. js-lingui-explicit-id
-#: src/components/layout/OnboardingBanner.tsx:97
+#: src/features/profile/ProfilePage.tsx:39
+msgid "notifications"
+msgstr "Notificaciones"
+
+#. js-lingui-explicit-id
+#: src/features/profile/NotificationsTab.tsx:132
+msgid "notifyMeAboutNewAnnouncements"
+msgstr "Avísame sobre nuevos anuncios"
+
+#. js-lingui-explicit-id
+#: src/features/profile/NotificationsTab.tsx:144
+msgid "notifyMeAboutNewEvents"
+msgstr "Avísame sobre nuevos eventos"
+
+#. js-lingui-explicit-id
+#: src/components/layout/OnboardingBanner.tsx:98
 msgid "onboardingBanner.progress"
 msgstr "Progreso de la incorporación"
 
-#: src/api/firebaseApi.ts:1068
+#: src/api/firebaseApi.ts:1366
 msgid "Only HTTP and HTTPS links can be previewed."
 msgstr "Solo se pueden previsualizar enlaces HTTP y HTTPS."
 
@@ -767,12 +856,12 @@ msgstr "Solo se pueden previsualizar enlaces HTTP y HTTPS."
 msgid "or"
 msgstr "O"
 
-#: src/components/Upload.tsx:140
+#: src/components/Upload.tsx:142
 msgid "or click to browse"
 msgstr "o haz clic para buscar"
 
 #. js-lingui-explicit-id
-#: src/components/BackendUnavailable.tsx:31
+#: src/components/BackendUnavailable.tsx:33
 msgid "backendDownBody"
 msgstr "Nuestro backend no responde en este momento. Inténtalo de nuevo en unos minutos."
 
@@ -790,11 +879,11 @@ msgstr "Contraseña"
 msgid "passwordResetLinkSent"
 msgstr "Enlace de restablecimiento de contraseña enviado a {email}"
 
-#: src/features/resources/ResourceDialog.tsx:79
+#: src/features/resources/ResourceDialog.tsx:80
 msgid "Paste or enter URL"
 msgstr "Pega o escribe una URL"
 
-#: src/features/home/HomePage.tsx:53
+#: src/features/home/HomePage.tsx:57
 msgid "Placeholder: the home page is not built yet. This is a plain list of your communities."
 msgstr "Marcador de posición: la página de inicio aún no está lista. Esta es una lista simple de tus comunidades."
 
@@ -808,7 +897,7 @@ msgid "pleaseEnterPassword"
 msgstr "Por favor, introduzca una contraseña"
 
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:167
+#: src/features/community/CreateCommunity.tsx:169
 msgid "enterValidCommunityUrl"
 msgstr "Por favor, introduzca una URL de comunidad válida"
 
@@ -820,7 +909,7 @@ msgstr "Por favor, introduzca una dirección de email válida."
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:55
-#: src/features/community/CreateCommunity.tsx:163
+#: src/features/community/CreateCommunity.tsx:165
 msgid "enterValidName"
 msgstr "Por favor, introduzca un nombre válido"
 
@@ -834,33 +923,33 @@ msgid "Plus one"
 msgstr "Más uno"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:262
+#: src/components/pickers.tsx:264
 msgid "timeInput.pm"
 msgstr "p. m."
 
-#: src/features/posts/CreatePostDialog.tsx:202
-#: src/features/resources/ResourceDialog.tsx:143
+#: src/features/posts/CreatePostDialog.tsx:201
+#: src/features/resources/ResourceDialog.tsx:144
 msgid "Post"
 msgstr "Publicar"
 
-#: src/features/posts/CreatePostDialog.tsx:58
+#: src/features/posts/CreatePostDialog.tsx:57
 msgid "Post has been created"
 msgstr "Se creó la publicación"
 
-#: src/features/posts/CreatePostDialog.tsx:58
+#: src/features/posts/CreatePostDialog.tsx:57
 msgid "Post has been updated"
 msgstr "Se actualizó la publicación"
 
-#: src/api/firebaseApi.ts:978
+#: src/api/firebaseApi.ts:1276
 msgid "Post not found"
 msgstr "No se encontró la publicación"
 
-#: src/features/posts/CreatePostDialog.tsx:135
+#: src/features/posts/CreatePostDialog.tsx:134
 msgid "Post text"
 msgstr "Texto de la publicación"
 
-#: src/components/layout/NavBar.tsx:162
-#: src/components/layout/NavBar.tsx:208
+#: src/components/layout/NavBar.tsx:163
+#: src/components/layout/NavBar.tsx:209
 msgid "Posts"
 msgstr "Publicaciones"
 
@@ -875,14 +964,24 @@ msgid "prerequisiteBadge.text"
 msgstr "Requisito previo obligatorio"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:67
+#: src/features/profile/ProfileTab.tsx:150
+msgid "preview"
+msgstr "Vista previa"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:68
 msgid "monthCalendar.previousMonth"
 msgstr "Mes anterior"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:376
+#: src/components/layout/SideBar.tsx:377
 msgid "sidebar.privacyPolicy"
 msgstr "Política de privacidad"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfilePage.tsx:38
+msgid "profile"
+msgstr "Perfil"
 
 #. js-lingui-explicit-id
 #: src/components/layout/ProfileMenu.tsx:34
@@ -890,15 +989,20 @@ msgid "profileMenu.profileButton"
 msgstr "Botón de perfil"
 
 #. js-lingui-explicit-id
-#: src/components/ProfileChip.tsx:71
+#: src/components/ProfileChip.tsx:72
 msgid "profileChip.ariaLabel"
 msgstr "Perfil de {name}"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:90
+msgid "profileUpdated"
+msgstr "Perfil actualizado"
 
 #: src/features/events/CreateEventDialog.tsx:72
 msgid "Public or private?"
 msgstr "¿Público o privado?"
 
-#: src/app/layouts/RootLayout.tsx:64
+#: src/app/layouts/RootLayout.tsx:65
 msgid "React App"
 msgstr "Aplicación React"
 
@@ -909,15 +1013,15 @@ msgstr "Actualiza la página e intenta iniciar sesión en Frankly nuevamente.\n"
 "\n"
 "Si continúas teniendo problemas, puedes "
 
-#: src/features/posts/CreatePostDialog.tsx:111
+#: src/features/posts/CreatePostDialog.tsx:110
 msgid "Remove image"
 msgstr "Quitar imagen"
 
-#: src/features/posts/PostCards.tsx:231
+#: src/features/posts/PostCards.tsx:233
 msgid "Reply"
 msgstr "Responder"
 
-#: src/components/CommunityMembershipButton.tsx:37
+#: src/components/CommunityMembershipButton.tsx:38
 msgid "Request To Follow"
 msgstr "Solicitar seguir"
 
@@ -926,28 +1030,28 @@ msgstr "Solicitar seguir"
 msgid "forgotPasswordSuffix"
 msgstr "restablece tu contraseña"
 
-#: src/features/resources/ResourceDialog.tsx:65
+#: src/features/resources/ResourceDialog.tsx:66
 msgid "Resource added"
 msgstr "Recurso agregado"
 
-#: src/api/firebaseApi.ts:1149
+#: src/api/firebaseApi.ts:1447
 msgid "Resource not found"
 msgstr "No se encontró el recurso"
 
-#: src/features/resources/ResourceDialog.tsx:123
+#: src/features/resources/ResourceDialog.tsx:124
 msgid "Resource title"
 msgstr "Título del recurso"
 
-#: src/features/resources/ResourceDialog.tsx:65
+#: src/features/resources/ResourceDialog.tsx:66
 msgid "Resource updated"
 msgstr "Recurso actualizado"
 
-#: src/features/resources/ResourceDialog.tsx:83
+#: src/features/resources/ResourceDialog.tsx:84
 msgid "Resource URL"
 msgstr "URL del recurso"
 
-#: src/components/layout/NavBar.tsx:169
-#: src/components/layout/NavBar.tsx:216
+#: src/components/layout/NavBar.tsx:170
+#: src/components/layout/NavBar.tsx:217
 msgid "Resources"
 msgstr "Recursos"
 
@@ -956,7 +1060,7 @@ msgstr "Recursos"
 msgid "sidebar.resources"
 msgstr "Recursos"
 
-#: src/features/resources/ResourceDialog.tsx:124
+#: src/features/resources/ResourceDialog.tsx:125
 msgid "Save title"
 msgstr "Guardar título"
 
@@ -968,21 +1072,26 @@ msgstr "Programar un evento"
 msgid "Scheduled event"
 msgstr "Evento programado"
 
-#: src/features/events/EventsPage.tsx:77
 #: src/features/events/EventsPage.tsx:78
+#: src/features/events/EventsPage.tsx:79
 msgid "Search events"
 msgstr "Buscar eventos"
 
-#: src/features/events/CreateEventDialog.tsx:273
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatesPage.tsx:91
+msgid "searchTemplates"
+msgstr "Buscar plantillas"
+
+#: src/features/events/CreateEventDialog.tsx:274
 msgid "Search templates"
 msgstr "Buscar plantillas"
 
-#: src/features/posts/PostCards.tsx:209
+#: src/features/posts/PostCards.tsx:211
 msgid "See more"
 msgstr "Ver más"
 
 #. js-lingui-explicit-id
-#: src/features/community/CommunityHome.tsx:362
+#: src/features/community/CommunityHome.tsx:371
 msgid "seeMoreEvents"
 msgstr "Ver más eventos"
 
@@ -995,27 +1104,37 @@ msgid "Select a time"
 msgstr "Selecciona una hora"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:333
+#: src/components/layout/SideBar.tsx:334
 msgid "sidebar.selectLanguage"
 msgstr "Seleccionar idioma"
 
 #. js-lingui-explicit-id
-#: src/components/ShareSection.tsx:68
+#: src/features/profile/NotificationsTab.tsx:63
+msgid "selectSpace"
+msgstr "Selecciona un espacio:"
+
+#. js-lingui-explicit-id
+#: src/features/profile/NotificationsTab.tsx:125
+msgid "settingsFor"
+msgstr "Configuración de {communityName}"
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:82
 msgid "shareSection.email"
 msgstr "Compartir por correo electrónico"
 
 #. js-lingui-explicit-id
-#: src/components/ShareSection.tsx:50
+#: src/components/ShareSection.tsx:57
 msgid "shareSection.facebook"
 msgstr "Compartir en Facebook"
 
 #. js-lingui-explicit-id
-#: src/components/ShareSection.tsx:62
+#: src/components/ShareSection.tsx:73
 msgid "shareSection.linkedin"
 msgstr "Compartir en LinkedIn"
 
 #. js-lingui-explicit-id
-#: src/components/ShareSection.tsx:56
+#: src/components/ShareSection.tsx:64
 msgid "shareSection.twitter"
 msgstr "Compartir en X"
 
@@ -1028,22 +1147,22 @@ msgstr "Botón para mostrar anuncios"
 msgid "showPassword"
 msgstr "Mostrar contraseña"
 
-#: src/components/layout/NavBar.tsx:238
+#: src/components/layout/NavBar.tsx:239
 msgid "Show sidebar"
 msgstr "Mostrar barra lateral"
 
 #. js-lingui-explicit-id
-#: src/features/auth/SignInDialog.tsx:29
+#: src/features/auth/SignInDialog.tsx:30
 msgid "signInDialog.ariaLabel"
 msgstr "Iniciar sesión"
 
 #. js-lingui-explicit-id
-#: src/components/layout/ProfileMenu.tsx:72
+#: src/components/layout/ProfileMenu.tsx:90
 msgid "profileMenu.signOut"
 msgstr "Cerrar sesión"
 
 #. js-lingui-explicit-id
-#: src/features/auth/SignInButtons.tsx:23
+#: src/features/auth/SignInButtons.tsx:24
 #: src/features/auth/SignInForm.tsx:169
 #: src/features/auth/SignInForm.tsx:273
 msgid "signUp"
@@ -1060,7 +1179,7 @@ msgid "signingUp"
 msgstr "registrándose"
 
 #. js-lingui-explicit-id
-#: src/components/BackendUnavailable.tsx:38
+#: src/components/BackendUnavailable.tsx:40
 msgid "backendUnknownTitle"
 msgstr "Algo salió mal"
 
@@ -1069,43 +1188,60 @@ msgid "Something went wrong creating the event. Please try again."
 msgstr "Algo salió mal al crear el evento. Inténtalo de nuevo."
 
 #. js-lingui-explicit-id
-#: src/features/home/HomePage.tsx:62
+#: src/features/home/HomePage.tsx:66
 msgid "errorLoadingCommunitiesMessage"
 msgstr "Algo salió mal al cargar las comunidades. Actualiza la página."
 
-#: src/features/events/EventsPage.tsx:159
+#: src/features/events/EventsPage.tsx:169
 msgid "Something went wrong loading events."
 msgstr "Algo salió mal al cargar los eventos."
 
-#: src/features/posts/PostsPage.tsx:30
+#. js-lingui-explicit-id
+#: src/features/profile/NotificationsTab.tsx:99
+msgid "errorLoadingNotificationSettings"
+msgstr "Algo salió mal al cargar la configuración de notificaciones. Por favor, actualiza la página."
+
+#: src/features/posts/PostsPage.tsx:31
 msgid "Something went wrong loading posts."
 msgstr "Algo salió mal al cargar las publicaciones."
 
-#: src/features/resources/ResourcesPage.tsx:40
+#: src/features/resources/ResourcesPage.tsx:41
 msgid "Something went wrong loading resources."
 msgstr "Algo salió mal al cargar los recursos."
 
-#: src/scopes/CommunityScope.tsx:72
+#: src/scopes/CommunityScope.tsx:73
 msgid "Something went wrong loading the community."
 msgstr "Algo salió mal al cargar la comunidad."
 
+#: src/features/profile/EventsTab.tsx:41
+msgid "Something went wrong loading your events."
+msgstr "Algo salió mal al cargar tus eventos."
+
 #. js-lingui-explicit-id
-#: src/components/States.tsx:28
+#: src/features/profile/NotificationsTab.tsx:35
+msgid "errorLoadingMemberships"
+msgstr "Algo salió mal al cargar tus membresías. Por favor, actualiza la página."
+
+#. js-lingui-explicit-id
+#: src/components/States.tsx:38
 msgid "errorState.default"
 msgstr "Algo salió mal. Actualiza la página."
 
-#: src/components/CommunityMembershipButton.tsx:51
-#: src/components/layout/AnnouncementsBell.tsx:207
+#: src/components/CommunityMembershipButton.tsx:52
+#: src/components/layout/AnnouncementsBell.tsx:208
 #: src/features/posts/AddCommentDialog.tsx:93
-#: src/features/posts/CreatePostDialog.tsx:62
-#: src/features/resources/ResourceDialog.tsx:68
-#: src/features/resources/ResourcesPage.tsx:107
+#: src/features/posts/CreatePostDialog.tsx:61
+#: src/features/profile/NotificationsTab.tsx:111
+#: src/features/profile/ProfileTab.tsx:77
+#: src/features/profile/ProfileTab.tsx:187
+#: src/features/resources/ResourceDialog.tsx:69
+#: src/features/resources/ResourcesPage.tsx:108
 msgid "Something went wrong. Please try again."
 msgstr "Algo salió mal. Inténtalo de nuevo."
 
 #. js-lingui-explicit-id
-#: src/app/layouts/RootLayout.tsx:105
-#: src/features/community/CreateCommunity.tsx:183
+#: src/app/layouts/RootLayout.tsx:110
+#: src/features/community/CreateCommunity.tsx:185
 msgid "somethingWentWrongTryAgain"
 msgstr "Algo salió mal. Por favor, inténtelo de nuevo."
 
@@ -1114,7 +1250,12 @@ msgstr "Algo salió mal. Por favor, inténtelo de nuevo."
 msgid "startCommunity"
 msgstr "Iniciar una comunidad"
 
-#: src/components/layout/NavBar.tsx:175
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileDrawer.tsx:183
+msgid "tags"
+msgstr "Etiquetas"
+
+#: src/components/layout/NavBar.tsx:176
 msgid "Templates"
 msgstr "Plantillas"
 
@@ -1124,26 +1265,26 @@ msgid "sidebar.templates"
 msgstr "Plantillas"
 
 #. placeholder {0}: Math.round(maxBytes / 1024 / 1024)
-#: src/components/Upload.tsx:187
+#: src/components/Upload.tsx:189
 msgid "That file is too large (max {0} MB)."
 msgstr "Ese archivo es demasiado grande (máx. {0} MB)."
 
-#: src/components/Upload.tsx:185
+#: src/components/Upload.tsx:187
 msgid "That file type isn't supported."
 msgstr "Ese tipo de archivo no es compatible."
 
 #. js-lingui-explicit-id
-#: src/components/BackendUnavailable.tsx:13
+#: src/components/BackendUnavailable.tsx:15
 msgid "backendMisconfiguredTitle"
 msgstr "La app no puede conectarse a su backend"
 
 #. js-lingui-explicit-id
-#: src/components/BackendUnavailable.tsx:14
+#: src/components/BackendUnavailable.tsx:16
 msgid "backendMisconfiguredBody"
 msgstr "El backend parece estar mal configurado (un proyecto o clave de API que no existe, o un servicio deshabilitado). Si administras este sitio, revisa su configuración de Firebase."
 
 #. js-lingui-explicit-id
-#: src/components/BackendUnavailable.tsx:30
+#: src/components/BackendUnavailable.tsx:32
 msgid "backendDownTitle"
 msgstr "El servicio no está disponible"
 
@@ -1152,16 +1293,26 @@ msgstr "El servicio no está disponible"
 msgid "forgotPasswordThen"
 msgstr "entonces "
 
-#: src/features/community/CommunityHome.tsx:315
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatesPage.tsx:73
+msgid "thereWasAnErrorLoadingEventTemplates"
+msgstr "Hubo un error al cargar las plantillas de eventos."
+
+#: src/features/community/CommunityHome.tsx:324
 msgid "There was an error loading events."
 msgstr "Hubo un error al cargar los eventos."
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:40
+msgid "errorLoadingProfileInfo"
+msgstr "Hubo un error al cargar la información del perfil."
 
 #: src/components/layout/AnnouncementsBell.tsx:83
 msgid "There was an error while loading Announcements"
 msgstr "Hubo un error al cargar los anuncios"
 
 #. js-lingui-explicit-id
-#: src/components/BackendUnavailable.tsx:83
+#: src/components/BackendUnavailable.tsx:86
 msgid "backendEmulatorsHint"
 msgstr "Esta versión usa los emuladores locales de Firebase. ¿Están en ejecución?"
 
@@ -1170,11 +1321,11 @@ msgstr "Esta versión usa los emuladores locales de Firebase. ¿Están en ejecuc
 msgid "emailAddressAlreadyInUseLoginError"
 msgstr "Este correo electrónico ya está en uso. Inténtalo "
 
-#: src/app/router.tsx:91
+#: src/app/router.tsx:109
 msgid "This page is not in the React app yet. Soon, this would fall back to the Flutter app."
 msgstr "Esta página aún no está en la app de React. Pronto se redirigirá a la app de Flutter."
 
-#: src/features/NotFoundPage.tsx:8
+#: src/features/NotFoundPage.tsx:13
 msgid "This URL was not found"
 msgstr "No se encontró esta URL"
 
@@ -1193,11 +1344,16 @@ msgid "tooManyRequests"
 msgstr "Demasiadas solicitudes fallidas. Por favor, inténtelo de nuevo más tarde."
 
 #. js-lingui-explicit-id
-#: src/components/BackendUnavailable.tsx:90
+#: src/components/BackendUnavailable.tsx:93
 msgid "tryAgain"
 msgstr "Por favor, inténtelo de nuevo"
 
-#: src/features/posts/CreatePostDialog.tsx:136
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:67
+msgid "socialTwitter"
+msgstr "URL de Twitter"
+
+#: src/features/posts/CreatePostDialog.tsx:135
 msgid "Type something"
 msgstr "Escribe algo"
 
@@ -1227,19 +1383,29 @@ msgid "sidebar.unnamedCommunity"
 msgstr "Comunidad sin nombre"
 
 #. js-lingui-explicit-id
-#: src/features/community/CommunityHome.tsx:341
+#: src/features/profile/EventsTab.tsx:48
+msgid "upcomingHeader"
+msgstr "PRÓXIMOS"
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:350
 msgid "upcomingEvents"
 msgstr "Próximos eventos"
 
-#: src/features/posts/CreatePostDialog.tsx:202
+#: src/features/posts/CreatePostDialog.tsx:201
 msgid "Update"
 msgstr "Actualizar"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:153
+msgid "updateProfile"
+msgstr "Actualizar perfil"
 
 #: src/utils/imageUpload.ts:27
 msgid "Upload aborted"
 msgstr "Carga cancelada"
 
-#: src/components/Upload.tsx:86
+#: src/components/Upload.tsx:88
 msgid "Upload failed"
 msgstr "Falló la carga"
 
@@ -1248,8 +1414,9 @@ msgstr "Falló la carga"
 msgid "Upload failed ({0})"
 msgstr "Falló la carga ({0})"
 
-#: src/features/posts/CreatePostDialog.tsx:213
-#: src/features/resources/ResourceDialog.tsx:148
+#: src/features/posts/CreatePostDialog.tsx:212
+#: src/features/profile/ProfileTab.tsx:162
+#: src/features/resources/ResourceDialog.tsx:149
 msgid "Upload image"
 msgstr "Subir imagen"
 
@@ -1258,7 +1425,12 @@ msgid "User-{suffix}"
 msgstr "Usuario-{suffix}"
 
 #. js-lingui-explicit-id
-#: src/components/BackendUnavailable.tsx:22
+#: src/features/templates/TemplatesPage.tsx:156
+msgid "viewMoreTemplates"
+msgstr "Ver más plantillas"
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:24
 msgid "backendUnreachableTitle"
 msgstr "No podemos conectarnos al servidor"
 
@@ -1272,31 +1444,35 @@ msgstr "No pudimos encontrar una cuenta con este correo electrónico. Inténtalo
 msgid "somethingWentWrongLongPrefix"
 msgstr "Lo sentimos, algo salió mal."
 
-#: src/components/EmptyPageContent.tsx:72
+#: src/components/EmptyPageContent.tsx:80
 msgid "When new {type} are added, you'll see them here."
 msgstr "Cuando se agreguen nuevos {type}, los verás aquí."
 
-#: src/components/ConfirmDialog.tsx:44
+#: src/components/ConfirmDialog.tsx:51
 #: src/components/layout/AnnouncementsBell.tsx:110
 msgid "Yes"
 msgstr "Sí"
 
 #. js-lingui-explicit-id
-#: src/components/ProfileChip.tsx:41
+#: src/components/ProfileChip.tsx:42
 msgid "profileChip.you"
 msgstr "Tú"
 
-#: src/components/events/ParticipantsRow.tsx:38
+#: src/components/events/ParticipantsRow.tsx:39
 msgid "You"
 msgstr "Tú"
 
 #. placeholder {0}: total - 1
-#: src/components/events/ParticipantsRow.tsx:37
+#: src/components/events/ParticipantsRow.tsx:38
 msgid "You + {0}"
 msgstr "Tú + {0}"
 
+#: src/features/profile/NotificationsTab.tsx:47
+msgid "You aren't a member of any communities."
+msgstr "No eres miembro de ninguna comunidad."
+
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:214
+#: src/features/community/CreateCommunity.tsx:216
 msgid "youCanChangeThisLater"
 msgstr "Puedes cambiar esto más tarde"
 
@@ -1305,16 +1481,16 @@ msgstr "Puedes cambiar esto más tarde"
 msgid "emailAndPasswordMismatchCheck"
 msgstr "Puede verificar lo que ingresó e intentarlo de nuevo."
 
-#: src/features/home/HomePage.tsx:76
+#: src/features/home/HomePage.tsx:80
 msgid "You don't belong to any communities"
 msgstr "No perteneces a ninguna comunidad"
 
 #. js-lingui-explicit-id
-#: src/app/layouts/RootLayout.tsx:120
+#: src/app/layouts/RootLayout.tsx:125
 msgid "signedOutRefreshPrompt"
 msgstr "Has cerrado sesión. Actualiza la página para volver a iniciar sesión"
 
-#: src/api/firebaseApi.ts:130
+#: src/api/firebaseApi.ts:136
 msgid "You must be signed in to continue."
 msgstr "Debes iniciar sesión para continuar."
 
@@ -1324,7 +1500,7 @@ msgid "sidebar.unfollowConfirmBody"
 msgstr "Dejarás de recibir novedades y perderás el acceso a sus eventos."
 
 #. js-lingui-explicit-id
-#: src/features/community/CreateCommunity.tsx:298
+#: src/features/community/CreateCommunity.tsx:301
 msgid "communitySuccessPrefix"
 msgstr "Has creado tu comunidad con éxito"
 
