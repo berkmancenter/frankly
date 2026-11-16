@@ -10,7 +10,7 @@ msgstr ""
 #. js-lingui-explicit-id
 #: src/components/ProfileChip.tsx:60
 msgid "profileChip.youSuffix"
-msgstr ""
+msgstr " (你)"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:219
@@ -26,12 +26,12 @@ msgstr "替代"
 #. placeholder {0}: thread.commentCount
 #: src/features/posts/PostCards.tsx:174
 msgid "{0, plural, one {# Comment} other {# Comments}}"
-msgstr ""
+msgstr "{0, plural, one {# 条评论} other {# 条评论}}"
 
 #. placeholder {0}: expanded ? "Less" : "Read More"
 #: src/features/community/CommunityHome.tsx:232
 msgid "{0}"
-msgstr ""
+msgstr "{0}"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:333
@@ -40,29 +40,29 @@ msgstr "{appName} 的服务条款"
 
 #: src/api/firebaseApi.ts:433
 msgid "{entity} not found"
-msgstr ""
+msgstr "未找到{entity}"
 
 #: src/components/events/ParticipantsRow.tsx:42
 msgid "{total} People"
-msgstr ""
+msgstr "{total} 人"
 
 #. placeholder {0}: total - shown.length
 #: src/components/events/ParticipantsRow.tsx:40
 msgid "+{0}"
-msgstr ""
+msgstr "+{0}"
 
 #: src/components/events/ParticipantsRow.tsx:43
 msgid "1 person"
-msgstr ""
+msgstr "1 人"
 
 #: src/features/posts/EmotionSection.tsx:16
 msgid "100"
-msgstr ""
+msgstr "100"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:359
+#: src/components/layout/SideBar.tsx:369
 msgid "sidebar.aboutFrankly"
-msgstr ""
+msgstr "关于 Frankly"
 
 #. js-lingui-explicit-id
 #: src/features/community/CommunityHome.tsx:219
@@ -71,30 +71,30 @@ msgstr "关于我们"
 
 #: src/features/resources/ResourcesPage.tsx:124
 msgid "Add a resource"
-msgstr ""
+msgstr "添加资源"
 
 #: src/features/posts/AddCommentDialog.tsx:64
 #: src/features/posts/AddCommentDialog.tsx:85
 msgid "Add comment"
-msgstr ""
+msgstr "添加评论"
 
 #: src/features/posts/EmotionSection.tsx:51
 msgid "Add reaction"
-msgstr ""
+msgstr "添加表情回应"
 
-#: src/components/layout/NavBar.tsx:232
+#: src/components/layout/NavBar.tsx:231
 #: src/utils/membership.ts:26
 msgid "Admin"
-msgstr ""
+msgstr "管理员"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:188
+#: src/components/layout/SideBar.tsx:189
 msgid "sidebar.admin"
-msgstr ""
+msgstr "管理员"
 
-#: src/features/events/CreateEventDialog.tsx:221
+#: src/features/events/CreateEventDialog.tsx:226
 msgid "Allow the community to join"
-msgstr ""
+msgstr "允许社区成员加入"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:161
@@ -102,71 +102,71 @@ msgid "alreadyUserSignIn"
 msgstr "已有账户？"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:262
+#: src/components/pickers.tsx:263
 msgid "timeInput.am"
-msgstr ""
+msgstr "上午"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:247
+#: src/components/pickers.tsx:248
 msgid "timeInput.amOrPm"
-msgstr ""
+msgstr "上午或下午"
 
 #: src/components/layout/AnnouncementsBell.tsx:99
 msgid "Announcement"
-msgstr ""
+msgstr "公告"
 
 #: src/components/layout/AnnouncementsBell.tsx:204
 msgid "Announcement created"
-msgstr ""
+msgstr "公告已创建"
 
 #: src/components/layout/AnnouncementsBell.tsx:114
 msgid "Announcement deleted"
-msgstr ""
+msgstr "公告已删除"
 
 #: src/components/layout/AnnouncementsBell.tsx:68
 msgid "Announcements"
-msgstr ""
+msgstr "公告"
 
 #. js-lingui-explicit-id
 #: src/components/ProfileChip.tsx:42
 msgid "profileChip.anonymous"
-msgstr ""
+msgstr "匿名"
 
 #: src/components/layout/AnnouncementsBell.tsx:108
 msgid "Are you sure you want to delete this announcement?"
-msgstr ""
+msgstr "确定要删除这条公告吗？"
 
 #: src/features/resources/ResourcesPage.tsx:101
 msgid "Are you sure you want to delete this resource?"
-msgstr ""
+msgstr "确定要删除这个资源吗？"
 
 #: src/features/posts/CreatePostDialog.tsx:162
 msgid "Attach image"
-msgstr ""
+msgstr "附加图片"
 
 #: src/features/posts/CreatePostDialog.tsx:102
 msgid "Attached"
-msgstr ""
+msgstr "已附加"
 
 #: src/utils/membership.ts:32
 msgid "Attendee"
-msgstr ""
+msgstr "参与者"
 
-#: src/features/events/CreateEventDialog.tsx:186
+#: src/features/events/CreateEventDialog.tsx:191
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
 #: src/utils/membership.ts:30
 msgid "Banned"
-msgstr ""
+msgstr "已被封禁"
 
 #: src/components/layout/BottomNavBar.tsx:39
 msgid "Bottom navigation"
-msgstr ""
+msgstr "底部导航"
 
 #: src/components/layout/OnboardingBanner.tsx:34
 msgid "Brand your space"
-msgstr ""
+msgstr "打造你的专属空间"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:322
@@ -175,29 +175,29 @@ msgstr "通过登录、注册或使用 {appName}，我同意遵守 "
 
 #: src/components/Upload.tsx:163
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:171
+#: src/components/layout/SideBar.tsx:172
 msgid "sidebar.cancel"
-msgstr ""
+msgstr "取消"
 
 #: src/features/resources/ResourceDialog.tsx:111
 msgid "Change image"
-msgstr ""
+msgstr "更换图片"
 
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:23
 msgid "backendUnreachableBody"
-msgstr ""
+msgstr "请检查你的网络连接，然后重试。"
 
 #: src/components/Upload.tsx:136
 msgid "Choose a photo"
-msgstr ""
+msgstr "选择照片"
 
 #: src/features/events/CreateEventDialog.tsx:71
 msgid "Choose Template"
-msgstr ""
+msgstr "选择模板"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:305
@@ -210,34 +210,34 @@ msgstr "点击右上角的齿轮图标以编辑您的社区设置。"
 #: src/features/posts/CreatePostDialog.tsx:93
 #: src/features/profile/ProfileDrawer.tsx:38
 msgid "Close"
-msgstr ""
+msgstr "关闭"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:244
+#: src/components/layout/SideBar.tsx:245
 msgid "sidebar.close"
-msgstr ""
+msgstr "关闭"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:342
+#: src/components/layout/SideBar.tsx:352
 msgid "sidebar.closeDialog"
-msgstr ""
+msgstr "关闭"
 
 #: src/utils/imageUpload.ts:150
 msgid "Cloudinary isn't configured. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_IMAGE_PRESET."
-msgstr ""
+msgstr "Cloudinary 尚未配置。请设置 VITE_CLOUDINARY_CLOUD_NAME 和 VITE_CLOUDINARY_IMAGE_PRESET。"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:117
+#: src/components/layout/SideBar.tsx:118
 msgid "sidebar.collapse"
-msgstr ""
+msgstr "收起"
 
 #: src/features/posts/AddCommentDialog.tsx:72
 msgid "Comment"
-msgstr ""
+msgstr "评论"
 
 #: src/features/posts/AddCommentDialog.tsx:81
 msgid "Comment cannot be empty"
-msgstr ""
+msgstr "评论不能为空"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:203
@@ -245,14 +245,14 @@ msgid "communityName"
 msgstr "社区名称"
 
 #: src/api/firebaseApi.ts:467
-#: src/api/firebaseApi.ts:577
+#: src/api/firebaseApi.ts:579
 msgid "Community not found"
-msgstr ""
+msgstr "未找到该社区"
 
 #. js-lingui-explicit-id
 #: src/components/layout/OnboardingBanner.tsx:131
 msgid "onboardingBanner.region"
-msgstr ""
+msgstr "社区入门引导"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:224
@@ -283,24 +283,24 @@ msgstr "联系支持团队寻求帮助"
 #. js-lingui-explicit-id
 #: src/components/ShareSection.tsx:76
 msgid "shareSection.copyLink"
-msgstr ""
+msgstr "复制链接"
 
 #: src/features/resources/ResourceDialog.tsx:55
 msgid "Could not load that link."
-msgstr ""
+msgstr "无法加载该链接。"
 
 #: src/features/profile/ProfileDrawer.tsx:45
 msgid "Could not load this profile."
-msgstr ""
+msgstr "无法加载此个人资料。"
 
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:39
 msgid "backendUnknownBody"
-msgstr ""
+msgstr "无法加载你的会话。请重试。"
 
 #: src/components/layout/AnnouncementsBell.tsx:196
 msgid "Create"
-msgstr ""
+msgstr "创建"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:117
@@ -308,66 +308,66 @@ msgstr ""
 msgid "createACommunity"
 msgstr "创建社区"
 
-#: src/features/events/CreateEventDialog.tsx:340
+#: src/features/events/CreateEventDialog.tsx:348
 msgid "Create a new template"
-msgstr ""
+msgstr "创建新模板"
 
 #: src/components/EmptyPageContent.tsx:18
 msgid "Create a post"
-msgstr ""
+msgstr "创建帖子"
 
 #: src/components/EmptyPageContent.tsx:22
 msgid "Create a resource"
-msgstr ""
+msgstr "创建资源"
 
 #: src/components/layout/OnboardingBanner.tsx:39
 msgid "Create a template"
-msgstr ""
+msgstr "创建模板"
 
 #: src/app/layouts/CommunityLayout.tsx:56
 #: src/components/EmptyPageContent.tsx:20
 #: src/components/layout/BottomNavBar.tsx:57
 msgid "Create an event"
-msgstr ""
+msgstr "创建活动"
 
-#: src/features/events/CreateEventDialog.tsx:193
+#: src/features/events/CreateEventDialog.tsx:198
 msgid "Create Event"
-msgstr ""
+msgstr "创建活动"
 
 #: src/components/layout/AnnouncementsBell.tsx:179
 msgid "Create New Announcement"
-msgstr ""
+msgstr "创建新公告"
 
 #: src/features/posts/PostsPage.tsx:62
 msgid "Create post"
-msgstr ""
+msgstr "创建帖子"
 
-#: src/features/community/CommunityHome.tsx:325
+#: src/features/community/CommunityHome.tsx:324
 msgid "Create your first event"
-msgstr ""
+msgstr "创建你的第一个活动"
 
-#: src/api/firebaseApi.ts:832
+#: src/api/firebaseApi.ts:836
 msgid "Created event was not found"
-msgstr ""
+msgstr "未找到已创建的活动"
 
 #. placeholder {0}: r.title
 #: src/features/resources/ResourcesPage.tsx:97
 msgid "Delete {0}"
-msgstr ""
+msgstr "删除{0}"
 
 #: src/components/layout/AnnouncementsBell.tsx:104
 msgid "Delete announcement"
-msgstr ""
+msgstr "删除公告"
 
 #: src/features/posts/PostCards.tsx:64
 msgid "Dislike"
-msgstr ""
+msgstr "不喜欢"
 
 #. js-lingui-explicit-id
 #: src/components/layout/OnboardingBanner.tsx:143
 #: src/components/layout/OnboardingBanner.tsx:164
 msgid "onboardingBanner.dismiss"
-msgstr ""
+msgstr "关闭入门引导"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:163
@@ -375,13 +375,13 @@ msgid "notUserSignUp"
 msgstr "沒有賬戶？"
 
 #. js-lingui-explicit-id
-#: src/features/community/CommunityHome.tsx:290
+#: src/features/community/CommunityHome.tsx:289
 msgid "communityHome.donate"
-msgstr ""
+msgstr "捐赠"
 
 #: src/components/Upload.tsx:136
 msgid "Drag and drop an image here"
-msgstr ""
+msgstr "将图片拖放到此处"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:201
@@ -391,34 +391,29 @@ msgstr "例如：Jane Doe"
 #. placeholder {0}: r.title
 #: src/features/resources/ResourcesPage.tsx:91
 msgid "Edit {0}"
-msgstr ""
+msgstr "编辑{0}"
 
 #. js-lingui-explicit-id
 #: src/features/community/CommunityHome.tsx:142
 msgid "communityHome.editCommunity"
-msgstr ""
+msgstr "编辑社区"
 
 #: src/features/resources/ResourceDialog.tsx:131
 msgid "Edit title"
-msgstr ""
+msgstr "编辑标题"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:212
 msgid "email"
 msgstr "电子邮箱"
 
-#. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:337
-msgid "sidebar.english"
-msgstr ""
-
 #: src/components/layout/AnnouncementsBell.tsx:187
 msgid "Enter a message"
-msgstr ""
+msgstr "输入消息"
 
 #: src/components/layout/AnnouncementsBell.tsx:182
 msgid "Enter a title"
-msgstr ""
+msgstr "输入标题"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:62
@@ -426,28 +421,28 @@ msgstr ""
 msgid "forgotPasswordEnterEmail"
 msgstr "输入您的电子邮件"
 
-#: src/components/layout/NavBar.tsx:157
-#: src/components/layout/NavBar.tsx:202
+#: src/components/layout/NavBar.tsx:156
+#: src/components/layout/NavBar.tsx:201
 msgid "Events"
-msgstr ""
+msgstr "活动"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:137
+#: src/components/layout/SideBar.tsx:138
 msgid "sidebar.events"
-msgstr ""
+msgstr "活动"
 
 #: src/features/posts/EmotionSection.tsx:17
 msgid "Exclamation"
-msgstr ""
+msgstr "感叹号"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:118
+#: src/components/layout/SideBar.tsx:119
 msgid "sidebar.expand"
-msgstr ""
+msgstr "展开"
 
 #: src/utils/membership.ts:28
 msgid "Facilitator"
-msgstr ""
+msgstr "主持人"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:311
@@ -456,24 +451,24 @@ msgstr "完成"
 
 #: src/utils/imageUpload.ts:156
 msgid "Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET."
-msgstr ""
+msgstr "Firebase Storage 尚未配置。请设置 VITE_FIREBASE_STORAGE_BUCKET。"
 
 #: src/components/CommunityMembershipButton.tsx:32
 #: src/components/CommunityMembershipButton.tsx:36
 msgid "Follow"
-msgstr ""
+msgstr "关注"
 
 #: src/components/CommunityMembershipButton.tsx:45
 msgid "Follow community"
-msgstr ""
+msgstr "关注社区"
 
 #: src/components/CommunityMembershipButton.tsx:49
 msgid "Follow request sent"
-msgstr ""
+msgstr "关注请求已发送"
 
 #: src/components/CommunityMembershipButton.tsx:34
 msgid "Follow Request Sent"
-msgstr ""
+msgstr "关注请求已发送"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:170
@@ -492,43 +487,43 @@ msgstr "忘记密码？"
 
 #: src/components/layout/CurrentCommunityIconOrLogo.tsx:36
 msgid "Frankly home"
-msgstr ""
+msgstr "Frankly 首页"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:305
+#: src/components/layout/SideBar.tsx:306
 msgid "sidebar.franklyHome"
-msgstr ""
+msgstr "Frankly 首页"
 
 #: src/components/layout/CurrentCommunityIconOrLogo.tsx:42
 msgid "Frankly Logo"
-msgstr ""
+msgstr "Frankly 标志"
 
 #: src/components/layout/OnboardingBanner.tsx:48
 msgid "Get it on the books"
-msgstr ""
+msgstr "把它安排上"
 
 #: src/components/layout/OnboardingBanner.tsx:43
 msgid "Get people talking"
-msgstr ""
+msgstr "让大家聊起来"
 
 #: src/features/posts/EmotionSection.tsx:14
 msgid "Heart"
-msgstr ""
+msgstr "爱心"
 
 #: src/features/posts/EmotionSection.tsx:20
 msgid "Heart eyes"
-msgstr ""
+msgstr "爱心眼"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:352
+#: src/components/layout/SideBar.tsx:362
 msgid "sidebar.helpCenter"
-msgstr ""
+msgstr "帮助中心"
 
 #. js-lingui-explicit-id
 #. placeholder {0}: community.name
 #: src/features/community/CommunityHome.tsx:249
 msgid "communityHome.shareBody"
-msgstr ""
+msgstr "嘿，来看看 Frankly 上的 {0}！"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:235
@@ -536,85 +531,85 @@ msgid "hidePassword"
 msgstr "隱藏密碼"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:231
+#: src/components/pickers.tsx:232
 msgid "timeInput.hour"
-msgstr ""
+msgstr "小时"
 
-#: src/features/events/CreateEventDialog.tsx:230
+#: src/features/events/CreateEventDialog.tsx:235
 msgid "I'll share this with a private group"
-msgstr ""
+msgstr "我会与私密群组分享"
 
 #: src/features/posts/CreatePostDialog.tsx:166
 msgid "Image"
-msgstr ""
+msgstr "图片"
 
 #. placeholder {0}: i18n._(e.label)
 #: src/features/posts/CreatePostDialog.tsx:193
 msgid "Insert {0}"
-msgstr ""
+msgstr "插入{0}"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:184
 msgid "invalidEmail"
 msgstr "无效的电子邮件"
 
-#: src/api/firebaseApi.ts:782
+#: src/api/firebaseApi.ts:784
 msgid "Invalid event schedule"
-msgstr ""
+msgstr "活动时间安排无效"
 
 #: src/api/firebaseApi.ts:116
 msgid "Invalid or missing {field}"
-msgstr ""
+msgstr "{field}无效或缺失"
 
 #: src/components/layout/OnboardingBanner.tsx:49
 msgid "Invite your people"
-msgstr ""
+msgstr "邀请你的伙伴"
 
 #. js-lingui-explicit-id
 #. placeholder {0}: community.name
 #: src/features/community/CommunityHome.tsx:245
 msgid "communityHome.shareSubject"
-msgstr ""
+msgstr "加入 Frankly 上的 {0}"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:315
+#: src/components/layout/SideBar.tsx:316
 msgid "sidebar.languageIconLabel"
-msgstr ""
+msgstr "语言"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:324
+#: src/components/layout/SideBar.tsx:325
 msgid "sidebar.language"
-msgstr ""
+msgstr "语言"
 
 #: src/features/posts/EmotionSection.tsx:19
 msgid "Laughing"
-msgstr ""
+msgstr "大笑"
 
 #: src/features/posts/PostCards.tsx:45
 msgid "Like"
-msgstr ""
+msgstr "喜欢"
 
 #. js-lingui-explicit-id
 #: src/components/ShareSection.tsx:80
 msgid "shareSection.linkCopied"
-msgstr ""
+msgstr "链接已复制！"
 
-#: src/api/firebaseApi.ts:1057
+#: src/api/firebaseApi.ts:1061
 msgid "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
-msgstr ""
+msgstr "链接预览尚未配置。请设置 VITE_LINK_PREVIEW_API_KEY。"
 
 #. placeholder {0}: response.status
-#: src/api/firebaseApi.ts:1071
+#: src/api/firebaseApi.ts:1075
 msgid "Link preview request failed ({0})"
-msgstr ""
+msgstr "链接预览请求失败（{0}）"
 
-#: src/components/events/EventCards.tsx:110
+#: src/components/events/EventCards.tsx:111
 msgid "Livestream"
-msgstr ""
+msgstr "直播"
 
 #: src/features/resources/ResourceDialog.tsx:88
 msgid "Load link"
-msgstr ""
+msgstr "加载链接"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInButtons.tsx:17
@@ -645,7 +640,7 @@ msgstr "登入"
 #: src/components/layout/OnboardingBanner.tsx:33
 #: src/components/layout/OnboardingBanner.tsx:38
 msgid "Looking good"
-msgstr ""
+msgstr "看起来不错"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:248
@@ -654,20 +649,20 @@ msgstr "设此为私密空间"
 
 #: src/utils/membership.ts:29
 msgid "Member"
-msgstr ""
+msgstr "成员"
 
-#: src/api/firebaseApi.ts:599
+#: src/api/firebaseApi.ts:601
 msgid "Membership update was not saved"
-msgstr ""
+msgstr "成员资格更新未保存"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:239
+#: src/components/pickers.tsx:240
 msgid "timeInput.minute"
-msgstr ""
+msgstr "分钟"
 
 #: src/utils/membership.ts:27
 msgid "Moderator"
-msgstr ""
+msgstr "版主"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:251
@@ -681,34 +676,34 @@ msgstr "我的社区"
 
 #: src/components/layout/BottomNavBar.tsx:50
 msgid "My events"
-msgstr ""
+msgstr "我的活动"
 
 #. js-lingui-explicit-id
 #: src/components/layout/ProfileMenu.tsx:64
 msgid "profileMenu.myEvents"
-msgstr ""
+msgstr "我的活动"
 
 #. js-lingui-explicit-id
 #: src/components/layout/ProfileMenu.tsx:56
 msgid "profileMenu.myProfile"
-msgstr ""
+msgstr "我的个人资料"
 
 #: src/utils/imageUpload.ts:72
 msgid "Network error during upload"
-msgstr ""
+msgstr "上传时出现网络错误"
 
 #: src/components/layout/AnnouncementsBell.tsx:72
 msgid "New Announcement"
-msgstr ""
+msgstr "新公告"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:153
 msgid "newToApp"
 msgstr "新来到 {appName}？"
 
-#: src/features/events/CreateEventDialog.tsx:193
+#: src/features/events/CreateEventDialog.tsx:198
 msgid "Next"
-msgstr ""
+msgstr "下一步"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:259
@@ -718,53 +713,53 @@ msgstr "下一步"
 #. js-lingui-explicit-id
 #: src/components/pickers.tsx:78
 msgid "monthCalendar.nextMonth"
-msgstr ""
+msgstr "下个月"
 
 #: src/components/layout/AnnouncementsBell.tsx:109
 msgid "No"
-msgstr ""
+msgstr "否"
 
 #: src/components/EmptyPageContent.tsx:69
 msgid "No {type}"
-msgstr ""
+msgstr "没有{type}"
 
 #: src/components/layout/AnnouncementsBell.tsx:86
 msgid "No announcements yet."
-msgstr ""
+msgstr "还没有公告。"
 
 #: src/features/posts/PostCards.tsx:173
 msgid "No Comments"
-msgstr ""
+msgstr "没有评论"
 
-#: src/features/community/CommunityHome.tsx:325
+#: src/features/community/CommunityHome.tsx:324
 msgid "No events found"
-msgstr ""
+msgstr "未找到活动"
 
 #: src/utils/imageUpload.ts:171
 msgid "No image upload provider is configured. Set the VITE_CLOUDINARY_* variables or VITE_FIREBASE_STORAGE_BUCKET."
-msgstr ""
+msgstr "尚未配置图片上传服务。请设置 VITE_CLOUDINARY_* 变量或 VITE_FIREBASE_STORAGE_BUCKET。"
 
 #. placeholder {0}: Math.round(startupTimeoutMs / 1000)
 #: src/api/firebaseAuthService.ts:219
 msgid "No response from the backend after {0} seconds."
-msgstr ""
+msgstr "{0} 秒后后端仍无响应。"
 
-#: src/features/events/CreateEventDialog.tsx:434
+#: src/features/events/CreateEventDialog.tsx:442
 msgid "No templates found."
-msgstr ""
+msgstr "未找到模板。"
 
 #: src/utils/membership.ts:31
 msgid "Non-member"
-msgstr ""
+msgstr "非成员"
 
 #. js-lingui-explicit-id
 #: src/components/layout/OnboardingBanner.tsx:97
 msgid "onboardingBanner.progress"
-msgstr ""
+msgstr "入门引导进度"
 
-#: src/api/firebaseApi.ts:1064
+#: src/api/firebaseApi.ts:1068
 msgid "Only HTTP and HTTPS links can be previewed."
-msgstr ""
+msgstr "仅支持预览 HTTP 和 HTTPS 链接。"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:280
@@ -773,16 +768,16 @@ msgstr "或者"
 
 #: src/components/Upload.tsx:140
 msgid "or click to browse"
-msgstr ""
+msgstr "或点击浏览"
 
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:31
 msgid "backendDownBody"
-msgstr ""
+msgstr "我们的后端目前没有响应。请几分钟后重试。"
 
 #: src/utils/membership.ts:25
 msgid "Owner"
-msgstr ""
+msgstr "所有者"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:223
@@ -796,15 +791,15 @@ msgstr "密码重置链接已发送至 {email}"
 
 #: src/features/resources/ResourceDialog.tsx:79
 msgid "Paste or enter URL"
-msgstr ""
+msgstr "粘贴或输入网址"
 
 #: src/features/home/HomePage.tsx:53
 msgid "Placeholder: the home page is not built yet. This is a plain list of your communities."
-msgstr ""
+msgstr "占位内容：首页尚未完成。这里只是你所在社区的简单列表。"
 
-#: src/features/events/CreateEventDialog.tsx:157
+#: src/features/events/CreateEventDialog.tsx:158
 msgid "Please choose a time in the future."
-msgstr ""
+msgstr "请选择未来的时间。"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:73
@@ -835,76 +830,76 @@ msgstr "請輸入有效的密碼"
 
 #: src/features/posts/EmotionSection.tsx:18
 msgid "Plus one"
-msgstr ""
+msgstr "加一"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:261
+#: src/components/pickers.tsx:262
 msgid "timeInput.pm"
-msgstr ""
+msgstr "下午"
 
 #: src/features/posts/CreatePostDialog.tsx:202
 #: src/features/resources/ResourceDialog.tsx:143
 msgid "Post"
-msgstr ""
+msgstr "发布"
 
 #: src/features/posts/CreatePostDialog.tsx:58
 msgid "Post has been created"
-msgstr ""
+msgstr "帖子已创建"
 
 #: src/features/posts/CreatePostDialog.tsx:58
 msgid "Post has been updated"
-msgstr ""
+msgstr "帖子已更新"
 
-#: src/api/firebaseApi.ts:974
+#: src/api/firebaseApi.ts:978
 msgid "Post not found"
-msgstr ""
+msgstr "未找到该帖子"
 
 #: src/features/posts/CreatePostDialog.tsx:135
 msgid "Post text"
-msgstr ""
+msgstr "帖子内容"
 
-#: src/components/layout/NavBar.tsx:163
-#: src/components/layout/NavBar.tsx:209
+#: src/components/layout/NavBar.tsx:162
+#: src/components/layout/NavBar.tsx:208
 msgid "Posts"
-msgstr ""
+msgstr "帖子"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:142
+#: src/components/layout/SideBar.tsx:143
 msgid "sidebar.posts"
-msgstr ""
+msgstr "帖子"
 
 #. js-lingui-explicit-id
 #: src/components/misc.tsx:38
 msgid "prerequisiteBadge.text"
-msgstr ""
+msgstr "需先完成前置条件"
 
 #. js-lingui-explicit-id
 #: src/components/pickers.tsx:67
 msgid "monthCalendar.previousMonth"
-msgstr ""
+msgstr "上个月"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:366
+#: src/components/layout/SideBar.tsx:376
 msgid "sidebar.privacyPolicy"
-msgstr ""
+msgstr "隐私政策"
 
 #. js-lingui-explicit-id
 #: src/components/layout/ProfileMenu.tsx:34
 msgid "profileMenu.profileButton"
-msgstr ""
+msgstr "个人资料按钮"
 
 #. js-lingui-explicit-id
 #: src/components/ProfileChip.tsx:71
 msgid "profileChip.ariaLabel"
-msgstr ""
+msgstr "{name} 的个人资料"
 
 #: src/features/events/CreateEventDialog.tsx:72
 msgid "Public or private?"
-msgstr ""
+msgstr "公开还是私密？"
 
 #: src/app/layouts/RootLayout.tsx:64
 msgid "React App"
-msgstr ""
+msgstr "React 应用"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:206
@@ -915,15 +910,15 @@ msgstr "请刷新页面并重新尝试登录 Frankly。\n"
 
 #: src/features/posts/CreatePostDialog.tsx:111
 msgid "Remove image"
-msgstr ""
+msgstr "移除图片"
 
 #: src/features/posts/PostCards.tsx:231
 msgid "Reply"
-msgstr ""
+msgstr "回复"
 
 #: src/components/CommunityMembershipButton.tsx:37
 msgid "Request To Follow"
-msgstr ""
+msgstr "请求关注"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:72
@@ -932,114 +927,119 @@ msgstr "重置您的密码"
 
 #: src/features/resources/ResourceDialog.tsx:65
 msgid "Resource added"
-msgstr ""
+msgstr "资源已添加"
 
-#: src/api/firebaseApi.ts:1145
+#: src/api/firebaseApi.ts:1149
 msgid "Resource not found"
-msgstr ""
+msgstr "未找到该资源"
 
 #: src/features/resources/ResourceDialog.tsx:123
 msgid "Resource title"
-msgstr ""
+msgstr "资源标题"
 
 #: src/features/resources/ResourceDialog.tsx:65
 msgid "Resource updated"
-msgstr ""
+msgstr "资源已更新"
 
 #: src/features/resources/ResourceDialog.tsx:83
 msgid "Resource URL"
-msgstr ""
+msgstr "资源网址"
 
-#: src/components/layout/NavBar.tsx:170
-#: src/components/layout/NavBar.tsx:217
+#: src/components/layout/NavBar.tsx:169
+#: src/components/layout/NavBar.tsx:216
 msgid "Resources"
-msgstr ""
+msgstr "资源"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:148
+#: src/components/layout/SideBar.tsx:149
 msgid "sidebar.resources"
-msgstr ""
+msgstr "资源"
 
 #: src/features/resources/ResourceDialog.tsx:124
 msgid "Save title"
-msgstr ""
+msgstr "保存标题"
 
 #: src/components/layout/OnboardingBanner.tsx:44
 msgid "Schedule an event"
-msgstr ""
+msgstr "安排活动"
 
 #: src/components/events/EventCards.tsx:99
 msgid "Scheduled event"
-msgstr ""
+msgstr "已安排的活动"
 
 #: src/features/events/EventsPage.tsx:77
 #: src/features/events/EventsPage.tsx:78
 msgid "Search events"
-msgstr ""
+msgstr "搜索活动"
 
-#: src/features/events/CreateEventDialog.tsx:268
+#: src/features/events/CreateEventDialog.tsx:273
 msgid "Search templates"
-msgstr ""
+msgstr "搜索模板"
 
 #: src/features/posts/PostCards.tsx:209
 msgid "See more"
-msgstr ""
+msgstr "查看更多"
 
 #. js-lingui-explicit-id
-#: src/features/community/CommunityHome.tsx:363
+#: src/features/community/CommunityHome.tsx:362
 msgid "seeMoreEvents"
 msgstr "查看更多活动"
 
 #: src/features/events/CreateEventDialog.tsx:73
 msgid "Select a day"
-msgstr ""
+msgstr "选择日期"
 
 #: src/features/events/CreateEventDialog.tsx:74
 msgid "Select a time"
-msgstr ""
+msgstr "选择时间"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:333
+msgid "sidebar.selectLanguage"
+msgstr "选择语言"
 
 #. js-lingui-explicit-id
 #: src/components/ShareSection.tsx:68
 msgid "shareSection.email"
-msgstr ""
+msgstr "通过电子邮件分享"
 
 #. js-lingui-explicit-id
 #: src/components/ShareSection.tsx:50
 msgid "shareSection.facebook"
-msgstr ""
+msgstr "分享到 Facebook"
 
 #. js-lingui-explicit-id
 #: src/components/ShareSection.tsx:62
 msgid "shareSection.linkedin"
-msgstr ""
+msgstr "分享到 LinkedIn"
 
 #. js-lingui-explicit-id
 #: src/components/ShareSection.tsx:56
 msgid "shareSection.twitter"
-msgstr ""
+msgstr "分享到 X"
 
 #: src/components/layout/AnnouncementsBell.tsx:43
 msgid "Show Announcements Button"
-msgstr ""
+msgstr "显示公告按钮"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:236
 msgid "showPassword"
 msgstr "顯示密碼"
 
-#: src/components/layout/NavBar.tsx:239
+#: src/components/layout/NavBar.tsx:238
 msgid "Show sidebar"
-msgstr ""
+msgstr "显示侧边栏"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInDialog.tsx:29
 msgid "signInDialog.ariaLabel"
-msgstr ""
+msgstr "登录"
 
 #. js-lingui-explicit-id
 #: src/components/layout/ProfileMenu.tsx:72
 msgid "profileMenu.signOut"
-msgstr ""
+msgstr "退出登录"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInButtons.tsx:23
@@ -1061,37 +1061,37 @@ msgstr "報名"
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:38
 msgid "backendUnknownTitle"
-msgstr ""
+msgstr "出错了"
 
-#: src/features/events/CreateEventDialog.tsx:93
+#: src/features/events/CreateEventDialog.tsx:94
 msgid "Something went wrong creating the event. Please try again."
-msgstr ""
+msgstr "创建活动时出错。请重试。"
 
 #. js-lingui-explicit-id
 #: src/features/home/HomePage.tsx:62
 msgid "errorLoadingCommunitiesMessage"
-msgstr ""
+msgstr "加载社区时出错。请刷新页面。"
 
 #: src/features/events/EventsPage.tsx:159
 msgid "Something went wrong loading events."
-msgstr ""
+msgstr "加载活动时出错。"
 
 #: src/features/posts/PostsPage.tsx:30
 msgid "Something went wrong loading posts."
-msgstr ""
+msgstr "加载帖子时出错。"
 
 #: src/features/resources/ResourcesPage.tsx:40
 msgid "Something went wrong loading resources."
-msgstr ""
+msgstr "加载资源时出错。"
 
 #: src/scopes/CommunityScope.tsx:72
 msgid "Something went wrong loading the community."
-msgstr ""
+msgstr "加载社区时出错。"
 
 #. js-lingui-explicit-id
 #: src/components/States.tsx:28
 msgid "errorState.default"
-msgstr ""
+msgstr "出错了。请刷新页面。"
 
 #: src/components/CommunityMembershipButton.tsx:51
 #: src/components/layout/AnnouncementsBell.tsx:207
@@ -1100,7 +1100,7 @@ msgstr ""
 #: src/features/resources/ResourceDialog.tsx:68
 #: src/features/resources/ResourcesPage.tsx:107
 msgid "Something went wrong. Please try again."
-msgstr ""
+msgstr "出错了。请重试。"
 
 #. js-lingui-explicit-id
 #: src/app/layouts/RootLayout.tsx:105
@@ -1113,61 +1113,56 @@ msgstr "出现错误，请重试。"
 msgid "startCommunity"
 msgstr "创建社区"
 
-#. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:332
-msgid "sidebar.supportedLanguages"
-msgstr ""
-
-#: src/components/layout/NavBar.tsx:176
+#: src/components/layout/NavBar.tsx:175
 msgid "Templates"
-msgstr ""
+msgstr "模板"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:153
+#: src/components/layout/SideBar.tsx:154
 msgid "sidebar.templates"
-msgstr ""
+msgstr "模板"
 
 #. placeholder {0}: Math.round(maxBytes / 1024 / 1024)
 #: src/components/Upload.tsx:187
 msgid "That file is too large (max {0} MB)."
-msgstr ""
+msgstr "该文件太大（最大 {0} MB）。"
 
 #: src/components/Upload.tsx:185
 msgid "That file type isn't supported."
-msgstr ""
+msgstr "不支持该文件类型。"
 
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:13
 msgid "backendMisconfiguredTitle"
-msgstr ""
+msgstr "应用无法连接到后端"
 
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:14
 msgid "backendMisconfiguredBody"
-msgstr ""
+msgstr "后端似乎配置有误（项目或 API 密钥不存在，或服务已被停用）。如果你是本站管理员，请检查其 Firebase 设置。"
 
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:30
 msgid "backendDownTitle"
-msgstr ""
+msgstr "服务不可用"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:64
 msgid "forgotPasswordThen"
 msgstr "然后 "
 
-#: src/features/community/CommunityHome.tsx:316
+#: src/features/community/CommunityHome.tsx:315
 msgid "There was an error loading events."
-msgstr ""
+msgstr "加载活动时出错。"
 
 #: src/components/layout/AnnouncementsBell.tsx:83
 msgid "There was an error while loading Announcements"
-msgstr ""
+msgstr "加载公告时出错"
 
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:83
 msgid "backendEmulatorsHint"
-msgstr ""
+msgstr "此版本使用本地 Firebase 模拟器。它们正在运行吗？"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:131
@@ -1176,20 +1171,20 @@ msgstr "此邮箱已被使用。请尝试"
 
 #: src/app/router.tsx:91
 msgid "This page is not in the React app yet. Soon, this would fall back to the Flutter app."
-msgstr ""
+msgstr "此页面尚未迁移到 React 应用。很快将回退到 Flutter 应用。"
 
 #: src/features/NotFoundPage.tsx:8
 msgid "This URL was not found"
-msgstr ""
+msgstr "未找到此网址"
 
 #: src/features/posts/EmotionSection.tsx:13
 msgid "Thumbs up"
-msgstr ""
+msgstr "赞"
 
 #. placeholder {0}: timeZoneAbbreviation(now)
 #: src/features/events/CreateEventDialog.tsx:151
 msgid "Time shown in {0}"
-msgstr ""
+msgstr "时间以 {0} 显示"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:187
@@ -1203,59 +1198,59 @@ msgstr "请再试一次"
 
 #: src/features/posts/CreatePostDialog.tsx:136
 msgid "Type something"
-msgstr ""
+msgstr "输入内容"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:158
+#: src/components/layout/SideBar.tsx:159
 msgid "sidebar.unfollow"
-msgstr ""
+msgstr "取消关注"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:175
+#: src/components/layout/SideBar.tsx:176
 msgid "sidebar.unfollowConfirmAction"
-msgstr ""
+msgstr "取消关注"
 
 #. js-lingui-explicit-id
 #. placeholder {0}: community.name
-#: src/components/layout/SideBar.tsx:162
+#: src/components/layout/SideBar.tsx:163
 msgid "sidebar.unfollowConfirmTitle"
-msgstr ""
+msgstr "取消关注 {0}？"
 
 #: src/utils/imageUpload.ts:164
 msgid "Unknown VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\". Use \"cloudinary\" or \"firebase\"."
-msgstr ""
+msgstr "未知的 VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\"。请使用 \"cloudinary\" 或 \"firebase\"。"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:101
+#: src/components/layout/SideBar.tsx:102
 msgid "sidebar.unnamedCommunity"
-msgstr ""
+msgstr "未命名社区"
 
 #. js-lingui-explicit-id
-#: src/features/community/CommunityHome.tsx:342
+#: src/features/community/CommunityHome.tsx:341
 msgid "upcomingEvents"
 msgstr "即将举行的活动"
 
 #: src/features/posts/CreatePostDialog.tsx:202
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
 #: src/utils/imageUpload.ts:27
 msgid "Upload aborted"
-msgstr ""
+msgstr "上传已中止"
 
 #: src/components/Upload.tsx:86
 msgid "Upload failed"
-msgstr ""
+msgstr "上传失败"
 
 #. placeholder {0}: xhr.status
 #: src/utils/imageUpload.ts:68
 msgid "Upload failed ({0})"
-msgstr ""
+msgstr "上传失败（{0}）"
 
 #: src/features/posts/CreatePostDialog.tsx:213
 #: src/features/resources/ResourceDialog.tsx:148
 msgid "Upload image"
-msgstr ""
+msgstr "上传图片"
 
 #: src/utils/users.ts:44
 msgid "User-{suffix}"
@@ -1264,7 +1259,7 @@ msgstr "用户-{suffix}"
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:22
 msgid "backendUnreachableTitle"
-msgstr ""
+msgstr "无法连接到服务器"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:143
@@ -1278,26 +1273,26 @@ msgstr "抱歉，出现了问题。"
 
 #: src/components/EmptyPageContent.tsx:72
 msgid "When new {type} are added, you'll see them here."
-msgstr ""
+msgstr "添加新的{type}后，你会在这里看到。"
 
 #: src/components/ConfirmDialog.tsx:44
 #: src/components/layout/AnnouncementsBell.tsx:110
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 #. js-lingui-explicit-id
 #: src/components/ProfileChip.tsx:41
 msgid "profileChip.you"
-msgstr ""
+msgstr "你"
 
 #: src/components/events/ParticipantsRow.tsx:38
 msgid "You"
-msgstr ""
+msgstr "你"
 
 #. placeholder {0}: total - 1
 #: src/components/events/ParticipantsRow.tsx:37
 msgid "You + {0}"
-msgstr ""
+msgstr "你 + {0}"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:214
@@ -1311,7 +1306,7 @@ msgstr "您可以检查您输入的内容并重试。"
 
 #: src/features/home/HomePage.tsx:76
 msgid "You don't belong to any communities"
-msgstr ""
+msgstr "你不属于任何社区"
 
 #. js-lingui-explicit-id
 #: src/app/layouts/RootLayout.tsx:120
@@ -1320,12 +1315,12 @@ msgstr "您已退出登录。请刷新页面以重新登录"
 
 #: src/api/firebaseApi.ts:130
 msgid "You must be signed in to continue."
-msgstr ""
+msgstr "你必须登录才能继续。"
 
 #. js-lingui-explicit-id
-#: src/components/layout/SideBar.tsx:166
+#: src/components/layout/SideBar.tsx:167
 msgid "sidebar.unfollowConfirmBody"
-msgstr ""
+msgstr "你将不再收到更新，也无法再访问其活动。"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:298

@@ -330,7 +330,7 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           aria-labelledby="sidebar-language-dialog-title"
         >
           <DialogTitle id="sidebar-language-dialog-title">
-            <Trans id="sidebar.supportedLanguages">Select Language</Trans>
+            <Trans id="sidebar.selectLanguage">Select Language</Trans>
           </DialogTitle>
           <DialogContent sx={{ display: "flex", flexDirection: "column" }}>
             {Object.keys(locales).map((locale) => (
