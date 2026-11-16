@@ -285,7 +285,7 @@ function ContactSection({ community }: { community: Community }) {
         body={body}
         size={39}
         iconSize={16}
-        buttonPadding={0}
+        buttonPadding={3}
         justify="flex-start"
       />
       <Box sx={{ height: 30 }} />
