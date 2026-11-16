@@ -4,9 +4,11 @@
   "staticPrefixes": ["/media/"],
   "routes": [
     "/",
+    "/profile",
     "/space/:displayId",
     "/space/:displayId/posts",
     "/space/:displayId/resources",
+    "/space/:displayId/discuss",
     "/space/:displayId/discuss/upcoming"
   ]
 }
