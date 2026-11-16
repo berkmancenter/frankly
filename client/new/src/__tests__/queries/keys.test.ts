@@ -18,6 +18,7 @@ describe("query keys", () => {
   it("give every per-community resource a distinct key under the community prefix", () => {
     const keys = [
       qk.members("c1"),
+      qk.donationsEnabled("c1"),
       qk.templates("c1"),
       qk.upcomingEvents("c1"),
       qk.allEvents("c1"),

@@ -8,6 +8,7 @@ import {
   communityByDisplayIdQuery,
   myCommunitiesQuery,
   useCommunity,
+  useDonationsEnabled,
   useFollowCommunity,
   useMembers,
   useMyCommunities,
@@ -211,6 +212,36 @@ describe("useMembers", () => {
   it("reports an error when the list cannot be loaded", async () => {
     const { result } = renderQueryHook(() => useMembers("c1"), {
       api: { communities: { listMembers: async () => { throw new Error("boom"); } } },
+    });
+    await waitFor(() => expect(result.current.isError).toBe(true));
+  });
+});
+
+describe("useDonationsEnabled", () => {
+  it("asks the server for the community's setting and caches it under that community", async () => {
+    const donationsEnabled = vi.fn(async () => true);
+    const { result, queryClient } = renderQueryHook(() => useDonationsEnabled("c1"), {
+      api: { communities: { donationsEnabled } },
+    });
+    await waitFor(() => expect(result.current.data).toBe(true));
+    expect(donationsEnabled).toHaveBeenCalledWith("c1");
+    expect(queryClient.getQueryData(qk.donationsEnabled("c1"))).toBe(true);
+  });
+
+  it("keeps each community's answer under its own key", async () => {
+    const donationsEnabled = vi.fn(async (id: string) => id === "c2");
+    const { result, rerender } = renderQueryHook((id: string) => useDonationsEnabled(id), {
+      api: { communities: { donationsEnabled } },
+      initialProps: "c1",
+    });
+    await waitFor(() => expect(result.current.data).toBe(false));
+    rerender("c2");
+    await waitFor(() => expect(result.current.data).toBe(true));
+  });
+
+  it("reports an error when the server call fails", async () => {
+    const { result } = renderQueryHook(() => useDonationsEnabled("c1"), {
+      api: { communities: { donationsEnabled: async () => { throw new Error("boom"); } } },
     });
     await waitFor(() => expect(result.current.isError).toBe(true));
   });

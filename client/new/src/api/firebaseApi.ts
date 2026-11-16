@@ -699,6 +699,21 @@ export function createFirebaseApi(client: FirebaseClient): Api {
           }),
         );
       },
+
+      async donationsEnabled(communityId) {
+        const response = asRecord(
+          await client.functions.call("GetCommunityDonationsEnabled", {
+            communityId,
+          }),
+        );
+        if (typeof response.donationsEnabled !== "boolean") {
+          throw new ApiError(
+            "invalid",
+            "GetCommunityDonationsEnabled returned an invalid response",
+          );
+        }
+        return response.donationsEnabled;
+      },
     },
 
     templates: {

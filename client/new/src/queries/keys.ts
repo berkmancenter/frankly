@@ -16,6 +16,7 @@ export const qk = {
   /** Prefix for everything that belongs to one community. */
   community: (communityId: string) => ['community', communityId] as const,
   members: (communityId: string) => ['community', communityId, 'members'] as const,
+  donationsEnabled: (communityId: string) => ['community', communityId, 'donations-enabled'] as const,
   templates: (communityId: string) => ['community', communityId, 'templates'] as const,
   upcomingEvents: (communityId: string) => ['community', communityId, 'events', 'upcoming'] as const,
   allEvents: (communityId: string) => ['community', communityId, 'events', 'all'] as const,

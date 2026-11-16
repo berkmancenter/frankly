@@ -21,6 +21,7 @@ import { useAllEvents, useUpcomingEvents } from "@/queries/events";
 import { useCommunityScope } from "@/scopes/CommunityScope";
 import { appSize, colors, fontSizes } from "@/theme/tokens";
 import { Trans, useLingui } from "@lingui/react/macro";
+import { useDonationsEnabled } from "@/queries/communities";
 
 const ABOUT_LIMIT = 160;
 
@@ -139,7 +140,10 @@ function EditCommunityButton({ displayId }: { displayId: string }) {
     <IconButton
       component={Link}
       to={paths.community(displayId).admin()}
-      aria-label={t({ id: "communityHome.editCommunity", message: "Edit community" })}
+      aria-label={t({
+        id: "communityHome.editCommunity",
+        message: "Edit community",
+      })}
       sx={{
         bgcolor: "primary.main",
         color: "primary.contrastText",
@@ -240,6 +244,7 @@ function AboutSection({ description }: { description: string }) {
 function ContactSection({ community }: { community: Community }) {
   const { t } = useLingui();
   const { status } = useCommunityScope();
+  const donationsEnabled = useDonationsEnabled(community.id).data;
   const isMember =
     status !== "nonmember" && status !== "banned" && status !== "attendee";
   const email = community.contactEmail;
@@ -286,8 +291,10 @@ function ContactSection({ community }: { community: Community }) {
       <Box sx={{ height: 30 }} />
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
         {!isMember && <CommunityMembershipButton community={community} />}
-        {community.settings.allowDonations && (
-          <ThickOutlineButton text={t({ id: "communityHome.donate", message: "Donate" })} />
+        {donationsEnabled && (
+          <ThickOutlineButton
+            text={t({ id: "communityHome.donate", message: "Donate" })}
+          />
         )}
       </Box>
     </Box>

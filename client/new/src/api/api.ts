@@ -56,6 +56,7 @@ export interface Api {
     follow(communityId: string): Promise<Membership>;
     unfollow(communityId: string): Promise<void>;
     listMembers(communityId: string): Promise<MemberDetails[]>;
+    donationsEnabled(communityId: string): Promise<boolean>;
     /**
      * Creates a community owned by the current user. Rejects with `ApiError("invalid")` (and a
      * readable message) when the server refuses it, e.g. the URL is already taken.

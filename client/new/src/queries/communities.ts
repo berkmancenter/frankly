@@ -1,7 +1,12 @@
-import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useApi } from '@/api/ApiProvider';
-import type { Api, NewCommunityInput } from '@/api/api';
-import { qk } from './keys';
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { useApi } from "@/api/ApiProvider";
+import type { Api, NewCommunityInput } from "@/api/api";
+import { qk } from "./keys";
 
 export const communityByDisplayIdQuery = (api: Api, displayId: string) =>
   queryOptions({
@@ -69,5 +74,14 @@ export function useMembers(communityId: string) {
   return useQuery({
     queryKey: qk.members(communityId),
     queryFn: () => api.communities.listMembers(communityId),
+  });
+}
+
+export function useDonationsEnabled(communityId: string) {
+  const api = useApi();
+  return useQuery({
+    queryKey: qk.donationsEnabled(communityId),
+    queryFn: () => api.communities.donationsEnabled(communityId),
+    staleTime: 5 * 60_000,
   });
 }
