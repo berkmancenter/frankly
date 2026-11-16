@@ -329,7 +329,7 @@ describe("SideBar", () => {
         route: "/space/civic-lab",
       });
       await user.click(screen.getByRole("button", { name: "Frankly Home" }));
-      expect(screen.getByTestId("location")).toHaveTextContent("/home");
+      expect(screen.getByTestId("location")).toHaveTextContent("/");
       expect(onClose).toHaveBeenCalledTimes(1);
     });
 

@@ -16,23 +16,38 @@ describe("NotFoundPage", () => {
   });
 
   it("shows a custom message instead of the default", () => {
-    renderWithProviders(<NotFoundPage message="That community does not exist" />, { api });
-    expect(screen.getByText("That community does not exist")).toBeInTheDocument();
-    expect(screen.queryByText("This URL was not found")).not.toBeInTheDocument();
+    renderWithProviders(
+      <NotFoundPage message="That community does not exist" />,
+      { api },
+    );
+    expect(
+      screen.getByText("That community does not exist"),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("This URL was not found"),
+    ).not.toBeInTheDocument();
   });
 
   it("is wrapped in the app chrome with a way back to Frankly home", () => {
     renderWithProviders(<NotFoundPage />, { api });
     const header = screen.getByRole("banner");
-    expect(within(header).getByRole("link", { name: "Frankly home" })).toHaveAttribute("href", "/home");
-    expect(within(header).getByRole("button", { name: "Show sidebar" })).toBeInTheDocument();
+    expect(
+      within(header).getByRole("link", { name: "Frankly home" }),
+    ).toHaveAttribute("href", "/");
+    expect(
+      within(header).getByRole("button", { name: "Show sidebar" }),
+    ).toBeInTheDocument();
   });
 
   it("does not show community navigation, since it is outside any community", () => {
     renderWithProviders(<NotFoundPage />, { api });
     const header = screen.getByRole("banner");
-    expect(within(header).queryByRole("button", { name: "Events" })).not.toBeInTheDocument();
-    expect(within(header).queryByRole("button", { name: "Admin" })).not.toBeInTheDocument();
+    expect(
+      within(header).queryByRole("button", { name: "Events" }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(header).queryByRole("button", { name: "Admin" }),
+    ).not.toBeInTheDocument();
   });
 
   it("navigates home from the logo link", async () => {
@@ -42,7 +57,7 @@ describe("NotFoundPage", () => {
     }
     renderWithProviders(
       <Routes>
-        <Route path="/home" element={<Where />} />
+        <Route path="/" element={<Where />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>,
       { api, route: "/nowhere" },
@@ -51,29 +66,49 @@ describe("NotFoundPage", () => {
 
     await user.click(screen.getByRole("link", { name: "Frankly home" }));
 
-    expect(await screen.findByText("at /home")).toBeInTheDocument();
+    expect(await screen.findByText("at /")).toBeInTheDocument();
   });
 
   describe("signed-in profile menu", () => {
     it("is in the top bar on desktop", async () => {
       renderWithProviders(<NotFoundPage />, { api });
-      const profile = await screen.findByRole("button", { name: "Profile Button" });
-      expect(within(screen.getByRole("banner")).getByRole("button", { name: "Profile Button" })).toBe(profile);
+      const profile = await screen.findByRole("button", {
+        name: "Profile Button",
+      });
+      expect(
+        within(screen.getByRole("banner")).getByRole("button", {
+          name: "Profile Button",
+        }),
+      ).toBe(profile);
     });
 
     it("moves to the bottom bar on mobile", async () => {
       renderWithProviders(<NotFoundPage />, { api, mobile: true });
-      const profile = await screen.findByRole("button", { name: "Profile Button" });
-      expect(within(screen.getByRole("banner")).queryByRole("button", { name: "Profile Button" })).not.toBeInTheDocument();
-      expect(screen.getAllByRole("button", { name: "Profile Button" })).toEqual([profile]);
+      const profile = await screen.findByRole("button", {
+        name: "Profile Button",
+      });
+      expect(
+        within(screen.getByRole("banner")).queryByRole("button", {
+          name: "Profile Button",
+        }),
+      ).not.toBeInTheDocument();
+      expect(screen.getAllByRole("button", { name: "Profile Button" })).toEqual(
+        [profile],
+      );
     });
 
     it("opens a menu with the profile and events shortcuts", async () => {
       const user = userEvent.setup();
       renderWithProviders(<NotFoundPage />, { api });
-      await user.click(await screen.findByRole("button", { name: "Profile Button" }));
-      expect(screen.getByRole("menuitem", { name: "My Profile" })).toBeInTheDocument();
-      expect(screen.getByRole("menuitem", { name: "My Events" })).toBeInTheDocument();
+      await user.click(
+        await screen.findByRole("button", { name: "Profile Button" }),
+      );
+      expect(
+        screen.getByRole("menuitem", { name: "My Profile" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("menuitem", { name: "My Events" }),
+      ).toBeInTheDocument();
     });
   });
 
@@ -85,6 +120,8 @@ describe("NotFoundPage", () => {
     await waitFor(() => expect(get).toHaveBeenCalled());
 
     expect(screen.getByText("This URL was not found")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Profile Button" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Profile Button" }),
+    ).not.toBeInTheDocument();
   });
 });
