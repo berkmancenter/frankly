@@ -82,3 +82,10 @@ describe("HomePage", () => {
     vi.mocked(isLocalhost).mockReturnValue(false);
   });
 });
+
+describe("HomePage title", () => {
+  it('names the tab "Frankly - Home"', () => {
+    renderWithProviders(<HomePage />, { auth: anonymousSession() });
+    expect(document.title).toBe("Frankly - Home");
+  });
+});

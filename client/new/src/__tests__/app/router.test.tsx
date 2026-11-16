@@ -25,7 +25,6 @@ describe('router vs migrated-routes.json', () => {
   // Everything the Flutter app owns today must fall through to the hand-off route.
   it.each([
     '/home',
-    '/space/civic-lab/discuss',
     '/space/civic-lab/discuss/t_checkin',
     '/space/civic-lab/discuss/t_checkin/e_live',
     '/space/civic-lab/post/p1',

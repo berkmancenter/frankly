@@ -52,21 +52,21 @@ describe("ProfileMenu", () => {
     ]);
   });
 
-  it("navigates to the profile settings from 'My Profile' and closes the menu", async () => {
+  it("navigates to the profile page from 'My Profile' and closes the menu", async () => {
     const user = userEvent.setup();
     renderMenu();
     await user.click(await screen.findByRole("button", { name: "Profile Button" }));
     await user.click(await screen.findByRole("menuitem", { name: "My Profile" }));
-    expect(screen.getByTestId("location")).toHaveTextContent("/settings?initialSection=profile");
+    expect(screen.getByTestId("location")).toHaveTextContent("/profile?section=profile");
     await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
   });
 
-  it("navigates to the events settings from 'My Events'", async () => {
+  it("navigates to the events page from 'My Events'", async () => {
     const user = userEvent.setup();
     renderMenu({ menuAbove: true });
     await user.click(await screen.findByRole("button", { name: "Profile Button" }));
     await user.click(await screen.findByRole("menuitem", { name: "My Events" }));
-    expect(screen.getByTestId("location")).toHaveTextContent("/settings?initialSection=events");
+    expect(screen.getByTestId("location")).toHaveTextContent("/profile?section=events");
   });
 
   it("signs out through the auth service", async () => {

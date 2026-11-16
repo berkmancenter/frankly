@@ -31,7 +31,7 @@ describe("CommunityBottomNavBar", () => {
     expect(within(nav).queryByRole("button", { name: "Create an event" })).not.toBeInTheDocument();
   });
 
-  it("goes to my events in settings", async () => {
+  it("goes to my events", async () => {
     const user = userEvent.setup();
     renderInCommunity(
       <>
@@ -41,7 +41,7 @@ describe("CommunityBottomNavBar", () => {
       { mobile: true },
     );
     await user.click(await screen.findByRole("button", { name: "My events" }));
-    expect(screen.getByTestId("location")).toHaveTextContent("/settings?initialSection=events");
+    expect(screen.getByTestId("location")).toHaveTextContent("/profile?section=events");
   });
 
   it("shows the create-event button on request and opens the create-event dialog", async () => {
