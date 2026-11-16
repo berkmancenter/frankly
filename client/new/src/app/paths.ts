@@ -20,7 +20,6 @@ const q = (params: Record<string, string | undefined>) => {
 
 export const paths = {
   root: "/",
-  home: "/home",
   settings: (
     opts: { initialSection?: UserSettingsSection; communityId?: string } = {},
   ) =>

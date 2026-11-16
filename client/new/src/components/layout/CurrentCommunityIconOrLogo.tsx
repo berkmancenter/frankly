@@ -33,7 +33,7 @@ export function CurrentCommunityIconOrLogo() {
   return (
     <IconButton
       component={Link}
-      to={paths.home}
+      to={paths.root}
       aria-label={t`Frankly home`}
       sx={{ p: "8px", pl: isMobile ? "1px" : "8px", borderRadius: "8px" }}
     >

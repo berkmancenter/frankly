@@ -292,7 +292,7 @@ export function SideBar({ onClose }: { onClose: () => void }) {
           contentAlign="start"
           onPress={() => {
             onClose();
-            navigate(paths.home);
+            navigate(paths.root);
           }}
           icon={
             <img
