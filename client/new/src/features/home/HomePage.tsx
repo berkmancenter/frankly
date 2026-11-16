@@ -12,6 +12,8 @@ import { useIsRegistered } from "@/features/auth/useAuthSession";
 import { CreateCommunityButton } from "@/features/community/CreateCommunity";
 import { useMyCommunities } from "@/queries/communities";
 import { colors, fontSizes } from "@/theme/tokens";
+import { appName } from "@/utils/appInfo";
+import { useDocumentTitle } from "@/utils/useDocumentTitle";
 import { useIsMobile } from "@/utils/useResponsive";
 
 /**
@@ -20,6 +22,8 @@ import { useIsMobile } from "@/utils/useResponsive";
  * navigation: the session changes and this page renders the other branch.
  */
 export function HomePage() {
+  const { t } = useLingui();
+  useDocumentTitle(t({ id: "appNameHome", message: `${appName} - Home` }));
   const registered = useIsRegistered();
   return (
     <StandalonePage>

@@ -1,27 +1,30 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { ActionButton, type ActionButtonType } from './ActionButton';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { ActionButton, type ActionButtonType } from "./ActionButton";
 import { colors, fontSizes } from "@/theme/tokens";
-import type { MessageDescriptor } from '@lingui/core';
-import { msg } from '@lingui/core/macro';
-import { useLingui } from '@lingui/react/macro';
+import type { MessageDescriptor } from "@lingui/core";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 
-export type EmptyPageType = 'posts' | 'events' | 'resources';
+export type EmptyPageType = "posts" | "events" | "resources" | "templates";
 
 const ICONS: Record<EmptyPageType, string> = {
-  posts: '💬',
-  events: '🗓',
-  resources: '📋',
+  posts: "💬",
+  events: "🗓",
+  resources: "📋",
+  templates: "📒",
 };
 
 function buttonLabel(type: EmptyPageType): MessageDescriptor {
   switch (type) {
-    case 'posts':
+    case "posts":
       return msg`Create a post`;
-    case 'events':
+    case "events":
       return msg`Create an event`;
-    case 'resources':
+    case "resources":
       return msg`Create a resource`;
+    case "templates":
+      return msg`Create a template`;
   }
 }
 
@@ -45,37 +48,39 @@ export function EmptyPageContent({
   subtitleText,
   buttonText,
   showContainer = true,
-  buttonType = 'filled',
+  buttonType = "filled",
 }: EmptyPageContentProps) {
   const { t, i18n } = useLingui();
   return (
     <Box
       sx={{
         height: 311,
-        width: '100%',
-        maxWidth: 524,
-        p: '10px',
-        boxSizing: 'border-box',
-        borderRadius: '10px',
-        bgcolor: showContainer ? colors.surfaceContainerLowest : 'transparent',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
+        width: "100%",
+        p: "10px",
+        boxSizing: "border-box",
+        borderRadius: "10px",
+        bgcolor: showContainer ? colors.surfaceContainerLowest : "transparent",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
       }}
     >
       <Box sx={{ fontSize: 62, lineHeight: 1.2 }} aria-hidden>
         {ICONS[type]}
       </Box>
-      <Typography component="h3" sx={{ fontSize: fontSizes.xl, mt: '10px' }}>
+      <Typography component="h3" sx={{ fontSize: fontSizes.xl, mt: "10px" }}>
         {titleText ?? t`No ${type}`}
       </Typography>
-      <Typography component="div" sx={{ fontWeight: 500, mt: '20px', width: 205 }}>
+      <Typography
+        component="div"
+        sx={{ fontWeight: 500, mt: "20px", width: 205 }}
+      >
         {subtitleText ?? t`When new ${type} are added, you'll see them here.`}
       </Typography>
       {onButtonPress && (
-        <Box sx={{ mt: '20px' }}>
+        <Box sx={{ mt: "20px" }}>
           <ActionButton type={buttonType} onPress={onButtonPress}>
             {buttonText ?? i18n._(buttonLabel(type))}
           </ActionButton>

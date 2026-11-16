@@ -33,6 +33,13 @@ interface Entry {
 /** Pages outside a community. They are children of the root layout, next to `/space/:displayId`. */
 const TOP_LEVEL_PAGES: Entry[] = [
   { pattern: "/", route: { index: true, element: <HomePage /> } },
+  {
+    pattern: "/profile",
+    route: {
+      path: "profile",
+      lazy: page(() => import("@/features/profile/ProfilePage"), "ProfilePage"),
+    },
+  },
 ];
 
 /**
@@ -66,6 +73,17 @@ const COMMUNITY_PAGES: Entry[] = [
     route: {
       path: "posts",
       lazy: page(() => import("@/features/posts/PostsPage"), "PostsPage"),
+    },
+  },
+  {
+    pattern: "/space/:displayId/discuss",
+    route: {
+      path: "discuss",
+      lazy: page(
+        () => import("@/features/templates/TemplatesPage"),
+        "TemplatesPage",
+      ),
+      handle: handle({ createEventFab: true }),
     },
   },
   {

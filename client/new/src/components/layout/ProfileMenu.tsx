@@ -1,16 +1,16 @@
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { Trans, useLingui } from '@lingui/react/macro';
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { paths } from '@/app/paths';
-import { Avatar } from '@/components/Avatar';
-import { useAuthService } from '@/api/ApiProvider';
-import { SignInButtons } from '@/features/auth/SignInButtons';
-import { useIsRegistered } from '@/features/auth/useAuthSession';
-import { useCurrentUser } from '@/queries/me';
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { Trans, useLingui } from "@lingui/react/macro";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { paths } from "@/app/paths";
+import { Avatar } from "@/components/Avatar";
+import { useAuthService } from "@/api/ApiProvider";
+import { SignInButtons } from "@/features/auth/SignInButtons";
+import { useIsRegistered } from "@/features/auth/useAuthSession";
+import { useCurrentUser } from "@/queries/me";
 import { colors } from "@/theme/tokens";
 
 /**
@@ -29,11 +29,14 @@ export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
   if (!registered) return <SignInButtons />;
   if (!user) return null;
   return (
-    <Box sx={{ px: '8px' }}>
+    <Box sx={{ px: "8px" }}>
       <IconButton
-        aria-label={t({ id: 'profileMenu.profileButton', message: 'Profile Button' })}
+        aria-label={t({
+          id: "profileMenu.profileButton",
+          message: "Profile Button",
+        })}
         onClick={(e) => setAnchor(e.currentTarget)}
-        sx={{ p: '4px' }}
+        sx={{ p: "4px" }}
       >
         <Avatar name={user.displayName} imageUrl={user.imageUrl} size={42} />
       </IconButton>
@@ -41,16 +44,30 @@ export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
         anchorEl={anchor}
         open={!!anchor}
         onClose={close}
-        anchorOrigin={{ vertical: menuAbove ? 'top' : 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: menuAbove ? 'bottom' : 'top', horizontal: 'right' }}
+        anchorOrigin={{
+          vertical: menuAbove ? "top" : "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: menuAbove ? "bottom" : "top",
+          horizontal: "right",
+        }}
         slotProps={{
-          paper: { sx: { width: 200, borderRadius: '8px', bgcolor: colors.surfaceContainerLowest, maxHeight: 400 } },
+          paper: {
+            sx: {
+              width: 200,
+              borderRadius: "8px",
+              bgcolor: colors.surfaceContainerLowest,
+              maxHeight: 400,
+            },
+          },
         }}
       >
         <MenuItem
           onClick={() => {
             close();
-            navigate(paths.settings({ initialSection: 'profile' }));
+            // eslint-disable-next-line lingui/no-unlocalized-strings
+            navigate(paths.profile({ section: "profile" }));
           }}
         >
           <Trans id="profileMenu.myProfile">My Profile</Trans>
@@ -58,7 +75,8 @@ export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
         <MenuItem
           onClick={() => {
             close();
-            navigate(paths.settings({ initialSection: 'events' }));
+            // eslint-disable-next-line lingui/no-unlocalized-strings
+            navigate(paths.profile({ section: "events" }));
           }}
         >
           <Trans id="profileMenu.myEvents">My Events</Trans>
