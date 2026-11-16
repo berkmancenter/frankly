@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import { t } from '@lingui/core/macro';
 import { useState } from 'react';
 import { ProfileDrawer } from '@/features/profile/ProfileDrawer';
 import { useCurrentUserId, useUser } from '@/queries/me';
 import { Avatar } from './Avatar';
+import { useLingui } from '@lingui/react/macro';
 
 interface ProfileChipProps {
   userId: string | undefined;
@@ -31,6 +31,7 @@ export function ProfileChip({
   nameColor,
   youSuffix = false,
 }: ProfileChipProps) {
+  const { t } = useLingui();
   const { data: user } = useUser(userId);
   const meId = useCurrentUserId();
   const [open, setOpen] = useState(false);

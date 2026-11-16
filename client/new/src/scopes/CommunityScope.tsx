@@ -1,4 +1,4 @@
-import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 import { createContext, useContext, useMemo, type ReactNode } from "react";
 import type { Community, MembershipStatus, Template } from "@/api/types";
 import { ErrorState, LoadingState } from "@/components/States";
@@ -34,13 +34,14 @@ export function CommunityScope({
   displayId: string;
   children: ReactNode;
 }) {
+  const { t } = useLingui();
   const communityQuery = useCommunity(displayId);
   const community = communityQuery.data;
   const membership = useMembership(community?.id);
   const templatesQuery = useTemplates(community?.id);
 
   const templates = useMemo(
-    () => (templatesQuery.data ?? []).filter((t) => t.status === "active"),
+    () => (templatesQuery.data ?? []).filter((tpl) => tpl.status === "active"),
     [templatesQuery.data],
   );
   const status: MembershipStatus = membership?.status ?? "nonmember";

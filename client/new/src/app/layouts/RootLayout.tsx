@@ -1,8 +1,7 @@
 import Box from "@mui/material/Box";
 import { useQueryClient } from "@tanstack/react-query";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
-import { useEffect, useState } from "react";
+import { Trans, useLingui } from "@lingui/react/macro";
+import { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router";
 import { describeBackendFailure } from "@/api/backendFailure";
 import { BackendUnavailable } from "@/components/BackendUnavailable";
@@ -85,6 +84,9 @@ export function RootLayout() {
 }
 
 function SessionGate() {
+  const { t } = useLingui();
+  // The toast should fire once per error, not again when the locale (and so `t`) changes.
+  const toastedError = useRef<unknown>(null);
   const session = useAuthSession();
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -100,7 +102,8 @@ function SessionGate() {
 
   const { redirectError } = session;
   useEffect(() => {
-    if (redirectError) {
+    if (redirectError && toastedError.current !== redirectError) {
+      toastedError.current = redirectError;
       toast.error(
         t({
           id: "somethingWentWrongTryAgain",
@@ -108,7 +111,7 @@ function SessionGate() {
         }),
       );
     }
-  }, [redirectError, toast]);
+  }, [redirectError, toast, t]);
 
   if (session.status === "error" && session.failure) {
     return <BackendUnavailable failure={session.failure} />;

@@ -10,8 +10,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import type { Community, MembershipStatus } from "@/api/types";
@@ -73,6 +72,7 @@ function SidebarCommunityItem({
   openByDefault: boolean;
   onNavigate: () => void;
 }) {
+  const { t } = useLingui();
   const [open, setOpen] = useState(openByDefault || !collapsible);
   const navigate = useNavigate();
   const membership = useMembership(community.id);
@@ -204,6 +204,7 @@ function SidebarCommunityItem({
 
 /** The end drawer: the user's communities on top, global links below. */
 export function SideBar({ onClose }: { onClose: () => void }) {
+  const { t } = useLingui();
   const [languageDialogOpen, setLanguageDialogOpen] = useState(false);
   const canCreate = useCanCreateCommunity();
   const mine = useMyCommunities();

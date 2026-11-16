@@ -6,7 +6,6 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { paths } from "@/app/paths";
@@ -22,6 +21,7 @@ import { CurrentCommunityIconOrLogo } from "./CurrentCommunityIconOrLogo";
 import { OnboardingBanner, currentOnboardingStep } from "./OnboardingBanner";
 import { ProfileMenu } from "./ProfileMenu";
 import { SelectableNavigationIcon } from "./SelectableNavigationIcon";
+import { useLingui } from "@lingui/react/macro";
 
 function NavTextButton({
   title,
@@ -60,6 +60,7 @@ function NavTextButton({
  * `CommunityScope` (null outside a community) and the URL — there is no nav-bar store.
  */
 export function NavBar({ onMenuClick }: { onMenuClick: () => void }) {
+  const { t } = useLingui();
   const scope = useCommunityScopeOrNull();
   const isMobile = useIsMobile();
   const navigate = useNavigate();

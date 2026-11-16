@@ -317,6 +317,28 @@ export default defineConfig(
     },
   },
   {
+    // The global `t` reads the active locale when called and never subscribes to changes, so a
+    // component using it keeps stale text after the language switches. Components take `t` from
+    // `useLingui()` (`@lingui/react/macro`) instead. Plain `.ts` modules keep the global one.
+    files: ["./client/new/src/**/*.tsx"],
+    ignores: ["./client/new/src/__tests__/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "@lingui/core/macro",
+              importNames: ["t"],
+              message:
+                "Use `const { t } = useLingui()` from `@lingui/react/macro` so the component re-renders when the locale changes.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     // Modules that hold only technical strings (query keys, color and token tables, the
     // Flutter-catalog transpile script, generated SVG, HTTP plumbing). None contains copy.
     files: [

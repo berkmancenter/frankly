@@ -3,8 +3,7 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { i18n } from "@lingui/core";
-import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 import { Avatar } from "@/components/Avatar";
 import { ErrorState, LoadingState } from "@/components/States";
 import { roleLabel } from "@/utils/membership";
@@ -24,6 +23,7 @@ export function ProfileDrawer({
   userId: string;
   onClose: () => void;
 }) {
+  const { t } = useLingui();
   const { data: user, isPending } = useUser(userId);
   const scope = useCommunityScopeOrNull();
 
@@ -96,6 +96,7 @@ function RoleRow({
   userId: string;
   communityId: string;
 }) {
+  const { i18n } = useLingui();
   const { data: members } = useMembers(communityId);
   const status = members?.find((m) => m.user.id === userId)?.membership.status;
   if (!status) return null;

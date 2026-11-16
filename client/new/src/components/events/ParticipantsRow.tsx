@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { t } from '@lingui/core/macro';
 import type { Event } from '@/api/types';
 import { Avatar } from '@/components/Avatar';
 import { useEventParticipants } from '@/queries/events';
 import { useCurrentUserId } from '@/queries/me';
 import { colors } from "@/theme/tokens";
+import { useLingui } from '@lingui/react/macro';
 
 interface ParticipantsRowProps {
   event: Pick<Event, 'id' | 'creatorId'>;
@@ -20,6 +20,7 @@ interface ParticipantsRowProps {
  * the text reads "You", "You + N", "+N", "N People" or the single participant's name.
  */
 export function ParticipantsRow({ event, iconSize = 30, maxAvatars = 6 }: ParticipantsRowProps) {
+  const { t } = useLingui();
   const { data } = useEventParticipants(event.id);
   const meId = useCurrentUserId();
   if (!data || data.length === 0) return null;

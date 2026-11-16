@@ -1,10 +1,10 @@
-import { t } from "@lingui/core/macro";
 import {
   useCallback,
   useRef,
   useState,
   type ReactElement,
 } from "react";
+import { useLingui } from "@lingui/react/macro";
 import { useAuthService } from "@/api/ApiProvider";
 import { isRegistered } from "@/api/auth";
 import { AppDialog } from "@/components/AppDialog";
@@ -19,6 +19,7 @@ export function SignInDialog({
   showSignUp?: boolean;
   onClose: () => void;
 }) {
+  const { t } = useLingui();
   return (
     <AppDialog
       open={open}

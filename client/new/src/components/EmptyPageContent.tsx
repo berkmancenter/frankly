@@ -1,8 +1,10 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { t } from '@lingui/core/macro';
 import { ActionButton, type ActionButtonType } from './ActionButton';
 import { colors, fontSizes } from "@/theme/tokens";
+import type { MessageDescriptor } from '@lingui/core';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react/macro';
 
 export type EmptyPageType = 'posts' | 'events' | 'resources';
 
@@ -12,14 +14,14 @@ const ICONS: Record<EmptyPageType, string> = {
   resources: '📋',
 };
 
-function buttonLabel(type: EmptyPageType): string {
+function buttonLabel(type: EmptyPageType): MessageDescriptor {
   switch (type) {
     case 'posts':
-      return t`Create a post`;
+      return msg`Create a post`;
     case 'events':
-      return t`Create an event`;
+      return msg`Create an event`;
     case 'resources':
-      return t`Create a resource`;
+      return msg`Create a resource`;
   }
 }
 
@@ -45,6 +47,7 @@ export function EmptyPageContent({
   showContainer = true,
   buttonType = 'filled',
 }: EmptyPageContentProps) {
+  const { t, i18n } = useLingui();
   return (
     <Box
       sx={{
@@ -74,7 +77,7 @@ export function EmptyPageContent({
       {onButtonPress && (
         <Box sx={{ mt: '20px' }}>
           <ActionButton type={buttonType} onPress={onButtonPress}>
-            {buttonText ?? buttonLabel(type)}
+            {buttonText ?? i18n._(buttonLabel(type))}
           </ActionButton>
         </Box>
       )}

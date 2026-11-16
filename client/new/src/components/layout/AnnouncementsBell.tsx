@@ -4,8 +4,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { ActionButton } from "@/components/ActionButton";
 import { AppDialog } from "@/components/AppDialog";
@@ -25,6 +24,7 @@ import { colors } from "@/theme/tokens";
 
 /** `AnnouncementsIcon`: bell in the nav bar; opens a popover with the community's announcements. */
 export function AnnouncementsBell() {
+  const { t } = useLingui();
   const { community, permissions } = useCommunityScope();
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
@@ -161,6 +161,7 @@ function CreateAnnouncementDialog({
   communityId: string;
   onClose: () => void;
 }) {
+  const { t } = useLingui();
   const create = useCreateAnnouncement(communityId);
   const toast = useToast();
   const [title, setTitle] = useState("");

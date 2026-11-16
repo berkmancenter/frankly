@@ -2,13 +2,13 @@ import AddIcon from '@mui/icons-material/Add';
 import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import { t } from '@lingui/core/macro';
 import { useNavigate } from 'react-router';
 import { paths } from '@/app/paths';
 import { useCreateEventDialog } from '@/features/events/CreateEventDialog';
 import { appSize, colors } from "@/theme/tokens";
 import { ProfileMenu } from './ProfileMenu';
 import { SelectableNavigationIcon } from './SelectableNavigationIcon';
+import { useLingui } from '@lingui/react/macro';
 
 /** Home page bottom bar (below 1000px): just the profile avatar, right-aligned. */
 export function HomeBottomNavBar() {
@@ -31,6 +31,7 @@ export function HomeBottomNavBar() {
 
 /** Community bottom bar (below 1000px): my events, optional "create event", profile. */
 export function CommunityBottomNavBar({ showCreateEventButton }: { showCreateEventButton: boolean }) {
+  const { t } = useLingui();
   const navigate = useNavigate();
   const createEvent = useCreateEventDialog();
   return (

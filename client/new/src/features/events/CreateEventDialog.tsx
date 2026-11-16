@@ -8,8 +8,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { paths } from "@/app/paths";
@@ -41,6 +40,7 @@ const STEPS: StepId[] = ["template", "visibility", "date", "time"];
  * the only server call is the final `useCreateEvent`.
  */
 function CreateEventDialog({ onClose }: { onClose: () => void }) {
+  const { t } = useLingui();
   const { community, permissions, templates } = useCommunityScope();
   const clock = useClock();
   const navigate = useNavigate();
@@ -253,6 +253,7 @@ function TemplateStep({
   canCreateTemplate: boolean;
   onCreateTemplate: () => void;
 }) {
+  const { t } = useLingui();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const categories = [

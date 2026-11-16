@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import type { DiscussionThread } from "@/api/types";
 import { ConstrainedBody } from "@/components/ConstrainedBody";
@@ -15,6 +15,7 @@ import { PostPreviewCard } from "./PostCards";
 
 /** `/space/:displayId/posts`: a two-column masonry of posts (one column on mobile). */
 export function PostsPage() {
+  const { t } = useLingui();
   const { community } = useCommunityScope();
   const isMobile = useIsMobile();
   const threads = useThreads(community.id);

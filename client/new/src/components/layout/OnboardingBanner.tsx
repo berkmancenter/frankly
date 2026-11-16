@@ -5,8 +5,7 @@ import ButtonBase from "@mui/material/ButtonBase";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
-import { i18n } from "@lingui/core";
-import { msg, t } from "@lingui/core/macro";
+import { msg } from "@lingui/core/macro";
 import { useNavigate } from "react-router";
 import type { MessageDescriptor } from "@lingui/core";
 import type { Community, OnboardingStep } from "@/api/types";
@@ -15,6 +14,7 @@ import { ConstrainedBody } from "@/components/ConstrainedBody";
 import { useIsMobile } from "@/utils/useResponsive";
 import { useCreateEventDialog } from "@/features/events/CreateEventDialog";
 import { colors } from "@/theme/tokens";
+import { useLingui } from "@lingui/react/macro";
 
 /** Order and copy of the admin onboarding checklist (`OnboardingStepExtension`). */
 export const ONBOARDING_STEPS: OnboardingStep[] = [
@@ -69,6 +69,7 @@ export function OnboardingBanner({
   community: Community;
   onDismiss: () => void;
 }) {
+  const { t, i18n } = useLingui();
   const step = currentOnboardingStep(community);
   const isMobile = useIsMobile();
   const navigate = useNavigate();

@@ -4,10 +4,10 @@ import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
 import { useState } from "react";
 import { isSameCalendarDay, startOfDay } from "@/utils/format";
 import { colors } from "@/theme/tokens";
+import { useLingui } from "@lingui/react/macro";
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
 const monthName = new Intl.DateTimeFormat("en-US", {
@@ -31,6 +31,7 @@ export function MonthCalendar({
   /** Authoritative "today" (from the clock), used for the today ring. */
   today: Date;
 }) {
+  const { t } = useLingui();
   const [cursor, setCursor] = useState(
     () =>
       new Date((value ?? today).getFullYear(), (value ?? today).getMonth(), 1),
@@ -219,6 +220,7 @@ export function TimeInput({
   value: TimeValue;
   onChange: (v: TimeValue) => void;
 }) {
+  const { t } = useLingui();
   return (
     <Box
       sx={{

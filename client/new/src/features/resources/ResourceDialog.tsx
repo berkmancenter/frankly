@@ -1,4 +1,5 @@
 import CheckIcon from '@mui/icons-material/Check';
+import { useLingui } from "@lingui/react/macro";
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
@@ -7,7 +8,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { t } from '@lingui/core/macro';
 import { useState } from 'react';
 import { useApi } from '@/api/ApiProvider';
 import type { CommunityResource } from '@/api/types';
@@ -25,6 +25,7 @@ import { colors } from "@/theme/tokens";
  * then Post. The unfurl is a one-shot request owned by this dialog, not a cached query.
  */
 export function ResourceDialog({ resource, onClose }: { resource?: CommunityResource; onClose: () => void }) {
+  const { t } = useLingui();
   const { community } = useCommunityScope();
   const api = useApi();
   const toast = useToast();

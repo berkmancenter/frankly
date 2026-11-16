@@ -1,8 +1,8 @@
 import SearchIcon from "@mui/icons-material/Search";
+import { useLingui } from "@lingui/react/macro";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
 import { useMemo, useState } from "react";
 import { ConstrainedBody } from "@/components/ConstrainedBody";
 import { EmptyPageContent } from "@/components/EmptyPageContent";
@@ -24,6 +24,7 @@ import { colors, fontSizes } from "@/theme/tokens";
 
 /** `/space/:displayId/discuss/upcoming`: search, a 90-day date strip, and the flat list of upcoming events. */
 export function EventsPage() {
+  const { t } = useLingui();
   const { community, permissions } = useCommunityScope();
   const clock = useClock();
   const events = useUpcomingEvents(community.id);
@@ -137,13 +138,22 @@ export function EventsPage() {
                 "&.Mui-disabled": { opacity: 1 },
               }}
             >
-              <Typography component="div" sx={{ fontWeight: 500, color: "inherit" }}>
+              <Typography
+                component="div"
+                sx={{ fontWeight: 500, color: "inherit" }}
+              >
                 {formatMonthShortUpper(day)}
               </Typography>
-              <Typography component="h2" sx={{ fontSize: fontSizes["4xl"], color: "inherit" }}>
+              <Typography
+                component="h2"
+                sx={{ fontSize: fontSizes["4xl"], color: "inherit" }}
+              >
                 {day.getDate()}
               </Typography>
-              <Typography component="div" sx={{ fontWeight: 500, color: "inherit" }}>
+              <Typography
+                component="div"
+                sx={{ fontWeight: 500, color: "inherit" }}
+              >
                 {formatWeekdayShort(day)}
               </Typography>
             </ButtonBase>

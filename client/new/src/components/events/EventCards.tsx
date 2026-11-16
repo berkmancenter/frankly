@@ -1,8 +1,7 @@
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Link } from "react-router";
 import type { Event } from "@/api/types";
 import { Img } from "@/components/Img";
@@ -34,6 +33,7 @@ const eventHref = (event: Event) =>
  * grayed out and not clickable. The event page is Flutter's, so the link hands off to it.
  */
 export function EventCard({ event }: { event: Event }) {
+  const { t } = useLingui();
   const isMobile = useIsMobile();
   const locked = usePrerequisiteLock(event);
   const start = event.scheduledTime ? new Date(event.scheduledTime) : undefined;

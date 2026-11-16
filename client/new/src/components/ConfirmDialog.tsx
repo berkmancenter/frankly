@@ -3,11 +3,11 @@ import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
 import { useCallback, useRef, useState, type ReactNode } from "react";
 import { useIsMobile } from "@/utils/useResponsive";
 import { ActionButton } from "./ActionButton";
 import { fontSizes } from "@/theme/tokens";
+import { useLingui } from "@lingui/react/macro";
 
 export interface ConfirmOptions {
   title?: string;
@@ -41,12 +41,14 @@ export function ConfirmDialogView({
   title,
   mainText,
   subText,
-  confirmText = t`Yes`,
+  confirmText: confirmTextProp,
   cancelText,
   destructive,
   textAlign = "center",
   children,
 }: ConfirmDialogViewProps) {
+  const { t } = useLingui();
+  const confirmText = confirmTextProp ?? t`Yes`;
   const isMobile = useIsMobile();
   return (
     <Dialog

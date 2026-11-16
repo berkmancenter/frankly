@@ -2,8 +2,8 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import { i18n } from '@lingui/core';
-import { msg, t } from '@lingui/core/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react/macro';
 import { useState } from 'react';
 import type { MessageDescriptor } from '@lingui/core';
 import type { EmotionType, EmotionVote } from '@/api/types';
@@ -35,6 +35,7 @@ export function EmotionSection({
   myUserId: string | undefined;
   onSelect: (emotion: EmotionType | null) => void;
 }) {
+  const { t, i18n } = useLingui();
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const mine = emotions.find((e) => e.userId === myUserId)?.emotion ?? null;
   const distinct = [...new Set(emotions.map((e) => e.emotion))];

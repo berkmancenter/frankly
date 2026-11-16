@@ -1,15 +1,16 @@
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
 import { Link } from "react-router";
 import { paths } from "@/app/paths";
 import { CommunityCircleIcon } from "@/components/CommunityCircleIcon";
 import { useIsMobile } from "@/utils/useResponsive";
 import { useCommunityScopeOrNull } from "@/scopes/CommunityScope";
+import { useLingui } from "@lingui/react/macro";
 
 /** Left side of the nav bar: the community's circle icon inside a community, else the logo + BETA pill. */
 export function CurrentCommunityIconOrLogo() {
+  const { t } = useLingui();
   const scope = useCommunityScopeOrNull();
   const isMobile = useIsMobile();
 

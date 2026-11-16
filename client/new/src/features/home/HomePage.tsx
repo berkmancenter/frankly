@@ -1,8 +1,7 @@
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Link } from "react-router";
 import { paths } from "@/app/paths";
 import { StandalonePage } from "@/app/layouts/StandalonePage";
@@ -34,6 +33,7 @@ export function HomePage() {
  * there are none.
  */
 function MyCommunities() {
+  const { t } = useLingui();
   const communities = useMyCommunities();
   const isMobile = useIsMobile();
 

@@ -1,9 +1,9 @@
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { t } from '@lingui/core/macro';
 import type { ReactNode } from 'react';
 import { colors, fontSizes } from "@/theme/tokens";
+import { useLingui } from '@lingui/react/macro';
 
 /** Centered spinner; `height` reserves space so pages don't jump when data arrives. */
 export function LoadingState({ height = 300, message }: { height?: number | string; message?: string }) {
@@ -25,7 +25,7 @@ export function LoadingState({ height = 300, message }: { height?: number | stri
 }
 
 export function ErrorState({
-  message = t({ id: 'errorState.default', message: 'Something went wrong. Please refresh.' }),
+  message: messageProp,
   action,
   height = 200,
 }: {
@@ -33,6 +33,9 @@ export function ErrorState({
   action?: ReactNode;
   height?: number | string;
 }) {
+  const { t } = useLingui();
+  const message =
+    messageProp ?? t({ id: 'errorState.default', message: 'Something went wrong. Please refresh.' });
   return (
     <Box
       role="alert"

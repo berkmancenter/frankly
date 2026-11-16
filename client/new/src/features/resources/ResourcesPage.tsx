@@ -1,10 +1,10 @@
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useLingui } from "@lingui/react/macro";
 import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
 import { useState } from "react";
 import type { CommunityResource } from "@/api/types";
 import { ConstrainedBody } from "@/components/ConstrainedBody";
@@ -21,6 +21,7 @@ import { colors } from "@/theme/tokens";
 
 /** `/space/:displayId/resources`: link cards (60px picture + title); admins can add, edit and delete. */
 export function ResourcesPage() {
+  const { t } = useLingui();
   const { community, permissions } = useCommunityScope();
   const resources = useResources(community.id);
   const remove = useRemoveResource(community.id);

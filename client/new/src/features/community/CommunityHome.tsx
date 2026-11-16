@@ -20,8 +20,7 @@ import { useIsMobile } from "@/utils/useResponsive";
 import { useAllEvents, useUpcomingEvents } from "@/queries/events";
 import { useCommunityScope } from "@/scopes/CommunityScope";
 import { appSize, colors, fontSizes } from "@/theme/tokens";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 
 const ABOUT_LIMIT = 160;
 
@@ -134,6 +133,7 @@ export function CommunityHome() {
 }
 
 function EditCommunityButton({ displayId }: { displayId: string }) {
+  const { t } = useLingui();
   return (
     // `IconButton.filled`: primary-colored disc with a white pencil.
     <IconButton
@@ -238,6 +238,7 @@ function AboutSection({ description }: { description: string }) {
 }
 
 function ContactSection({ community }: { community: Community }) {
+  const { t } = useLingui();
   const { status } = useCommunityScope();
   const isMember =
     status !== "nonmember" && status !== "banned" && status !== "attendee";
@@ -308,6 +309,7 @@ function EventsBlock({
   onShowMore: () => void;
   onCreate: () => void;
 }) {
+  const { t } = useLingui();
   const { community, permissions } = useCommunityScope();
   const all = useAllEvents(community.id);
   if (loading) return <LoadingState height={200} />;

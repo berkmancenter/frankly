@@ -2,8 +2,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { t } from '@lingui/core/macro';
-import { Trans } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { paths } from '@/app/paths';
@@ -19,6 +18,7 @@ import { colors } from "@/theme/tokens";
  * and "Sign Out"; for a visitor without an account, the Log In / Sign Up buttons.
  */
 export function ProfileMenu({ menuAbove = false }: { menuAbove?: boolean }) {
+  const { t } = useLingui();
   const user = useCurrentUser();
   const navigate = useNavigate();
   const auth = useAuthService();

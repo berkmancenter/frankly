@@ -1,5 +1,5 @@
-import { i18n } from "@lingui/core";
 import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 import { createBrowserRouter, type RouteObject } from "react-router";
 import migrated from "../../migrated-routes.json";
 import { CommunityHome } from "@/features/community/CommunityHome";
@@ -92,6 +92,7 @@ const NOT_MIGRATED = msg`This page is not in the React app yet. Soon, this would
 
 // Resolves `NOT_MIGRATED` on every render rather than once at import time, so it tracks locale changes.
 function NotMigratedPage() {
+  const { i18n } = useLingui();
   return <NotFoundPage message={i18n._(NOT_MIGRATED)} />;
 }
 

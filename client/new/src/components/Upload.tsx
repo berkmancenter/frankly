@@ -3,8 +3,6 @@ import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
-import { i18n } from "@lingui/core";
-import { t } from "@lingui/core/macro";
 import { useEffect, useRef, useState, type DragEvent } from "react";
 import { colors, fontSizes } from "@/theme/tokens";
 import {
@@ -13,6 +11,9 @@ import {
   type UploadedImage,
 } from "@/utils/imageUpload";
 import { useIsMobile } from "@/utils/useResponsive";
+import type { MessageDescriptor } from "@lingui/core";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 
 const DEFAULT_MAX_BYTES = 10 * 1024 * 1024;
 
@@ -48,6 +49,7 @@ export function Upload({
   maxBytes = DEFAULT_MAX_BYTES,
   height = 220,
 }: UploadProps) {
+  const { t, i18n } = useLingui();
   const isMobile = useIsMobile();
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -69,7 +71,7 @@ export function Upload({
 
   const start = async (file: File) => {
     const problem = validate(file, accept, maxBytes);
-    if (problem) return setError(problem);
+    if (problem) return setError(i18n._(problem));
 
     const controller = new AbortController();
     abortRef.current = controller;
@@ -173,7 +175,7 @@ export function Upload({
   );
 }
 
-function validate(file: File, accept: string, maxBytes: number): string | null {
+function validate(file: File, accept: string, maxBytes: number): MessageDescriptor | null {
   const allowed = accept.split(",").map((a) => a.trim());
   const ok = allowed.some((a) =>
     a.endsWith("/*")
@@ -182,9 +184,9 @@ function validate(file: File, accept: string, maxBytes: number): string | null {
         ? file.name.toLowerCase().endsWith(a.toLowerCase())
         : file.type === a,
   );
-  if (!ok) return t`That file type isn't supported.`;
+  if (!ok) return msg`That file type isn't supported.`;
   if (file.size > maxBytes) {
-    return t`That file is too large (max ${Math.round(maxBytes / 1024 / 1024)} MB).`;
+    return msg`That file is too large (max ${Math.round(maxBytes / 1024 / 1024)} MB).`;
   }
   return null;
 }

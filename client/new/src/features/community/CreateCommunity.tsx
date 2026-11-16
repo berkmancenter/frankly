@@ -4,8 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useCallback, useState, type ReactElement } from "react";
 import { useNavigate } from "react-router";
 import { ApiError } from "@/api/api";
@@ -69,6 +68,7 @@ export function CreateCommunityButton({
   showLabel?: boolean;
   onDone?: () => void;
 }) {
+  const { t } = useLingui();
   const allowed = useCanCreateCommunity();
   const { open, dialog } = useCreateCommunityDialog(onDone);
   if (!allowed) return null;
@@ -101,6 +101,7 @@ export function CreateCommunityButton({
  * congratulates and opens it. The community is created when the first step is submitted.
  */
 export function CreateCommunityDialog({ onClose }: { onClose: () => void }) {
+  const { t } = useLingui();
   const create = useCreateCommunity();
   const [created, setCreated] = useState<{
     name: string;
@@ -148,6 +149,7 @@ function CommunityForm({
     isPublic: boolean;
   }) => Promise<void>;
 }) {
+  const { t } = useLingui();
   const [name, setName] = useState("");
   const [displayId, setDisplayId] = useState("");
   // Like Flutter, the URL follows the name until the person edits it themselves.
@@ -275,6 +277,7 @@ function Created({
   displayId: string;
   onFinish: () => void;
 }) {
+  const { t } = useLingui();
   const navigate = useNavigate();
   return (
     <Box

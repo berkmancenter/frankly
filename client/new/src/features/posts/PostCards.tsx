@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
-import { plural, t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { plural } from "@lingui/core/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useNavigate } from "react-router";
 import type { DiscussionThread } from "@/api/types";
 import { paths } from "@/app/paths";
@@ -28,6 +28,7 @@ export function VoteCluster({
   thread: DiscussionThread;
   gap?: string;
 }) {
+  const { t } = useLingui();
   const { community } = useCommunityScope();
   const me = useCurrentUserId();
   const vote = useVoteThread(community.id, me);
@@ -91,6 +92,7 @@ export function PostPreviewCard({
   thread: DiscussionThread;
   onReply: (thread: DiscussionThread) => void;
 }) {
+  const { t } = useLingui();
   const { community } = useCommunityScope();
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -171,7 +173,7 @@ export function PostPreviewCard({
         <Typography sx={{ color: colors.onSurfaceVariant }}>
           {thread.commentCount === 0
             ? t`No Comments`
-            : plural(thread.commentCount, { one: "# Comment", other: "# Comments" })}
+            : t`${plural(thread.commentCount, { one: "# Comment", other: "# Comments" })}`}
         </Typography>
         <Box onClick={(e) => e.stopPropagation()}>
           <EmotionSection

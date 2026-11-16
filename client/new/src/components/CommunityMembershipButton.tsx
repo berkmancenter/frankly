@@ -1,10 +1,10 @@
 import CircularProgress from '@mui/material/CircularProgress';
-import { t } from '@lingui/core/macro';
 import type { Community } from '@/api/types';
 import { useFollowCommunity } from '@/queries/communities';
 import { useMembership } from '@/queries/me';
 import { ActionButton } from './ActionButton';
 import { useToast } from './Toast';
+import { useLingui } from '@lingui/react/macro';
 
 /**
  * `CommunityMembershipButton`: "Follow", or the approval flow when the community requires it
@@ -19,6 +19,7 @@ export function CommunityMembershipButton({
   height?: number;
   minWidth?: number;
 }) {
+  const { t } = useLingui();
   const membership = useMembership(community.id);
   const follow = useFollowCommunity();
   const toast = useToast();

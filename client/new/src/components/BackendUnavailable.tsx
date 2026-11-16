@@ -1,17 +1,19 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
+import type { MessageDescriptor } from "@lingui/core";
+import { msg } from "@lingui/core/macro";
 import type { BackendFailure, BackendFailureKind } from "@/api/backendFailure";
 import { useFirebaseEmulators } from "@/api/firebase";
 import { ActionButton } from "@/components/ActionButton";
 import { colors, fontSizes } from "@/theme/tokens";
+import { useLingui } from "@lingui/react/macro";
 
-function copy(kind: BackendFailureKind): { title: string; body: string } {
+function copy(kind: BackendFailureKind): { title: MessageDescriptor; body: MessageDescriptor } {
   switch (kind) {
     case "config":
       return {
-        title: t({ id: "backendMisconfiguredTitle", message: "The app can't connect to its backend" }),
-        body: t({
+        title: msg({ id: "backendMisconfiguredTitle", message: "The app can't connect to its backend" }),
+        body: msg({
           id: "backendMisconfiguredBody",
           message:
             "The backend looks misconfigured (a project or API key that doesn't exist, or a disabled service). If you run this site, check its Firebase settings.",
@@ -19,24 +21,24 @@ function copy(kind: BackendFailureKind): { title: string; body: string } {
       };
     case "network":
       return {
-        title: t({ id: "backendUnreachableTitle", message: "We can't reach the server" }),
-        body: t({
+        title: msg({ id: "backendUnreachableTitle", message: "We can't reach the server" }),
+        body: msg({
           id: "backendUnreachableBody",
           message: "Check your internet connection and try again.",
         }),
       };
     case "service":
       return {
-        title: t({ id: "backendDownTitle", message: "The service is unavailable" }),
-        body: t({
+        title: msg({ id: "backendDownTitle", message: "The service is unavailable" }),
+        body: msg({
           id: "backendDownBody",
           message: "Our backend isn't responding right now. Please try again in a few minutes.",
         }),
       };
     default:
       return {
-        title: t({ id: "backendUnknownTitle", message: "Something went wrong" }),
-        body: t({
+        title: msg({ id: "backendUnknownTitle", message: "Something went wrong" }),
+        body: msg({
           id: "backendUnknownBody",
           message: "Could not load your session. Please try again.",
         }),
@@ -56,6 +58,7 @@ export function BackendUnavailable({
   failure: BackendFailure;
   onRetry?: () => void;
 }) {
+  const { t, i18n } = useLingui();
   const { title, body } = copy(failure.kind);
   const emulators = useFirebaseEmulators();
   return (
@@ -73,10 +76,10 @@ export function BackendUnavailable({
       }}
     >
       <Typography component="h1" sx={{ fontSize: fontSizes["2xl"], color: colors.onSurface }}>
-        {title}
+        {i18n._(title)}
       </Typography>
       <Typography sx={{ maxWidth: 480, fontSize: fontSizes.md, color: colors.onSurfaceVariant }}>
-        {body}
+        {i18n._(body)}
       </Typography>
       {emulators && failure.kind !== "unknown" && (
         <Typography sx={{ maxWidth: 480, color: colors.onSurfaceVariant }}>

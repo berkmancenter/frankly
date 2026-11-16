@@ -3,8 +3,7 @@ import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import type { DiscussionThread } from "@/api/types";
 import { ActionButton } from "@/components/ActionButton";
@@ -25,6 +24,7 @@ export function AddCommentDialog({
   replyToCommentId?: string;
   onClose: () => void;
 }) {
+  const { t } = useLingui();
   const { community } = useCommunityScope();
   const isMobile = useIsMobile();
   const toast = useToast();

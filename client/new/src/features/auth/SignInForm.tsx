@@ -5,8 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useRef, useState, type KeyboardEvent } from "react";
 import { useAuthService } from "@/api/ApiProvider";
 import { AuthError } from "@/api/auth";
@@ -34,6 +33,7 @@ export function SignInForm({
   showSignUp?: boolean;
   onSignedIn?: () => void;
 }) {
+  const { t } = useLingui();
   const auth = useAuthService();
   const [signUp, setSignUp] = useState(showSignUp);
   const [name, setName] = useState("");

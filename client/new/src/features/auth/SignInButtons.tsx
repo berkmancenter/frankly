@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 import { ActionButton } from "@/components/ActionButton";
 import { useSignInDialog } from "./SignInDialog";
 
@@ -8,6 +8,7 @@ import { useSignInDialog } from "./SignInDialog";
  * them to the home page; there is none here yet, so each opens the sign-in dialog.
  */
 export function SignInButtons() {
+  const { t } = useLingui();
   const { open, dialog } = useSignInDialog();
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: "8px", px: "8px" }}>

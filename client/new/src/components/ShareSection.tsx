@@ -3,10 +3,10 @@ import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Tooltip from '@mui/material/Tooltip';
-import { t } from '@lingui/core/macro';
 import type { ReactNode } from 'react';
 import { FacebookF, LinkedInIn, XLogo } from './BrandIcons';
 import { useToast } from './Toast';
+import { useLingui } from '@lingui/react/macro';
 
 export type ShareType = 'facebook' | 'twitter' | 'linkedin' | 'email' | 'link';
 
@@ -38,6 +38,7 @@ export function ShareSection({
   justify = 'space-evenly',
   onShare,
 }: ShareSectionProps) {
+  const { t } = useLingui();
   const toast = useToast();
   const href = absoluteUrl(url);
   const enc = encodeURIComponent;

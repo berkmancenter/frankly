@@ -1,4 +1,4 @@
-import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 import { useMemo } from "react";
 import { Outlet, useMatches, useParams } from "react-router";
 import { useDocumentTitle } from "@/utils/useDocumentTitle";
@@ -25,6 +25,7 @@ export function CommunityLayout() {
 }
 
 function CommunityFrame() {
+  const { t } = useLingui();
   const { community, permissions } = useCommunityScope();
   const matches = useMatches();
   const handle = (matches[matches.length - 1]?.handle ??

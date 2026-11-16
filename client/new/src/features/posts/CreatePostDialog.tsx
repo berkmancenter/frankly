@@ -5,9 +5,7 @@ import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { i18n } from "@lingui/core";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import type { DiscussionThread } from "@/api/types";
 import { ActionButton } from "@/components/ActionButton";
@@ -33,6 +31,7 @@ export function CreatePostDialog({
   thread?: DiscussionThread;
   onClose: () => void;
 }) {
+  const { t, i18n } = useLingui();
   const { community } = useCommunityScope();
   const me = useCurrentUser();
   const isMobile = useIsMobile();
