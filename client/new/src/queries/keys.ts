@@ -9,6 +9,11 @@
 export const qk = {
   me: () => ['me'] as const,
   user: (userId: string) => ['users', userId] as const,
+  userTags: (userId: string) => ['users', userId, 'tags'] as const,
+  userEmail: (userId: string, communityId: string) => ['users', userId, 'email', communityId] as const,
+  tagSuggestions: (input: string) => ['tags', 'suggest', input] as const,
+  myEvents: () => ['me', 'events'] as const,
+  notificationSettings: (communityId: string) => ['me', 'notifications', communityId] as const,
 
   communities: () => ['communities'] as const,
   myCommunities: () => ['communities', 'mine'] as const,
@@ -17,6 +22,7 @@ export const qk = {
   community: (communityId: string) => ['community', communityId] as const,
   members: (communityId: string) => ['community', communityId, 'members'] as const,
   donationsEnabled: (communityId: string) => ['community', communityId, 'donations-enabled'] as const,
+  templateTags: (communityId: string) => ['community', communityId, 'template-tags'] as const,
   templates: (communityId: string) => ['community', communityId, 'templates'] as const,
   upcomingEvents: (communityId: string) => ['community', communityId, 'events', 'upcoming'] as const,
   allEvents: (communityId: string) => ['community', communityId, 'events', 'all'] as const,
