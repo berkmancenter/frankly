@@ -86,6 +86,23 @@ const COMMUNITY_PAGES: Entry[] = [
       handle: handle({ createEventFab: true }),
     },
   },
+  // Built but not listed in `migrated-routes.json` yet: it is wired up alongside the event page.
+  {
+    pattern: "/space/:displayId/discuss/:templateId",
+    route: {
+      path: "discuss/:templateId",
+      lazy: page(() => import("@/features/templates/TemplatePage"), "TemplatePage"),
+    },
+  },
+  // Built but not listed in `migrated-routes.json`: entering a live event is still Flutter's, and
+  // the proxy routes whole paths, so Flutter keeps this URL until the live meeting migrates.
+  {
+    pattern: "/space/:displayId/discuss/:templateId/:eventId",
+    route: {
+      path: "discuss/:templateId/:eventId",
+      lazy: page(() => import("@/features/events/EventPage"), "EventPage"),
+    },
+  },
   {
     pattern: "/space/:displayId/discuss/upcoming",
     route: {

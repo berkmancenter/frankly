@@ -12,6 +12,7 @@ import { useLingui } from "@lingui/react/macro";
 import { Avatar } from "@/components/Avatar";
 import { ErrorState, LoadingState } from "@/components/States";
 import { isAdmin, roleLabel } from "@/utils/membership";
+import { webUrl } from "@/utils/webUrl";
 import { useCommunityScopeOrNull } from "@/scopes/CommunityScope";
 import type { SocialPlatform } from "@/api/types";
 import { useMe, useUser } from "@/queries/me";
@@ -143,18 +144,6 @@ const SOCIAL_ICONS: Record<SocialPlatform, typeof InstagramIcon> = {
   facebook: FacebookIcon,
   linkedin: LinkedInIcon,
 };
-
-// A user-typed link made safe to open: http(s) only, and a bare "example.com" gets https.
-function webUrl(raw: string): string | undefined {
-  const text = raw.trim();
-  if (!text) return undefined;
-  try {
-    const url = new URL(/^[a-z][a-z\d+.-]*:/i.test(text) ? text : `https://${text}`);
-    return url.protocol === "https:" || url.protocol === "http:" ? url.href : undefined;
-  } catch {
-    return undefined;
-  }
-}
 
 // The email: only the user themself and the community's admins may see it (the server enforces this too).
 function ContactInfo({ userId }: { userId: string }) {

@@ -12,7 +12,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { paths } from "@/app/paths";
-import type { Template } from "@/api/types";
+import type { EventType, Template } from "@/api/types";
 import { ActionButton } from "@/components/ActionButton";
 import { AppDialog } from "@/components/AppDialog";
 import { Img } from "@/components/Img";
@@ -39,7 +39,15 @@ const STEPS: StepId[] = ["template", "visibility", "date", "time"];
  * private? → Select a day → Select a time → Create Event. All of it is local component state;
  * the only server call is the final `useCreateEvent`.
  */
-function CreateEventDialog({ onClose }: { onClose: () => void }) {
+// Where a new event can start from: a copy of an existing one skips straight to choosing a day.
+export interface CreateEventStart {
+  template: Template;
+  isPublic: boolean;
+  eventType: EventType;
+  durationInMinutes: number;
+}
+
+function CreateEventDialog({ onClose, start }: { onClose: () => void; start?: CreateEventStart }) {
   const { t } = useLingui();
   const { community, permissions, templates } = useCommunityScope();
   const clock = useClock();
@@ -48,11 +56,13 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
   const isMobile = useIsMobile();
   const createEvent = useCreateEvent();
 
-  const [stepIndex, setStepIndex] = useState(0);
+  // Step id, not UI text.
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const [stepIndex, setStepIndex] = useState(start ? STEPS.indexOf("date") : 0);
   const step = STEPS[stepIndex]!;
 
-  const [template, setTemplate] = useState<Template | undefined>();
-  const [isPublic, setIsPublic] = useState(false);
+  const [template, setTemplate] = useState<Template | undefined>(start?.template);
+  const [isPublic, setIsPublic] = useState(start?.isPublic ?? false);
   const [day, setDay] = useState<Date | null>(null);
   const [time, setTime] = useState<TimeValue>({ hour: 6, minute: 0, pm: true });
 
@@ -81,8 +91,8 @@ function CreateEventDialog({ onClose }: { onClose: () => void }) {
         communityId: community.id,
         templateId: template.id,
         scheduledTime: scheduled.toISOString(),
-        durationInMinutes: 60,
-        eventType: "hosted",
+        durationInMinutes: start?.durationInMinutes ?? 60,
+        eventType: start?.eventType ?? "hosted",
         isPublic,
       });
       onClose();
@@ -454,9 +464,9 @@ function TemplateStep({
  * while open and is owned by that component — no global dialog store.
  */
 export function useCreateEventDialog() {
-  const [open, setOpen] = useState(false);
+  const [state, setState] = useState<{ start?: CreateEventStart } | null>(null);
   return {
-    open: () => setOpen(true),
-    dialog: open ? <CreateEventDialog onClose={() => setOpen(false)} /> : null,
+    open: (start?: CreateEventStart) => setState({ start }),
+    dialog: state ? <CreateEventDialog start={state.start} onClose={() => setState(null)} /> : null,
   };
 }

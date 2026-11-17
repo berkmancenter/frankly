@@ -5,10 +5,13 @@ import { Avatar } from '@/components/Avatar';
 import { useEventParticipants } from '@/queries/events';
 import { useCurrentUserId } from '@/queries/me';
 import { colors } from "@/theme/tokens";
+import { plural } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
 
 interface ParticipantsRowProps {
-  event: Pick<Event, 'id' | 'creatorId'>;
+  event: Pick<Event, 'id' | 'creatorId'> & Partial<Pick<Event, 'eventType' | 'registrationCount'>>;
+  // While the meeting is live only the people in it count.
+  presentOnly?: boolean;
   /** Avatar diameter. */
   iconSize?: number;
   /** Max avatars drawn. */
@@ -19,10 +22,17 @@ interface ParticipantsRowProps {
  * Overlapping avatar stack + count. The signed-in user and the event creator are drawn on top;
  * the text reads "You", "You + N", "+N", "N People" or the single participant's name.
  */
-export function ParticipantsRow({ event, iconSize = 30, maxAvatars = 6 }: ParticipantsRowProps) {
+export function ParticipantsRow({ event, presentOnly = false, iconSize = 30, maxAvatars = 6 }: ParticipantsRowProps) {
   const { t } = useLingui();
-  const { data } = useEventParticipants(event.id);
+  const participants = useEventParticipants(event.id).data;
   const meId = useCurrentUserId();
+  // Withdrawn and removed people are not part of the headcount.
+  const data = participants?.filter(
+    ({ participant }) => participant.status === 'active' && (!presentOnly || participant.isPresent),
+  );
+  // Hostless and livestream events keep a head count on the event and show stand-in faces.
+  const estimated = !!event.eventType && event.eventType !== 'hosted';
+  if (estimated) return <EstimatedRow event={event} people={data ?? []} iconSize={iconSize} maxAvatars={maxAvatars} />;
   if (!data || data.length === 0) return null;
 
   const total = data.length;
@@ -54,6 +64,48 @@ export function ParticipantsRow({ event, iconSize = 30, maxAvatars = 6 }: Partic
       </Box>
       <Typography noWrap sx={{ ml: '5px', color: colors.onSurface, minWidth: 0 }}>
         {text}
+      </Typography>
+    </Box>
+  );
+}
+
+function EstimatedRow({
+  event,
+  people,
+  iconSize,
+  maxAvatars,
+}: {
+  event: NonNullable<ParticipantsRowProps['event']>;
+  people: NonNullable<ReturnType<typeof useEventParticipants>['data']>;
+  iconSize: number;
+  maxAvatars: number;
+}) {
+  const meId = useCurrentUserId();
+  const registered = event.registrationCount ?? 0;
+  if (registered <= 0) return null;
+  // Me and the host are real faces; the rest of the row is filled with stand-ins.
+  const real = [
+    ...people.filter((p) => p.user.id === meId),
+    ...people.filter((p) => p.user.id === event.creatorId && p.user.id !== meId),
+  ];
+  const standIns = Math.max(maxAvatars - real.length, 0);
+  const overlap = Math.round(iconSize * 0.48);
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', minHeight: iconSize, minWidth: 0 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', pl: `${overlap}px`, flexShrink: 0 }}>
+        {Array.from({ length: standIns }, (_, i) => (
+          <Box key={`stand-in-${i}`} sx={{ ml: `-${overlap}px`, display: 'flex' }}>
+            <Avatar size={iconSize} />
+          </Box>
+        ))}
+        {real.map((p) => (
+          <Box key={p.user.id} sx={{ ml: `-${overlap}px`, display: 'flex' }}>
+            <Avatar name={p.user.displayName} imageUrl={p.user.imageUrl} size={iconSize} />
+          </Box>
+        ))}
+      </Box>
+      <Typography noWrap sx={{ ml: '5px', color: colors.onSurface, minWidth: 0 }}>
+        {plural(registered, { one: '# Registration', other: '# Registrations' })}
       </Typography>
     </Box>
   );
