@@ -14,9 +14,10 @@
     "dev": "vite",
     "dev:proxied": "PROXIED=1 vite",
     "lint": "eslint src",
+    "locales:extract": "lingui extract",
     "locales:transpile": "node src/locales/flutterTranspile.ts",
     "preview": "vite preview",
-    "skill:translate": "command -v claude >/dev/null 2>&1 || { echo 'Warning: Claude CLI is required.' >&2; exit 1; }; claude \"/lingui:find-unwrapped-strings\"",
+    "skill:translate": "command -v claude >/dev/null 2>&1 || { echo 'Warning: Claude CLI is required.' >&2; exit 1; }; claude \"/translate-missing\"",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -b"
