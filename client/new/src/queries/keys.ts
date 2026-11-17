@@ -21,7 +21,10 @@ export const qk = {
   /** Prefix for everything that belongs to one community. */
   community: (communityId: string) => ['community', communityId] as const,
   members: (communityId: string) => ['community', communityId, 'members'] as const,
+  prePostEnabled: (communityId: string) => ['community', communityId, 'pre-post-enabled'] as const,
   donationsEnabled: (communityId: string) => ['community', communityId, 'donations-enabled'] as const,
+  template: (communityId: string, templateId: string) => ['community', communityId, 'templates', templateId] as const,
+  templateEvents: (communityId: string, templateId: string) => ['community', communityId, 'templates', templateId, 'events'] as const,
   templateTags: (communityId: string) => ['community', communityId, 'template-tags'] as const,
   templates: (communityId: string) => ['community', communityId, 'templates'] as const,
   upcomingEvents: (communityId: string) => ['community', communityId, 'events', 'upcoming'] as const,
@@ -32,6 +35,9 @@ export const qk = {
 
   attendedTemplate: (templateId: string) => ['templates', templateId, 'attended'] as const,
 
+  event: (eventId: string) => ['events', eventId] as const,
+  eventMessages: (eventId: string) => ['events', eventId, 'messages'] as const,
+  calendarLinks: (eventId: string) => ['events', eventId, 'calendar-links'] as const,
   eventParticipants: (eventId: string) => ['events', eventId, 'participants'] as const,
 
   thread: (threadId: string) => ['threads', threadId] as const,

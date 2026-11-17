@@ -77,6 +77,16 @@ export function useMembers(communityId: string) {
   });
 }
 
+export function usePrePostEnabled(communityId: string, enabled = true) {
+  const api = useApi();
+  return useQuery({
+    queryKey: qk.prePostEnabled(communityId),
+    queryFn: () => api.communities.prePostEnabled(communityId),
+    staleTime: 5 * 60_000,
+    enabled,
+  });
+}
+
 export function useDonationsEnabled(communityId: string) {
   const api = useApi();
   return useQuery({
