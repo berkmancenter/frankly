@@ -33,9 +33,12 @@ export const community = (over: Partial<Community> = {}): Community => ({
     dontAllowMembersToCreateMeetings: false,
     enableDiscussionThreads: true,
     requireApprovalToJoin: false,
+    enableHostless: true,
   },
+  eventSettings: {},
   onboardingSteps: [],
   isOnboardingOverviewEnabled: false,
+  allowAdditionalRegistrationField: false,
   ...over,
 });
 
@@ -59,6 +62,7 @@ export const template = (over: Partial<Template> = {}): Template => ({
   status: "active",
   creatorId: "u1",
   orderingPriority: 0,
+  agendaItems: [],
   ...over,
 });
 
@@ -74,6 +78,9 @@ export const event = (over: Partial<Event> = {}): Event => ({
   scheduledTime: "2030-01-01T18:00:00.000Z",
   durationInMinutes: 60,
   isPublic: true,
+  isLocked: false,
+  hasLiveStream: false,
+  agendaItems: [],
   ...over,
 });
 

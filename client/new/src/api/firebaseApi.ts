@@ -27,6 +27,8 @@ import type { Api, ParticipantWithUser } from "./api";
 import { ApiError } from "./api";
 import type { FirebaseClient } from "./firebase";
 import type {
+  AgendaItem,
+  AgendaItemType,
   Announcement,
   Community,
   CommunityResource,
@@ -34,6 +36,8 @@ import type {
   DiscussionThreadComment,
   EmotionType,
   Event,
+  EventMessage,
+  EventSettings,
   EventType,
   MemberDetails,
   Membership,
@@ -41,15 +45,20 @@ import type {
   NewEventInput,
   NotificationSettings,
   OnboardingStep,
+  PrePostAttribute,
+  PrePostCard,
+  PrePostLink,
   Participant,
   ProfileUpdate,
   PublicUser,
   SocialLink,
+  SurveyQuestion,
   Tag,
   Template,
   TemplateTag,
 } from "./types";
-import { SOCIAL_PLATFORMS } from "./types";
+import { DEFAULT_AGENDA_SECONDS } from "@/utils/agenda";
+import { ALL_EVENT_SETTING_FLAGS, PRE_POST_ATTRIBUTES, SOCIAL_PLATFORMS } from "./types";
 
 const membershipStatuses = new Set<MembershipStatus>([
   "owner",
@@ -207,6 +216,248 @@ const startsWithLimit = (text: string) =>
 const normalizeSearchKey = (input: string) =>
   input.replace(/[^\w\s]+/g, "").toLowerCase();
 
+function eventDocument(client: FirebaseClient, communityId: string, templateId: string, eventId: string) {
+  return doc(client.firestore, "community", communityId, "templates", templateId, "events", eventId);
+}
+
+function mapEventSettings(value: unknown): EventSettings | undefined {
+  const data = asRecord(value);
+  const settings: EventSettings = {};
+  for (const flag of ALL_EVENT_SETTING_FLAGS) {
+    if (typeof data[flag] === "boolean") settings[flag] = data[flag];
+  }
+  if (typeof data.autoEndGracePeriodMinutes === "number") {
+    settings.autoEndGracePeriodMinutes = data.autoEndGracePeriodMinutes;
+  }
+  return Object.keys(settings).length > 0 ? settings : undefined;
+}
+
+// Communities that predate event settings keep them as feature flags.
+function communityEventSettings(data: Record<string, unknown>, flags: string[]): EventSettings {
+  return (
+    mapEventSettings(data.eventSettings) ?? {
+      chat: flags.includes("chat"),
+      alwaysRecord: flags.includes("alwaysRecord"),
+      showChatMessagesInRealTime: true,
+      talkingTimer: true,
+      agendaPreview: true,
+    }
+  );
+}
+
+const agendaItemTypes = new Set<AgendaItemType>(["text", "video", "image", "poll", "wordCloud", "userSuggestions"]);
+
+function mapAgendaItems(value: unknown): AgendaItem[] {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((raw): AgendaItem[] => {
+    const item = asRecord(raw);
+    const id = stringValue(item.id);
+    if (!id) return [];
+    const type = id === "user-submitted" ? "userSuggestions" : agendaItemTypes.has(item.type as AgendaItemType) ? (item.type as AgendaItemType) : "text";
+    return [
+      {
+        id,
+        type,
+        ...(stringValue(item.title) ? { title: stringValue(item.title) } : {}),
+        ...(stringValue(item.content) ? { content: stringValue(item.content) } : {}),
+        ...(stringValue(item.imageUrl) ? { imageUrl: stringValue(item.imageUrl) } : {}),
+        ...(item.videoType === "youtube" || item.videoType === "vimeo" || item.videoType === "url" ? { videoType: item.videoType } : {}),
+        ...(stringValue(item.videoUrl) ? { videoUrl: stringValue(item.videoUrl) } : {}),
+        ...(Array.isArray(item.pollAnswers) ? { pollAnswers: stringArray(item.pollAnswers) } : {}),
+        ...(typeof item.timeInSeconds === "number" ? { timeInSeconds: item.timeInSeconds } : {}),
+      },
+    ];
+  });
+}
+
+function mapBreakout(value: unknown): Event["breakout"] {
+  if (typeof value !== "object" || value === null) return undefined;
+  const data = asRecord(value);
+  return {
+    assignmentMethod: data.assignmentMethod === "smartMatch" ? "smartMatch" : "targetPerRoom",
+    targetParticipants: optionalNumber(data.targetParticipants, 8),
+  };
+}
+
+function mapSurveyQuestions(value: unknown): SurveyQuestion[] | undefined {
+  const questions = asRecord(value).breakoutQuestions;
+  if (!Array.isArray(questions) || questions.length === 0) return undefined;
+  return questions.flatMap((raw): SurveyQuestion[] => {
+    const question = asRecord(raw);
+    const id = stringValue(question.id);
+    const title = stringValue(question.title);
+    if (!id || !title) return [];
+    const structured = (Array.isArray(question.answers) ? question.answers : []).flatMap((raw) => {
+      const answer = asRecord(raw);
+      const answerId = stringValue(answer.id);
+      if (!answerId || !Array.isArray(answer.options)) return [];
+      const options = answer.options.flatMap((option) => {
+        const { id: optionId, title: optionTitle } = asRecord(option);
+        return stringValue(optionId) ? [{ id: stringValue(optionId)!, title: stringValue(optionTitle) ?? "" }] : [];
+      });
+      return [{ id: answerId, options }];
+    });
+    return [
+      {
+        id,
+        title,
+        type: question.type === "freeText" ? "freeText" : "multipleChoice",
+        options: structured.flatMap((answer) => answer.options),
+        answers: structured,
+      },
+    ];
+  });
+}
+
+function mapPrePostCard(value: unknown): PrePostCard | undefined {
+  const data = asRecord(value);
+  if (Object.keys(data).length === 0) return undefined;
+  const urls = Array.isArray(data.prePostUrls) ? data.prePostUrls : [];
+  return {
+    headline: stringValue(data.headline) ?? "",
+    message: stringValue(data.message) ?? "",
+    links: urls.map((raw): PrePostLink => {
+      const link = asRecord(raw);
+      const attributes = Array.isArray(link.attributes) ? link.attributes : [];
+      return {
+        ...(stringValue(link.buttonText) ? { buttonText: stringValue(link.buttonText) } : {}),
+        ...(stringValue(link.surveyUrl) ? { url: stringValue(link.surveyUrl) } : {}),
+        attributes: attributes.flatMap((attribute) => {
+          const { type, queryParam } = asRecord(attribute);
+          return PRE_POST_ATTRIBUTES.includes(type as PrePostAttribute)
+            ? [{ type: type as PrePostAttribute, queryParam: stringValue(queryParam) ?? "" }]
+            : [];
+        }),
+      };
+    }),
+  };
+}
+
+function storedCard(card: PrePostCard, type: "preEvent" | "postEvent") {
+  return {
+    headline: card.headline,
+    message: card.message,
+    type,
+    prePostUrls: card.links.map((link) => ({
+      buttonText: link.buttonText ?? null,
+      surveyUrl: link.url ?? null,
+      attributes: link.attributes,
+    })),
+  };
+}
+
+// Stored field names and values, not UI text.
+/* eslint-disable lingui/no-unlocalized-strings */
+function storedAgendaItem(item: AgendaItem, previous?: Record<string, unknown>) {
+  return {
+    ...previous,
+    id: item.id,
+    type: item.type,
+    title: item.title ?? "",
+    content: item.content ?? "",
+    videoType: item.videoType ?? "url",
+    videoUrl: item.videoUrl ?? "",
+    imageUrl: item.imageUrl ?? "",
+    pollAnswers: item.pollAnswers ?? [],
+    timeInSeconds: item.timeInSeconds ?? DEFAULT_AGENDA_SECONDS,
+    suggestionsButtonText: "",
+  };
+}
+
+/* eslint-enable lingui/no-unlocalized-strings */
+
+// Reads the stored agenda, lets `edit` change it, and writes it back in one transaction. Steps `edit` leaves
+// alone are written back exactly as stored, so fields this app does not show are never lost.
+async function editAgenda(
+  client: FirebaseClient,
+  reference: DocumentReference,
+  edit: (items: Record<string, unknown>[]) => Record<string, unknown>[],
+) {
+  await runTransaction(client.firestore, async (transaction) => {
+    const snapshot = await transaction.get(reference);
+    const stored = snapshot.data()?.agendaItems;
+    const items = Array.isArray(stored) ? stored.map(asRecord) : [];
+    transaction.update(reference, { agendaItems: edit(items) });
+  });
+}
+
+const upsertStep = (item: AgendaItem) => (items: Record<string, unknown>[]) => {
+  const index = items.findIndex((existing) => existing.id === item.id);
+  return index < 0
+    ? [...items, storedAgendaItem(item)]
+    : items.map((existing, i) => (i === index ? storedAgendaItem(item, existing) : existing));
+};
+
+const deleteStep = (itemId: string) => (items: Record<string, unknown>[]) =>
+  items.filter((existing) => existing.id !== itemId);
+
+const reorderSteps = (ids: string[]) => (items: Record<string, unknown>[]) => {
+  const byId = new Map(items.map((existing) => [existing.id as string, existing]));
+  if (ids.length !== items.length || !ids.every((id) => byId.has(id))) {
+    throw new ApiError("invalid", t`Error in updating agenda ordering. Please refresh.`);
+  }
+  return ids.map((id) => byId.get(id)!);
+};
+
+// Sets up the streaming service for a livestream event: the public ids go on the event, and the stream's address and
+// key go in a private document that only the host can read.
+async function provisionLiveStream(client: FirebaseClient, communityId: string) {
+  const response = asRecord(await client.functions.call("CreateLiveStream", { communityId }));
+  const muxId = stringValue(response.muxId);
+  const muxPlaybackId = stringValue(response.muxPlaybackId);
+  if (!muxId || !muxPlaybackId) {
+    throw new ApiError("invalid", t`The live stream could not be set up.`);
+  }
+  return {
+    liveStreamInfo: { muxId, muxPlaybackId },
+    privateInfo: {
+      streamServerUrl: stringValue(response.streamServerUrl) ?? "",
+      streamKey: stringValue(response.streamKey) ?? "",
+    },
+  };
+}
+
+const savePrivateLiveStreamInfo = (reference: DocumentReference, info: { streamServerUrl: string; streamKey: string }) =>
+  setDoc(doc(reference, "private-live-stream-info", reference.id), info);
+
+// Changes some fields of the event's breakout definition, in one transaction. With no definition yet, the defaults
+// are stored along with the change; otherwise only the given fields are touched.
+async function editBreakouts(client: FirebaseClient, event: Event, fields: Record<string, unknown>) {
+  const user = await requireUser(client);
+  const reference = eventDocument(client, event.communityId, event.templateId, event.id);
+  await runTransaction(client.firestore, async (transaction) => {
+    const snapshot = await transaction.get(reference);
+    const definition = snapshot.data()?.breakoutRoomDefinition;
+    if (definition && typeof definition === "object") {
+      transaction.update(
+        reference,
+        Object.fromEntries(
+          // Firestore field paths, not UI text.
+          // eslint-disable-next-line lingui/no-unlocalized-strings
+          Object.entries(fields).map(([key, value]) => [`breakoutRoomDefinition.${key}`, value]),
+        ),
+      );
+    } else {
+      transaction.update(reference, {
+        breakoutRoomDefinition: {
+          creatorId: user.uid,
+          targetParticipants: 8,
+          breakoutQuestions: [],
+          categories: [],
+          // Stored value, not UI text.
+          // eslint-disable-next-line lingui/no-unlocalized-strings
+          assignmentMethod: "targetPerRoom",
+          ...fields,
+        },
+      });
+    }
+  });
+}
+
+function templateDocument(client: FirebaseClient, communityId: string, templateId: string) {
+  return doc(client.firestore, "community", communityId, "templates", templateId);
+}
+
 function mapNotificationSettings(value: unknown): NotificationSettings {
   const data = asRecord(value);
   return {
@@ -307,11 +558,14 @@ function mapCommunity(id: string, value: unknown): Community {
       ),
       enableDiscussionThreads: boolSetting("enableDiscussionThreads", true),
       requireApprovalToJoin: boolSetting("requireApprovalToJoin", false),
+      enableHostless: boolSetting("enableHostless", true),
     },
+    eventSettings: communityEventSettings(data, flags),
     onboardingSteps: stringArray(data.onboardingSteps).filter(
       (step): step is OnboardingStep =>
         onboardingSteps.has(step as OnboardingStep),
     ),
+    allowAdditionalRegistrationField: stringArray(data.internalFlags).includes("allowAdditionalRegistrationField"),
     isOnboardingOverviewEnabled: optionalBoolean(
       data.isOnboardingOverviewEnabled,
       false,
@@ -342,6 +596,10 @@ function mapTemplate(
       ? { prerequisiteTemplateId: stringValue(data.prerequisiteTemplateId) }
       : {}),
     orderingPriority: optionalNumber(data.orderingPriority, 0),
+    agendaItems: mapAgendaItems(data.agendaItems),
+    ...(mapPrePostCard(data.preEventCardData) ? { preEventCard: mapPrePostCard(data.preEventCardData) } : {}),
+    ...(mapPrePostCard(data.postEventCardData) ? { postEventCard: mapPrePostCard(data.postEventCardData) } : {}),
+    ...(mapEventSettings(data.eventSettings) ? { eventSettings: mapEventSettings(data.eventSettings) } : {}),
     ...(optionalIsoDate(data.createdDate)
       ? { createdDate: optionalIsoDate(data.createdDate) }
       : {}),
@@ -384,6 +642,26 @@ function mapEvent(
     isPublic: optionalBoolean(data.isPublic, false),
     ...(stringValue(data.prerequisiteTemplateId)
       ? { prerequisiteTemplateId: stringValue(data.prerequisiteTemplateId) }
+      : {}),
+    isLocked: optionalBoolean(data.isLocked, false),
+    agendaItems: mapAgendaItems(data.agendaItems),
+    hasLiveStream: typeof data.liveStreamInfo === "object" && data.liveStreamInfo !== null,
+    ...(mapBreakout(data.breakoutRoomDefinition) ? { breakout: mapBreakout(data.breakoutRoomDefinition) } : {}),
+    ...(mapSurveyQuestions(data.breakoutRoomDefinition) ? { surveyQuestions: mapSurveyQuestions(data.breakoutRoomDefinition) } : {}),
+    ...(mapPrePostCard(data.preEventCardData) ? { preEventCard: mapPrePostCard(data.preEventCardData) } : {}),
+    ...(mapPrePostCard(data.postEventCardData) ? { postEventCard: mapPrePostCard(data.postEventCardData) } : {}),
+    ...(mapEventSettings(data.eventSettings) ? { eventSettings: mapEventSettings(data.eventSettings) } : {}),
+    ...(typeof data.maxParticipants === "number"
+      ? { maxParticipants: data.maxParticipants }
+      : {}),
+    ...(typeof data.participantCountEstimate === "number"
+      ? { participantCountEstimate: data.participantCountEstimate }
+      : {}),
+    ...(typeof data.registrationCount === "number"
+      ? { registrationCount: data.registrationCount }
+      : {}),
+    ...(typeof data.presentParticipantCountEstimate === "number"
+      ? { presentParticipantCountEstimate: data.presentParticipantCountEstimate }
       : {}),
     ...(optionalIsoDate(data.createdDate)
       ? { createdDate: optionalIsoDate(data.createdDate) }
@@ -944,6 +1222,11 @@ export function createFirebaseApi(client: FirebaseClient): Api {
         );
       },
 
+      async prePostEnabled(communityId) {
+        const response = asRecord(await client.functions.call("GetCommunityPrePostEnabled", { communityId }));
+        return response.prePostEnabled === true;
+      },
+
       async donationsEnabled(communityId) {
         const response = asRecord(
           await client.functions.call("GetCommunityDonationsEnabled", {
@@ -961,6 +1244,44 @@ export function createFirebaseApi(client: FirebaseClient): Api {
     },
 
     templates: {
+      async get(communityId, templateId) {
+        await requireUser(client);
+        const snapshot = await getDoc(templateDocument(client, communityId, templateId));
+        if (!snapshot.exists()) throw new ApiError("notFound", t`This template was not found.`);
+        return mapTemplate(snapshot.id, communityId, snapshot.data());
+      },
+
+      async updatePrePost(template, which, card) {
+        await requireUser(client);
+        await updateDoc(templateDocument(client, template.communityId, template.id), {
+          // Firestore field names, not UI text.
+          // eslint-disable-next-line lingui/no-unlocalized-strings
+          [which === "pre" ? "preEventCardData" : "postEventCardData"]: card
+            ? storedCard(card, which === "pre" ? "preEvent" : "postEvent")
+            : deleteField(),
+        });
+      },
+
+      async upsertAgendaItem(template, item) {
+        await requireUser(client);
+        await editAgenda(client, templateDocument(client, template.communityId, template.id), upsertStep(item));
+      },
+
+      async deleteAgendaItem(template, itemId) {
+        await requireUser(client);
+        await editAgenda(client, templateDocument(client, template.communityId, template.id), deleteStep(itemId));
+      },
+
+      async reorderAgenda(template, ids) {
+        await requireUser(client);
+        await editAgenda(client, templateDocument(client, template.communityId, template.id), reorderSteps(ids));
+      },
+
+      async clearAgenda(template) {
+        await requireUser(client);
+        await updateDoc(templateDocument(client, template.communityId, template.id), { agendaItems: [] });
+      },
+
       async list(communityId) {
         await requireUser(client);
         const snapshots = await getDocs(
@@ -1012,6 +1333,24 @@ export function createFirebaseApi(client: FirebaseClient): Api {
               Date.parse(right.scheduledTime ?? "") -
               Date.parse(left.scheduledTime ?? ""),
           );
+      },
+
+      async listForTemplate(communityId, templateId) {
+        await requireUser(client);
+        const [snapshots, community] = await Promise.all([
+          getDocs(
+            query(
+              collection(client.firestore, "community", communityId, "templates", templateId, "events"),
+              where("isPublic", "==", true),
+              where("scheduledTime", ">", Timestamp.fromMillis(Date.now() - 15 * 60_000)),
+              orderBy("scheduledTime"),
+            ),
+          ),
+          getCommunity(client, communityId),
+        ]);
+        return snapshots.docs
+          .map((snapshot) => mapEvent(snapshot.id, snapshot.data(), community.displayId))
+          .filter((event) => event.status === "active");
       },
 
       async listMine() {
@@ -1081,7 +1420,9 @@ export function createFirebaseApi(client: FirebaseClient): Api {
         if (Number.isNaN(scheduledTime.getTime())) {
           throw new ApiError("invalid", t`Invalid event schedule`);
         }
+        const stream = input.eventType === "livestream" ? await provisionLiveStream(client, input.communityId) : undefined;
         const eventData: DocumentData = {
+          ...(stream ? { liveStreamInfo: stream.liveStreamInfo } : {}),
           id: eventRef.id,
           collectionPath: eventCollection.path,
           communityId: input.communityId,
@@ -1126,6 +1467,7 @@ export function createFirebaseApi(client: FirebaseClient): Api {
           });
         }
         await setDoc(eventRef, eventData);
+        if (stream) await savePrivateLiveStreamInfo(eventRef, stream.privateInfo);
         await client.functions.call("createEvent", {
           eventPath: eventRef.path,
         });
@@ -1134,6 +1476,245 @@ export function createFirebaseApi(client: FirebaseClient): Api {
           throw new ApiError("notFound", t`Created event was not found`);
         }
         return mapEvent(savedEvent.id, savedEvent.data(), community.displayId);
+      },
+
+      async get(communityId, templateId, eventId) {
+        await requireUser(client);
+        const [snapshot, community] = await Promise.all([
+          getDoc(eventDocument(client, communityId, templateId, eventId)),
+          getCommunity(client, communityId),
+        ]);
+        if (!snapshot.exists()) {
+          throw new ApiError("notFound", t`This event was not found.`);
+        }
+        return mapEvent(snapshot.id, snapshot.data(), community.displayId);
+      },
+
+      async join(event, options) {
+        const user = await requireUser(client);
+        const reference = eventDocument(client, event.communityId, event.templateId, event.id);
+        // Read it fresh: it may have been canceled since the page loaded.
+        const current = await getDoc(reference);
+        if (current.data()?.status === "canceled") {
+          throw new ApiError("invalid", t`Sorry, this event was canceled, so you cannot join it.`);
+        }
+        const membership = await getDoc(
+          doc(client.firestore, "memberships", user.uid, "community-membership", event.communityId),
+        );
+        const status = stringValue(membership.data()?.status);
+        // Anyone who RSVPs becomes at least an attendee of the community; members keep their rank.
+        if (!status || status === "nonmember") {
+          await client.functions.call("updateMembership", {
+            communityId: event.communityId,
+            userId: user.uid,
+            status: "attendee",
+            invisible: null,
+          });
+        }
+        await setDoc(
+          doc(reference, "event-participants", user.uid),
+          {
+            id: user.uid,
+            communityId: event.communityId,
+            templateId: event.templateId,
+            status: "active",
+            ...(event.surveyQuestions?.length
+              ? {
+                  breakoutRoomSurveyQuestions: event.surveyQuestions.map((question) => {
+                    const answer = options?.survey?.find((candidate) => candidate.questionId === question.id);
+                    return {
+                      id: question.id,
+                      title: question.title,
+                      type: question.type,
+                      answerOptionId: answer?.answerOptionId ?? "",
+                      answers: question.answers,
+                      ...(answer?.freeText !== undefined ? { freeTextAnswer: answer.freeText } : {}),
+                    };
+                  }),
+                }
+              : {}),
+            ...(event.scheduledTime ? { scheduledTime: Timestamp.fromDate(new Date(event.scheduledTime)) } : {}),
+            ...(user.email ? { email: user.email } : {}),
+            ...(user.displayName ? { name: user.displayName } : {}),
+            createdDate: serverTimestamp(),
+          },
+          { merge: true },
+        );
+        if (options?.joinCommunity) await api.communities.follow(event.communityId);
+        // The server sends the confirmation email; the RSVP itself already succeeded without it.
+        void client.functions.call("joinEvent", { ...current.data(), id: event.id }).catch(() => undefined);
+      },
+
+      async leave(event, participantId) {
+        const user = await requireUser(client);
+        const id = participantId ?? user.uid;
+        await setDoc(
+          doc(eventDocument(client, event.communityId, event.templateId, event.id), "event-participants", id),
+          { id, status: "canceled", lastUpdatedTime: serverTimestamp() },
+          { merge: true },
+        );
+      },
+
+      async cancel(event) {
+        await requireUser(client);
+        await updateDoc(eventDocument(client, event.communityId, event.templateId, event.id), { status: "canceled" });
+      },
+
+      async listMessages(event) {
+        await requireUser(client);
+        const snapshots = await getDocs(
+          query(
+            collection(
+              eventDocument(client, event.communityId, event.templateId, event.id),
+              "event-messages",
+            ),
+            orderBy("createdAt", "desc"),
+          ),
+        );
+        return snapshots.docs.flatMap((snapshot): EventMessage[] => {
+          const data = snapshot.data();
+          const message = stringValue(data.message);
+          const creatorId = stringValue(data.creatorId);
+          return message && creatorId
+            ? [{ id: snapshot.id, creatorId, message, createdAt: optionalIsoDate(data.createdAt) ?? "" }]
+            : [];
+        });
+      },
+
+      async sendMessage(event, message) {
+        const user = await requireUser(client);
+        await client.functions.call("sendEventMessage", {
+          communityId: event.communityId,
+          templateId: event.templateId,
+          eventId: event.id,
+          eventMessage: { creatorId: user.uid, message },
+        });
+      },
+
+      async removeMessage(event, messageId) {
+        await requireUser(client);
+        await deleteDoc(
+          doc(
+            eventDocument(client, event.communityId, event.templateId, event.id),
+            "event-messages",
+            messageId,
+          ),
+        );
+      },
+
+      async update(event, patch) {
+        await requireUser(client);
+        const reference = eventDocument(client, event.communityId, event.templateId, event.id);
+        // Becoming a livestream needs a stream set up, once.
+        const stream =
+          patch.eventType === "livestream" && !event.hasLiveStream
+            ? await provisionLiveStream(client, event.communityId)
+            : undefined;
+        await updateDoc(reference, {
+          ...(stream ? { liveStreamInfo: stream.liveStreamInfo } : {}),
+          ...(patch.eventType !== undefined ? { eventType: patch.eventType } : {}),
+          ...(patch.title !== undefined ? { title: patch.title } : {}),
+          ...(patch.description !== undefined ? { description: patch.description } : {}),
+          ...(patch.image !== undefined ? { image: patch.image } : {}),
+          ...(patch.isPublic !== undefined ? { isPublic: patch.isPublic } : {}),
+          ...(patch.scheduledTime !== undefined
+            ? { scheduledTime: Timestamp.fromDate(new Date(patch.scheduledTime)) }
+            : {}),
+          ...(patch.maxParticipants !== undefined ? { maxParticipants: patch.maxParticipants } : {}),
+          ...(patch.durationInMinutes !== undefined ? { durationInMinutes: patch.durationInMinutes } : {}),
+        });
+        if (stream) await savePrivateLiveStreamInfo(reference, stream.privateInfo);
+        const community = await getCommunity(client, event.communityId);
+        return mapEvent(event.id, (await getDoc(reference)).data(), community.displayId);
+      },
+
+      async updatePrePost(event, which, card) {
+        await requireUser(client);
+        const type = which === "pre" ? "preEvent" : "postEvent";
+        await updateDoc(eventDocument(client, event.communityId, event.templateId, event.id), {
+          // Firestore field names, not UI text.
+          // eslint-disable-next-line lingui/no-unlocalized-strings
+          [which === "pre" ? "preEventCardData" : "postEventCardData"]: card ? storedCard(card, type) : deleteField(),
+        });
+      },
+
+      async upsertAgendaItem(event, item) {
+        await requireUser(client);
+        await editAgenda(client, eventDocument(client, event.communityId, event.templateId, event.id), upsertStep(item));
+      },
+
+      async deleteAgendaItem(event, itemId) {
+        await requireUser(client);
+        await editAgenda(client, eventDocument(client, event.communityId, event.templateId, event.id), deleteStep(itemId));
+      },
+
+      async reorderAgenda(event, ids) {
+        await requireUser(client);
+        await editAgenda(client, eventDocument(client, event.communityId, event.templateId, event.id), reorderSteps(ids));
+      },
+
+      async saveSurveyQuestions(event, questions) {
+        await editBreakouts(client, event, {
+          breakoutQuestions: questions.map((question) => ({
+            id: question.id,
+            title: question.title,
+            type: question.type,
+            answerOptionId: "",
+            answers: question.type === "freeText" ? [] : question.answers,
+          })),
+        });
+      },
+
+      async updateBreakoutSettings(event, patch) {
+        await editBreakouts(client, event, {
+          ...(patch.assignmentMethod !== undefined ? { assignmentMethod: patch.assignmentMethod } : {}),
+          ...(patch.targetParticipants !== undefined ? { targetParticipants: patch.targetParticipants } : {}),
+        });
+      },
+
+      async clearAgenda(event) {
+        await requireUser(client);
+        await updateDoc(eventDocument(client, event.communityId, event.templateId, event.id), { agendaItems: [] });
+      },
+
+      async refreshFromTemplate(event) {
+        await requireUser(client);
+        const template = await getDoc(
+          doc(client.firestore, "community", event.communityId, "templates", event.templateId),
+        );
+        // The agenda is copied as stored; this app does not need to read what is in it.
+        const agendaItems = Array.isArray(template.data()?.agendaItems) ? template.data()?.agendaItems : [];
+        await updateDoc(eventDocument(client, event.communityId, event.templateId, event.id), { agendaItems });
+      },
+
+      async updateSettings(event, settings) {
+        await requireUser(client);
+        const reference = eventDocument(client, event.communityId, event.templateId, event.id);
+        // One field at a time, so settings this app does not show are left as they were.
+        await updateDoc(
+          reference,
+          Object.fromEntries(
+            // Firestore field paths, not UI text.
+            // eslint-disable-next-line lingui/no-unlocalized-strings
+            Object.entries(settings).flatMap(([key, value]) => (value === undefined ? [] : [[`eventSettings.${key}`, value]])),
+          ),
+        );
+        const community = await getCommunity(client, event.communityId);
+        return mapEvent(event.id, (await getDoc(reference)).data(), community.displayId);
+      },
+
+      async calendarLinks(event) {
+        const response = asRecord(
+          await client.functions.call("getCommunityCalendarLink", {
+            eventPath: `community/${event.communityId}/templates/${event.templateId}/events/${event.id}`,
+          }),
+        );
+        return {
+          google: stringValue(response.googleCalendarLink) ?? "",
+          outlook: stringValue(response.outlookCalendarLink) ?? "",
+          office365: stringValue(response.office365CalendarLink) ?? "",
+          ics: stringValue(response.icsLink) ?? "",
+        };
       },
 
       async listParticipants(eventId): Promise<ParticipantWithUser[]> {

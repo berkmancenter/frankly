@@ -23,6 +23,10 @@ const emulatorConnections = new WeakSet<Functions>();
 const sameOriginCallables = new Set([
   "GetCommunityDonationsEnabled",
   "GetMembersData",
+  "CreateLiveStream",
+  "GetCommunityPrePostEnabled",
+  "sendEventMessage",
+  "getCommunityCalendarLink",
   "GetUserAdminDetails",
   "createCommunity",
   "createEvent",
