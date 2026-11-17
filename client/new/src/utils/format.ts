@@ -28,7 +28,7 @@ export function formatLongStamp(date: Date): string {
 }
 
 /** Whole calendar days from `from` to `to` (local time); negative if `to` is earlier. */
-function calendarDayDiff(to: Date, from: Date): number {
+export function calendarDayDiff(to: Date, from: Date): number {
   const a = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate());
   const b = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate());
   return Math.round((a - b) / 86_400_000);
