@@ -31,7 +31,7 @@ function Launcher() {
   const upcoming = useUpcomingEvents(c.id);
   return (
     <ClockContext.Provider value={clock}>
-      <button onClick={createEvent.open}>Open dialog</button>
+      <button onClick={() => createEvent.open()}>Open dialog</button>
       <p data-testid="location">{pathname}</p>
       <ul>
         {upcoming.data?.map((e) => (
