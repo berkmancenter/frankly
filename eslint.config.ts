@@ -92,6 +92,11 @@ export default defineConfig(
             // URLs and image file names
             "^(https?:|mailto:)",
             "\\.(png|svg|jpe?g|gif|webp)$",
+            // camelCase identifiers (field names, ids, enum values such as "targetPerRoom"), not copy.
+            "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+$",
+            // What is left of a template literal once its variables are taken out, when it is only unit
+            // suffixes: `${hours}h ${minutes}m` reads as "h m".
+            "^(?:(?:h|m|s|ms|d|w|px|em|rem|kb|mb|gb)(?:\\s+|$))+$",
           ],
           ignoreNames: [
             "aria-labelledby",
