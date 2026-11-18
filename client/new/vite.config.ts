@@ -55,6 +55,9 @@ export default defineConfig({
     // with a `// @vitest-environment jsdom` docblock.
     environment: "node",
     include: ["src/**/*.test.{ts,tsx}"],
+    // jsdom tests that drive MUI (menus, drawers, dialogs) take well under a second alone but several seconds
+    // when the whole suite runs in parallel on a busy machine; the default 5s made them flaky.
+    testTimeout: 15_000,
     setupFiles: ["src/__tests__/support/setup.ts"],
     // Fixed values for env vars the UI renders
     env: {
