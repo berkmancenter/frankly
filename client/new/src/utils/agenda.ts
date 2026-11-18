@@ -40,19 +40,31 @@ export const draftOf = (item: AgendaItem): AgendaDraft => ({
 });
 
 // Switching type starts that type's fields afresh and keeps the time.
-export const blankDraft = (type: AgendaItemType, seconds: number): AgendaDraft => ({
+export const blankDraft = (
+  type: AgendaItemType,
+  seconds: number,
+): AgendaDraft => ({
   ...draftOf({ id: "", type }),
   seconds,
 });
 
 // The step the draft describes: only the fields its type uses.
 export function itemOf(base: AgendaItem, draft: AgendaDraft): AgendaItem {
-  const item: AgendaItem = { id: base.id, type: draft.type, timeInSeconds: draft.seconds };
+  const item: AgendaItem = {
+    id: base.id,
+    type: draft.type,
+    timeInSeconds: draft.seconds,
+  };
   switch (draft.type) {
     case "text":
       return { ...item, title: draft.title, content: draft.content };
     case "video":
-      return { ...item, title: draft.title, videoType: draft.videoType, videoUrl: draft.videoUrl };
+      return {
+        ...item,
+        title: draft.title,
+        videoType: draft.videoType,
+        videoUrl: draft.videoUrl,
+      };
     case "image":
       return { ...item, title: draft.title, imageUrl: draft.imageUrl };
     case "poll":
@@ -81,17 +93,30 @@ export function agendaProblem(draft: AgendaDraft): AgendaProblem | undefined {
   const blank = (text: string) => !text.trim();
   switch (draft.type) {
     case "text":
-      return blank(draft.title) ? "title" : blank(draft.content) ? "message" : undefined;
+      return blank(draft.title)
+        ? "title"
+        : blank(draft.content)
+          ? "message"
+          : undefined;
     case "video":
       if (blank(draft.title)) return "title";
       if (blank(draft.videoUrl)) return "videoUrl";
-      return draft.videoType === "url" && !draft.videoUrl.trim().toLowerCase().endsWith("mp4") ? "videoNotMp4" : undefined;
+      return draft.videoType === "url" &&
+        !draft.videoUrl.trim().toLowerCase().endsWith("mp4")
+        ? "videoNotMp4"
+        : undefined;
     case "image":
-      return blank(draft.title) ? "title" : blank(draft.imageUrl) ? "imageUrl" : undefined;
+      return blank(draft.title)
+        ? "title"
+        : blank(draft.imageUrl)
+          ? "imageUrl"
+          : undefined;
     case "poll":
       if (blank(draft.content)) return "question";
       if (draft.answers.length === 0) return "answers";
-      return new Set(draft.answers).size !== draft.answers.length ? "duplicateAnswers" : undefined;
+      return new Set(draft.answers).size !== draft.answers.length
+        ? "duplicateAnswers"
+        : undefined;
     case "wordCloud":
       return blank(draft.content) ? "prompt" : undefined;
     case "userSuggestions":
@@ -109,7 +134,14 @@ export function formatStepTime(seconds: number): string {
 }
 
 // A copy of a step with a fresh id (the clock's milliseconds, like every new step).
-export const duplicateOf = (item: AgendaItem, id: string): AgendaItem => ({ ...item, id });
+export const duplicateOf = (item: AgendaItem, id: string): AgendaItem => ({
+  ...item,
+  id,
+});
 
 // A new, empty text step.
-export const newItem = (id: string): AgendaItem => ({ id, type: "text", timeInSeconds: DEFAULT_AGENDA_SECONDS });
+export const newItem = (id: string): AgendaItem => ({
+  id,
+  type: "text",
+  timeInSeconds: DEFAULT_AGENDA_SECONDS,
+});

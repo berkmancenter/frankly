@@ -11,7 +11,7 @@ import { paths } from "@/app/paths";
 import { ConstrainedBody } from "@/components/ConstrainedBody";
 import { useCommunityScope } from "@/scopes/CommunityScope";
 import { colors } from "@/theme/tokens";
-import { DEFAULT_TEMPLATE_ID } from "@/utils/eventTiming";
+import { DEFAULT_TEMPLATE_ID } from "@/utils/events/eventTiming";
 import { isMod } from "@/utils/membership";
 
 // A moderator who dismissed the notice does not see it again on this browser.
@@ -31,7 +31,8 @@ export function EditTemplateNotice({ event }: { event: Event }) {
   const { community, status } = useCommunityScope();
   const [hidden, setHidden] = useState(wasHidden);
 
-  if (hidden || event.templateId === DEFAULT_TEMPLATE_ID || !isMod(status)) return null;
+  if (hidden || event.templateId === DEFAULT_TEMPLATE_ID || !isMod(status))
+    return null;
 
   const hide = () => {
     setHidden(true);
@@ -47,22 +48,42 @@ export function EditTemplateNotice({ event }: { event: Event }) {
   return (
     <Box role="note" sx={{ bgcolor: colors.surfaceContainerHigh, py: "20px" }}>
       <ConstrainedBody maxWidth={1100}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "10px" }}>
-          <Typography sx={{ color: colors.onSurfaceVariant, whiteSpace: "pre-line" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: "10px",
+          }}
+        >
+          <Typography
+            sx={{ color: colors.onSurfaceVariant, whiteSpace: "pre-line" }}
+          >
             <Typography component="span" sx={{ fontSize: 16, fontWeight: 500 }}>
-              {t({ id: "editingEventNotice", message: "You are editing an event. \n" })}
+              {t({
+                id: "editingEventNotice",
+                message: "You are editing an event. \n",
+              })}
             </Typography>
-            {t({ id: "editingFutureInstancesNotice", message: "If you want to edit future instances, " })}
+            {t({
+              id: "editingFutureInstancesNotice",
+              message: "If you want to edit future instances, ",
+            })}
             <Link
               component={RouterLink}
-              to={paths.community(community.displayId).template(event.templateId)}
+              to={paths
+                .community(community.displayId)
+                .template(event.templateId)}
               color="inherit"
               underline="always"
             >
               {t({ id: "editTheTemplate", message: "edit the template." })}
             </Link>
           </Typography>
-          <IconButton aria-label={t({ id: "hideNotice", message: "Hide this notice" })} onClick={hide}>
+          <IconButton
+            aria-label={t({ id: "hideNotice", message: "Hide this notice" })}
+            onClick={hide}
+          >
             <CloseIcon color="primary" />
           </IconButton>
         </Box>

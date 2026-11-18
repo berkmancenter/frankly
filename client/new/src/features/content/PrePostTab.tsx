@@ -12,7 +12,12 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useLingui } from "@lingui/react/macro";
 import { useState, type ReactNode } from "react";
-import { PRE_POST_ATTRIBUTES, type PrePostAttribute, type PrePostCard, type PrePostLink } from "@/api/types";
+import {
+  PRE_POST_ATTRIBUTES,
+  type PrePostAttribute,
+  type PrePostCard,
+  type PrePostLink,
+} from "@/api/types";
 import { AddMoreButton } from "@/components/AddMoreButton";
 import { useConfirm } from "@/components/ConfirmDialog";
 import { useToast } from "@/components/Toast";
@@ -24,8 +29,13 @@ import { PrePostCardView } from "./PrePostCardView";
 export type PrePostWhich = "pre" | "post";
 
 // Stand-ins for the participant's details in the preview of a link.
-// eslint-disable-next-line lingui/no-unlocalized-strings
-const PREVIEW_WHO = (eventId: string) => ({ userId: "{userId}", eventId, email: "{email}" });
+/* eslint-disable lingui/no-unlocalized-strings */
+const PREVIEW_WHO = (eventId: string) => ({
+  userId: "{userId}",
+  eventId,
+  email: "{email}",
+});
+/* eslint-enable lingui/no-unlocalized-strings */
 
 interface Props {
   pre: PrePostCard | undefined;
@@ -41,19 +51,56 @@ interface Props {
 
 // The CTAs tab, for an event or a template: the card people see after signing up and the one after the event.
 // Editors see an "add" button for each card that does not exist yet; everyone else only sees cards with something in them.
-export function PrePostTab({ pre, post, canEdit, onSave, event, children }: Props) {
+export function PrePostTab({
+  pre,
+  post,
+  canEdit,
+  onSave,
+  event,
+  children,
+}: Props) {
   const { t } = useLingui();
-  const sections: { which: PrePostWhich; card: PrePostCard | undefined; add: string }[] = [
-    { which: "pre", card: pre, add: t({ id: "addPreEvent", message: "Add Pre-event" }) },
-    { which: "post", card: post, add: t({ id: "addPostEvent", message: "Add Post-event" }) },
+  const sections: {
+    which: PrePostWhich;
+    card: PrePostCard | undefined;
+    add: string;
+  }[] = [
+    {
+      which: "pre",
+      card: pre,
+      add: t({ id: "addPreEvent", message: "Add Pre-event" }),
+    },
+    {
+      which: "post",
+      card: post,
+      add: t({ id: "addPostEvent", message: "Add Post-event" }),
+    },
   ];
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "20px", pt: "24px" }}>
+    <Box
+      sx={{ display: "flex", flexDirection: "column", gap: "20px", pt: "24px" }}
+    >
       {children}
       {sections.map(({ which, card, add }) => {
         if (!canEdit && !cardHasData(card)) return null;
-        if (!card) return <AddMoreButton key={which} label={add} onPress={() => onSave(which, emptyCard())} />;
-        return <CardPanel key={which} which={which} card={card} canEdit={canEdit} onSave={onSave} event={event} />;
+        if (!card)
+          return (
+            <AddMoreButton
+              key={which}
+              label={add}
+              onPress={() => onSave(which, emptyCard())}
+            />
+          );
+        return (
+          <CardPanel
+            key={which}
+            which={which}
+            card={card}
+            canEdit={canEdit}
+            onSave={onSave}
+            event={event}
+          />
+        );
       })}
     </Box>
   );
@@ -66,7 +113,10 @@ function CardPanel({
   canEdit,
   onSave,
   event,
-}: { which: PrePostWhich; card: PrePostCard; canEdit: boolean } & Pick<Props, "onSave" | "event">) {
+}: { which: PrePostWhich; card: PrePostCard; canEdit: boolean } & Pick<
+  Props,
+  "onSave" | "event"
+>) {
   const { t } = useLingui();
   const toast = useToast();
   const { confirm, dialog } = useConfirm();
@@ -74,7 +124,10 @@ function CardPanel({
   const [expanded, setExpanded] = useState(true);
   const [editing, setEditing] = useState(canEdit && isNew);
 
-  const title = which === "pre" ? t({ id: "preEvent", message: "Pre-event" }) : t({ id: "postEvent", message: "Post-event" });
+  const title =
+    which === "pre"
+      ? t({ id: "preEvent", message: "Pre-event" })
+      : t({ id: "postEvent", message: "Post-event" });
   const onDelete = async () => {
     const yes = await confirm({
       title:
@@ -85,34 +138,58 @@ function CardPanel({
         which === "pre"
           ? t({
               id: "confirmDeletePreEventItem",
-              message: "Are you sure you want to delete this pre-event agenda item? This action cannot be undone.",
+              message:
+                "Are you sure you want to delete this pre-event agenda item? This action cannot be undone.",
             })
           : t({
               id: "confirmDeletePostEventItem",
-              message: "Are you sure you want to delete this post-event agenda item? This action cannot be undone.",
+              message:
+                "Are you sure you want to delete this post-event agenda item? This action cannot be undone.",
             }),
       confirmText: t({ id: "delete", message: "Delete" }),
       cancelText: t({ id: "cancel", message: "Cancel" }),
       destructive: true,
     });
-    if (yes) await onSave(which, null).catch(() => toast.error(t`Something went wrong. Please try again.`));
+    if (yes)
+      await onSave(which, null).catch(() =>
+        toast.error(t`Something went wrong. Please try again.`),
+      );
   };
 
   return (
-    <Box component="section" sx={{ border: 1, borderColor: colors.outline, borderRadius: "20px", p: "20px", bgcolor: colors.surfaceContainerLowest }}>
+    <Box
+      component="section"
+      sx={{
+        border: 1,
+        borderColor: colors.outline,
+        borderRadius: "20px",
+        p: "20px",
+        bgcolor: colors.surfaceContainerLowest,
+      }}
+    >
       <Box sx={{ display: "flex", alignItems: "center", gap: "4px" }}>
-        <Typography component="h3" sx={{ flex: 1, fontSize: 20, fontWeight: 500 }}>
+        <Typography
+          component="h3"
+          sx={{ flex: 1, fontSize: 20, fontWeight: 500 }}
+        >
           {title}
         </Typography>
         {canEdit && (
           <>
             {!editing && (
-              <IconButton aria-label={t({ id: "deleteCard", message: "Delete card" })} onClick={onDelete}>
+              <IconButton
+                aria-label={t({ id: "deleteCard", message: "Delete card" })}
+                onClick={onDelete}
+              >
                 <DeleteIcon />
               </IconButton>
             )}
             <IconButton
-              aria-label={editing ? t({ id: "viewCard", message: "View card" }) : t({ id: "editCard", message: "Edit card" })}
+              aria-label={
+                editing
+                  ? t({ id: "viewCard", message: "View card" })
+                  : t({ id: "editCard", message: "Edit card" })
+              }
               onClick={() => {
                 setExpanded(true);
                 setEditing(!editing);
@@ -123,7 +200,11 @@ function CardPanel({
           </>
         )}
         <IconButton
-          aria-label={expanded ? t({ id: "collapseCard", message: "Collapse" }) : t({ id: "expandCard", message: "Expand" })}
+          aria-label={
+            expanded
+              ? t({ id: "collapseCard", message: "Collapse" })
+              : t({ id: "expandCard", message: "Expand" })
+          }
           aria-expanded={expanded}
           onClick={() => setExpanded(!expanded)}
         >
@@ -175,14 +256,34 @@ function CardEditor({
   const dirty = JSON.stringify(card) !== JSON.stringify(saved);
 
   const setLink = (index: number, link: PrePostLink) =>
-    setCard((current) => ({ ...current, links: current.links.map((existing, i) => (i === index ? link : existing)) }));
+    setCard((current) => ({
+      ...current,
+      links: current.links.map((existing, i) =>
+        i === index ? link : existing,
+      ),
+    }));
 
-  const message = which === "pre"
-    ? t({ id: "enterMessageExampleBefore", message: 'Enter message (e.g. "Take this survey before the event")' })
-    : t({ id: "enterMessageExampleAfter", message: 'Enter message (e.g. "Take this survey after the event")' });
-  const addLinks = which === "pre"
-    ? t({ id: "addActionLinksBefore", message: "Add action links participants should visit before the event" })
-    : t({ id: "addActionLinksAfter", message: "Add action links participants should visit after the event" });
+  const message =
+    which === "pre"
+      ? t({
+          id: "enterMessageExampleBefore",
+          message: 'Enter message (e.g. "Take this survey before the event")',
+        })
+      : t({
+          id: "enterMessageExampleAfter",
+          message: 'Enter message (e.g. "Take this survey after the event")',
+        });
+  const addLinks =
+    which === "pre"
+      ? t({
+          id: "addActionLinksBefore",
+          message:
+            "Add action links participants should visit before the event",
+        })
+      : t({
+          id: "addActionLinksAfter",
+          message: "Add action links participants should visit after the event",
+        });
 
   const save = async () => {
     try {
@@ -198,23 +299,48 @@ function CardEditor({
       <TextField
         label={t({ id: "enterHeadline", message: "Enter Headline" })}
         value={card.headline}
-        onChange={(change) => setCard({ ...card, headline: change.target.value })}
+        onChange={(change) =>
+          setCard({ ...card, headline: change.target.value })
+        }
       />
       <TextField
         label={message}
         value={card.message}
         multiline
         minRows={3}
-        onChange={(change) => setCard({ ...card, message: change.target.value })}
+        onChange={(change) =>
+          setCard({ ...card, message: change.target.value })
+        }
       />
-      <Typography sx={{ color: colors.onSurfaceVariant }}>{addLinks}</Typography>
+      <Typography sx={{ color: colors.onSurfaceVariant }}>
+        {addLinks}
+      </Typography>
       {card.links.map((link, index) => (
-        <Box key={index} sx={{ display: "flex", flexDirection: "column", gap: "10px", border: 1, borderColor: colors.outlineVariant, borderRadius: "10px", p: "14px" }}>
+        <Box
+          key={index}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            border: 1,
+            borderColor: colors.outlineVariant,
+            borderRadius: "10px",
+            p: "14px",
+          }}
+        >
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <IconButton
               size="small"
-              aria-label={t({ id: "removeActionLink", message: "Remove action link" })}
-              onClick={() => setCard({ ...card, links: card.links.filter((_, i) => i !== index) })}
+              aria-label={t({
+                id: "removeActionLink",
+                message: "Remove action link",
+              })}
+              onClick={() =>
+                setCard({
+                  ...card,
+                  links: card.links.filter((_, i) => i !== index),
+                })
+              }
             >
               <CloseIcon fontSize="small" />
             </IconButton>
@@ -223,16 +349,26 @@ function CardEditor({
             size="small"
             label={t({ id: "buttonText", message: "Button Text" })}
             value={link.buttonText ?? ""}
-            onChange={(change) => setLink(index, { ...link, buttonText: change.target.value })}
+            onChange={(change) =>
+              setLink(index, { ...link, buttonText: change.target.value })
+            }
           />
           <TextField
             size="small"
             label={t({ id: "enterUrl", message: "Enter URL" })}
             value={link.url ?? ""}
-            onChange={(change) => setLink(index, { ...link, url: change.target.value })}
+            onChange={(change) =>
+              setLink(index, { ...link, url: change.target.value })
+            }
           />
-          <AttributeEditor link={link} onChange={(next) => setLink(index, next)} />
-          <Typography variant="body2" sx={{ color: colors.onSurfaceVariant, ...wrapAnywhere }}>
+          <AttributeEditor
+            link={link}
+            onChange={(next) => setLink(index, next)}
+          />
+          <Typography
+            variant="body2"
+            sx={{ color: colors.onSurfaceVariant, ...wrapAnywhere }}
+          >
             {t({ id: "urlPreview", message: "URL Preview" })}:{" "}
             {finalLink(link, PREVIEW_WHO(eventId)) ?? ""}
           </Typography>
@@ -240,14 +376,30 @@ function CardEditor({
       ))}
       <AddMoreButton
         label={t({ id: "addActionLink", message: "Add action link" })}
-        onPress={() => setCard({ ...card, links: [...card.links, { attributes: [] }] })}
+        onPress={() =>
+          setCard({ ...card, links: [...card.links, { attributes: [] }] })
+        }
       />
-      <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "20px" }}>
-        <IconButton aria-label={t({ id: "deleteCard", message: "Delete card" })} onClick={onDelete}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <IconButton
+          aria-label={t({ id: "deleteCard", message: "Delete card" })}
+          onClick={onDelete}
+        >
           <DeleteIcon />
         </IconButton>
         {/* Saving is only possible once something changed. */}
-        <IconButton aria-label={t({ id: "save", message: "Save" })} disabled={!dirty} onClick={save}>
+        <IconButton
+          aria-label={t({ id: "save", message: "Save" })}
+          disabled={!dirty}
+          onClick={save}
+        >
           <CheckIcon />
         </IconButton>
       </Box>
@@ -255,14 +407,22 @@ function CardEditor({
   );
 }
 
-const ATTRIBUTE_LABELS = (t: ReturnType<typeof useLingui>["t"]): Record<PrePostAttribute, string> => ({
+const ATTRIBUTE_LABELS = (
+  t: ReturnType<typeof useLingui>["t"],
+): Record<PrePostAttribute, string> => ({
   userId: t({ id: "attributeParticipantId", message: "Participant ID" }),
   eventId: t({ id: "attributeEventId", message: "Event ID" }),
   email: t({ id: "attributeEmail", message: "Email" }),
 });
 
 // Which of the participant's details get added to the link, and under what name.
-function AttributeEditor({ link, onChange }: { link: PrePostLink; onChange: (link: PrePostLink) => void }) {
+function AttributeEditor({
+  link,
+  onChange,
+}: {
+  link: PrePostLink;
+  onChange: (link: PrePostLink) => void;
+}) {
   const { t } = useLingui();
   const labels = ATTRIBUTE_LABELS(t);
   return (
@@ -271,9 +431,14 @@ function AttributeEditor({ link, onChange }: { link: PrePostLink; onChange: (lin
         {t({ id: "addUrlParameter", message: "Add URL Parameter" })}
       </Typography>
       {PRE_POST_ATTRIBUTES.map((type) => {
-        const attribute = link.attributes.find((candidate) => candidate.type === type);
+        const attribute = link.attributes.find(
+          (candidate) => candidate.type === type,
+        );
         return (
-          <Box key={type} sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <Box
+            key={type}
+            sx={{ display: "flex", alignItems: "center", gap: "10px" }}
+          >
             <FormControlLabel
               sx={{ minWidth: 150 }}
               label={labels[type]}
@@ -285,7 +450,9 @@ function AttributeEditor({ link, onChange }: { link: PrePostLink; onChange: (lin
                       ...link,
                       attributes: checked
                         ? [...link.attributes, { type, queryParam: type }]
-                        : link.attributes.filter((candidate) => candidate.type !== type),
+                        : link.attributes.filter(
+                            (candidate) => candidate.type !== type,
+                          ),
                     })
                   }
                 />
@@ -300,7 +467,9 @@ function AttributeEditor({ link, onChange }: { link: PrePostLink; onChange: (lin
                   onChange({
                     ...link,
                     attributes: link.attributes.map((candidate) =>
-                      candidate.type === type ? { ...candidate, queryParam: change.target.value } : candidate,
+                      candidate.type === type
+                        ? { ...candidate, queryParam: change.target.value }
+                        : candidate,
                     ),
                   })
                 }

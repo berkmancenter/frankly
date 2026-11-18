@@ -23,7 +23,7 @@ import { useToast } from "@/components/Toast";
 import { Upload } from "@/components/Upload";
 import { useUpdateEvent } from "@/queries/events";
 import { colors } from "@/theme/tokens";
-import { effectiveMaxParticipants } from "@/utils/eventTiming";
+import { effectiveMaxParticipants } from "@/utils/events/eventTiming";
 
 export const HOSTED_MIN_PARTICIPANTS = 2;
 export const HOSTED_MAX_PARTICIPANTS = 50;
@@ -179,7 +179,7 @@ function Editor({ event, onClose, onCancelEvent }: Props) {
           pt: "6px",
         }}
       >
-        {(
+        {
           <RadioGroup
             value={eventType}
             onChange={(change) =>
@@ -195,7 +195,7 @@ function Editor({ event, onClose, onCancelEvent }: Props) {
               />
             ))}
           </RadioGroup>
-        )}
+        }
         <Box
           sx={{
             display: "flex",

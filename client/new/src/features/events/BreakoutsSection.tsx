@@ -37,7 +37,7 @@ import {
   withAnswerTitle,
   withTitle,
   withType,
-} from "@/utils/surveyQuestions";
+} from "@/utils/events/surveyQuestions";
 
 const QUESTION_MAX = 140;
 

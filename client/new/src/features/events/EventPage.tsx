@@ -19,7 +19,7 @@ import {
 } from "@/queries/events";
 import { useCurrentUserId } from "@/queries/me";
 import { useCommunityScope } from "@/scopes/CommunityScope";
-import { eventPermissions } from "@/utils/eventPermissions";
+import { eventPermissions } from "@/utils/events/eventPermissions";
 import { cardHasData } from "@/utils/prePost";
 import { useIsMobile } from "@/utils/useResponsive";
 import { isFacilitator } from "@/utils/membership";
@@ -117,17 +117,20 @@ export function EventPage() {
                 <Tab
                   value="about"
                   label={t({ id: "about", message: "About" })}
+                  sx={{ textTransform: "uppercase" }}
                 />
                 {showAgenda && (
                   <Tab
                     value="agenda"
                     label={t({ id: "agendaTab", message: "Agenda" })}
+                    sx={{ textTransform: "uppercase" }}
                   />
                 )}
                 {showCtas && (
                   <Tab
                     value="ctas"
                     label={t({ id: "ctasTab", message: "CTAs" })}
+                    sx={{ textTransform: "uppercase" }}
                   />
                 )}
               </Tabs>
@@ -137,11 +140,18 @@ export function EventPage() {
                   items={event.data.agendaItems}
                   canEdit={canEdit}
                   startsCollapsed
-                  above={canEdit ? <BreakoutsSection event={event.data} /> : undefined}
+                  above={
+                    canEdit ? (
+                      <BreakoutsSection event={event.data} />
+                    ) : undefined
+                  }
                   actions={{
-                    save: (item) => upsertStep.mutateAsync({ event: event.data, item }),
-                    remove: (itemId) => deleteStep.mutateAsync({ event: event.data, itemId }),
-                    reorder: (ids) => reorderSteps.mutateAsync({ event: event.data, ids }),
+                    save: (item) =>
+                      upsertStep.mutateAsync({ event: event.data, item }),
+                    remove: (itemId) =>
+                      deleteStep.mutateAsync({ event: event.data, itemId }),
+                    reorder: (ids) =>
+                      reorderSteps.mutateAsync({ event: event.data, ids }),
                     clear: () => clearAgenda.mutateAsync({ event: event.data }),
                   }}
                 />

@@ -1,8 +1,8 @@
-import { msg } from '@lingui/core/macro';
-import type { MessageDescriptor } from '@lingui/core';
-import type { MembershipStatus } from '@/api/types';
+import { msg } from "@lingui/core/macro";
+import type { MessageDescriptor } from "@lingui/core";
+import type { MembershipStatus } from "@/api/types";
 
-/** Port of `MembershipStatusExtension` (membership.dart): each level implies the ones below it. */
+// Defines the ranking of membership statuses, where higher numbers indicate higher privileges.
 const RANK: Record<MembershipStatus, number> = {
   banned: 0,
   nonmember: 1,
@@ -14,9 +14,10 @@ const RANK: Record<MembershipStatus, number> = {
   owner: 7,
 };
 
-export const isNotBanned = (s: MembershipStatus) => s !== 'banned';
+export const isNotBanned = (s: MembershipStatus) => s !== "banned";
 export const isMember = (s: MembershipStatus) => RANK[s] >= RANK.member;
-export const isFacilitator = (s: MembershipStatus) => RANK[s] >= RANK.facilitator;
+export const isFacilitator = (s: MembershipStatus) =>
+  RANK[s] >= RANK.facilitator;
 export const isMod = (s: MembershipStatus) => RANK[s] >= RANK.moderator;
 export const isAdmin = (s: MembershipStatus) => RANK[s] >= RANK.admin;
 

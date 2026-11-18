@@ -10,7 +10,12 @@
 
 // Identifiers stored in Firestore, not UI text.
 // eslint-disable-next-line lingui/no-unlocalized-strings
-export const SOCIAL_PLATFORMS = ['instagram', 'twitter', 'facebook', 'linkedin'] as const;
+export const SOCIAL_PLATFORMS = [
+  "instagram",
+  "twitter",
+  "facebook",
+  "linkedin",
+] as const;
 export type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
 
 export interface SocialLink {
@@ -56,21 +61,21 @@ export interface PublicUser {
 }
 
 export type MembershipStatus =
-  | 'owner'
-  | 'admin'
-  | 'moderator'
-  | 'facilitator'
-  | 'member'
-  | 'banned'
-  | 'nonmember'
-  | 'attendee';
+  | "owner"
+  | "admin"
+  | "moderator"
+  | "facilitator"
+  | "member"
+  | "banned"
+  | "nonmember"
+  | "attendee";
 
 export interface Membership {
   userId: string;
   communityId: string;
   status: MembershipStatus;
   /** Set when the community requires approval: `Follow` becomes a request. */
-  requestStatus?: 'pending' | 'approved' | 'denied';
+  requestStatus?: "pending" | "approved" | "denied";
 }
 
 /** The signed-in user and all of their community memberships. */
@@ -84,10 +89,10 @@ export interface Me {
  * ------------------------------------------------------------------------- */
 
 export type OnboardingStep =
-  | 'brandSpace'
-  | 'createTemplate'
-  | 'hostEvent'
-  | 'inviteSomeone';
+  | "brandSpace"
+  | "createTemplate"
+  | "hostEvent"
+  | "inviteSomeone";
 
 export interface CommunitySettings {
   allowDonations: boolean;
@@ -135,27 +140,29 @@ export interface MemberDetails {
  * ------------------------------------------------------------------------- */
 
 // The switches a host can set on a template or event; whatever is unset falls back to the template, then the community.
-// Firestore field names, not UI text.
-/* eslint-disable lingui/no-unlocalized-strings */
 export const EVENT_SETTING_FLAGS = [
-  'chat',
-  'showChatMessagesInRealTime',
-  'alwaysRecord',
-  'alwaysTranscribe',
-  'autoEndMeeting',
-  'talkingTimer',
-  'agendaPreview',
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  "chat",
+  "showChatMessagesInRealTime",
+  "alwaysRecord",
+  "alwaysTranscribe",
+  "autoEndMeeting",
+  "talkingTimer",
+  "agendaPreview",
 ] as const;
 // Switches only developers touch, shown outside production.
 export const DEV_EVENT_SETTING_FLAGS = [
-  'reminderEmails',
-  'allowMultiplePeopleOnStage',
-  'showSmartMatchingForBreakouts',
-  'defaultStageView',
-  'enableBreakoutsByCategory',
-  'enablePrerequisites',
+  "reminderEmails",
+  "allowMultiplePeopleOnStage",
+  "showSmartMatchingForBreakouts",
+  "defaultStageView",
+  "enableBreakoutsByCategory",
+  "enablePrerequisites",
 ] as const;
-export const ALL_EVENT_SETTING_FLAGS = [...EVENT_SETTING_FLAGS, ...DEV_EVENT_SETTING_FLAGS] as const;
+export const ALL_EVENT_SETTING_FLAGS = [
+  ...EVENT_SETTING_FLAGS,
+  ...DEV_EVENT_SETTING_FLAGS,
+] as const;
 /* eslint-enable lingui/no-unlocalized-strings */
 export type EventSettingFlag = (typeof EVENT_SETTING_FLAGS)[number];
 export type AnyEventSettingFlag = (typeof ALL_EVENT_SETTING_FLAGS)[number];
@@ -167,7 +174,7 @@ export type EventSettings = { [K in AnyEventSettingFlag]?: boolean } & {
 
 // Firestore values, not UI text.
 // eslint-disable-next-line lingui/no-unlocalized-strings
-export const PRE_POST_ATTRIBUTES = ['userId', 'eventId', 'email'] as const;
+export const PRE_POST_ATTRIBUTES = ["userId", "eventId", "email"] as const;
 export type PrePostAttribute = (typeof PRE_POST_ATTRIBUTES)[number];
 
 // A link on a pre- or post-event card; the chosen attributes are added to it as query parameters.
@@ -188,7 +195,7 @@ export interface PrePostCard {
 export interface SurveyQuestion {
   id: string;
   title: string;
-  type: 'multipleChoice' | 'freeText';
+  type: "multipleChoice" | "freeText";
   /** The choices of a multiple-choice question, flattened from `answers`. */
   options: { id: string; title: string }[];
   /** The stored choice groups; a question with no free text has at least two. */
@@ -201,12 +208,18 @@ export interface SurveyAnswer {
   freeText?: string;
 }
 
-export type AgendaItemType = 'text' | 'video' | 'image' | 'poll' | 'wordCloud' | 'userSuggestions';
+export type AgendaItemType =
+  | "text"
+  | "video"
+  | "image"
+  | "poll"
+  | "wordCloud"
+  | "userSuggestions";
 
 // One step of an event's agenda, as the host planned it.
-export type VideoType = 'youtube' | 'vimeo' | 'url';
+export type VideoType = "youtube" | "vimeo" | "url";
 
-export type BreakoutAssignmentMethod = 'targetPerRoom' | 'smartMatch';
+export type BreakoutAssignmentMethod = "targetPerRoom" | "smartMatch";
 
 export interface AgendaItem {
   id: string;
@@ -227,7 +240,7 @@ export interface Template {
   description?: string;
   category?: string;
   image?: string;
-  status: 'active' | 'removed';
+  status: "active" | "removed";
   creatorId: string;
   prerequisiteTemplateId?: string;
   orderingPriority: number;
@@ -238,8 +251,8 @@ export interface Template {
   createdDate?: string;
 }
 
-export type EventType = 'hosted' | 'hostless' | 'livestream';
-export type EventStatus = 'active' | 'canceled';
+export type EventType = "hosted" | "hostless" | "livestream";
+export type EventStatus = "active" | "canceled";
 
 export interface Event {
   id: string;
@@ -261,7 +274,10 @@ export interface Event {
   isLocked: boolean;
   agendaItems: AgendaItem[];
   /** How people are split into breakout rooms; absent until the host defines breakouts. */
-  breakout?: { assignmentMethod: BreakoutAssignmentMethod; targetParticipants: number };
+  breakout?: {
+    assignmentMethod: BreakoutAssignmentMethod;
+    targetParticipants: number;
+  };
   /** Whether a live stream has been set up for the event (only livestream events have one). */
   hasLiveStream: boolean;
   surveyQuestions?: SurveyQuestion[];
@@ -276,7 +292,7 @@ export interface Event {
   createdDate?: string;
 }
 
-export type ParticipantStatus = 'active' | 'canceled' | 'banned';
+export type ParticipantStatus = "active" | "canceled" | "banned";
 
 export interface Participant {
   userId: string;
@@ -333,13 +349,13 @@ export interface NewEventInput {
 
 /** The seven emotions of the Flutter `EmotionType` (chat reactions + post/comment reactions). */
 export type EmotionType =
-  | 'thumbsUp'
-  | 'heart'
-  | 'hundred'
-  | 'exclamation'
-  | 'plusOne'
-  | 'laughWithTears'
-  | 'heartEyes';
+  | "thumbsUp"
+  | "heart"
+  | "hundred"
+  | "exclamation"
+  | "plusOne"
+  | "laughWithTears"
+  | "heartEyes";
 
 export interface EmotionVote {
   userId: string;
@@ -381,7 +397,7 @@ export interface Suggestion {
 
 export interface LiveMeetingState {
   eventId: string;
-  phase: 'notStarted' | 'running' | 'finished';
+  phase: "notStarted" | "running" | "finished";
   /** `-1` until the meeting starts. */
   currentItemIndex: number;
   itemStartedAt?: string;

@@ -48,14 +48,14 @@ import { useHasAttendedTemplate } from "@/queries/templates";
 import { useCommunityScope } from "@/scopes/CommunityScope";
 import { colors, fontSizes } from "@/theme/tokens";
 import { appName } from "@/utils/appInfo";
-import { eventPermissions } from "@/utils/eventPermissions";
-import { DEFAULT_TEMPLATE_ID } from "@/utils/eventTiming";
+import { eventPermissions } from "@/utils/events/eventPermissions";
+import { DEFAULT_TEMPLATE_ID } from "@/utils/events/eventTiming";
 import {
   effectiveMaxParticipants,
   formatCountdown,
   MINUTES_BEFORE_EVENT_TO_JOIN,
   startState,
-} from "@/utils/eventTiming";
+} from "@/utils/events/eventTiming";
 import { formatTimeShort, formatWeekdayShort } from "@/utils/format";
 import { isMember } from "@/utils/membership";
 import { cardHasData } from "@/utils/prePost";

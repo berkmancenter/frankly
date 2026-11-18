@@ -71,7 +71,6 @@ export function TemplatePage() {
   /* eslint-disable lingui/no-unlocalized-strings */
   const [tab, setTab] = useState<TabId>("about");
   const [eventType, setEventType] = useState<EventType>("hosted");
-  /* eslint-enable lingui/no-unlocalized-strings */
 
   if (template.isPending) return <LoadingState height={400} />;
   if (template.isError) {
@@ -292,8 +291,6 @@ export function TemplatePage() {
                     {upcoming.length > 0 && (
                       <ActionButton
                         type="text"
-                        // Tab id, not UI text.
-                        // eslint-disable-next-line lingui/no-unlocalized-strings
                         onPress={() => setTab("events")}
                       >
                         {t({ id: "seeAll", message: "See all" })}

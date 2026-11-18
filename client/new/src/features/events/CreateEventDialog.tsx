@@ -35,11 +35,11 @@ type StepId = "template" | "visibility" | "date" | "time";
 const STEPS: StepId[] = ["template", "visibility", "date", "time"];
 
 /**
- * The multi-step create-event flow. Step order (matching Flutter): Choose Template → Public or
+ * The multi-step create-event flow. Flow: Choose Template → Public or
  * private? → Select a day → Select a time → Create Event. All of it is local component state;
  * the only server call is the final `useCreateEvent`.
  */
-// Where a new event can start from: a copy of an existing one skips straight to choosing a day.
+// Where a new event can start from: a template already chosen skips only the template step.
 export interface CreateEventStart {
   template: Template;
   isPublic: boolean;
@@ -47,7 +47,13 @@ export interface CreateEventStart {
   durationInMinutes: number;
 }
 
-function CreateEventDialog({ onClose, start }: { onClose: () => void; start?: CreateEventStart }) {
+function CreateEventDialog({
+  onClose,
+  start,
+}: {
+  onClose: () => void;
+  start?: CreateEventStart;
+}) {
   const { t } = useLingui();
   const { community, permissions, templates } = useCommunityScope();
   const clock = useClock();
@@ -58,10 +64,12 @@ function CreateEventDialog({ onClose, start }: { onClose: () => void; start?: Cr
 
   // Step id, not UI text.
   // eslint-disable-next-line lingui/no-unlocalized-strings
-  const [stepIndex, setStepIndex] = useState(start ? STEPS.indexOf("date") : 0);
+  const [stepIndex, setStepIndex] = useState(start ? STEPS.indexOf("visibility") : 0);
   const step = STEPS[stepIndex]!;
 
-  const [template, setTemplate] = useState<Template | undefined>(start?.template);
+  const [template, setTemplate] = useState<Template | undefined>(
+    start?.template,
+  );
   const [isPublic, setIsPublic] = useState(start?.isPublic ?? false);
   const [day, setDay] = useState<Date | null>(null);
   const [time, setTime] = useState<TimeValue>({ hour: 6, minute: 0, pm: true });
@@ -467,6 +475,8 @@ export function useCreateEventDialog() {
   const [state, setState] = useState<{ start?: CreateEventStart } | null>(null);
   return {
     open: (start?: CreateEventStart) => setState({ start }),
-    dialog: state ? <CreateEventDialog start={state.start} onClose={() => setState(null)} /> : null,
+    dialog: state ? (
+      <CreateEventDialog start={state.start} onClose={() => setState(null)} />
+    ) : null,
   };
 }
