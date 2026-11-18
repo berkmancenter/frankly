@@ -6,7 +6,7 @@ import {
   withAnswerTitle,
   withTitle,
   withType,
-} from "@/utils/surveyQuestions";
+} from "@/utils/events/surveyQuestions";
 
 let counter = 0;
 const id = () => `id${++counter}`;
@@ -14,7 +14,10 @@ const id = () => `id${++counter}`;
 describe("surveyQuestions", () => {
   it("starts a question with two answers, and is complete once everything is worded", () => {
     const question = newQuestion("Yes", "No", id);
-    expect(question.options.map((option) => option.title)).toEqual(["Yes", "No"]);
+    expect(question.options.map((option) => option.title)).toEqual([
+      "Yes",
+      "No",
+    ]);
     expect(questionComplete(question)).toBe(false);
     expect(questionComplete(withTitle(question, "Ready?"))).toBe(true);
   });

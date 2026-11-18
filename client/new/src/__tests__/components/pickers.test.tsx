@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
@@ -29,41 +29,42 @@ describe("MonthCalendar", () => {
     expect(screen.getByText("January 2030")).toBeInTheDocument();
   });
 
-  it("lays out every day of the month as a button", () => {
+  const dayCell = (n: number) => screen.getByRole("gridcell", { name: String(n) });
+
+  it("lays out every day of the month, and only that month's days", () => {
     renderCalendar({ value: day(2030, 2, 10), minDate: day(2030, 1, 1) });
 
-    // February 2030 has 28 days; the grid also has seven weekday headers that are not buttons.
-    const days = screen.getAllByRole("button").filter((b) => /^\w{3} \w{3} \d{2} 2030$/.test(b.getAttribute("aria-label") ?? ""));
+    // February 2030 has 28 days.
+    const days = screen.getAllByRole("gridcell").filter((cell) => /^\d+$/.test(cell.textContent ?? ""));
     expect(days).toHaveLength(28);
-    expect(screen.getByRole("button", { name: day(2030, 2, 28).toDateString() })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: day(2030, 3, 1).toDateString() })).not.toBeInTheDocument();
+    expect(dayCell(28)).toBeInTheDocument();
+    expect(screen.queryByRole("gridcell", { name: "29" })).not.toBeInTheDocument();
   });
 
-  it("reports the clicked day", async () => {
+  it("reports the clicked day, at midnight", async () => {
     const user = userEvent.setup();
-    const { onChange } = renderCalendar();
+    const { onChange } = renderCalendar({ today: new Date(2030, 0, 15, 13, 45) });
 
-    await user.click(screen.getByRole("button", { name: day(2030, 1, 20).toDateString() }));
+    await user.click(dayCell(20));
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange.mock.calls[0]![0]).toEqual(day(2030, 1, 20));
   });
 
-  it("marks the selected day as pressed", () => {
+  it("marks the selected day", () => {
     renderCalendar({ value: day(2030, 1, 20) });
 
-    expect(screen.getByRole("button", { name: day(2030, 1, 20).toDateString() })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("button", { name: day(2030, 1, 21).toDateString() })).toHaveAttribute("aria-pressed", "false");
+    expect(dayCell(20)).toHaveAttribute("aria-selected", "true");
+    expect(dayCell(21)).toHaveAttribute("aria-selected", "false");
   });
 
   it("disables days before minDate and does not report clicks on them", async () => {
     const user = userEvent.setup({ pointerEventsCheck: 0 });
     const { onChange } = renderCalendar();
 
-    const before = screen.getByRole("button", { name: day(2030, 1, 14).toDateString() });
-    expect(before).toBeDisabled();
-    expect(screen.getByRole("button", { name: day(2030, 1, 15).toDateString() })).toBeEnabled();
-    await user.click(before);
+    expect(dayCell(14)).toBeDisabled();
+    expect(dayCell(15)).toBeEnabled();
+    await user.click(dayCell(14));
 
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -91,7 +92,9 @@ describe("MonthCalendar", () => {
     await user.click(screen.getByRole("button", { name: "Next month" }));
 
     expect(screen.getByText("January 2031")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: day(2031, 1, 31).toDateString() })).toBeEnabled();
+    // The old month slides out while the new one slides in; wait for it to settle.
+    await waitFor(() => expect(screen.getAllByRole("gridcell", { name: "31" })).toHaveLength(1));
+    expect(dayCell(31)).toBeEnabled();
   });
 });
 

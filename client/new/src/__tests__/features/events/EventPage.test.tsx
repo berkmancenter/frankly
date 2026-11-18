@@ -329,7 +329,7 @@ describe("editing", () => {
     );
     await userEvent.click(await screen.findByRole("button", { name: "Show Options" }));
     await userEvent.click(await screen.findByRole("menuitem", { name: "Duplicate Event" }));
-    expect(await screen.findByText("Select a day")).toBeInTheDocument();
+    expect(await screen.findByText("Public or private?")).toBeInTheDocument();
   });
 });
 

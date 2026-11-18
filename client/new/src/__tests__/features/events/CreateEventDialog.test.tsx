@@ -17,7 +17,8 @@ type User = ReturnType<typeof userEvent.setup>;
 const NOW = new Date(2030, 0, 15, 9, 0);
 const clock = { now: () => new Date(NOW) };
 
-const dayLabel = (day: number) => new Date(2030, 0, day).toDateString();
+// A day of the calendar, by its number in the month on show.
+const dayCell = (day: number) => screen.getByRole("gridcell", { name: String(day) });
 
 const checkIn = template({ id: "t1", title: "Check-in", category: "Social" });
 const debate = template({ id: "t2", title: "Town hall debate", category: "Civic" });
@@ -83,7 +84,7 @@ const open = async (user: User) => {
 const next = (user: User) => user.click(screen.getByRole("button", { name: "Next" }));
 const back = (user: User) => user.click(screen.getByRole("button", { name: "Back" }));
 const chooseTemplate = (user: User, title: string) => user.click(screen.getByRole("button", { name: title }));
-const chooseDay = (user: User, day: number) => user.click(screen.getByRole("button", { name: dayLabel(day) }));
+const chooseDay = (user: User, day: number) => user.click(dayCell(day));
 const pathname = () => screen.getByTestId("location").textContent;
 
 /** Opens the dialog and walks to the final "Select a time" step with a template and a day chosen. */
@@ -304,7 +305,7 @@ describe("CreateEventDialog", () => {
 
       await chooseDay(user, 20);
 
-      expect(screen.getByRole("button", { name: dayLabel(20) })).toHaveAttribute("aria-pressed", "true");
+      expect(dayCell(20)).toHaveAttribute("aria-selected", "true");
       expect(screen.getByRole("button", { name: "Next" })).toBeEnabled();
     });
 
@@ -313,8 +314,8 @@ describe("CreateEventDialog", () => {
       await toDayStep(user);
 
       expect(screen.getByText("January 2030")).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: dayLabel(14) })).toBeDisabled();
-      expect(screen.getByRole("button", { name: dayLabel(15) })).toBeEnabled(); // today
+      expect(dayCell(14)).toBeDisabled();
+      expect(dayCell(15)).toBeEnabled(); // today
       expect(screen.getByRole("button", { name: "Previous month" })).toBeDisabled();
     });
 
@@ -324,7 +325,9 @@ describe("CreateEventDialog", () => {
 
       await user.click(screen.getByRole("button", { name: "Next month" }));
       expect(screen.getByText("February 2030")).toBeInTheDocument();
-      await user.click(screen.getByRole("button", { name: new Date(2030, 1, 5).toDateString() }));
+      // The old month slides out while the new one slides in; wait for it to settle.
+      await waitFor(() => expect(screen.getAllByRole("gridcell", { name: "5" })).toHaveLength(1));
+      await user.click(dayCell(5));
 
       expect(screen.getByRole("button", { name: "Next" })).toBeEnabled();
     });
@@ -390,7 +393,7 @@ describe("CreateEventDialog", () => {
 
       await back(user);
       expect(screen.getByRole("heading", { name: "Select a day" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: dayLabel(18) })).toHaveAttribute("aria-pressed", "true");
+      expect(dayCell(18)).toHaveAttribute("aria-selected", "true");
 
       await back(user);
       expect(screen.getByRole("heading", { name: "Public or private?" })).toBeInTheDocument();

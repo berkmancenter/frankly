@@ -142,7 +142,7 @@ describe("TemplatePage", () => {
   it("starts an event from the template", async () => {
     setup();
     await userEvent.click(await screen.findByRole("button", { name: "Create event" }));
-    expect(await screen.findByText("Select a day")).toBeInTheDocument();
+    expect(await screen.findByText("Public or private?")).toBeInTheDocument();
   });
 
   it("offers every kind of event to create: hosted, hostless and livestream", async () => {
@@ -156,7 +156,7 @@ describe("TemplatePage", () => {
     expect(within(group).getByRole("radio", { name: "Hosted" })).toBeChecked();
     await userEvent.click(within(group).getByRole("radio", { name: "Livestream" }));
     await userEvent.click(screen.getByRole("button", { name: "Create event" }));
-    expect(await screen.findByText("Select a day")).toBeInTheDocument();
+    expect(await screen.findByText("Public or private?")).toBeInTheDocument();
   });
 
   it("leaves out hostless where the community has turned it off", async () => {
