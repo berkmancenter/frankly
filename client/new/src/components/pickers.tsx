@@ -1,24 +1,25 @@
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
-import { isSameCalendarDay, startOfDay } from "@/utils/format";
-import { colors } from "@/theme/tokens";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { enUS as pickersEnUS, esES, zhCN as pickersZhCN, zhTW } from "@mui/x-date-pickers/locales";
+import { enUS, es, zhCN, zhTW as dateFnsZhTW } from "date-fns/locale";
 import { useLingui } from "@lingui/react/macro";
+import { useState } from "react";
+import { colors } from "@/theme/tokens";
+import { startOfDay } from "@/utils/format";
 
-const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
-const monthName = new Intl.DateTimeFormat("en-US", {
-  month: "long",
-  year: "numeric",
-});
+// The calendar speaks the app's language: month names come from date-fns, button labels from the pickers.
+function calendarLocale(locale: string) {
+  if (locale.startsWith("es")) return { adapter: es, text: esES };
+  if (locale === "zh-Hant-TW" || locale === "zh_Hant_TW") return { adapter: dateFnsZhTW, text: zhTW };
+  if (locale.startsWith("zh")) return { adapter: zhCN, text: pickersZhCN };
+  return { adapter: enUS, text: pickersEnUS };
+}
 
-/**
- * Month-grid calendar in the Material 3 date-picker style (the Flutter app embeds the
- * Material `CalendarDatePicker`). Days before `minDate` are disabled.
- */
+// Month-grid calendar. Days before `minDate` are disabled.
 export function MonthCalendar({
   value,
   onChange,
@@ -28,118 +29,26 @@ export function MonthCalendar({
   value: Date | null;
   onChange: (date: Date) => void;
   minDate: Date;
-  /** Authoritative "today" (from the clock), used for the today ring. */
+  /** Authoritative "today" (from the clock): the month shown when nothing is selected. */
   today: Date;
 }) {
-  const { t } = useLingui();
-  const [cursor, setCursor] = useState(
-    () =>
-      new Date((value ?? today).getFullYear(), (value ?? today).getMonth(), 1),
-  );
-  const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
-  const daysInMonth = new Date(
-    cursor.getFullYear(),
-    cursor.getMonth() + 1,
-    0,
-  ).getDate();
-  const cells: (Date | null)[] = [
-    ...Array.from({ length: first.getDay() }, () => null),
-    ...Array.from(
-      { length: daysInMonth },
-      (_, i) => new Date(cursor.getFullYear(), cursor.getMonth(), i + 1),
-    ),
-  ];
-  const min = startOfDay(minDate);
-  const canGoBack = new Date(cursor.getFullYear(), cursor.getMonth(), 0) >= min;
-
+  const { i18n } = useLingui();
+  const { adapter, text } = calendarLocale(i18n.locale);
   return (
-    <Box sx={{ width: "100%", maxWidth: 380, mx: "auto" }}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          mb: "8px",
-        }}
-      >
-        <Typography component="div" sx={{ fontWeight: 500 }}>{monthName.format(cursor)}</Typography>
-        <Box>
-          <IconButton
-            aria-label={t({ id: "monthCalendar.previousMonth", message: "Previous month" })}
-            disabled={!canGoBack}
-            onClick={() =>
-              setCursor(
-                new Date(cursor.getFullYear(), cursor.getMonth() - 1, 1),
-              )
-            }
-          >
-            <ChevronLeftIcon />
-          </IconButton>
-          <IconButton
-            aria-label={t({ id: "monthCalendar.nextMonth", message: "Next month" })}
-            onClick={() =>
-              setCursor(
-                new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1),
-              )
-            }
-          >
-            <ChevronRightIcon />
-          </IconButton>
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(7, 1fr)",
-          rowGap: "4px",
-          justifyItems: "center",
-        }}
-      >
-        {WEEKDAYS.map((d, i) => (
-          <Typography
-            variant="body2"
-            key={i}
-            sx={{ color: colors.onSurface, height: 40, lineHeight: "40px" }}
-          >
-            {d}
-          </Typography>
-        ))}
-        {cells.map((day, i) => {
-          if (!day) return <Box key={`blank-${i}`} />;
-          const disabled = day < min;
-          const selected = !!value && isSameCalendarDay(day, value);
-          const isToday = isSameCalendarDay(day, today);
-          return (
-            <ButtonBase
-              key={day.toISOString()}
-              disabled={disabled}
-              onClick={() => onChange(day)}
-              aria-label={day.toDateString()}
-              aria-pressed={selected}
-              sx={{
-                width: 40,
-                height: 40,
-                borderRadius: "50%",
-                fontSize: 14,
-                bgcolor: selected ? "primary.main" : "transparent",
-                color: selected
-                  ? "primary.contrastText"
-                  : disabled
-                    ? "rgba(28,27,27,0.38)"
-                    : colors.onSurface,
-                border: isToday && !selected ? "1px solid" : "none",
-                borderColor: colors.outline,
-                "&:hover": {
-                  bgcolor: selected ? "primary.main" : "action.hover",
-                },
-              }}
-            >
-              {day.getDate()}
-            </ButtonBase>
-          );
-        })}
-      </Box>
-    </Box>
+    <LocalizationProvider
+      dateAdapter={AdapterDateFns}
+      adapterLocale={adapter}
+      localeText={text.components.MuiLocalizationProvider.defaultProps.localeText}
+    >
+      <DateCalendar
+        value={value}
+        // Callers care about the day, not the time of day the picker carries over.
+        onChange={(next) => next && onChange(startOfDay(next))}
+        minDate={minDate}
+        referenceDate={today}
+        sx={{ width: "100%", maxWidth: 380, mx: "auto" }}
+      />
+    </LocalizationProvider>
   );
 }
 
