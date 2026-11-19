@@ -1,0 +1,2768 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: flutterTranspile.ts\n"
+"Language: en\n"
+
+#. js-lingui-explicit-id
+#: src/components/ProfileChip.tsx:61
+msgid "profileChip.youSuffix"
+msgstr " (you)"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:219
+msgid "tryAgainLater"
+msgstr " and try again later"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:137
+#: src/features/auth/AccountErrorMessage.tsx:149
+msgid "insteadSuffix"
+msgstr " instead."
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:153
+msgid "imageUrlNotSet"
+msgstr "(Image URL is not set.)"
+
+#. placeholder {0}: thread.commentCount
+#: src/features/posts/PostCards.tsx:176
+msgid "{0, plural, one {# Comment} other {# Comments}}"
+msgstr "{0, plural, one {# Comment} other {# Comments}}"
+
+#. placeholder {0}: expanded ? "Less" : "Read More"
+#: src/features/community/CommunityHome.tsx:236
+msgid "{0}"
+msgstr "{0}"
+
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:26
+msgid "appNameHome"
+msgstr "{appName} - Home"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfilePage.tsx:27
+msgid "appNameUserSettings"
+msgstr "{appName} - User Settings"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:333
+msgid "termsOfService"
+msgstr "{appName} Terms of Service"
+
+#. js-lingui-explicit-id
+#: src/features/events/ParticipantsDialog.tsx:58
+msgid "participantCount"
+msgstr "{count} participants"
+
+#: src/api/firebaseApi.ts:773
+msgid "{entity} not found"
+msgstr "{entity} not found"
+
+#: src/features/events/EditEventDrawer.tsx:43
+msgid "{hours, plural, one {# hour} other {# hours}}"
+msgstr "{hours, plural, one {# hour} other {# hours}}"
+
+#: src/features/events/EditEventDrawer.tsx:306
+msgid "{maxParticipants, plural, one {# person} other {# people}}"
+msgstr "{maxParticipants, plural, one {# person} other {# people}}"
+
+#. js-lingui-explicit-id
+#: src/features/events/ParticipantsDialog.tsx:61
+msgid "registrationCountWithActive"
+msgstr "{regCount} registrations ({activeCount} active)"
+
+#. js-lingui-explicit-id
+#: src/features/events/ParticipantsDialog.tsx:60
+msgid "registrationCountWithAttended"
+msgstr "{regCount} registrations ({attendedCount} attended)"
+
+#: src/components/events/ParticipantsRow.tsx:108
+msgid "{registered, plural, one {# Registration} other {# Registrations}}"
+msgstr "{registered, plural, one {# Registration} other {# Registrations}}"
+
+#: src/features/events/EditEventDrawer.tsx:45
+msgid "{rest, plural, one {# minute} other {# minutes}}"
+msgstr "{rest, plural, one {# minute} other {# minutes}}"
+
+#: src/components/events/ParticipantsRow.tsx:53
+msgid "{total} People"
+msgstr "{total} People"
+
+#. placeholder {0}: total - shown.length
+#: src/components/events/ParticipantsRow.tsx:51
+msgid "+{0}"
+msgstr "+{0}"
+
+#: src/components/events/ParticipantsRow.tsx:54
+msgid "1 person"
+msgstr "1 person"
+
+#: src/features/posts/EmotionSection.tsx:16
+msgid "100"
+msgstr "100"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventPage.tsx:119
+#: src/features/templates/TemplatePage.tsx:229
+msgid "about"
+msgstr "About"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:370
+msgid "sidebar.aboutFrankly"
+msgstr "About Frankly"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:134
+msgid "aboutMe"
+msgstr "About me"
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:223
+msgid "aboutUs"
+msgstr "About Us"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:161
+msgid "addQuestion"
+msgstr "Add a question"
+
+#: src/features/resources/ResourcesPage.tsx:125
+msgid "Add a resource"
+msgstr "Add a resource"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:215
+msgid "addATag"
+msgstr "Add a tag"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:242
+msgid "addActionLink"
+msgstr "Add action link"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:185
+msgid "addActionLinksAfter"
+msgstr "Add action links participants should visit after the event"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:184
+msgid "addActionLinksBefore"
+msgstr "Add action links participants should visit before the event"
+
+#. js-lingui-explicit-id
+#: src/features/content/AgendaTab.tsx:125
+msgid "addAgendaItem"
+msgstr "Add agenda item"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:493
+msgid "addBreakouts"
+msgstr "Add breakouts"
+
+#: src/features/posts/AddCommentDialog.tsx:64
+#: src/features/posts/AddCommentDialog.tsx:85
+msgid "Add comment"
+msgstr "Add comment"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:191
+#: src/features/content/agenda/AgendaStepFields.tsx:215
+msgid "addOption"
+msgstr "Add option"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:48
+msgid "addPostEvent"
+msgstr "Add Post-event"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:47
+msgid "addPreEvent"
+msgstr "Add Pre-event"
+
+#: src/features/posts/EmotionSection.tsx:52
+msgid "Add reaction"
+msgstr "Add reaction"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:779
+msgid "addToCalendar"
+msgstr "Add to calendar"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:271
+msgid "addUrlParameter"
+msgstr "Add URL Parameter"
+
+#: src/components/layout/NavBar.tsx:232
+#: src/utils/membership.ts:26
+msgid "Admin"
+msgstr "Admin"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:189
+msgid "sidebar.admin"
+msgstr "Admin"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventPage.tsx:124
+#: src/features/templates/TemplatePage.tsx:232
+msgid "agendaTab"
+msgstr "Agenda"
+
+#. js-lingui-explicit-id
+#: src/features/content/AgendaTab.tsx:84
+msgid "agendaTitle"
+msgstr "Agenda"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:136
+msgid "agendaItemWasDeleted"
+msgstr "Agenda item was deleted"
+
+#. js-lingui-explicit-id
+#: src/features/content/AgendaTab.tsx:117
+msgid "agendaItemWasDuplicated"
+msgstr "Agenda item was duplicated!"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:97
+msgid "agendaItemWasSaved"
+msgstr "Agenda item was saved"
+
+#. js-lingui-explicit-id
+#: src/features/content/AgendaTab.tsx:72
+msgid "agendaItemsWereRemoved"
+msgstr "Agenda items were removed"
+
+#: src/features/events/CreateEventDialog.tsx:236
+msgid "Allow the community to join"
+msgstr "Allow the community to join"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:161
+msgid "alreadyUserSignIn"
+msgstr "Already have an account?"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:265
+msgid "timeInput.am"
+msgstr "AM"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:250
+msgid "timeInput.amOrPm"
+msgstr "AM or PM"
+
+#: src/components/layout/AnnouncementsBell.tsx:99
+msgid "Announcement"
+msgstr "Announcement"
+
+#: src/components/layout/AnnouncementsBell.tsx:205
+msgid "Announcement created"
+msgstr "Announcement created"
+
+#: src/components/layout/AnnouncementsBell.tsx:114
+msgid "Announcement deleted"
+msgstr "Announcement deleted"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventAbout.tsx:45
+msgid "announcements"
+msgstr "Announcements"
+
+#: src/components/layout/AnnouncementsBell.tsx:68
+msgid "Announcements"
+msgstr "Announcements"
+
+#. js-lingui-explicit-id
+#: src/components/ProfileChip.tsx:43
+msgid "profileChip.anonymous"
+msgstr "Anonymous"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: index + 1
+#: src/features/events/BreakoutsSection.tsx:391
+msgid "answerNumber"
+msgstr "Answer {0}"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:602
+msgid "cancelEventConfirmation"
+msgstr "Are you sure you want to cancel this event? This action cannot be undone."
+
+#. js-lingui-explicit-id
+#: src/features/events/ParticipantsDialog.tsx:72
+msgid "confirmCancelUserParticipation"
+msgstr "Are you sure you want to cancel this user's participation in this event?"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:565
+#: src/features/events/ParticipantsDialog.tsx:68
+msgid "confirmCancelYourParticipation"
+msgstr "Are you sure you want to cancel your participation in this event?"
+
+#. js-lingui-explicit-id
+#: src/features/content/AgendaTab.tsx:61
+msgid "confirmDeleteAllAgendaItems"
+msgstr "Are you sure you want to delete all agenda items from this event? This action cannot be undone."
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:125
+msgid "confirmDeleteAgendaItem"
+msgstr "Are you sure you want to delete this agenda item? This action cannot be undone."
+
+#: src/components/layout/AnnouncementsBell.tsx:108
+msgid "Are you sure you want to delete this announcement?"
+msgstr "Are you sure you want to delete this announcement?"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventAbout.tsx:97
+msgid "confirmDeleteEventAnnouncement"
+msgstr "Are you sure you want to delete this event announcement? This action cannot be undone."
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:90
+msgid "confirmDeletePostEventItem"
+msgstr "Are you sure you want to delete this post-event agenda item? This action cannot be undone."
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:86
+msgid "confirmDeletePreEventItem"
+msgstr "Are you sure you want to delete this pre-event agenda item? This action cannot be undone."
+
+#: src/features/resources/ResourcesPage.tsx:102
+msgid "Are you sure you want to delete this resource?"
+msgstr "Are you sure you want to delete this resource?"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:234
+msgid "confirmDelete"
+msgstr "Are you sure you want to delete?"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:108
+msgid "confirmDiscardChanges"
+msgstr "Are you sure you want to discard changes?"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:653
+msgid "confirmRefreshTemplate"
+msgstr "Are you sure you want to refresh the template?"
+
+#: src/features/posts/CreatePostDialog.tsx:161
+msgid "Attach image"
+msgstr "Attach image"
+
+#: src/features/posts/CreatePostDialog.tsx:101
+msgid "Attached"
+msgstr "Attached"
+
+#: src/utils/membership.ts:32
+msgid "Attendee"
+msgstr "Attendee"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:139
+msgid "autoEndMeeting"
+msgstr "Auto-end meeting"
+
+#: src/features/events/CreateEventDialog.tsx:201
+msgid "Back"
+msgstr "Back"
+
+#: src/utils/membership.ts:30
+msgid "Banned"
+msgstr "Banned"
+
+#: src/components/layout/BottomNavBar.tsx:44
+msgid "Bottom navigation"
+msgstr "Bottom navigation"
+
+#: src/components/layout/OnboardingBanner.tsx:34
+msgid "Brand your space"
+msgstr "Brand your space"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:91
+#: src/features/events/BreakoutsSection.tsx:471
+msgid "breakoutUpdated"
+msgstr "Breakout Updated!"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:224
+msgid "buttonText"
+msgstr "Button Text"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:322
+msgid "termsAgreementPrefix"
+msgstr "By signing in, registering, or using {appName}, I agree to be bound by the "
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:504
+msgid "bySize"
+msgstr "By Size"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:109
+#: src/features/content/agenda/AgendaStepCard.tsx:130
+#: src/features/content/agenda/AgendaStepCard.tsx:203
+#: src/features/content/AgendaTab.tsx:66
+#: src/features/content/PrePostTab.tsx:95
+#: src/features/events/BreakoutsSection.tsx:239
+#: src/features/events/EventAbout.tsx:102
+#: src/features/events/EventInfoCard.tsx:564
+#: src/features/events/EventInfoCard.tsx:586
+#: src/features/events/EventInfoCard.tsx:663
+#: src/features/events/ParticipantsDialog.tsx:66
+msgid "cancel"
+msgstr "Cancel"
+
+#: src/components/Upload.tsx:165
+msgid "Cancel"
+msgstr "Cancel"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:172
+msgid "sidebar.cancel"
+msgstr "Cancel"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:326
+#: src/features/events/EventInfoCard.tsx:256
+#: src/features/events/EventInfoCard.tsx:601
+#: src/features/events/EventInfoCard.tsx:607
+#: src/features/events/EventInfoCard.tsx:725
+msgid "cancelEvent"
+msgstr "Cancel Event"
+
+#: src/features/resources/ResourceDialog.tsx:112
+msgid "Change image"
+msgstr "Change image"
+
+#: src/features/events/EditEventDrawer.tsx:210
+#: src/features/profile/ProfileTab.tsx:97
+msgid "Change picture"
+msgstr "Change picture"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:114
+msgid "chat"
+msgstr "Chat"
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:25
+msgid "backendUnreachableBody"
+msgstr "Check your internet connection and try again."
+
+#: src/components/Upload.tsx:138
+msgid "Choose a photo"
+msgstr "Choose a photo"
+
+#: src/features/events/CreateEventDialog.tsx:81
+msgid "Choose Template"
+msgstr "Choose Template"
+
+#. js-lingui-explicit-id
+#: src/features/content/AgendaTab.tsx:88
+msgid "clearAll"
+msgstr "Clear all"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:308
+msgid "communitySuccessSuffix"
+msgstr "Click the gear icon in the top right to edit your community settings."
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostCardView.tsx:48
+msgid "close"
+msgstr "Close"
+
+#: src/components/AppDialog.tsx:44
+#: src/components/ConfirmDialog.tsx:81
+#: src/features/events/EventSettingsDrawer.tsx:175
+#: src/features/posts/AddCommentDialog.tsx:66
+#: src/features/posts/CreatePostDialog.tsx:92
+#: src/features/profile/ProfileDrawer.tsx:46
+msgid "Close"
+msgstr "Close"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:246
+msgid "sidebar.close"
+msgstr "Close"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:353
+msgid "sidebar.closeDialog"
+msgstr "Close"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:167
+msgid "closeEdit"
+msgstr "Close edit"
+
+#: src/utils/imageUpload.ts:150
+msgid "Cloudinary isn't configured. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_IMAGE_PRESET."
+msgstr "Cloudinary isn't configured. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_IMAGE_PRESET."
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:169
+#: src/features/events/BreakoutsSection.tsx:308
+msgid "collapseStep"
+msgstr "Collapse"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:126
+msgid "collapseCard"
+msgstr "Collapse"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:118
+msgid "sidebar.collapse"
+msgstr "Collapse"
+
+#: src/features/posts/AddCommentDialog.tsx:72
+msgid "Comment"
+msgstr "Comment"
+
+#: src/features/posts/AddCommentDialog.tsx:81
+msgid "Comment cannot be empty"
+msgstr "Comment cannot be empty"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:205
+msgid "communityName"
+msgstr "Community Name"
+
+#: src/api/firebaseApi.ts:807
+#: src/api/firebaseApi.ts:1101
+msgid "Community not found"
+msgstr "Community not found"
+
+#. js-lingui-explicit-id
+#: src/components/layout/OnboardingBanner.tsx:132
+msgid "onboardingBanner.region"
+msgstr "Community onboarding"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:226
+msgid "communityUrl"
+msgstr "Community URL"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:298
+msgid "congratulations"
+msgstr "Congratulations!"
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:266
+msgid "contact"
+msgstr "Contact"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:34
+#: src/features/auth/SignInForm.tsx:315
+msgid "contactUs"
+msgstr "Contact us"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:215
+msgid "somethingWentWrongLongSuffix"
+msgstr "contact us for support"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:101
+msgid "content"
+msgstr "Content"
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:90
+msgid "shareSection.copyLink"
+msgstr "Copy link"
+
+#: src/features/resources/ResourceDialog.tsx:56
+msgid "Could not load that link."
+msgstr "Could not load that link."
+
+#: src/features/profile/ProfileDrawer.tsx:53
+msgid "Could not load this profile."
+msgstr "Could not load this profile."
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:41
+msgid "backendUnknownBody"
+msgstr "Could not load your session. Please try again."
+
+#: src/components/layout/AnnouncementsBell.tsx:197
+msgid "Create"
+msgstr "Create"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:118
+#: src/features/community/CreateCommunity.tsx:124
+msgid "createACommunity"
+msgstr "Create a community"
+
+#: src/features/events/CreateEventDialog.tsx:359
+msgid "Create a new template"
+msgstr "Create a new template"
+
+#: src/components/EmptyPageContent.tsx:21
+msgid "Create a post"
+msgstr "Create a post"
+
+#: src/components/EmptyPageContent.tsx:25
+msgid "Create a resource"
+msgstr "Create a resource"
+
+#: src/components/EmptyPageContent.tsx:27
+#: src/components/layout/OnboardingBanner.tsx:39
+msgid "Create a template"
+msgstr "Create a template"
+
+#: src/app/layouts/CommunityLayout.tsx:57
+#: src/components/EmptyPageContent.tsx:23
+#: src/components/layout/BottomNavBar.tsx:63
+msgid "Create an event"
+msgstr "Create an event"
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:138
+msgid "createEventFromThisTemplate"
+msgstr "Create an event from this template"
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:174
+msgid "createEventButton"
+msgstr "Create event"
+
+#: src/features/events/CreateEventDialog.tsx:208
+msgid "Create Event"
+msgstr "Create Event"
+
+#: src/components/layout/AnnouncementsBell.tsx:180
+msgid "Create New Announcement"
+msgstr "Create New Announcement"
+
+#: src/features/posts/PostsPage.tsx:63
+msgid "Create post"
+msgstr "Create post"
+
+#: src/features/community/CommunityHome.tsx:333
+msgid "Create your first event"
+msgstr "Create your first event"
+
+#: src/api/firebaseApi.ts:1476
+msgid "Created event was not found"
+msgstr "Created event was not found"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventPage.tsx:130
+#: src/features/templates/TemplatePage.tsx:239
+msgid "ctasTab"
+msgstr "CTAs"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:264
+msgid "date"
+msgstr "Date"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:446
+msgid "defineBreakoutsOptional"
+msgstr "Define Breakouts (Optional)"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:129
+#: src/features/content/AgendaTab.tsx:65
+#: src/features/content/PrePostTab.tsx:94
+#: src/features/events/BreakoutsSection.tsx:238
+#: src/features/events/EventAbout.tsx:101
+msgid "delete"
+msgstr "Delete"
+
+#. placeholder {0}: r.title
+#: src/features/resources/ResourcesPage.tsx:98
+msgid "Delete {0}"
+msgstr "Delete {0}"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:124
+#: src/features/content/agenda/AgendaStepCard.tsx:198
+msgid "deleteAgendaItemGeneral"
+msgstr "Delete Agenda Item"
+
+#. js-lingui-explicit-id
+#: src/features/content/AgendaTab.tsx:60
+msgid "deleteAllAgendaItems"
+msgstr "Delete All Agenda Items"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventAbout.tsx:125
+msgid "removeAnnouncement"
+msgstr "Delete announcement"
+
+#: src/components/layout/AnnouncementsBell.tsx:104
+msgid "Delete announcement"
+msgstr "Delete announcement"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:110
+#: src/features/content/PrePostTab.tsx:246
+msgid "deleteCard"
+msgstr "Delete card"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventAbout.tsx:96
+msgid "deleteEventAnnouncement"
+msgstr "Delete Event Announcement"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:200
+#: src/features/events/BreakoutsSection.tsx:233
+msgid "deleteOption"
+msgstr "Delete option"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:83
+msgid "deletePostEventItem"
+msgstr "Delete Post-Event Item"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:82
+msgid "deletePreEventItem"
+msgstr "Delete Pre-Event Item"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:403
+msgid "deleteQuestion"
+msgstr "Delete question"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:246
+#: src/features/events/EventAbout.tsx:38
+#: src/features/templates/TemplatePage.tsx:268
+msgid "description"
+msgstr "Description"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:277
+msgid "devSettings"
+msgstr "Developer Settings"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:119
+#: src/features/events/EventSettingsDrawer.tsx:82
+msgid "discard"
+msgstr "Discard"
+
+#: src/features/posts/PostCards.tsx:65
+msgid "Dislike"
+msgstr "Dislike"
+
+#. js-lingui-explicit-id
+#: src/components/layout/OnboardingBanner.tsx:144
+#: src/components/layout/OnboardingBanner.tsx:165
+msgid "onboardingBanner.dismiss"
+msgstr "Dismiss onboarding"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:163
+msgid "notUserSignUp"
+msgstr "Don't have an account?"
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:296
+msgid "communityHome.donate"
+msgstr "Donate"
+
+#: src/components/Upload.tsx:138
+msgid "Drag and drop an image here"
+msgstr "Drag and drop an image here"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:720
+msgid "duplicateEvent"
+msgstr "Duplicate Event"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:217
+msgid "duplicateItem"
+msgstr "Duplicate Item"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:201
+msgid "nameHintExample"
+msgstr "e.g. Jane Doe"
+
+#. placeholder {0}: r.title
+#: src/features/resources/ResourcesPage.tsx:92
+msgid "Edit {0}"
+msgstr "Edit {0}"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:115
+msgid "editCard"
+msgstr "Edit card"
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:143
+msgid "communityHome.editCommunity"
+msgstr "Edit community"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:143
+#: src/features/events/EventInfoCard.tsx:698
+msgid "editEvent"
+msgstr "Edit event"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:220
+#: src/features/events/BreakoutsSection.tsx:296
+msgid "editItem"
+msgstr "Edit Item"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditTemplateNotice.tsx:62
+msgid "editTheTemplate"
+msgstr "edit the template."
+
+#: src/features/resources/ResourceDialog.tsx:132
+msgid "Edit title"
+msgstr "Edit title"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:212
+msgid "email"
+msgstr "Email"
+
+#: src/components/layout/AnnouncementsBell.tsx:188
+msgid "Enter a message"
+msgstr "Enter a message"
+
+#: src/components/layout/AnnouncementsBell.tsx:183
+msgid "Enter a title"
+msgstr "Enter a title"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:487
+msgid "enterEvent"
+msgstr "Enter Event"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:199
+msgid "enterHeadline"
+msgstr "Enter Headline"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:147
+msgid "enterImageTitle"
+msgstr "Enter Image title"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:182
+msgid "enterMessageExampleAfter"
+msgstr "Enter message (e.g. \"Take this survey after the event\")"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:181
+msgid "enterMessageExampleBefore"
+msgstr "Enter message (e.g. \"Take this survey before the event\")"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:364
+msgid "enterQuestionWithNumber"
+msgstr "Enter Question {number}"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:230
+msgid "enterUrl"
+msgstr "Enter URL"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:117
+msgid "enterVideoTitle"
+msgstr "Enter Video title"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:223
+msgid "enterWordCloudPrompt"
+msgstr "Enter Word Cloud prompt"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:62
+#: src/features/auth/AccountErrorMessage.tsx:68
+msgid "forgotPasswordEnterEmail"
+msgstr "Enter your email"
+
+#: src/api/firebaseApi.ts:397
+msgid "Error in updating agenda ordering. Please refresh."
+msgstr "Error in updating agenda ordering. Please refresh."
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:486
+msgid "eventEnded"
+msgstr "Event Ended"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:690
+#: src/features/events/EventSettingsDrawer.tsx:173
+msgid "eventSettings"
+msgstr "Event Settings"
+
+#: src/components/layout/NavBar.tsx:157
+#: src/components/layout/NavBar.tsx:202
+msgid "Events"
+msgstr "Events"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:138
+msgid "sidebar.events"
+msgstr "Events"
+
+#: src/features/posts/EmotionSection.tsx:17
+msgid "Exclamation"
+msgstr "Exclamation"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:169
+#: src/features/events/BreakoutsSection.tsx:309
+msgid "expandStep"
+msgstr "Expand"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:126
+msgid "expandCard"
+msgstr "Expand"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:119
+msgid "sidebar.expand"
+msgstr "Expand"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:68
+msgid "socialFacebook"
+msgstr "Facebook URL"
+
+#: src/utils/membership.ts:28
+msgid "Facilitator"
+msgstr "Facilitator"
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatesPage.tsx:119
+msgid "filter"
+msgstr "Filter"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:314
+#: src/features/events/SurveyDialog.tsx:81
+msgid "finish"
+msgstr "Finish"
+
+#. js-lingui-explicit-id
+#: src/features/events/SurveyDialog.tsx:32
+#: src/features/events/SurveyDialog.tsx:35
+msgid "finishRsvp"
+msgstr "Finish RSVP"
+
+#: src/utils/imageUpload.ts:156
+msgid "Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET."
+msgstr "Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET."
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:120
+msgid "floatingChat"
+msgstr "Floating Chat"
+
+#: src/components/CommunityMembershipButton.tsx:33
+#: src/components/CommunityMembershipButton.tsx:37
+msgid "Follow"
+msgstr "Follow"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:544
+msgid "followCommunityAccess"
+msgstr "Follow {communityName} for access to all events and resources."
+
+#: src/components/CommunityMembershipButton.tsx:46
+msgid "Follow community"
+msgstr "Follow community"
+
+#: src/components/CommunityMembershipButton.tsx:50
+msgid "Follow request sent"
+msgstr "Follow request sent"
+
+#: src/components/CommunityMembershipButton.tsx:35
+msgid "Follow Request Sent"
+msgstr "Follow Request Sent"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:170
+msgid "forgotEmail"
+msgstr "Forgot the email associated with your account?"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:307
+msgid "forgotAccountEmailOrNeedHelp"
+msgstr "Forgot your account email or need other help signing in?"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:58
+msgid "forgotPasswordPrefix"
+msgstr "Forgot your password?"
+
+#: src/components/layout/CurrentCommunityIconOrLogo.tsx:37
+msgid "Frankly home"
+msgstr "Frankly home"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:307
+msgid "sidebar.franklyHome"
+msgstr "Frankly Home"
+
+#: src/components/layout/CurrentCommunityIconOrLogo.tsx:43
+msgid "Frankly Logo"
+msgstr "Frankly Logo"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:359
+msgid "questionTypeFreeText"
+msgstr "Free text"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:526
+msgid "eventFull"
+msgstr "FULL"
+
+#: src/components/layout/OnboardingBanner.tsx:48
+msgid "Get it on the books"
+msgstr "Get it on the books"
+
+#: src/components/layout/OnboardingBanner.tsx:43
+msgid "Get people talking"
+msgstr "Get people talking"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:783
+msgid "googleCalendar"
+msgstr "Google Calendar"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:222
+msgid "gracePeriodMinutes"
+msgstr "Grace period (0-120 min):"
+
+#: src/features/events/EventSettingsDrawer.tsx:242
+msgid "Grace period in minutes"
+msgstr "Grace period in minutes"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:240
+msgid "headline"
+msgstr "Headline"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:88
+msgid "headlineIsRequired"
+msgstr "Headline is required"
+
+#: src/features/posts/EmotionSection.tsx:14
+msgid "Heart"
+msgstr "Heart"
+
+#: src/features/posts/EmotionSection.tsx:20
+msgid "Heart eyes"
+msgstr "Heart eyes"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:363
+msgid "sidebar.helpCenter"
+msgstr "Help Center"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: community.name
+#: src/features/community/CommunityHome.tsx:255
+msgid "communityHome.shareBody"
+msgstr "Hey, check out {0} on Frankly!"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:235
+msgid "hidePassword"
+msgstr "Hide password"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditTemplateNotice.tsx:65
+msgid "hideNotice"
+msgstr "Hide this notice"
+
+#. js-lingui-explicit-id
+#: src/features/profile/EventsTab.tsx:52
+msgid "historyHeader"
+msgstr "HISTORY"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:138
+#: src/features/templates/TemplatePage.tsx:104
+msgid "hosted"
+msgstr "Hosted"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:139
+#: src/features/events/EventInfoCard.tsx:111
+#: src/features/templates/TemplatePage.tsx:109
+msgid "hostless"
+msgstr "Hostless"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:234
+msgid "timeInput.hour"
+msgstr "Hour"
+
+#: src/features/events/CreateEventDialog.tsx:245
+msgid "I'll share this with a private group"
+msgstr "I'll share this with a private group"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:795
+msgid "iCalCalendar"
+msgstr "iCal Calendar"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditTemplateNotice.tsx:55
+msgid "editingFutureInstancesNotice"
+msgstr "If you want to edit future instances, "
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/agendaTypes.ts:14
+#: src/features/events/EditEventDrawer.tsx:207
+msgid "image"
+msgstr "Image"
+
+#: src/features/posts/CreatePostDialog.tsx:165
+msgid "Image"
+msgstr "Image"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:149
+msgid "imageUrl"
+msgstr "Image URL"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:78
+msgid "imageUrlIsRequired"
+msgstr "Image URL is required"
+
+#. placeholder {0}: i18n._(e.label)
+#: src/features/posts/CreatePostDialog.tsx:192
+msgid "Insert {0}"
+msgstr "Insert {0}"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:66
+msgid "socialInstagram"
+msgstr "Instagram URL"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:184
+msgid "invalidEmail"
+msgstr "Invalid email"
+
+#: src/api/firebaseApi.ts:1421
+msgid "Invalid event schedule"
+msgstr "Invalid event schedule"
+
+#: src/api/firebaseApi.ts:131
+msgid "Invalid or missing {field}"
+msgstr "Invalid or missing {field}"
+
+#: src/components/layout/OnboardingBanner.tsx:49
+msgid "Invite your people"
+msgstr "Invite your people"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: community.name
+#: src/features/community/CommunityHome.tsx:251
+msgid "communityHome.shareSubject"
+msgstr "Join {0} on Frankly"
+
+#: src/features/events/EventInfoCard.tsx:289
+msgid "Join an event with me on {appName}!"
+msgstr "Join an event with me on {appName}!"
+
+#. placeholder {0}: event.title
+#: src/features/events/EventInfoCard.tsx:288
+msgid "Join me in a conversation about \"{0}\" on {communityName}!"
+msgstr "Join me in a conversation about \"{0}\" on {communityName}!"
+
+#: src/features/events/EventInfoCard.tsx:285
+msgid "Join my event on {appName}!"
+msgstr "Join my event on {appName}!"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:120
+#: src/features/events/EventSettingsDrawer.tsx:83
+msgid "keepEditing"
+msgstr "Keep editing"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:608
+msgid "keepEvent"
+msgstr "Keep Event"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:102
+msgid "keepItShortHint"
+msgstr "Keep it short! You don’t want people to spend time reading."
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:317
+msgid "sidebar.languageIconLabel"
+msgstr "language"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:326
+msgid "sidebar.language"
+msgstr "Language"
+
+#: src/features/posts/EmotionSection.tsx:19
+msgid "Laughing"
+msgstr "Laughing"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:280
+msgid "length"
+msgstr "Length"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:242
+msgid "agendaSuggestionsDescription"
+msgstr "Let participants suggest agenda items and then upvote or downvote."
+
+#: src/features/posts/PostCards.tsx:46
+msgid "Like"
+msgstr "Like"
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:95
+msgid "shareSection.linkCopied"
+msgstr "Link Copied!"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:76
+#: src/features/content/agenda/AgendaStepFields.tsx:140
+msgid "linkMustBeMp4"
+msgstr "Link must be MP4"
+
+#: src/api/firebaseApi.ts:1940
+msgid "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
+msgstr "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
+
+#. placeholder {0}: response.status
+#: src/api/firebaseApi.ts:1954
+msgid "Link preview request failed ({0})"
+msgstr "Link preview request failed ({0})"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:69
+msgid "socialLinkedIn"
+msgstr "LinkedIn URL"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:494
+msgid "liveEventsNotHereYet"
+msgstr "Live events can't be joined from this version of the app yet."
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:140
+#: src/features/events/EventInfoCard.tsx:113
+#: src/features/templates/TemplatePage.tsx:115
+msgid "livestream"
+msgstr "Livestream"
+
+#: src/components/events/EventCards.tsx:111
+msgid "Livestream"
+msgstr "Livestream"
+
+#: src/features/resources/ResourceDialog.tsx:89
+msgid "Load link"
+msgstr "Load link"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:469
+msgid "locked"
+msgstr "Locked"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInButtons.tsx:18
+#: src/features/auth/SignInForm.tsx:274
+msgid "signIn"
+msgstr "Log In"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:300
+msgid "logInWithGoogle"
+msgstr "Log in with Google"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:155
+msgid "logIntoApp"
+msgstr "Log into {appName}"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:135
+msgid "loggingIn"
+msgstr "logging in"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:167
+msgid "login"
+msgstr "Login"
+
+#: src/components/layout/OnboardingBanner.tsx:33
+#: src/components/layout/OnboardingBanner.tsx:38
+msgid "Looking good"
+msgstr "Looking good"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:250
+msgid "makeThisSpacePrivate"
+msgstr "Make this space private"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:103
+msgid "matchingQuestions"
+msgstr "Matching questions"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:293
+msgid "maximum"
+msgstr "Maximum"
+
+#: src/utils/membership.ts:29
+msgid "Member"
+msgstr "Member"
+
+#: src/api/firebaseApi.ts:1123
+msgid "Membership update was not saved"
+msgstr "Membership update was not saved"
+
+#. js-lingui-explicit-id
+#: src/features/events/MessageParticipantsDialog.tsx:55
+msgid "message"
+msgstr "Message"
+
+#. js-lingui-explicit-id
+#: src/features/events/MessageParticipantsDialog.tsx:57
+msgid "messageCannotBeEmpty"
+msgstr "Message cannot be empty"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:72
+msgid "messageIsRequired"
+msgstr "Message is required"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:268
+#: src/features/events/MessageParticipantsDialog.tsx:42
+msgid "messageParticipants"
+msgstr "Message Participants"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:242
+msgid "timeInput.minute"
+msgstr "Minute"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:43
+msgid "agendaMinutes"
+msgstr "Minutes"
+
+#: src/utils/membership.ts:27
+msgid "Moderator"
+msgstr "Moderator"
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:333
+msgid "moreFromName"
+msgstr "More from {communityName}"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventAbout.tsx:65
+msgid "moreUpcomingEvents"
+msgstr "More Upcoming Events"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:154
+#: src/features/events/BreakoutsSection.tsx:276
+msgid "moveDown"
+msgstr "Move down"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:151
+#: src/features/events/BreakoutsSection.tsx:268
+msgid "moveUp"
+msgstr "Move up"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:353
+msgid "questionTypeMultipleChoice"
+msgstr "Multiple choice"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:251
+msgid "passwordRequirements"
+msgstr "Must be at least 12 characters long, and contain one lowercase and one uppercase letter."
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfilePage.tsx:47
+msgid "mustBeLoggedInToAccessThisSection"
+msgstr "Must be logged in to access this section"
+
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:51
+msgid "myCommunities"
+msgstr "My Communities"
+
+#: src/components/layout/BottomNavBar.tsx:55
+msgid "My events"
+msgstr "My events"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfilePage.tsx:37
+msgid "myEvents"
+msgstr "My Events"
+
+#. js-lingui-explicit-id
+#: src/components/layout/ProfileMenu.tsx:82
+msgid "profileMenu.myEvents"
+msgstr "My Events"
+
+#. js-lingui-explicit-id
+#: src/components/layout/ProfileMenu.tsx:73
+msgid "profileMenu.myProfile"
+msgstr "My Profile"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:123
+msgid "name"
+msgstr "Name"
+
+#: src/utils/imageUpload.ts:72
+msgid "Network error during upload"
+msgstr "Network error during upload"
+
+#: src/components/layout/AnnouncementsBell.tsx:72
+msgid "New Announcement"
+msgstr "New Announcement"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:153
+msgid "newToApp"
+msgstr "New to {appName}?"
+
+#: src/features/events/CreateEventDialog.tsx:208
+msgid "Next"
+msgstr "Next"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:261
+#: src/features/content/PrePostCardView.tsx:48
+msgid "next"
+msgstr "Next"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:79
+msgid "monthCalendar.nextMonth"
+msgstr "Next month"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:56
+#: src/features/events/EventInfoCard.tsx:571
+#: src/features/events/ParticipantsDialog.tsx:77
+msgid "no"
+msgstr "No"
+
+#: src/components/layout/AnnouncementsBell.tsx:109
+msgid "No"
+msgstr "No"
+
+#: src/components/EmptyPageContent.tsx:74
+msgid "No {type}"
+msgstr "No {type}"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventAbout.tsx:48
+msgid "noAnnouncementsSentYet"
+msgstr "No announcements sent yet"
+
+#: src/components/layout/AnnouncementsBell.tsx:86
+msgid "No announcements yet."
+msgstr "No announcements yet."
+
+#: src/features/posts/PostCards.tsx:175
+msgid "No Comments"
+msgstr "No Comments"
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:272
+msgid "noDescriptionForEvent"
+msgstr "No description for this event"
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:382
+msgid "noEvents"
+msgstr "No events"
+
+#. js-lingui-explicit-id
+#: src/features/profile/EventsTab.tsx:82
+msgid "noEventsFound"
+msgstr "No events found"
+
+#: src/features/community/CommunityHome.tsx:333
+msgid "No events found"
+msgstr "No events found"
+
+#: src/utils/imageUpload.ts:171
+msgid "No image upload provider is configured. Set the VITE_CLOUDINARY_* variables or VITE_FIREBASE_STORAGE_BUCKET."
+msgstr "No image upload provider is configured. Set the VITE_CLOUDINARY_* variables or VITE_FIREBASE_STORAGE_BUCKET."
+
+#. js-lingui-explicit-id
+#: src/features/events/ParticipantsDialog.tsx:101
+msgid "noOneIsHereYet"
+msgstr "No one is here yet."
+
+#. placeholder {0}: Math.round(startupTimeoutMs / 1000)
+#: src/api/firebaseAuthService.ts:219
+msgid "No response from the backend after {0} seconds."
+msgstr "No response from the backend after {0} seconds."
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatesPage.tsx:137
+msgid "noTemplatesFound"
+msgstr "No templates found."
+
+#: src/features/events/CreateEventDialog.tsx:453
+msgid "No templates found."
+msgstr "No templates found."
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:312
+msgid "noUpcomingEvents"
+msgstr "No upcoming events."
+
+#: src/utils/membership.ts:31
+msgid "Non-member"
+msgstr "Non-member"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfilePage.tsx:39
+msgid "notifications"
+msgstr "Notifications"
+
+#. js-lingui-explicit-id
+#: src/features/profile/NotificationsTab.tsx:132
+msgid "notifyMeAboutNewAnnouncements"
+msgstr "Notify me about new announcements"
+
+#. js-lingui-explicit-id
+#: src/features/profile/NotificationsTab.tsx:144
+msgid "notifyMeAboutNewEvents"
+msgstr "Notify me about new events"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:145
+msgid "odometer"
+msgstr "Odometer"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:792
+msgid "office365Calendar"
+msgstr "Office 365 Calendar"
+
+#. js-lingui-explicit-id
+#: src/components/layout/OnboardingBanner.tsx:98
+msgid "onboardingBanner.progress"
+msgstr "Onboarding progress"
+
+#: src/api/firebaseApi.ts:1947
+msgid "Only HTTP and HTTPS links can be previewed."
+msgstr "Only HTTP and HTTPS links can be previewed."
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostCardView.tsx:30
+msgid "openLink"
+msgstr "Open Link"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: index + 1
+#: src/features/content/agenda/AgendaStepFields.tsx:197
+msgid "pollOptionNumber"
+msgstr "Option {0}"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:280
+msgid "or"
+msgstr "Or"
+
+#: src/components/Upload.tsx:142
+msgid "or click to browse"
+msgstr "or click to browse"
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:33
+msgid "backendDownBody"
+msgstr "Our backend isn't responding right now. Please try again in a few minutes."
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:786
+msgid "outlookCalendar"
+msgstr "Outlook Calendar"
+
+#: src/utils/membership.ts:25
+msgid "Owner"
+msgstr "Owner"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:230
+msgid "wordCloudDescription"
+msgstr "Participants will be asked to respond with a list of words or short phrases."
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:223
+msgid "password"
+msgstr "Password"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:110
+msgid "passwordResetLinkSent"
+msgstr "Password reset link sent to {email}"
+
+#: src/features/resources/ResourceDialog.tsx:80
+msgid "Paste or enter URL"
+msgstr "Paste or enter URL"
+
+#: src/features/home/HomePage.tsx:57
+msgid "Placeholder: the home page is not built yet. This is a plain list of your communities."
+msgstr "Placeholder: the home page is not built yet. This is a plain list of your communities."
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:82
+#: src/features/content/agenda/AgendaStepFields.tsx:208
+msgid "pleaseAddSomeAnswers"
+msgstr "Please add some answers"
+
+#. js-lingui-explicit-id
+#: src/features/events/SurveyDialog.tsx:38
+msgid "pleaseAnswerQuestions"
+msgstr "Please answer a few questions so we can match you with the right group."
+
+#: src/features/events/CreateEventDialog.tsx:168
+msgid "Please choose a time in the future."
+msgstr "Please choose a time in the future."
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:218
+msgid "pleaseCompleteAllYourQuestionsAndAnswers"
+msgstr "Please complete all your questions and answers!"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:74
+msgid "pleaseCompletePreviousQuestionAndBothAnswers"
+msgstr "Please complete previous question and both answers"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:73
+msgid "pleaseEnterPassword"
+msgstr "Please enter a password"
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:169
+msgid "enterValidCommunityUrl"
+msgstr "Please enter a valid community URL"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:193
+#: src/features/auth/SignInForm.tsx:61
+msgid "pleaseEnterValidEmail"
+msgstr "Please enter a valid email address."
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:55
+#: src/features/community/CreateCommunity.tsx:165
+msgid "enterValidName"
+msgstr "Please enter a valid name"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:68
+msgid "pleaseEnterValidPassword"
+msgstr "Please enter a valid password"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:84
+#: src/features/content/agenda/AgendaStepFields.tsx:212
+msgid "pleaseRemoveDuplicateAnswers"
+msgstr "Please remove duplicate answers."
+
+#: src/features/posts/EmotionSection.tsx:18
+msgid "Plus one"
+msgstr "Plus one"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:264
+msgid "timeInput.pm"
+msgstr "PM"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/agendaTypes.ts:16
+msgid "agendaTypePoll"
+msgstr "Poll"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:179
+msgid "pollQuestion"
+msgstr "Poll Question"
+
+#: src/features/posts/CreatePostDialog.tsx:201
+#: src/features/resources/ResourceDialog.tsx:144
+msgid "Post"
+msgstr "Post"
+
+#: src/features/posts/CreatePostDialog.tsx:57
+msgid "Post has been created"
+msgstr "Post has been created"
+
+#: src/features/posts/CreatePostDialog.tsx:57
+msgid "Post has been updated"
+msgstr "Post has been updated"
+
+#: src/api/firebaseApi.ts:1857
+msgid "Post not found"
+msgstr "Post not found"
+
+#: src/features/posts/CreatePostDialog.tsx:134
+msgid "Post text"
+msgstr "Post text"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:77
+msgid "postEvent"
+msgstr "Post-event"
+
+#: src/components/layout/NavBar.tsx:163
+#: src/components/layout/NavBar.tsx:209
+msgid "Posts"
+msgstr "Posts"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:143
+msgid "sidebar.posts"
+msgstr "Posts"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:77
+msgid "preEvent"
+msgstr "Pre-event"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:449
+#: src/features/events/EventInfoCard.tsx:457
+#: src/features/templates/TemplatePage.tsx:159
+msgid "prereqRequired"
+msgstr "Prerequisite required"
+
+#. js-lingui-explicit-id
+#: src/components/misc.tsx:38
+msgid "prerequisiteBadge.text"
+msgstr "Prerequisite Required"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:150
+msgid "preview"
+msgstr "Preview"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:151
+msgid "previewAgenda"
+msgstr "Preview Agenda"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:68
+msgid "monthCalendar.previousMonth"
+msgstr "Previous month"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:377
+msgid "sidebar.privacyPolicy"
+msgstr "Privacy Policy"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:313
+msgid "privateVisibility"
+msgstr "Private"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfilePage.tsx:38
+msgid "profile"
+msgstr "Profile"
+
+#. js-lingui-explicit-id
+#: src/components/layout/ProfileMenu.tsx:34
+msgid "profileMenu.profileButton"
+msgstr "Profile Button"
+
+#. js-lingui-explicit-id
+#: src/components/ProfileChip.tsx:72
+msgid "profileChip.ariaLabel"
+msgstr "Profile of {name}"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:90
+msgid "profileUpdated"
+msgstr "Profile updated"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:260
+#: src/features/events/EventInfoCard.tsx:312
+msgid "publicVisibility"
+msgstr "Public"
+
+#: src/features/events/CreateEventDialog.tsx:82
+msgid "Public or private?"
+msgstr "Public or private?"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:212
+msgid "questionWithNumber"
+msgstr "Question {number}"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:153
+msgid "questionDeleted"
+msgstr "Question deleted!"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:180
+msgid "questionGoesHere"
+msgstr "Question goes here"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:80
+msgid "questionIsRequired"
+msgstr "Question is required"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:145
+msgid "questionSaved"
+msgstr "Question saved!"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:344
+msgid "questionType"
+msgstr "Question type"
+
+#: src/app/layouts/RootLayout.tsx:65
+msgid "React App"
+msgstr "React App"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:127
+msgid "record"
+msgstr "Recording"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:715
+msgid "refreshTemplate"
+msgstr "Refresh Template"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:206
+msgid "somethingWentWrongLongMiddle"
+msgstr "Refresh the page and try logging in to Frankly again.\n"
+"\n"
+"If you continue having trouble, you can"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:216
+msgid "removeActionLink"
+msgstr "Remove action link"
+
+#: src/features/posts/CreatePostDialog.tsx:110
+msgid "Remove image"
+msgstr "Remove image"
+
+#. js-lingui-explicit-id
+#: src/features/events/ParticipantsDialog.tsx:115
+msgid "removeParticipant"
+msgstr "Remove participant"
+
+#: src/features/posts/PostCards.tsx:233
+msgid "Reply"
+msgstr "Reply"
+
+#: src/components/CommunityMembershipButton.tsx:38
+msgid "Request To Follow"
+msgstr "Request To Follow"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:72
+msgid "forgotPasswordSuffix"
+msgstr "reset your password"
+
+#: src/features/resources/ResourceDialog.tsx:66
+msgid "Resource added"
+msgstr "Resource added"
+
+#: src/api/firebaseApi.ts:2028
+msgid "Resource not found"
+msgstr "Resource not found"
+
+#: src/features/resources/ResourceDialog.tsx:124
+msgid "Resource title"
+msgstr "Resource title"
+
+#: src/features/resources/ResourceDialog.tsx:66
+msgid "Resource updated"
+msgstr "Resource updated"
+
+#: src/features/resources/ResourceDialog.tsx:84
+msgid "Resource URL"
+msgstr "Resource URL"
+
+#: src/components/layout/NavBar.tsx:170
+#: src/components/layout/NavBar.tsx:217
+msgid "Resources"
+msgstr "Resources"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:149
+msgid "sidebar.resources"
+msgstr "Resources"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:271
+msgid "restoreSettings"
+msgstr "Restore Default Settings"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:534
+msgid "rsvp"
+msgstr "RSVP"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:250
+msgid "save"
+msgstr "Save"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:207
+msgid "saveAgendaItem"
+msgstr "Save Agenda Item"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:313
+msgid "saveEvent"
+msgstr "Save Event"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:413
+msgid "saveQuestion"
+msgstr "Save question"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:260
+msgid "saveSettings"
+msgstr "Save Settings"
+
+#: src/features/resources/ResourceDialog.tsx:125
+msgid "Save title"
+msgstr "Save title"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:190
+msgid "cardSaved"
+msgstr "Saved"
+
+#: src/components/layout/OnboardingBanner.tsx:44
+msgid "Schedule an event"
+msgstr "Schedule an event"
+
+#: src/components/events/EventCards.tsx:99
+msgid "Scheduled event"
+msgstr "Scheduled event"
+
+#: src/features/events/EventsPage.tsx:78
+#: src/features/events/EventsPage.tsx:79
+msgid "Search events"
+msgstr "Search events"
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatesPage.tsx:88
+msgid "searchTemplates"
+msgstr "Search templates"
+
+#: src/features/events/CreateEventDialog.tsx:284
+msgid "Search templates"
+msgstr "Search templates"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:52
+msgid "agendaSeconds"
+msgstr "Seconds"
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:299
+msgid "seeAll"
+msgstr "See all"
+
+#: src/features/posts/PostCards.tsx:211
+msgid "See more"
+msgstr "See more"
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:371
+msgid "seeMoreEvents"
+msgstr "See More Events"
+
+#. js-lingui-explicit-id
+#: src/components/events/EventPageParticipantsList.tsx:32
+msgid "seeWhoIsGoing"
+msgstr "See who is going"
+
+#: src/features/events/CreateEventDialog.tsx:83
+msgid "Select a day"
+msgstr "Select a day"
+
+#: src/features/events/CreateEventDialog.tsx:84
+msgid "Select a time"
+msgstr "Select a time"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:334
+msgid "sidebar.selectLanguage"
+msgstr "Select Language"
+
+#. js-lingui-explicit-id
+#: src/features/profile/NotificationsTab.tsx:63
+msgid "selectSpace"
+msgstr "Select space:"
+
+#. js-lingui-explicit-id
+#: src/features/events/MessageParticipantsDialog.tsx:60
+msgid "send"
+msgstr "Send"
+
+#. js-lingui-explicit-id
+#: src/features/profile/NotificationsTab.tsx:125
+msgid "settingsFor"
+msgstr "Settings for {communityName}"
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:82
+msgid "shareSection.email"
+msgstr "Share by email"
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:57
+msgid "shareSection.facebook"
+msgstr "Share on Facebook"
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:73
+msgid "shareSection.linkedin"
+msgstr "Share on LinkedIn"
+
+#. js-lingui-explicit-id
+#: src/components/ShareSection.tsx:64
+msgid "shareSection.twitter"
+msgstr "Share on X"
+
+#: src/components/layout/AnnouncementsBell.tsx:43
+msgid "Show Announcements Button"
+msgstr "Show Announcements Button"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:706
+msgid "showOptions"
+msgstr "Show Options"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:236
+msgid "showPassword"
+msgstr "Show Password"
+
+#: src/components/layout/NavBar.tsx:239
+msgid "Show sidebar"
+msgstr "Show sidebar"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInDialog.tsx:30
+msgid "signInDialog.ariaLabel"
+msgstr "Sign in"
+
+#. js-lingui-explicit-id
+#: src/components/layout/ProfileMenu.tsx:90
+msgid "profileMenu.signOut"
+msgstr "Sign Out"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInButtons.tsx:24
+#: src/features/auth/SignInForm.tsx:169
+#: src/features/auth/SignInForm.tsx:273
+msgid "signUp"
+msgstr "Sign Up"
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:299
+msgid "signUpWithGoogle"
+msgstr "Sign up with Google"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:147
+msgid "signingUp"
+msgstr "signing up"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:514
+msgid "smartMatch"
+msgstr "Smart Match"
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:40
+msgid "backendUnknownTitle"
+msgstr "Something went wrong"
+
+#: src/features/events/CreateEventDialog.tsx:104
+msgid "Something went wrong creating the event. Please try again."
+msgstr "Something went wrong creating the event. Please try again."
+
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:66
+msgid "errorLoadingCommunitiesMessage"
+msgstr "Something went wrong loading communities. Please refresh."
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:305
+msgid "somethingWentWrongLoadingEvents"
+msgstr "Something went wrong loading events."
+
+#: src/features/events/EventsPage.tsx:169
+msgid "Something went wrong loading events."
+msgstr "Something went wrong loading events."
+
+#. js-lingui-explicit-id
+#: src/features/profile/NotificationsTab.tsx:99
+msgid "errorLoadingNotificationSettings"
+msgstr "Something went wrong loading notification settings. Please refresh."
+
+#. js-lingui-explicit-id
+#: src/features/events/ParticipantsDialog.tsx:94
+msgid "participantsLoadError"
+msgstr "Something went wrong loading participants. Please refresh."
+
+#: src/features/posts/PostsPage.tsx:31
+msgid "Something went wrong loading posts."
+msgstr "Something went wrong loading posts."
+
+#: src/features/resources/ResourcesPage.tsx:41
+msgid "Something went wrong loading resources."
+msgstr "Something went wrong loading resources."
+
+#: src/scopes/CommunityScope.tsx:73
+msgid "Something went wrong loading the community."
+msgstr "Something went wrong loading the community."
+
+#: src/features/profile/EventsTab.tsx:41
+msgid "Something went wrong loading your events."
+msgstr "Something went wrong loading your events."
+
+#. js-lingui-explicit-id
+#: src/features/profile/NotificationsTab.tsx:35
+msgid "errorLoadingMemberships"
+msgstr "Something went wrong loading your memberships. Please refresh."
+
+#. js-lingui-explicit-id
+#: src/components/States.tsx:38
+msgid "errorState.default"
+msgstr "Something went wrong. Please refresh."
+
+#: src/components/CommunityMembershipButton.tsx:52
+#: src/components/layout/AnnouncementsBell.tsx:208
+#: src/features/content/agenda/AgendaStepCard.tsx:101
+#: src/features/content/agenda/AgendaStepCard.tsx:138
+#: src/features/content/AgendaTab.tsx:54
+#: src/features/content/AgendaTab.tsx:74
+#: src/features/content/PrePostTab.tsx:98
+#: src/features/content/PrePostTab.tsx:192
+#: src/features/events/BreakoutsSection.tsx:65
+#: src/features/events/BreakoutsSection.tsx:454
+#: src/features/events/BreakoutsSection.tsx:473
+#: src/features/events/EditEventDrawer.tsx:133
+#: src/features/events/EventAbout.tsx:108
+#: src/features/events/EventInfoCard.tsx:409
+#: src/features/events/EventInfoCard.tsx:576
+#: src/features/events/EventInfoCard.tsx:613
+#: src/features/events/EventInfoCard.tsx:643
+#: src/features/events/EventSettingsDrawer.tsx:102
+#: src/features/events/MessageParticipantsDialog.tsx:38
+#: src/features/events/ParticipantsDialog.tsx:82
+#: src/features/posts/AddCommentDialog.tsx:93
+#: src/features/posts/CreatePostDialog.tsx:61
+#: src/features/profile/NotificationsTab.tsx:111
+#: src/features/profile/ProfileTab.tsx:77
+#: src/features/profile/ProfileTab.tsx:187
+#: src/features/resources/ResourceDialog.tsx:69
+#: src/features/resources/ResourcesPage.tsx:108
+msgid "Something went wrong. Please try again."
+msgstr "Something went wrong. Please try again."
+
+#. js-lingui-explicit-id
+#: src/app/layouts/RootLayout.tsx:110
+#: src/features/community/CreateCommunity.tsx:185
+msgid "somethingWentWrongTryAgain"
+msgstr "Something went wrong. Please try again."
+
+#: src/api/firebaseApi.ts:1499
+msgid "Sorry, this event was canceled, so you cannot join it."
+msgstr "Sorry, this event was canceled, so you cannot join it."
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:75
+msgid "startCommunity"
+msgstr "Start a community"
+
+#. placeholder {0}: formatCountdown(state.ms)
+#: src/features/events/EventInfoCard.tsx:484
+msgid "Starts in {0}"
+msgstr "Starts in {0}"
+
+#. placeholder {0}: state.days
+#: src/features/events/EventInfoCard.tsx:480
+msgid "Starts in {0} Days"
+msgstr "Starts in {0} Days"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:482
+msgid "startsTomorrow"
+msgstr "Starts Tomorrow"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/agendaTypes.ts:20
+msgid "suggestions"
+msgstr "Suggestions"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileDrawer.tsx:172
+msgid "tags"
+msgstr "Tags"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:556
+msgid "targetSize"
+msgstr "Target size"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:536
+msgid "targetSizeQuestion"
+msgstr "Target Size?"
+
+#: src/components/layout/NavBar.tsx:176
+msgid "Templates"
+msgstr "Templates"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:154
+msgid "sidebar.templates"
+msgstr "Templates"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/agendaTypes.ts:10
+msgid "agendaTypeText"
+msgstr "Text"
+
+#. placeholder {0}: Math.round(maxBytes / 1024 / 1024)
+#: src/components/Upload.tsx:189
+msgid "That file is too large (max {0} MB)."
+msgstr "That file is too large (max {0} MB)."
+
+#: src/components/Upload.tsx:187
+msgid "That file type isn't supported."
+msgstr "That file type isn't supported."
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:15
+msgid "backendMisconfiguredTitle"
+msgstr "The app can't connect to its backend"
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:16
+msgid "backendMisconfiguredBody"
+msgstr "The backend looks misconfigured (a project or API key that doesn't exist, or a disabled service). If you run this site, check its Firebase settings."
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:499
+msgid "eventHasNotStartedYet"
+msgstr "The event has not started yet. We'll see you soon!"
+
+#: src/api/firebaseApi.ts:409
+msgid "The live stream could not be set up."
+msgstr "The live stream could not be set up."
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:32
+msgid "backendDownTitle"
+msgstr "The service is unavailable"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:64
+msgid "forgotPasswordThen"
+msgstr "then "
+
+#. js-lingui-explicit-id
+#: src/features/content/AgendaTab.tsx:94
+msgid "noAgendaForEvent"
+msgstr "There is no agenda for this event."
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatesPage.tsx:70
+msgid "thereWasAnErrorLoadingEventTemplates"
+msgstr "There was an error loading event templates."
+
+#: src/features/community/CommunityHome.tsx:324
+msgid "There was an error loading events."
+msgstr "There was an error loading events."
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:40
+msgid "errorLoadingProfileInfo"
+msgstr "There was an error loading profile info."
+
+#: src/components/layout/AnnouncementsBell.tsx:83
+msgid "There was an error while loading Announcements"
+msgstr "There was an error while loading Announcements"
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:86
+msgid "backendEmulatorsHint"
+msgstr "This build uses the local Firebase emulators. Are they running?"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:131
+msgid "emailAddressAlreadyInUseLoginError"
+msgstr "This email is already in use. Try "
+
+#. js-lingui-explicit-id
+#: src/features/events/EventPage.tsx:56
+msgid "eventNotFound"
+msgstr "This event could not be found."
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:470
+msgid "eventIsLocked"
+msgstr "This event is locked"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:222
+msgid "thisEventWasCanceled"
+msgstr "This event was canceled."
+
+#: src/api/firebaseApi.ts:1488
+msgid "This event was not found."
+msgstr "This event was not found."
+
+#: src/app/router.tsx:126
+msgid "This page is not in the React app yet. Soon, this would fall back to the Flutter app."
+msgstr "This page is not in the React app yet. Soon, this would fall back to the Flutter app."
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:81
+msgid "templateNotFound"
+msgstr "This template could not be found."
+
+#: src/api/firebaseApi.ts:1250
+msgid "This template was not found."
+msgstr "This template was not found."
+
+#: src/features/NotFoundPage.tsx:13
+msgid "This URL was not found"
+msgstr "This URL was not found"
+
+#: src/features/posts/EmotionSection.tsx:13
+msgid "Thumbs up"
+msgstr "Thumbs up"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:272
+msgid "time"
+msgstr "Time"
+
+#. placeholder {0}: timeZoneAbbreviation(now)
+#: src/features/events/CreateEventDialog.tsx:161
+msgid "Time shown in {0}"
+msgstr "Time shown in {0}"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:229
+msgid "title"
+msgstr "Title"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:99
+msgid "enterTextTitle"
+msgstr "Title"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:238
+msgid "titleCannotBeEmpty"
+msgstr "Title cannot be empty"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:70
+msgid "titleIsRequired"
+msgstr "Title is required"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:187
+msgid "tooManyRequests"
+msgstr "Too many failed requests. Please try again later."
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:133
+msgid "transcription"
+msgstr "Transcription"
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:93
+msgid "tryAgain"
+msgstr "Please try again"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:67
+msgid "socialTwitter"
+msgstr "Twitter URL"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:68
+msgid "agendaItemType"
+msgstr "Type of agenda item"
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:144
+msgid "eventHostingType"
+msgstr "Type of event"
+
+#: src/features/posts/CreatePostDialog.tsx:135
+msgid "Type something"
+msgstr "Type something"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:159
+msgid "sidebar.unfollow"
+msgstr "Unfollow"
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:176
+msgid "sidebar.unfollowConfirmAction"
+msgstr "Unfollow"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: community.name
+#: src/components/layout/SideBar.tsx:163
+msgid "sidebar.unfollowConfirmTitle"
+msgstr "Unfollow {0}?"
+
+#: src/utils/imageUpload.ts:164
+msgid "Unknown VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\". Use \"cloudinary\" or \"firebase\"."
+msgstr "Unknown VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\". Use \"cloudinary\" or \"firebase\"."
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:102
+msgid "sidebar.unnamedCommunity"
+msgstr "Unnamed Community"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:114
+#: src/features/events/EventSettingsDrawer.tsx:77
+msgid "unsavedChanges"
+msgstr "Unsaved changes"
+
+#. js-lingui-explicit-id
+#: src/features/profile/EventsTab.tsx:48
+msgid "upcomingHeader"
+msgstr "UPCOMING"
+
+#. js-lingui-explicit-id
+#: src/features/community/CommunityHome.tsx:350
+#: src/features/templates/TemplatePage.tsx:236
+#: src/features/templates/TemplatePage.tsx:290
+msgid "upcomingEvents"
+msgstr "Upcoming Events"
+
+#: src/features/posts/CreatePostDialog.tsx:201
+msgid "Update"
+msgstr "Update"
+
+#. js-lingui-explicit-id
+#: src/features/profile/ProfileTab.tsx:153
+msgid "updateProfile"
+msgstr "Update Profile"
+
+#: src/utils/imageUpload.ts:27
+msgid "Upload aborted"
+msgstr "Upload aborted"
+
+#: src/components/Upload.tsx:88
+msgid "Upload failed"
+msgstr "Upload failed"
+
+#. placeholder {0}: xhr.status
+#: src/utils/imageUpload.ts:68
+msgid "Upload failed ({0})"
+msgstr "Upload failed ({0})"
+
+#: src/features/content/agenda/AgendaStepFields.tsx:163
+#: src/features/events/EditEventDrawer.tsx:335
+#: src/features/posts/CreatePostDialog.tsx:212
+#: src/features/profile/ProfileTab.tsx:162
+#: src/features/resources/ResourceDialog.tsx:149
+msgid "Upload image"
+msgstr "Upload image"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:160
+msgid "uploadImage"
+msgstr "Upload Image"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:159
+msgid "uploadNewImage"
+msgstr "Upload New Image"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:127
+msgid "videoTabUrl"
+msgstr "URL"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:297
+msgid "urlParameter"
+msgstr "URL Parameter"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:236
+msgid "urlPreview"
+msgstr "URL Preview"
+
+#: src/utils/users.ts:44
+msgid "User-{suffix}"
+msgstr "User-{suffix}"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/agendaTypes.ts:12
+msgid "video"
+msgstr "Video"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:123
+msgid "videoSource"
+msgstr "Video source"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:135
+msgid "videoUrl"
+msgstr "Video URL"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:74
+msgid "videoUrlIsRequired"
+msgstr "Video URL is required"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostTab.tsx:115
+msgid "viewCard"
+msgstr "View card"
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatesPage.tsx:153
+msgid "viewMoreTemplates"
+msgstr "View more templates"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:126
+msgid "videoTabVimeo"
+msgstr "VIMEO"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:134
+msgid "vimeoUrl"
+msgstr "Vimeo URL"
+
+#. js-lingui-explicit-id
+#: src/components/BackendUnavailable.tsx:24
+msgid "backendUnreachableTitle"
+msgstr "We can't reach the server"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:143
+msgid "couldntFindAccount"
+msgstr "We couldn’t find an account with this email. Try "
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:201
+msgid "somethingWentWrongLongPrefix"
+msgstr "We’re sorry, something went wrong."
+
+#: src/components/EmptyPageContent.tsx:80
+msgid "When new {type} are added, you'll see them here."
+msgstr "When new {type} are added, you'll see them here."
+
+#. js-lingui-explicit-id
+#: src/features/templates/TemplatePage.tsx:385
+msgid "whenNewEventsAreAdded"
+msgstr "When new events are added, you’ll see them here."
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/agendaTypes.ts:18
+msgid "wordCloud"
+msgstr "Word Cloud"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:222
+msgid "wordCloudLabelText"
+msgstr "Word Cloud Prompt"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepCard.tsx:86
+msgid "wordCloudPromptRequired"
+msgstr "Word Cloud prompt is required"
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:55
+msgid "yes"
+msgstr "Yes"
+
+#: src/components/ConfirmDialog.tsx:51
+#: src/components/layout/AnnouncementsBell.tsx:110
+msgid "Yes"
+msgstr "Yes"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:570
+#: src/features/events/ParticipantsDialog.tsx:76
+msgid "yesCancel"
+msgstr "Yes, cancel"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:662
+msgid "yesRefresh"
+msgstr "Yes, refresh"
+
+#. js-lingui-explicit-id
+#: src/components/ProfileChip.tsx:42
+msgid "profileChip.you"
+msgstr "You"
+
+#: src/components/events/ParticipantsRow.tsx:49
+msgid "You"
+msgstr "You"
+
+#. placeholder {0}: total - 1
+#: src/components/events/ParticipantsRow.tsx:48
+msgid "You + {0}"
+msgstr "You + {0}"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditTemplateNotice.tsx:53
+msgid "editingEventNotice"
+msgstr "You are editing an event. \n"
+""
+
+#: src/features/profile/NotificationsTab.tsx:47
+msgid "You aren't a member of any communities."
+msgstr "You aren't a member of any communities."
+
+#. js-lingui-explicit-id
+#: src/features/events/BreakoutsSection.tsx:107
+msgid "onlyOneFreeTextQuestionNotice"
+msgstr "You can add one free text question. All other questions must be multiple choice."
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:216
+msgid "youCanChangeThisLater"
+msgstr "You can change this later"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:164
+msgid "emailAndPasswordMismatchCheck"
+msgstr "You can check what you entered and try again."
+
+#: src/features/home/HomePage.tsx:80
+msgid "You don't belong to any communities"
+msgstr "You don't belong to any communities"
+
+#. js-lingui-explicit-id
+#: src/app/layouts/RootLayout.tsx:125
+msgid "signedOutRefreshPrompt"
+msgstr "You have been signed out. Please refresh to sign back in"
+
+#. js-lingui-explicit-id
+#: src/features/events/EventSettingsDrawer.tsx:78
+msgid "discardSettingsChanges"
+msgstr "You have unsaved changes to these settings. Discard them?"
+
+#. js-lingui-explicit-id
+#: src/features/events/EditEventDrawer.tsx:115
+msgid "discardEventChanges"
+msgstr "You have unsaved changes to this event. Discard them?"
+
+#: src/api/firebaseApi.ts:145
+msgid "You must be signed in to continue."
+msgstr "You must be signed in to continue."
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:458
+msgid "removedFromEvent"
+msgstr "You were removed from this event and cannot rejoin."
+
+#. js-lingui-explicit-id
+#: src/components/layout/SideBar.tsx:167
+msgid "sidebar.unfollowConfirmBody"
+msgstr "You will stop receiving updates and lose access to its events."
+
+#. js-lingui-explicit-id
+#: src/features/community/CreateCommunity.tsx:301
+msgid "communitySuccessPrefix"
+msgstr "You've successfully created your community"
+
+#. js-lingui-explicit-id
+#: src/features/auth/AccountErrorMessage.tsx:157
+msgid "emailAndPasswordMismatch"
+msgstr "Your email and password combination don’t match a {appName} account."
+
+#. js-lingui-explicit-id
+#: src/features/events/EventInfoCard.tsx:657
+msgid "resetEventToTemplateWarning"
+msgstr "Your event will be reset to the original template. The list of attendees will not be affected."
+
+#. js-lingui-explicit-id
+#: src/features/auth/SignInForm.tsx:200
+msgid "yourName"
+msgstr "Your Name"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:125
+msgid "videoTabYoutube"
+msgstr "YOUTUBE"
+
+#. js-lingui-explicit-id
+#: src/features/content/agenda/AgendaStepFields.tsx:132
+msgid "youtubeUrl"
+msgstr "YouTube URL"
