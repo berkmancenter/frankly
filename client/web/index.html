@@ -78,6 +78,81 @@
   </head>
 
   <body>
+    <!-- Cache epoch check: when /cache_epoch.json changes (Cache Bust Client
+       workflow), clear all caches and service workers once, then reload.
+       Then install flutter_service_worker.js for PWA caching. -->
+    <script nonce="__SCRIPT_NONCE__">
+      (function () {
+        var EPOCH_KEY = "frankly_cache_epoch";
+
+        function registerServiceWorker() {
+          if (!("serviceWorker" in navigator)) return;
+          var register = function () {
+            navigator.serviceWorker.register("flutter_service_worker.js");
+          };
+          if (document.readyState === "complete") register();
+          else window.addEventListener("load", register);
+        }
+
+        async function readEpoch() {
+          try {
+            var res = await fetch("/cache_epoch.json", { cache: "no-store" });
+            var type = res.headers.get("content-type") || "";
+            if (!res.ok || type.indexOf("application/json") === -1) return null;
+            var data = await res.json();
+            return typeof data.token === "string" ? data.token : null;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        // Returns true if anything was cleared.
+        async function purge() {
+          var cleared = false;
+          if ("serviceWorker" in navigator) {
+            if (navigator.serviceWorker.controller) cleared = true;
+            var regs = await navigator.serviceWorker.getRegistrations();
+            for (var reg of regs) {
+              cleared = true;
+              await reg.unregister();
+            }
+          }
+          if ("caches" in window) {
+            var keys = await caches.keys();
+            for (var key of keys) {
+              cleared = true;
+              await caches.delete(key);
+            }
+          }
+          return cleared;
+        }
+
+        async function checkEpoch() {
+          var token = await readEpoch();
+          var stored = null;
+          try {
+            stored = localStorage.getItem(EPOCH_KEY);
+          } catch (e) {}
+          // Offline, missing file, or unchanged: keep caching.
+          if (token === null || token === stored) {
+            registerServiceWorker();
+            return;
+          }
+          var cleared = await purge();
+          var saved = false;
+          try {
+            localStorage.setItem(EPOCH_KEY, token);
+            saved = localStorage.getItem(EPOCH_KEY) === token;
+          } catch (e) {}
+          // Can't persist the token: skip caching to avoid a reload loop.
+          if (!saved) return;
+          if (cleared) window.location.reload();
+          else registerServiceWorker();
+        }
+
+        checkEpoch().catch(registerServiceWorker);
+      })();
+    </script>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script
       nonce="__SCRIPT_NONCE__"
