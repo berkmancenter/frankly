@@ -156,8 +156,15 @@ class LiveMeetingProvider with ChangeNotifier {
   bool get clickedEnterMeeting => _clickedEnterMeeting;
 
   set clickedEnterMeeting(bool value) {
+    final wasInPrescreen =
+        activeUiState == MeetingUiState.enterMeetingPrescreen;
     _clickedEnterMeeting = true;
     notifyListeners();
+
+    // Mark present now instead of waiting for the next heartbeat.
+    if (wasInPrescreen) {
+      unawaited(forcePresenceHeartbeat());
+    }
   }
 
   late final Future<bool> canAutoplayLookupFuture;
@@ -439,10 +446,13 @@ class LiveMeetingProvider with ChangeNotifier {
       _checkShowBreakoutDialog();
     });
 
-    firestoreLiveMeetingService.updateMeetingPresence(
-      event: eventProvider.event,
-      isPresent: true,
-    );
+    // Mark present unless on the prescreen.
+    if (activeUiState != MeetingUiState.enterMeetingPrescreen) {
+      firestoreLiveMeetingService.updateMeetingPresence(
+        event: eventProvider.event,
+        isPresent: true,
+      );
+    }
 
     _onUnloadSubscription = html.window.onBeforeUnload.listen((event) {
       firestoreLiveMeetingService.updateMeetingPresence(
