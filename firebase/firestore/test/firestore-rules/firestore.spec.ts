@@ -1661,4 +1661,43 @@ describe("Firestore security rules", async () => {
       });
     });
   });
+  describe("/memberships/{userId}/community-membership/{communityId}", () => {
+    const membershipPath = (userId: string) =>
+      `memberships/${userId}/community-membership/communityId`;
+
+    it("member can read own membership", async () => {
+      await dbAdmin.doc(membershipPath("alice")).set({ status: "member" });
+      const alice = getAuthedFirestore("alice");
+      await firebase.assertSucceeds(alice.doc(membershipPath("alice")).get());
+    });
+
+    it("banned user cannot set own status", async () => {
+      await dbAdmin.doc(membershipPath("alice")).set({ status: "banned" });
+      const alice = getAuthedFirestore("alice");
+      const ref = alice.doc(membershipPath("alice"));
+      for (const status of ["member", "attendee", "nonmember"]) {
+        await firebase.assertFails(ref.set({ status }));
+        await firebase.assertFails(ref.update({ status }));
+      }
+      await firebase.assertFails(ref.delete());
+    });
+
+    it("user cannot create own membership", async () => {
+      const alice = getAuthedFirestore("alice");
+      await firebase.assertFails(
+        alice.doc(membershipPath("alice")).set({ status: "member" })
+      );
+    });
+
+    it("admin and owner cannot write directly", async () => {
+      await dbAdmin.doc(membershipPath("bob")).set({ status: "member" });
+      for (const status of ["admin", "owner"]) {
+        await dbAdmin.doc(membershipPath("alice")).set({ status });
+        const alice = getAuthedFirestore("alice");
+        await firebase.assertFails(
+          alice.doc(membershipPath("bob")).update({ status: "banned" })
+        );
+      }
+    });
+  });
 });

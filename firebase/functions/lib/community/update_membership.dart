@@ -209,7 +209,9 @@ class UpdateMembership extends OnCallMethod<UpdateMembershipRequest> {
     required String requestingUserId,
     required String targetUserId,
   }) {
+    // Only an admin or owner can lift a ban.
     return targetUserId == requestingUserId &&
+            currentStatus != MembershipStatus.banned &&
             _canChangeSelfStatus(
               community: community,
               targetStatus: targetStatus,
