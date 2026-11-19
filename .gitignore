@@ -4,3 +4,9 @@ logs/
 docs/output
 *.log
 .local/
+*.env.production
+*.env.local
+client/new/src/locales/**/messages.js
+
+# Firebase hosting deploy cache
+.firebase/
