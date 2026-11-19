@@ -1,0 +1,22 @@
+{
+  "name": "frankly-test-harness",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.34.9",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "harness:typecheck": "tsc --noEmit",
+    "harness:test": "vitest run"
+  },
+  "dependencies": {
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

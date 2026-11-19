@@ -1,0 +1,24 @@
+# S4: host plus 8 participants, split into two breakout rooms of 4.
+scenario: breakouts
+meeting:
+  breakouts:
+    roomSize: 4
+bots:
+  - id: host
+    user: { name: Host, role: host }
+  - id: p1
+    user: { name: Participant 1 }
+  - id: p2
+    user: { name: Participant 2 }
+  - id: p3
+    user: { name: Participant 3 }
+  - id: p4
+    user: { name: Participant 4 }
+  - id: p5
+    user: { name: Participant 5 }
+  - id: p6
+    user: { name: Participant 6 }
+  - id: p7
+    user: { name: Participant 7 }
+  - id: p8
+    user: { name: Participant 8 }
