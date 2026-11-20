@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc -b && vite build",
-    "build:hosting": "npm run routes:flutter && npm run build:proxied && node scripts/assembleHosting.ts",
+    "build:hosting": "chmod +x build.sh && ./build.sh",
     "build:proxied": "tsc -b && PROXIED=1 vite build",
     "coverage": "vitest run --coverage",
     "dev": "vite",
