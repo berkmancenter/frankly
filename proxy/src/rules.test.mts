@@ -101,7 +101,7 @@ test('bad config is rejected with a useful message', () => {
 });
 
 test('the real migrated-routes.json loads, and every pattern in it is served by React', () => {
-  // Compiled tests run from `dist/`, one level below the dev-proxy folder.
+  // Compiled tests run from `dist/`, one level below the proxy folder.
   const live = loadConfig(fileURLToPath(new URL('../../client/new/migrated-routes.json', import.meta.url)));
   const liveRoute = createRouter(live);
   assert.ok(live.routes.length > 0);
