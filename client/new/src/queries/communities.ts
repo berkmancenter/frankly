@@ -5,7 +5,8 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useApi } from "@/api/ApiProvider";
-import type { Api, NewCommunityInput } from "@/api/api";
+import type { Api, CommunityUpdate, NewCommunityInput } from "@/api/api";
+import type { Community, MembershipStatus } from "@/api/types";
 import { qk } from "./keys";
 
 export const communityByDisplayIdQuery = (api: Api, displayId: string) =>
@@ -93,5 +94,61 @@ export function useDonationsEnabled(communityId: string) {
     queryKey: qk.donationsEnabled(communityId),
     queryFn: () => api.communities.donationsEnabled(communityId),
     staleTime: 5 * 60_000,
+  });
+}
+
+/** Saves an admin's changes to the community and refreshes everything that shows it. */
+export function useUpdateCommunity() {
+  const api = useApi();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      community,
+      patch,
+    }: {
+      community: Community;
+      patch: CommunityUpdate;
+    }) => api.communities.update(community, patch),
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.communities() }),
+  });
+}
+
+export function useJoinRequests(communityId: string) {
+  const api = useApi();
+  return useQuery({
+    queryKey: qk.joinRequests(communityId),
+    queryFn: () => api.communities.listJoinRequests(communityId),
+  });
+}
+
+export function useSetMemberRole(communityId: string) {
+  const api = useApi();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      userId,
+      status,
+    }: {
+      userId: string;
+      status: MembershipStatus;
+    }) => api.communities.setRole(communityId, userId, status),
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.members(communityId) }),
+  });
+}
+
+export function useResolveJoinRequest(communityId: string) {
+  const api = useApi();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: {
+      userId: string;
+      approve: boolean;
+      role?: MembershipStatus;
+    }) => api.communities.resolveJoinRequest({ communityId, ...input }),
+    onSuccess: () =>
+      Promise.all([
+        qc.invalidateQueries({ queryKey: qk.joinRequests(communityId) }),
+        qc.invalidateQueries({ queryKey: qk.members(communityId) }),
+      ]),
   });
 }

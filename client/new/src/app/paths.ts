@@ -7,6 +7,7 @@
 export type ProfileSection = "events" | "profile" | "notifications";
 export const PROFILE_SECTIONS: readonly ProfileSection[] = ["events", "profile", "notifications"];
 export type AdminTab = "profile" | "members" | "data" | "settings";
+export const ADMIN_TABS: readonly AdminTab[] = ["profile", "members", "data", "settings"];
 
 const q = (params: Record<string, string | undefined>) => {
   const s = new URLSearchParams();

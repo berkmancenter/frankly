@@ -38,19 +38,26 @@ import type {
   Event,
   EventMessage,
   EventSettings,
+  BreakoutRoomRecord,
+  ChatRecord,
   EventType,
+  JoinRequest,
   MemberDetails,
   Membership,
   MembershipStatus,
   NewEventInput,
   NotificationSettings,
   OnboardingStep,
+  PollRecord,
   PrePostAttribute,
   PrePostCard,
   PrePostLink,
   Participant,
   ProfileUpdate,
   PublicUser,
+  RecordingSession,
+  RegistrantRecord,
+  SuggestionRecord,
   SocialLink,
   SurveyQuestion,
   Tag,
@@ -60,6 +67,7 @@ import type {
 import { DEFAULT_AGENDA_SECONDS } from "@/utils/agenda";
 import {
   ALL_EVENT_SETTING_FLAGS,
+  COMMUNITY_LINK_FIELDS,
   PRE_POST_ATTRIBUTES,
   SOCIAL_PLATFORMS,
 } from "./types";
@@ -616,6 +624,7 @@ function mapMembership(
     requestStatus === "denied"
       ? { requestStatus }
       : {}),
+    ...(data.invisible === true ? { invisible: true } : {}),
   };
 }
 
@@ -630,6 +639,7 @@ function mapCommunity(id: string, value: unknown): Community {
   return {
     id,
     displayId: displayIds[0] ?? id,
+    displayIds,
     name: requiredString(data.name, "community name"),
     ...(stringValue(data.tagLine)
       ? { tagLine: stringValue(data.tagLine) }
@@ -640,6 +650,11 @@ function mapCommunity(id: string, value: unknown): Community {
     ...(stringValue(data.contactEmail)
       ? { contactEmail: stringValue(data.contactEmail) }
       : {}),
+    ...Object.fromEntries(
+      COMMUNITY_LINK_FIELDS.filter((field) => stringValue(data[field])).map(
+        (field) => [field, stringValue(data[field])],
+      ),
+    ),
     ...(stringValue(data.profileImageUrl)
       ? { profileImageUrl: stringValue(data.profileImageUrl) }
       : {}),
@@ -667,6 +682,17 @@ function mapCommunity(id: string, value: unknown): Community {
       enableDiscussionThreads: boolSetting("enableDiscussionThreads", true),
       requireApprovalToJoin: boolSetting("requireApprovalToJoin", false),
       enableHostless: boolSetting("enableHostless", true),
+      disableEmailDigests: boolSetting("disableEmailDigests", false),
+      multiplePeopleOnStage: boolSetting("multiplePeopleOnStage", false),
+      multipleVideoTypes: boolSetting("multipleVideoTypes", false),
+      enableUpdatedLiveMeetingMobile: boolSetting(
+        "enableUpdatedLiveMeetingMobile",
+        false,
+      ),
+      enableAVCheck: boolSetting("enableAVCheck", true),
+      ...(typeof rawSettings.featuredOrder === "number"
+        ? { featuredOrder: rawSettings.featuredOrder }
+        : {}),
     },
     eventSettings: communityEventSettings(data, flags),
     onboardingSteps: stringArray(data.onboardingSteps).filter(
@@ -952,6 +978,65 @@ function mapParticipant(
       ? { createdDate: optionalIsoDate(data.createdDate) }
       : {}),
   };
+}
+
+// A time as a callable sends it: an ISO string, milliseconds, or Firestore's seconds pair.
+function callableTime(value: unknown): string | undefined {
+  if (typeof value === "number") return new Date(value).toISOString();
+  const pair = asRecord(value);
+  const seconds = pair.seconds ?? pair._seconds;
+  if (typeof seconds === "number") return new Date(seconds * 1000).toISOString();
+  return optionalIsoDate(value);
+}
+
+// Where a download function puts its links.
+const RECORDINGS_KEY = "recordings";
+const TRANSCRIPTS_KEY = "transcripts";
+
+// The links in a download function's answer under `key`; an empty list means the files are not ready.
+function fileUrls(body: unknown, key: string): string[] {
+  const list = asRecord(body)[key];
+  const urls = (Array.isArray(list) ? list : [])
+    .map((entry) => stringValue(asRecord(entry).url) ?? "")
+    .filter((url) => url !== "");
+  if (urls.length === 0) throw new ApiError("notFound", t`The files are still being prepared`);
+  return urls;
+}
+
+function mapRecordingSession(snapshot: QueryDocumentSnapshot<DocumentData>): RecordingSession {
+  const data = snapshot.data();
+  const keys = Object.keys(asRecord(data.artifactPaths));
+  const status = stringValue(data.status);
+  const stoppedAt = optionalIsoDate(data.stoppedAt);
+  return {
+    id: snapshot.id,
+    status:
+      status === "starting" || status === "recording" || status === "stopping" || status === "stopped"
+        ? status
+        : "failed",
+    ...(stoppedAt ? { stoppedAt } : {}),
+    hasRecorder: !!stringValue(data.agoraSid),
+    hasTranscriber: !!stringValue(data.agoraRttAgentId),
+    videoParts: keys.filter((key) => key.startsWith("complete_mp4")).length,
+    transcriptParts: keys.filter((key) => key.startsWith("complete_trx")).length,
+  };
+}
+
+// The text of the choice made for each sign-up question, by position; "" for a question left unanswered.
+function surveyAnswerTexts(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.map((entry) => {
+    const question = asRecord(entry);
+    const chosen = stringValue(question.answerOptionId);
+    if (!chosen || !Array.isArray(question.answers)) return "";
+    for (const group of question.answers) {
+      const options = asRecord(group).options;
+      if (!Array.isArray(options)) continue;
+      const match = options.map(asRecord).find((option) => option.id === chosen);
+      if (match) return stringValue(match.title) ?? "";
+    }
+    return "";
+  });
 }
 
 export function createFirebaseApi(client: FirebaseClient): Api {
@@ -1343,12 +1428,89 @@ export function createFirebaseApi(client: FirebaseClient): Api {
               communityId,
               detail.membership,
             );
+            const email = stringValue(detail.email);
             return {
               user: await getPublicUser(client, userId),
               membership,
+              ...(email ? { email } : {}),
             };
           }),
         );
+      },
+
+      async update(community, patch) {
+        await requireUser(client);
+        const { displayId, settings, eventSettings, ...fields } = patch;
+        const json: Record<string, unknown> = { id: community.id, ...fields };
+        const keys = Object.keys(fields);
+        if (displayId !== undefined) {
+          // The new slug goes first and the old ones keep working.
+          json.displayIds = [
+            displayId,
+            displayId.toLowerCase(),
+            ...community.displayIds,
+          ];
+          keys.push("displayIds");
+        }
+        if (settings) {
+          json.communitySettings = settings;
+          keys.push("communitySettings");
+        }
+        if (eventSettings) {
+          json.eventSettings = eventSettings;
+          keys.push("eventSettings");
+        }
+        try {
+          await client.functions.call("UpdateCommunity", {
+            community: json,
+            keys,
+          });
+        } catch (error) {
+          if (isCallableRefusal(error)) {
+            throw new ApiError("invalid", error.message);
+          }
+          throw error;
+        }
+      },
+
+      async setRole(communityId, userId, status) {
+        await requireUser(client);
+        await client.functions.call("updateMembership", {
+          communityId,
+          userId,
+          status,
+          invisible: null,
+        });
+      },
+
+      async listJoinRequests(communityId) {
+        await requireUser(client);
+        const requests = await getDocs(
+          query(
+            collection(client.firestore, "community", communityId, "join-requests"),
+            where("status", "==", "requested"),
+          ),
+        );
+        return Promise.all(
+          requests.docs.map(async (request): Promise<JoinRequest> => {
+            const data = asRecord(request.data());
+            const userId = stringValue(data.userId) ?? request.id;
+            return {
+              user: await getPublicUser(client, userId),
+              communityId,
+            };
+          }),
+        );
+      },
+
+      async resolveJoinRequest({ communityId, userId, approve, role }) {
+        await requireUser(client);
+        await client.functions.call("resolveJoinRequest", {
+          communityId,
+          userId,
+          approve,
+          ...(role ? { role } : {}),
+        });
       },
 
       async prePostEnabled(communityId) {
@@ -2034,6 +2196,169 @@ export function createFirebaseApi(client: FirebaseClient): Api {
             };
           }),
         );
+      },
+
+      async registrants(event) {
+        await requireUser(client);
+        const path = eventDocument(client, event.communityId, event.templateId, event.id).path;
+        const snapshots = await getDocs(collection(client.firestore, path, "event-participants"));
+        const active = snapshots.docs.filter((snapshot) => {
+          const status = stringValue(snapshot.data().status);
+          return status !== "canceled" && status !== "banned";
+        });
+        const byId = new Map(active.map((snapshot) => [stringValue(snapshot.data().id) ?? snapshot.id, snapshot.data()]));
+        const userIds = [...byId.keys()];
+        const details = new Map<string, Record<string, unknown>>();
+        for (let from = 0; from < userIds.length; from += 1000) {
+          const response = asRecord(
+            await client.functions.call("GetMembersData", {
+              communityId: event.communityId,
+              userIds: userIds.slice(from, from + 1000),
+              eventPath: path,
+            }),
+          );
+          for (const entry of Array.isArray(response.membersDetailsList) ? response.membersDetailsList : []) {
+            const detail = asRecord(entry);
+            const id = stringValue(detail.id);
+            if (id) details.set(id, detail);
+          }
+        }
+        return userIds.flatMap((userId): RegistrantRecord[] => {
+          const detail = details.get(userId);
+          if (!detail) return [];
+          const participant = byId.get(userId) ?? {};
+          const registeredAt = optionalIsoDate(participant.createdDate);
+          const firstPresentAt = optionalIsoDate(participant.firstPresentTime);
+          const lastPresentAt = optionalIsoDate(participant.mostRecentPresentTime);
+          return [
+            {
+              userId,
+              displayName: stringValue(detail.displayName) ?? "",
+              email: stringValue(detail.email) ?? "",
+              memberStatus: stringValue(asRecord(detail.membership).status) ?? "",
+              ...(registeredAt ? { registeredAt } : {}),
+              ...(firstPresentAt ? { firstPresentAt } : {}),
+              ...(lastPresentAt ? { lastPresentAt } : {}),
+              answers: surveyAnswerTexts(participant.breakoutRoomSurveyQuestions),
+            },
+          ];
+        });
+      },
+
+      async breakoutRooms(event) {
+        await requireUser(client);
+        try {
+          const meeting = `${eventDocument(client, event.communityId, event.templateId, event.id).path}/live-meetings/${event.id}`;
+          const sessions = await getDocs(collection(client.firestore, `${meeting}/breakout-room-sessions`));
+          const rooms: BreakoutRoomRecord[] = [];
+          for (const session of sessions.docs) {
+            const snapshots = await getDocs(collection(client.firestore, `${meeting}/breakout-room-sessions/${session.id}/breakout-rooms`));
+            for (const snapshot of snapshots.docs) {
+              const data = snapshot.data();
+              rooms.push({
+                roomId: stringValue(data.roomId) ?? snapshot.id,
+                roomName: stringValue(data.roomName) ?? "",
+                participantIds: stringArray(data.participantIds),
+              });
+            }
+          }
+          return rooms;
+        } catch {
+          // Rooms only name what was already recorded; the files are still worth downloading.
+          return [];
+        }
+      },
+
+      async chatMessages(event) {
+        await requireUser(client);
+        const eventPath = eventDocument(client, event.communityId, event.templateId, event.id).path;
+        const response = asRecord(await client.functions.call("GetMeetingChatSuggestionData", { eventPath }));
+        const items = Array.isArray(response.chatsSuggestionsList) ? response.chatsSuggestionsList : [];
+        return items.map(asRecord).flatMap((item): ChatRecord[] => {
+          if (item.type !== undefined && item.type !== "chat") return [];
+          const createdAt = callableTime(item.createdDate);
+          const message = stringValue(item.message);
+          const emotion = stringValue(item.emotionType) as EmotionType | undefined;
+          return [
+            {
+              ...(createdAt ? { createdAt } : {}),
+              userId: stringValue(item.creatorId) ?? "",
+              ...(message ? { message } : {}),
+              ...(emotion ? { emotion } : {}),
+              roomId: stringValue(item.roomId) ?? "",
+              deleted: item.deleted === true,
+            },
+          ];
+        });
+      },
+
+      async suggestionsAndPolls(event) {
+        await requireUser(client);
+        const eventPath = eventDocument(client, event.communityId, event.templateId, event.id).path;
+        const [suggested, polled] = await Promise.all([
+          client.functions.call("GetMeetingChatSuggestionData", { eventPath }),
+          client.functions.call("GetMeetingPollData", { eventPath }),
+        ]);
+        const suggestionItems = asRecord(suggested).chatsSuggestionsList;
+        const pollItems = asRecord(polled).polls;
+        const suggestions = (Array.isArray(suggestionItems) ? suggestionItems : [])
+          .map(asRecord)
+          .filter((item) => item.type === "suggestion")
+          .map((item): SuggestionRecord => {
+            const createdAt = callableTime(item.createdDate);
+            const agendaItemId = stringValue(item.agendaItemId);
+            return {
+              ...(createdAt ? { createdAt } : {}),
+              userId: stringValue(item.creatorId) ?? "",
+              ...(agendaItemId ? { agendaItemId } : {}),
+              message: stringValue(item.message) ?? "",
+              roomId: stringValue(item.roomId) ?? "",
+              ...(typeof item.upvotes === "number" ? { upvotes: item.upvotes } : {}),
+              ...(typeof item.downvotes === "number" ? { downvotes: item.downvotes } : {}),
+              deleted: item.deleted === true,
+            };
+          });
+        const polls = (Array.isArray(pollItems) ? pollItems : []).map(asRecord).map((item): PollRecord => {
+          const answeredAt = callableTime(item.answeredDate);
+          return {
+            ...(answeredAt ? { answeredAt } : {}),
+            userId: stringValue(item.userId) ?? "",
+            question: stringValue(item.pollQuestion) ?? "",
+            response: stringValue(item.pollResponse) ?? "",
+            roomId: stringValue(item.roomId) ?? "",
+          };
+        });
+        return { suggestions, polls };
+      },
+
+      async recordingSessions(event) {
+        await requireUser(client);
+        const snapshots = await getDocs(
+          query(
+            collection(client.firestore, "recording-sessions"),
+            where("communityId", "==", event.communityId),
+            where("eventId", "==", event.id),
+          ),
+        );
+        return snapshots.docs.map(mapRecordingSession);
+      },
+
+      async recordingUrls(event) {
+        await requireUser(client);
+        const eventPath = eventDocument(client, event.communityId, event.templateId, event.id).path;
+        return fileUrls(await client.functions.post("downloadRecording", { eventPath }), RECORDINGS_KEY);
+      },
+
+      async transcriptUrls(event) {
+        await requireUser(client);
+        const eventPath = eventDocument(client, event.communityId, event.templateId, event.id).path;
+        return fileUrls(await client.functions.post("downloadTranscripts", { eventPath }), TRANSCRIPTS_KEY);
+      },
+
+      async repairRecording(sessionId) {
+        await requireUser(client);
+        const body = asRecord(await client.functions.post("repairSessionArtifacts", { sessionId }));
+        return { noTranscript: body.transcript === "none" };
       },
 
       async hasAttendedTemplate(templateId) {
