@@ -34,9 +34,34 @@ msgid "insteadSuffix"
 msgstr "替代"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:80
+msgid "recordingStatusParts"
+msgstr "({count} 部分)"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:84
+msgid "recordingStatusChecking"
+msgstr "(檢查中...)"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:90
+msgid "recordingStatusFailed"
+msgstr "(失敗)"
+
+#. js-lingui-explicit-id
 #: src/features/content/agenda/AgendaStepFields.tsx:153
 msgid "imageUrlNotSet"
 msgstr "(尚未設定圖片 URL。)"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:86
+msgid "recordingStatusPreparing"
+msgstr "(準備中...)"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:88
+msgid "recordingStatusInProgress"
+msgstr "正在錄製"
 
 #. placeholder {0}: thread.commentCount
 #: src/features/posts/PostCards.tsx:176
@@ -68,7 +93,7 @@ msgstr "{appName} 的服務條款"
 msgid "participantCount"
 msgstr "{count} 位參與者"
 
-#: src/api/firebaseApi.ts:902
+#: src/api/firebaseApi.ts:928
 msgid "{entity} not found"
 msgstr "找不到{entity}"
 
@@ -97,6 +122,11 @@ msgstr "{registered, plural, one {# 筆報名} other {# 筆報名}}"
 #: src/features/events/EditEventDrawer.tsx:45
 msgid "{rest, plural, one {# minute} other {# minutes}}"
 msgstr "{rest, plural, one {# 分鐘} other {# 分鐘}}"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:97
+msgid "adminEventPagination"
+msgstr "{start} - {end}，共 {total}"
 
 #: src/components/events/ParticipantsRow.tsx:53
 msgid "{total} People"
@@ -135,6 +165,11 @@ msgstr "關於我"
 #: src/features/community/CommunityHome.tsx:223
 msgid "aboutUs"
 msgstr "關於我們"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:153
+msgid "accentColor"
+msgstr "強調色"
 
 #. js-lingui-explicit-id
 #: src/features/events/BreakoutsSection.tsx:161
@@ -179,6 +214,11 @@ msgstr "新增分組討論"
 #: src/features/posts/AddCommentDialog.tsx:85
 msgid "Add comment"
 msgstr "新增留言"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:300
+msgid "communityDescriptionHint"
+msgstr "添加更多有關此社區目標的詳細信息"
 
 #. js-lingui-explicit-id
 #: src/features/content/agenda/AgendaStepFields.tsx:191
@@ -251,6 +291,31 @@ msgstr "議程項目已儲存"
 msgid "agendaItemsWereRemoved"
 msgstr "議程項目已移除"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:191
+msgid "settingAgendaPreview"
+msgstr "議程預覽"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:88
+msgid "permissionsOwnerDescription"
+msgstr "擁有所有管理功能，可以添加/刪除其他管理員。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:117
+msgid "settingHelperRequireMembershipApproval"
+msgstr "所有會員申請都必須經過社群管理員審核和批准才能獲得存取權限。活動參與將僅限於會員。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:79
+msgid "settingAllowMembersToCreateEvents"
+msgstr "允許成員創建活動"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:96
+msgid "settingAllowMembersToCreateTemplates"
+msgstr "允許成員創建模板"
+
 #: src/features/events/CreateEventDialog.tsx:244
 msgid "Allow the community to join"
 msgstr "允許社群成員加入"
@@ -269,6 +334,11 @@ msgstr "上午"
 #: src/components/pickers.tsx:159
 msgid "timeInput.amOrPm"
 msgstr "上午或下午"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:183
+msgid "errorOccurred"
+msgstr "發生錯誤"
 
 #: src/components/layout/AnnouncementsBell.tsx:99
 msgid "Announcement"
@@ -301,6 +371,16 @@ msgstr "匿名"
 #: src/features/events/BreakoutsSection.tsx:391
 msgid "answerNumber"
 msgstr "答案 {0}"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:566
+msgid "approve"
+msgstr "核准"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:538
+msgid "approveAll"
+msgstr "全部批准"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:602
@@ -383,13 +463,28 @@ msgstr "參與者"
 msgid "autoEndMeeting"
 msgstr "自動結束會議"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:131
+msgid "settingHelperEnableWeeklyEmail"
+msgstr "自動向成員發送即將舉行活動的每週摘要，讓他們保持知情和參與。"
+
 #: src/features/events/CreateEventDialog.tsx:209
 msgid "Back"
 msgstr "返回"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:140
+msgid "backgroundColor"
+msgstr "背景顏色"
+
 #: src/utils/membership.ts:31
 msgid "Banned"
 msgstr "已被封鎖"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:258
+msgid "basicInformation"
+msgstr "基本信息"
 
 #: src/components/layout/BottomNavBar.tsx:44
 msgid "Bottom navigation"
@@ -398,6 +493,11 @@ msgstr "底部導覽"
 #: src/components/layout/OnboardingBanner.tsx:34
 msgid "Brand your space"
 msgstr "打造你的專屬空間"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:340
+msgid "brandingAndTheme"
+msgstr "品牌和主題"
 
 #. js-lingui-explicit-id
 #: src/features/events/BreakoutsSection.tsx:91
@@ -421,6 +521,17 @@ msgid "bySize"
 msgstr "依人數"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:78
+msgid "permissionsModeratorDescription"
+msgstr "可以創建/編輯模板和事件，刪除不需要的內容，將參與者移動到不同的房間，並回應幫助請求。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:74
+msgid "permissionsFacilitatorDescription"
+msgstr "可以根據現有模板安排和主持活動。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:258
 #: src/features/content/agenda/AgendaStepCard.tsx:109
 #: src/features/content/agenda/AgendaStepCard.tsx:130
 #: src/features/content/agenda/AgendaStepCard.tsx:203
@@ -453,6 +564,11 @@ msgstr "取消"
 msgid "cancelEvent"
 msgstr "取消活動"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:174
+msgid "settingHelperRecord"
+msgstr "擷取活動影片，管理員可於稍後下載。（目前限於有主持人活動的主要會議室錄影；小組討論室錄影即將推出。）"
+
 #: src/features/resources/ResourceDialog.tsx:112
 msgid "Change image"
 msgstr "更換圖片"
@@ -463,14 +579,30 @@ msgid "Change picture"
 msgstr "更換大頭貼"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:234
+msgid "changesSaved"
+msgstr "更改已儲存"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:155
 #: src/features/events/EventSettingsDrawer.tsx:114
 msgid "chat"
 msgstr "聊天"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:233
+msgid "chatData"
+msgstr "聊天資料"
+
+#. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:25
 msgid "backendUnreachableBody"
 msgstr "請檢查你的網路連線，然後再試一次。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:133
+msgid "chooseABackgroundAndAccentColor"
+msgstr "選擇淺色背景和深色強調色，提供足夠的對比度，讓包括中度視力不佳用戶在內的廣大用戶都能閱讀文字。我們會檢查其可讀性。"
 
 #: src/components/Upload.tsx:138
 msgid "Choose a photo"
@@ -500,6 +632,7 @@ msgid "Close"
 msgstr "關閉"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:148
 #: src/features/content/PrePostCardView.tsx:48
 msgid "close"
 msgstr "關閉"
@@ -548,12 +681,23 @@ msgid "Comment cannot be empty"
 msgstr "留言不能是空白"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:296
+msgid "communityDescription"
+msgstr "社區描述"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:262
 #: src/features/community/CreateCommunity.tsx:205
 msgid "communityName"
 msgstr "社區名稱"
 
-#: src/api/firebaseApi.ts:936
-#: src/api/firebaseApi.ts:1230
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:154
+msgid "errorCommunityNameEmpty"
+msgstr "社區名稱不能為空。"
+
+#: src/api/firebaseApi.ts:962
+#: src/api/firebaseApi.ts:1315
 msgid "Community not found"
 msgstr "找不到該社群"
 
@@ -563,9 +707,26 @@ msgid "onboardingBanner.region"
 msgstr "社群入門引導"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:220
+#: src/features/community/admin/SettingsTab.tsx:244
+msgid "communitySettings"
+msgstr "社區設定"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:287
+msgid "communityTagline"
+msgstr "社區標語"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:274
 #: src/features/community/CreateCommunity.tsx:226
 msgid "communityUrl"
 msgstr "社區URL"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:159
+msgid "errorCommunityUrlEmpty"
+msgstr "社區 URL 不能為空。"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:298
@@ -670,7 +831,7 @@ msgstr "建立貼文"
 msgid "Create your first event"
 msgstr "建立你的第一個活動"
 
-#: src/api/firebaseApi.ts:1647
+#: src/api/firebaseApi.ts:1809
 msgid "Created event was not found"
 msgstr "找不到已建立的活動"
 
@@ -681,6 +842,16 @@ msgid "ctasTab"
 msgstr "行動號召"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:61
+msgid "custom"
+msgstr "自訂"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:193
+msgid "dataDownload"
+msgstr "資料下載"
+
+#. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:264
 msgid "date"
 msgstr "日期"
@@ -689,6 +860,11 @@ msgstr "日期"
 #: src/features/events/BreakoutsSection.tsx:446
 msgid "defineBreakoutsOptional"
 msgstr "設定分組討論（選填）"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:227
+msgid "eventSettingsDescription"
+msgstr "定義社區內活動的預設設定。這些設定可以針對個別活動和模板進行覆蓋。"
 
 #. js-lingui-explicit-id
 #: src/features/content/agenda/AgendaStepCard.tsx:129
@@ -757,6 +933,11 @@ msgid "deleteQuestion"
 msgstr "刪除問題"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:575
+msgid "deny"
+msgstr "拒絕"
+
+#. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:246
 #: src/features/events/EventAbout.tsx:38
 #: src/features/templates/TemplatePage.tsx:267
@@ -764,6 +945,7 @@ msgid "description"
 msgstr "說明"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:241
 #: src/features/events/EventSettingsDrawer.tsx:277
 msgid "devSettings"
 msgstr "開發者設定"
@@ -785,6 +967,11 @@ msgid "onboardingBanner.dismiss"
 msgstr "關閉入門引導"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:183
+msgid "settingHelperTalkTimer"
+msgstr "向參與者顯示發言時間指示器，並提供細微提醒以鼓勵平衡討論。"
+
+#. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:163
 msgid "notUserSignUp"
 msgstr "沒有帳戶？"
@@ -793,6 +980,21 @@ msgstr "沒有帳戶？"
 #: src/features/community/CommunityHome.tsx:296
 msgid "communityHome.donate"
 msgstr "捐款"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:265
+msgid "download"
+msgstr "下載"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:189
+msgid "downloadComplete"
+msgstr "下載完成"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:186
+msgid "downloadMembersData"
+msgstr "下載成員資料"
 
 #: src/components/Upload.tsx:138
 msgid "Drag and drop an image here"
@@ -812,6 +1014,11 @@ msgstr "複製項目"
 #: src/features/auth/SignInForm.tsx:201
 msgid "nameHintExample"
 msgstr "例如：Jane Doe"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/LogoField.tsx:65
+msgid "edit"
+msgstr "編輯"
 
 #. placeholder {0}: r.title
 #: src/features/resources/ResourcesPage.tsx:92
@@ -851,8 +1058,24 @@ msgstr "編輯標題"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:212
+#: src/features/community/admin/OverviewTab.tsx:309
 msgid "email"
 msgstr "電子郵件"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:127
+msgid "settingEnableWeeklyEmailDigestsOfUpcomingEvents"
+msgstr "啟用即將舉行活動的每週電郵摘要"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:83
+msgid "settingHelperMemberEvents"
+msgstr "允許社群成員使用您社群的模板創建和組織活動。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:156
+msgid "settingHelperChat"
+msgstr "允許參與者在活動頁面和活動期間（包括小組討論室）之間相互發送訊息。"
 
 #: src/components/layout/AnnouncementsBell.tsx:188
 msgid "Enter a message"
@@ -861,6 +1084,16 @@ msgstr "輸入訊息"
 #: src/components/layout/AnnouncementsBell.tsx:183
 msgid "Enter a title"
 msgstr "輸入標題"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:132
+msgid "enterValidSocialUrl"
+msgstr "請輸入包含“{url}”的有效{platform}網址"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:128
+msgid "enterValidWebsiteUrl"
+msgstr "輸入有效的網址（例如“https://websitename.com”）"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:487
@@ -913,9 +1146,19 @@ msgstr "輸入文字雲提示"
 msgid "forgotPasswordEnterEmail"
 msgstr "輸入您的電子郵件"
 
-#: src/api/firebaseApi.ts:471
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:187
+msgid "errorCommunityProfile"
+msgstr "一個或多個個人資料設置的條目需要更改。請更正任何錯誤並重試。"
+
+#: src/api/firebaseApi.ts:479
 msgid "Error in updating agenda ordering. Please refresh."
 msgstr "更新議程順序時發生錯誤。請重新整理頁面。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:91
+msgid "eventData"
+msgstr "活動資料"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:486
@@ -923,10 +1166,17 @@ msgid "eventEnded"
 msgstr "活動已結束"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:226
+#: src/features/community/admin/SettingsTab.tsx:255
 #: src/features/events/EventInfoCard.tsx:690
 #: src/features/events/EventSettingsDrawer.tsx:173
 msgid "eventSettings"
 msgstr "活動設定"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:86
+msgid "events"
+msgstr "活動"
 
 #: src/components/layout/NavBar.tsx:157
 #: src/components/layout/NavBar.tsx:202
@@ -973,6 +1223,12 @@ msgid "filter"
 msgstr "篩選"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:164
+#: src/features/community/admin/MembersTab.tsx:173
+msgid "filterMemberListByName"
+msgstr "依姓名篩選成員清單"
+
+#. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:314
 #: src/features/events/SurveyDialog.tsx:81
 msgid "finish"
@@ -989,6 +1245,7 @@ msgid "Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET."
 msgstr "Firebase Storage 尚未設定。請設定 VITE_FIREBASE_STORAGE_BUCKET。"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:164
 #: src/features/events/EventSettingsDrawer.tsx:120
 msgid "floatingChat"
 msgstr "浮動聊天"
@@ -1014,6 +1271,11 @@ msgstr "追蹤請求已送出"
 #: src/components/CommunityMembershipButton.tsx:35
 msgid "Follow Request Sent"
 msgstr "追蹤請求已送出"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:528
+msgid "followerRequest"
+msgstr "追蹤請求"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:170
@@ -1052,6 +1314,11 @@ msgstr "自由文字"
 #: src/features/events/EventInfoCard.tsx:526
 msgid "eventFull"
 msgstr "已額滿"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:83
+msgid "permissionsAdminDescription"
+msgstr "對社區設置、成員角色和所有內容的完全控制。"
 
 #: src/components/layout/OnboardingBanner.tsx:48
 msgid "Get it on the books"
@@ -1105,6 +1372,11 @@ msgid "communityHome.shareBody"
 msgstr "嘿，來看看 Frankly 上的 {0}！"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:608
+msgid "checkOutCommunityOnApp"
+msgstr "嘿，來看看 {appName} 上的 {communityName}！"
+
+#. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:235
 msgid "hidePassword"
 msgstr "隐藏密码"
@@ -1120,12 +1392,14 @@ msgid "historyHeader"
 msgstr "歷史記錄"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:176
 #: src/features/events/EditEventDrawer.tsx:138
 #: src/features/templates/TemplatePage.tsx:103
 msgid "hosted"
 msgstr "有主持人"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:177
 #: src/features/events/EditEventDrawer.tsx:139
 #: src/features/events/EventInfoCard.tsx:111
 #: src/features/templates/TemplatePage.tsx:108
@@ -1186,11 +1460,11 @@ msgstr "Instagram 連結"
 msgid "invalidEmail"
 msgstr "無效的電子郵件"
 
-#: src/api/firebaseApi.ts:1588
+#: src/api/firebaseApi.ts:1750
 msgid "Invalid event schedule"
 msgstr "活動時程無效"
 
-#: src/api/firebaseApi.ts:135
+#: src/api/firebaseApi.ts:143
 msgid "Invalid or missing {field}"
 msgstr "{field}無效或遺失"
 
@@ -1199,10 +1473,20 @@ msgid "Invite your people"
 msgstr "邀請你的夥伴"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:101
+msgid "items"
+msgstr "項目"
+
+#. js-lingui-explicit-id
 #. placeholder {0}: community.name
 #: src/features/community/CommunityHome.tsx:251
 msgid "communityHome.shareSubject"
 msgstr "加入 Frankly 上的 {0}"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:604
+msgid "joinCommunityOnApp"
+msgstr "加入 {appName} 上的 {communityName}"
 
 #: src/features/events/EventInfoCard.tsx:289
 msgid "Join an event with me on {appName}!"
@@ -1272,12 +1556,12 @@ msgstr "連結已複製！"
 msgid "linkMustBeMp4"
 msgstr "連結必須是 MP4 格式"
 
-#: src/api/firebaseApi.ts:2238
+#: src/api/firebaseApi.ts:2563
 msgid "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
 msgstr "連結預覽尚未設定。請設定 VITE_LINK_PREVIEW_API_KEY。"
 
 #. placeholder {0}: response.status
-#: src/api/firebaseApi.ts:2252
+#: src/api/firebaseApi.ts:2577
 msgid "Link preview request failed ({0})"
 msgstr "連結預覽請求失敗（{0}）"
 
@@ -1287,11 +1571,17 @@ msgid "socialLinkedIn"
 msgstr "LinkedIn 連結"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:319
+msgid "links"
+msgstr "連結"
+
+#. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:494
 msgid "liveEventsNotHereYet"
 msgstr "目前此版本的應用程式還無法加入直播活動。"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:174
 #: src/features/events/EditEventDrawer.tsx:140
 #: src/features/events/EventInfoCard.tsx:113
 #: src/features/templates/TemplatePage.tsx:114
@@ -1305,6 +1595,11 @@ msgstr "直播"
 #: src/features/resources/ResourceDialog.tsx:89
 msgid "Load link"
 msgstr "載入連結"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:99
+msgid "loading"
+msgstr "載入中"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:469
@@ -1337,6 +1632,11 @@ msgstr "登入中"
 msgid "login"
 msgstr "登入"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/LogoField.tsx:78
+msgid "logo"
+msgstr "標誌"
+
 #: src/components/layout/OnboardingBanner.tsx:33
 #: src/components/layout/OnboardingBanner.tsx:38
 msgid "Looking good"
@@ -1346,6 +1646,17 @@ msgstr "看起來不錯"
 #: src/features/community/CreateCommunity.tsx:250
 msgid "makeThisSpacePrivate"
 msgstr "設此為私密空間"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:192
+msgid "settingHelperAgendaPreview"
+msgstr "使活動議程在活動介紹頁面上可見。當關閉時，議程僅在活動會議中可見。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:125
+#: src/features/community/admin/CommunityAdminPage.tsx:132
+msgid "manageCommunity"
+msgstr "管理社群"
 
 #. js-lingui-explicit-id
 #: src/features/events/BreakoutsSection.tsx:103
@@ -1361,7 +1672,23 @@ msgstr "最大值"
 msgid "Member"
 msgstr "成員"
 
-#: src/api/firebaseApi.ts:1252
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:424
+msgid "member"
+msgstr "成員"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:237
+msgid "rolesTooltip"
+msgstr "成員角色決定社區內的權限和訪問。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:90
+#: src/features/community/admin/MembersTab.tsx:196
+msgid "members"
+msgstr "成員"
+
+#: src/api/firebaseApi.ts:1337
 msgid "Membership update was not saved"
 msgstr "成員資格更新未儲存"
 
@@ -1433,6 +1760,16 @@ msgid "passwordRequirements"
 msgstr "长度必须至少为 12 个字符，并且包含一个小写字母和一个大写字母。"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:225
+msgid "mustBeValidHexColor"
+msgstr "必須是有效的十六進制顏色值。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:77
+msgid "mustBeAdminToAccessSection"
+msgstr "必須登入並具有管理員權限才能存取此區塊"
+
+#. js-lingui-explicit-id
 #: src/features/profile/ProfilePage.tsx:47
 msgid "mustBeLoggedInToAccessThisSection"
 msgstr "必須登入才能存取此區塊"
@@ -1495,6 +1832,11 @@ msgid "next"
 msgstr "下一步"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:103
+msgid "nextPage"
+msgstr "下一頁"
+
+#. js-lingui-explicit-id
 #: src/features/events/BreakoutsSection.tsx:56
 #: src/features/events/EventInfoCard.tsx:571
 #: src/features/events/ParticipantsDialog.tsx:100
@@ -1517,6 +1859,11 @@ msgstr "尚未傳送任何公告"
 #: src/components/layout/AnnouncementsBell.tsx:86
 msgid "No announcements yet."
 msgstr "還沒有公告。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:137
+msgid "noChatDataForEvent"
+msgstr "此活動沒有聊天資料。"
 
 #: src/features/posts/PostCards.tsx:175
 msgid "No Comments"
@@ -1541,14 +1888,34 @@ msgstr "找不到活動"
 msgid "No events found"
 msgstr "找不到活動"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:624
+msgid "noFollowRequestsCurrently"
+msgstr "目前沒有追蹤請求"
+
 #: src/utils/imageUpload.ts:171
 msgid "No image upload provider is configured. Set the VITE_CLOUDINARY_* variables or VITE_FIREBASE_STORAGE_BUCKET."
 msgstr "尚未設定圖片上傳服務。請設定 VITE_CLOUDINARY_* 變數或 VITE_FIREBASE_STORAGE_BUCKET。"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:381
+msgid "noMatchingMembersFound"
+msgstr "未找到匹配的成員。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:137
+msgid "noMembersFoundToExport"
+msgstr "未找到可導出的成員。"
+
+#. js-lingui-explicit-id
 #: src/features/events/ParticipantsDialog.tsx:146
 msgid "noOneIsHereYet"
 msgstr "這裡還沒有人。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:156
+msgid "noPollsOrSuggestionsDataForEvent"
+msgstr "此活動沒有投票或建議資料。"
 
 #. placeholder {0}: Math.round(startupTimeoutMs / 1000)
 #: src/api/firebaseAuthService.ts:219
@@ -1565,6 +1932,11 @@ msgid "No templates found."
 msgstr "找不到範本。"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:226
+msgid "noTitle"
+msgstr "無標題"
+
+#. js-lingui-explicit-id
 #: src/features/templates/TemplatePage.tsx:309
 msgid "noUpcomingEvents"
 msgstr "沒有即將舉行的活動。"
@@ -1572,6 +1944,12 @@ msgstr "沒有即將舉行的活動。"
 #: src/utils/membership.ts:32
 msgid "Non-member"
 msgstr "非成員"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:92
+#: src/features/community/admin/EventDataDialog.tsx:102
+msgid "none"
+msgstr "無"
 
 #. js-lingui-explicit-id
 #: src/features/profile/ProfilePage.tsx:39
@@ -1589,6 +1967,7 @@ msgid "notifyMeAboutNewEvents"
 msgstr "有新活動時通知我"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:182
 #: src/features/events/EventSettingsDrawer.tsx:145
 msgid "odometer"
 msgstr "計數器"
@@ -1603,7 +1982,7 @@ msgstr "Office 365 日曆"
 msgid "onboardingBanner.progress"
 msgstr "入門引導進度"
 
-#: src/api/firebaseApi.ts:2245
+#: src/api/firebaseApi.ts:2570
 msgid "Only HTTP and HTTPS links can be previewed."
 msgstr "僅支援預覽 HTTP 和 HTTPS 連結。"
 
@@ -1660,6 +2039,11 @@ msgstr "密碼重設連結已發送至 {email}"
 msgid "Paste or enter URL"
 msgstr "貼上或輸入網址"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:100
+msgid "settingHelperMemberTemplates"
+msgstr "允許成員在您的社群內創建和保存可重複使用的活動模板。"
+
 #: src/features/home/HomePage.tsx:57
 #~ msgid "Placeholder: the home page is not built yet. This is a plain list of your communities."
 #~ msgstr "預留位置：首頁尚未完成。這裡只是你所屬社群的簡單清單。"
@@ -1695,6 +2079,7 @@ msgid "pleaseEnterPassword"
 msgstr "請輸入密碼"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:109
 #: src/features/community/CreateCommunity.tsx:169
 msgid "enterValidCommunityUrl"
 msgstr "請輸入有效的社區 URL"
@@ -1702,11 +2087,13 @@ msgstr "請輸入有效的社區 URL"
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:193
 #: src/features/auth/SignInForm.tsx:61
+#: src/features/community/admin/OverviewTab.tsx:116
 msgid "pleaseEnterValidEmail"
 msgstr "請輸入有效的電子郵件地址。"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:55
+#: src/features/community/admin/OverviewTab.tsx:105
 #: src/features/community/CreateCommunity.tsx:165
 msgid "enterValidName"
 msgstr "请输入有效的名称"
@@ -1741,6 +2128,11 @@ msgstr "投票"
 msgid "pollQuestion"
 msgstr "投票問題"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:238
+msgid "pollsSuggestionsData"
+msgstr "投票和建議資料"
+
 #: src/features/posts/CreatePostDialog.tsx:201
 #: src/features/resources/ResourceDialog.tsx:144
 msgid "Post"
@@ -1754,7 +2146,7 @@ msgstr "貼文已建立"
 msgid "Post has been updated"
 msgstr "貼文已更新"
 
-#: src/api/firebaseApi.ts:2155
+#: src/api/firebaseApi.ts:2480
 msgid "Post not found"
 msgstr "找不到該貼文"
 
@@ -1795,6 +2187,11 @@ msgid "prerequisiteBadge.text"
 msgstr "需先完成先修條件"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:60
+msgid "presets"
+msgstr "預設"
+
+#. js-lingui-explicit-id
 #: src/features/profile/ProfileTab.tsx:150
 msgid "preview"
 msgstr "預覽"
@@ -1805,16 +2202,23 @@ msgid "previewAgenda"
 msgstr "預覽議程"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:90
+msgid "previousPage"
+msgstr "上一頁"
+
+#. js-lingui-explicit-id
 #: src/components/layout/SideBar.tsx:377
 msgid "sidebar.privacyPolicy"
 msgstr "隱私權政策"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:160
 #: src/features/events/EventInfoCard.tsx:313
 msgid "privateVisibility"
 msgstr "私人"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:89
 #: src/features/profile/ProfilePage.tsx:38
 msgid "profile"
 msgstr "個人資料"
@@ -1835,6 +2239,7 @@ msgid "profileUpdated"
 msgstr "個人資料已更新"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:159
 #: src/features/events/EditEventDrawer.tsx:260
 #: src/features/events/EventInfoCard.tsx:312
 msgid "publicVisibility"
@@ -1879,9 +2284,15 @@ msgid "React App"
 msgstr "React 應用程式"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:173
 #: src/features/events/EventSettingsDrawer.tsx:127
 msgid "record"
 msgstr "錄製"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:217
+msgid "recording"
+msgstr "錄製中"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:715
@@ -1894,6 +2305,21 @@ msgid "somethingWentWrongLongMiddle"
 msgstr "請刷新頁面並嘗試重新登入 Frankly。\n"
 "\n"
 "如果問題持續，您可以 "
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:153
+msgid "registered"
+msgstr "已註冊"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:224
+msgid "registrationDataDownload"
+msgstr "註冊數據下載"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/LogoField.tsx:70
+msgid "remove"
+msgstr "移除"
 
 #. js-lingui-explicit-id
 #: src/features/content/PrePostTab.tsx:334
@@ -1918,6 +2344,21 @@ msgid "Request To Follow"
 msgstr "請求追蹤"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:201
+msgid "requests"
+msgstr "請求"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:113
+msgid "settingRequireApprovalForNewMembers"
+msgstr "新成員需要審核批准"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:269
+msgid "required"
+msgstr "必填"
+
+#. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:72
 msgid "forgotPasswordSuffix"
 msgstr "重設您的密碼"
@@ -1926,7 +2367,7 @@ msgstr "重設您的密碼"
 msgid "Resource added"
 msgstr "資源已新增"
 
-#: src/api/firebaseApi.ts:2326
+#: src/api/firebaseApi.ts:2651
 msgid "Resource not found"
 msgstr "找不到該資源"
 
@@ -1958,11 +2399,21 @@ msgid "restoreSettings"
 msgstr "還原預設設定"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:260
+#: src/features/community/admin/MembersTab.tsx:428
+#: src/features/community/admin/MembersTab.tsx:443
+#: src/features/community/admin/MembersTab.tsx:532
+#: src/features/community/admin/MembersTab.tsx:554
+msgid "role"
+msgstr "角色"
+
+#. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:534
 msgid "rsvp"
 msgstr "RSVP"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:373
 #: src/features/content/PrePostTab.tsx:399
 msgid "save"
 msgstr "儲存"
@@ -2028,6 +2479,11 @@ msgstr "秒"
 msgid "seeAll"
 msgstr "查看全部"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:250
+msgid "seeManagingYourCommunity"
+msgstr "查看管理您的社區以獲取詳細信息。"
+
 #: src/features/posts/PostCards.tsx:211
 msgid "See more"
 msgstr "查看更多"
@@ -2051,6 +2507,12 @@ msgid "Select a time"
 msgstr "選擇時間"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:199
+#: src/features/community/admin/EventDataDialog.tsx:202
+msgid "selectData"
+msgstr "選擇資料"
+
+#. js-lingui-explicit-id
 #: src/components/layout/SideBar.tsx:334
 msgid "sidebar.selectLanguage"
 msgstr "選擇語言"
@@ -2064,6 +2526,11 @@ msgstr "選擇空間："
 #: src/features/events/MessageParticipantsDialog.tsx:60
 msgid "send"
 msgstr "傳送"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:92
+msgid "settings"
+msgstr "設定"
 
 #. js-lingui-explicit-id
 #: src/features/profile/NotificationsTab.tsx:125
@@ -2090,6 +2557,11 @@ msgstr "分享到 LinkedIn"
 msgid "shareSection.twitter"
 msgstr "分享到 X"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:630
+msgid "shareYourCommunityWithOthers"
+msgstr "與他人分享您的社群"
+
 #: src/components/layout/AnnouncementsBell.tsx:43
 msgid "Show Announcements Button"
 msgstr "顯示公告按鈕"
@@ -2107,6 +2579,11 @@ msgstr "显示密码"
 #: src/components/layout/NavBar.tsx:239
 msgid "Show sidebar"
 msgstr "顯示側邊欄"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:165
+msgid "settingHelperFloatingChat"
+msgstr "在活動期間於螢幕底部以氣泡形式顯示臨時聊天通知。"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInDialog.tsx:30
@@ -2141,6 +2618,11 @@ msgid "smartMatch"
 msgstr "智慧配對"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:69
+msgid "permissionsMemberDescription"
+msgstr "已加入社區的人。可以參加活動、創建帖子並接收社區公告。"
+
+#. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:40
 msgid "backendUnknownTitle"
 msgstr "發生錯誤"
@@ -2164,6 +2646,17 @@ msgid "Something went wrong loading events."
 msgstr "載入活動時發生錯誤。"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:47
+msgid "errorLoadingEvents"
+msgstr "載入事件時出錯。請重新整理。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:370
+#: src/features/community/admin/MembersTab.tsx:385
+msgid "errorLoadingCommunityMembers"
+msgstr "載入會員資格時出錯。請重新整理。"
+
+#. js-lingui-explicit-id
 #: src/features/profile/NotificationsTab.tsx:99
 msgid "errorLoadingNotificationSettings"
 msgstr "載入通知設定時發生問題，請重新整理頁面。"
@@ -2176,6 +2669,11 @@ msgstr "載入參與者時發生錯誤。請重新整理頁面。"
 #: src/features/posts/PostsPage.tsx:31
 msgid "Something went wrong loading posts."
 msgstr "載入貼文時發生錯誤。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:481
+msgid "errorLoadingRequests"
+msgstr "載入請求時出錯。請重新整理。"
 
 #: src/features/resources/ResourcesPage.tsx:41
 msgid "Something went wrong loading resources."
@@ -2232,11 +2730,16 @@ msgstr "發生錯誤。請再試一次。"
 
 #. js-lingui-explicit-id
 #: src/app/layouts/RootLayout.tsx:110
+#: src/features/community/admin/MembersTab.tsx:400
+#: src/features/community/admin/MembersTab.tsx:503
+#: src/features/community/admin/OverviewTab.tsx:225
+#: src/features/community/admin/OverviewTab.tsx:246
+#: src/features/community/admin/SettingsTab.tsx:54
 #: src/features/community/CreateCommunity.tsx:185
 msgid "somethingWentWrongTryAgain"
 msgstr "出現錯誤，請重試。"
 
-#: src/api/firebaseApi.ts:1677
+#: src/api/firebaseApi.ts:1839
 msgid "Sorry, this event was canceled, so you cannot join it."
 msgstr "抱歉，此活動已取消，你無法加入。"
 
@@ -2318,14 +2821,28 @@ msgstr "後端似乎設定有誤（專案或 API 金鑰不存在，或服務已�
 msgid "eventHasNotStartedYet"
 msgstr "活動尚未開始。很快見！"
 
-#: src/api/firebaseApi.ts:489
+#: src/api/firebaseApi.ts:1002
+msgid "The files are still being prepared"
+msgstr "檔案仍在準備中"
+
+#: src/api/firebaseApi.ts:497
 msgid "The live stream could not be set up."
 msgstr "無法設定直播。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:198
+msgid "selectedColorsContrastError"
+msgstr "所選顏色的對比度不足。請選用其他顏色。"
 
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:32
 msgid "backendDownTitle"
 msgstr "服務無法使用"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:53
+msgid "theme"
+msgstr "主題"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:64
@@ -2380,11 +2897,11 @@ msgstr "此活動已鎖定"
 msgid "thisEventWasCanceled"
 msgstr "此活動已取消。"
 
-#: src/api/firebaseApi.ts:1659
+#: src/api/firebaseApi.ts:1821
 msgid "This event was not found."
 msgstr "未找到此活動。"
 
-#: src/app/router.tsx:126
+#: src/app/router.tsx:147
 msgid "This page is not in the React app yet. Soon, this would fall back to the Flutter app."
 msgstr "此頁面尚未移至 React 應用程式。很快將改回使用 Flutter 應用程式。"
 
@@ -2393,7 +2910,7 @@ msgstr "此頁面尚未移至 React 應用程式。很快將改回使用 Flutter
 msgid "templateNotFound"
 msgstr "找不到此範本。"
 
-#: src/api/firebaseApi.ts:1386
+#: src/api/firebaseApi.ts:1548
 msgid "This template was not found."
 msgstr "未找到此範本。"
 
@@ -2446,6 +2963,11 @@ msgid "transcription"
 msgstr "逐字稿"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:245
+msgid "transcriptsCsv"
+msgstr "轉錄（CSV）"
+
+#. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:93
 msgid "tryAgain"
 msgstr "請再試一次"
@@ -2484,6 +3006,11 @@ msgstr "取消追蹤"
 #: src/components/layout/SideBar.tsx:163
 msgid "sidebar.unfollowConfirmTitle"
 msgstr "取消追蹤 {0}？"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:321
+msgid "unknownUser"
+msgstr "未知用戶"
 
 #: src/utils/imageUpload.ts:164
 msgid "Unknown VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\". Use \"cloudinary\" or \"firebase\"."
@@ -2530,6 +3057,11 @@ msgstr "更新"
 msgid "updateProfile"
 msgstr "更新個人資料"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/LogoField.tsx:66
+msgid "upload"
+msgstr "上傳"
+
 #: src/utils/imageUpload.ts:27
 msgid "Upload aborted"
 msgstr "上傳已中止"
@@ -2567,6 +3099,11 @@ msgid "videoTabUrl"
 msgstr "URL"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:164
+msgid "displayIdWarning"
+msgstr "URL 顯示名稱只能包含字母、數字和連字符。"
+
+#. js-lingui-explicit-id
 #: src/features/content/PrePostTab.tsx:464
 msgid "urlParameter"
 msgstr "URL 參數"
@@ -2575,6 +3112,16 @@ msgstr "URL 參數"
 #: src/features/content/PrePostTab.tsx:372
 msgid "urlPreview"
 msgstr "URL 預覽"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:158
+msgid "useDarkerAccentColor"
+msgstr "使用較深的強調色。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:145
+msgid "useLighterBackgroundColor"
+msgstr "使用較淺的背景色。"
 
 #: src/utils/users.ts:44
 msgid "User-{suffix}"
@@ -2634,6 +3181,11 @@ msgstr "我们找不到使用此邮箱的账户。请尝试 "
 #: src/features/auth/AccountErrorMessage.tsx:201
 msgid "somethingWentWrongLongPrefix"
 msgstr "抱歉，出了些問題。"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:139
+msgid "websiteUrl"
+msgstr "網站網址"
 
 #: src/components/EmptyPageContent.tsx:80
 msgid "When new {type} are added, you'll see them here."
@@ -2748,7 +3300,7 @@ msgstr "您尚未加入任何社區"
 msgid "noUpcomingEventsMessage"
 msgstr "您尚未註冊任何即將舉行的活動。"
 
-#: src/api/firebaseApi.ts:149
+#: src/api/firebaseApi.ts:157
 msgid "You must be signed in to continue."
 msgstr "你必須登入才能繼續。"
 
@@ -2766,6 +3318,11 @@ msgstr "你將不再收到更新，也無法再存取其活動。"
 #: src/features/community/CreateCommunity.tsx:301
 msgid "communitySuccessPrefix"
 msgstr "你已成功建立了你的社群"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:143
+msgid "yourChangesToProfileCantBeSaved"
+msgstr "無法保存您對個人資料所做的更改。"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:157

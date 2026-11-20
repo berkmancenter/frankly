@@ -34,9 +34,34 @@ msgid "insteadSuffix"
 msgstr " instead."
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:80
+msgid "recordingStatusParts"
+msgstr "({count} parts)"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:84
+msgid "recordingStatusChecking"
+msgstr "(checking...)"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:90
+msgid "recordingStatusFailed"
+msgstr "(failed)"
+
+#. js-lingui-explicit-id
 #: src/features/content/agenda/AgendaStepFields.tsx:153
 msgid "imageUrlNotSet"
 msgstr "(Image URL is not set.)"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:86
+msgid "recordingStatusPreparing"
+msgstr "(preparing...)"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:88
+msgid "recordingStatusInProgress"
+msgstr "(recording...)"
 
 #. placeholder {0}: thread.commentCount
 #: src/features/posts/PostCards.tsx:176
@@ -68,7 +93,7 @@ msgstr "{appName} Terms of Service"
 msgid "participantCount"
 msgstr "{count} participants"
 
-#: src/api/firebaseApi.ts:902
+#: src/api/firebaseApi.ts:928
 msgid "{entity} not found"
 msgstr "{entity} not found"
 
@@ -97,6 +122,11 @@ msgstr "{registered, plural, one {# Registration} other {# Registrations}}"
 #: src/features/events/EditEventDrawer.tsx:45
 msgid "{rest, plural, one {# minute} other {# minutes}}"
 msgstr "{rest, plural, one {# minute} other {# minutes}}"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:97
+msgid "adminEventPagination"
+msgstr "{start} - {end} of {total}"
 
 #: src/components/events/ParticipantsRow.tsx:53
 msgid "{total} People"
@@ -135,6 +165,11 @@ msgstr "About me"
 #: src/features/community/CommunityHome.tsx:223
 msgid "aboutUs"
 msgstr "About Us"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:153
+msgid "accentColor"
+msgstr "Accent Color"
 
 #. js-lingui-explicit-id
 #: src/features/events/BreakoutsSection.tsx:161
@@ -179,6 +214,11 @@ msgstr "Add breakouts"
 #: src/features/posts/AddCommentDialog.tsx:85
 msgid "Add comment"
 msgstr "Add comment"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:300
+msgid "communityDescriptionHint"
+msgstr "Add more detail as to the goals of this community"
 
 #. js-lingui-explicit-id
 #: src/features/content/agenda/AgendaStepFields.tsx:191
@@ -251,6 +291,31 @@ msgstr "Agenda item was saved"
 msgid "agendaItemsWereRemoved"
 msgstr "Agenda items were removed"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:191
+msgid "settingAgendaPreview"
+msgstr "Agenda Preview"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:88
+msgid "permissionsOwnerDescription"
+msgstr "All admin capabilities, can add/remove other admins."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:117
+msgid "settingHelperRequireMembershipApproval"
+msgstr "All membership requests must be reviewed and approved by community administrators before access is granted. Event participation will be restricted to members."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:79
+msgid "settingAllowMembersToCreateEvents"
+msgstr "Allow members to create events"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:96
+msgid "settingAllowMembersToCreateTemplates"
+msgstr "Allow members to create templates"
+
 #: src/features/events/CreateEventDialog.tsx:244
 msgid "Allow the community to join"
 msgstr "Allow the community to join"
@@ -269,6 +334,11 @@ msgstr "AM"
 #: src/components/pickers.tsx:159
 msgid "timeInput.amOrPm"
 msgstr "AM or PM"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:183
+msgid "errorOccurred"
+msgstr "An error occurred"
 
 #: src/components/layout/AnnouncementsBell.tsx:99
 msgid "Announcement"
@@ -301,6 +371,16 @@ msgstr "Anonymous"
 #: src/features/events/BreakoutsSection.tsx:391
 msgid "answerNumber"
 msgstr "Answer {0}"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:566
+msgid "approve"
+msgstr "Approve"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:538
+msgid "approveAll"
+msgstr "Approve All"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:602
@@ -383,13 +463,28 @@ msgstr "Attendee"
 msgid "autoEndMeeting"
 msgstr "Auto-end meeting"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:131
+msgid "settingHelperEnableWeeklyEmail"
+msgstr "Automatically sends members a weekly summary of upcoming events to keep them informed and engaged."
+
 #: src/features/events/CreateEventDialog.tsx:209
 msgid "Back"
 msgstr "Back"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:140
+msgid "backgroundColor"
+msgstr "Background Color"
+
 #: src/utils/membership.ts:31
 msgid "Banned"
 msgstr "Banned"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:258
+msgid "basicInformation"
+msgstr "Basic Information"
 
 #: src/components/layout/BottomNavBar.tsx:44
 msgid "Bottom navigation"
@@ -398,6 +493,11 @@ msgstr "Bottom navigation"
 #: src/components/layout/OnboardingBanner.tsx:34
 msgid "Brand your space"
 msgstr "Brand your space"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:340
+msgid "brandingAndTheme"
+msgstr "Branding & Theme"
 
 #. js-lingui-explicit-id
 #: src/features/events/BreakoutsSection.tsx:91
@@ -421,6 +521,17 @@ msgid "bySize"
 msgstr "By Size"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:78
+msgid "permissionsModeratorDescription"
+msgstr "Can create/edit templates and events, remove unwanted content, move participants between rooms, and respond to help requests."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:74
+msgid "permissionsFacilitatorDescription"
+msgstr "Can schedule and host events based on existing templates."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:258
 #: src/features/content/agenda/AgendaStepCard.tsx:109
 #: src/features/content/agenda/AgendaStepCard.tsx:130
 #: src/features/content/agenda/AgendaStepCard.tsx:203
@@ -453,6 +564,11 @@ msgstr "Cancel"
 msgid "cancelEvent"
 msgstr "Cancel Event"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:174
+msgid "settingHelperRecord"
+msgstr "Captures video from the event that admins can download later. (Currently limited to main room recordings in hosted events; breakout recordings coming soon.)"
+
 #: src/features/resources/ResourceDialog.tsx:112
 msgid "Change image"
 msgstr "Change image"
@@ -463,14 +579,30 @@ msgid "Change picture"
 msgstr "Change picture"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:234
+msgid "changesSaved"
+msgstr "Changes Saved"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:155
 #: src/features/events/EventSettingsDrawer.tsx:114
 msgid "chat"
 msgstr "Chat"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:233
+msgid "chatData"
+msgstr "Chat Data"
+
+#. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:25
 msgid "backendUnreachableBody"
 msgstr "Check your internet connection and try again."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:133
+msgid "chooseABackgroundAndAccentColor"
+msgstr "Choose a light colored background and a dark accent color that provide enough contrast so that text is readable by a wide range of users including those with moderately low vision. We'll check its readability."
 
 #: src/components/Upload.tsx:138
 msgid "Choose a photo"
@@ -500,6 +632,7 @@ msgid "Close"
 msgstr "Close"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:148
 #: src/features/content/PrePostCardView.tsx:48
 msgid "close"
 msgstr "Close"
@@ -548,12 +681,23 @@ msgid "Comment cannot be empty"
 msgstr "Comment cannot be empty"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:296
+msgid "communityDescription"
+msgstr "Community Description"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:262
 #: src/features/community/CreateCommunity.tsx:205
 msgid "communityName"
 msgstr "Community Name"
 
-#: src/api/firebaseApi.ts:936
-#: src/api/firebaseApi.ts:1230
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:154
+msgid "errorCommunityNameEmpty"
+msgstr "Community name cannot be empty"
+
+#: src/api/firebaseApi.ts:962
+#: src/api/firebaseApi.ts:1315
 msgid "Community not found"
 msgstr "Community not found"
 
@@ -563,9 +707,26 @@ msgid "onboardingBanner.region"
 msgstr "Community onboarding"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:220
+#: src/features/community/admin/SettingsTab.tsx:244
+msgid "communitySettings"
+msgstr "Community Settings"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:287
+msgid "communityTagline"
+msgstr "Community Tagline"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:274
 #: src/features/community/CreateCommunity.tsx:226
 msgid "communityUrl"
 msgstr "Community URL"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:159
+msgid "errorCommunityUrlEmpty"
+msgstr "Community URL cannot be empty"
 
 #. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:298
@@ -670,7 +831,7 @@ msgstr "Create post"
 msgid "Create your first event"
 msgstr "Create your first event"
 
-#: src/api/firebaseApi.ts:1647
+#: src/api/firebaseApi.ts:1809
 msgid "Created event was not found"
 msgstr "Created event was not found"
 
@@ -681,6 +842,16 @@ msgid "ctasTab"
 msgstr "CTAs"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:61
+msgid "custom"
+msgstr "Custom"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:193
+msgid "dataDownload"
+msgstr "Data Download"
+
+#. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:264
 msgid "date"
 msgstr "Date"
@@ -689,6 +860,11 @@ msgstr "Date"
 #: src/features/events/BreakoutsSection.tsx:446
 msgid "defineBreakoutsOptional"
 msgstr "Define Breakouts (Optional)"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:227
+msgid "eventSettingsDescription"
+msgstr "Define default settings for events within your community. These can be overridden for individual events and templates."
 
 #. js-lingui-explicit-id
 #: src/features/content/agenda/AgendaStepCard.tsx:129
@@ -757,6 +933,11 @@ msgid "deleteQuestion"
 msgstr "Delete question"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:575
+msgid "deny"
+msgstr "Deny"
+
+#. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:246
 #: src/features/events/EventAbout.tsx:38
 #: src/features/templates/TemplatePage.tsx:267
@@ -764,6 +945,7 @@ msgid "description"
 msgstr "Description"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:241
 #: src/features/events/EventSettingsDrawer.tsx:277
 msgid "devSettings"
 msgstr "Developer Settings"
@@ -785,6 +967,11 @@ msgid "onboardingBanner.dismiss"
 msgstr "Dismiss onboarding"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:183
+msgid "settingHelperTalkTimer"
+msgstr "Displays speaking time indicator to participants and provides gentle nudges to encourage balanced discussion."
+
+#. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:163
 msgid "notUserSignUp"
 msgstr "Don't have an account?"
@@ -793,6 +980,21 @@ msgstr "Don't have an account?"
 #: src/features/community/CommunityHome.tsx:296
 msgid "communityHome.donate"
 msgstr "Donate"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:265
+msgid "download"
+msgstr "Download"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:189
+msgid "downloadComplete"
+msgstr "Download complete"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:186
+msgid "downloadMembersData"
+msgstr "Download members data"
 
 #: src/components/Upload.tsx:138
 msgid "Drag and drop an image here"
@@ -812,6 +1014,11 @@ msgstr "Duplicate Item"
 #: src/features/auth/SignInForm.tsx:201
 msgid "nameHintExample"
 msgstr "e.g. Jane Doe"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/LogoField.tsx:65
+msgid "edit"
+msgstr "Edit"
 
 #. placeholder {0}: r.title
 #: src/features/resources/ResourcesPage.tsx:92
@@ -851,8 +1058,24 @@ msgstr "Edit title"
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:212
+#: src/features/community/admin/OverviewTab.tsx:309
 msgid "email"
 msgstr "Email"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:127
+msgid "settingEnableWeeklyEmailDigestsOfUpcomingEvents"
+msgstr "Enable weekly email digests of upcoming events"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:83
+msgid "settingHelperMemberEvents"
+msgstr "Enables community members to create and host events using your community's templates."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:156
+msgid "settingHelperChat"
+msgstr "Enables participant messaging on event landing pages and during events, including within breakouts."
 
 #: src/components/layout/AnnouncementsBell.tsx:188
 msgid "Enter a message"
@@ -861,6 +1084,16 @@ msgstr "Enter a message"
 #: src/components/layout/AnnouncementsBell.tsx:183
 msgid "Enter a title"
 msgstr "Enter a title"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:132
+msgid "enterValidSocialUrl"
+msgstr "Enter a valid {platform} web address that includes “{url}”"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:128
+msgid "enterValidWebsiteUrl"
+msgstr "Enter a valid web address (e.g. “https://websitename.com”)"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:487
@@ -913,9 +1146,19 @@ msgstr "Enter Word Cloud prompt"
 msgid "forgotPasswordEnterEmail"
 msgstr "Enter your email"
 
-#: src/api/firebaseApi.ts:471
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:187
+msgid "errorCommunityProfile"
+msgstr "Entries for one or more Profile settings need to be changed. Correct any errors and try again. "
+
+#: src/api/firebaseApi.ts:479
 msgid "Error in updating agenda ordering. Please refresh."
 msgstr "Error in updating agenda ordering. Please refresh."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:91
+msgid "eventData"
+msgstr "Event Data"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:486
@@ -923,10 +1166,17 @@ msgid "eventEnded"
 msgstr "Event Ended"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:226
+#: src/features/community/admin/SettingsTab.tsx:255
 #: src/features/events/EventInfoCard.tsx:690
 #: src/features/events/EventSettingsDrawer.tsx:173
 msgid "eventSettings"
 msgstr "Event Settings"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:86
+msgid "events"
+msgstr "Events"
 
 #: src/components/layout/NavBar.tsx:157
 #: src/components/layout/NavBar.tsx:202
@@ -973,6 +1223,12 @@ msgid "filter"
 msgstr "Filter"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:164
+#: src/features/community/admin/MembersTab.tsx:173
+msgid "filterMemberListByName"
+msgstr "Filter member list by name"
+
+#. js-lingui-explicit-id
 #: src/features/community/CreateCommunity.tsx:314
 #: src/features/events/SurveyDialog.tsx:81
 msgid "finish"
@@ -989,6 +1245,7 @@ msgid "Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET."
 msgstr "Firebase Storage isn't configured. Set VITE_FIREBASE_STORAGE_BUCKET."
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:164
 #: src/features/events/EventSettingsDrawer.tsx:120
 msgid "floatingChat"
 msgstr "Floating Chat"
@@ -1014,6 +1271,11 @@ msgstr "Follow request sent"
 #: src/components/CommunityMembershipButton.tsx:35
 msgid "Follow Request Sent"
 msgstr "Follow Request Sent"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:528
+msgid "followerRequest"
+msgstr "Follower Request"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:170
@@ -1052,6 +1314,11 @@ msgstr "Free text"
 #: src/features/events/EventInfoCard.tsx:526
 msgid "eventFull"
 msgstr "FULL"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:83
+msgid "permissionsAdminDescription"
+msgstr "Full control over community settings, member roles, and all content."
 
 #: src/components/layout/OnboardingBanner.tsx:48
 msgid "Get it on the books"
@@ -1105,6 +1372,11 @@ msgid "communityHome.shareBody"
 msgstr "Hey, check out {0} on Frankly!"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:608
+msgid "checkOutCommunityOnApp"
+msgstr "Hey, check out {communityName} on {appName}!"
+
+#. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:235
 msgid "hidePassword"
 msgstr "Hide password"
@@ -1120,12 +1392,14 @@ msgid "historyHeader"
 msgstr "HISTORY"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:176
 #: src/features/events/EditEventDrawer.tsx:138
 #: src/features/templates/TemplatePage.tsx:103
 msgid "hosted"
 msgstr "Hosted"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:177
 #: src/features/events/EditEventDrawer.tsx:139
 #: src/features/events/EventInfoCard.tsx:111
 #: src/features/templates/TemplatePage.tsx:108
@@ -1186,11 +1460,11 @@ msgstr "Instagram URL"
 msgid "invalidEmail"
 msgstr "Invalid email"
 
-#: src/api/firebaseApi.ts:1588
+#: src/api/firebaseApi.ts:1750
 msgid "Invalid event schedule"
 msgstr "Invalid event schedule"
 
-#: src/api/firebaseApi.ts:135
+#: src/api/firebaseApi.ts:143
 msgid "Invalid or missing {field}"
 msgstr "Invalid or missing {field}"
 
@@ -1199,10 +1473,20 @@ msgid "Invite your people"
 msgstr "Invite your people"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:101
+msgid "items"
+msgstr "Items"
+
+#. js-lingui-explicit-id
 #. placeholder {0}: community.name
 #: src/features/community/CommunityHome.tsx:251
 msgid "communityHome.shareSubject"
 msgstr "Join {0} on Frankly"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:604
+msgid "joinCommunityOnApp"
+msgstr "Join {communityName} on {appName}"
 
 #: src/features/events/EventInfoCard.tsx:289
 msgid "Join an event with me on {appName}!"
@@ -1272,12 +1556,12 @@ msgstr "Link Copied!"
 msgid "linkMustBeMp4"
 msgstr "Link must be MP4"
 
-#: src/api/firebaseApi.ts:2238
+#: src/api/firebaseApi.ts:2563
 msgid "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
 msgstr "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
 
 #. placeholder {0}: response.status
-#: src/api/firebaseApi.ts:2252
+#: src/api/firebaseApi.ts:2577
 msgid "Link preview request failed ({0})"
 msgstr "Link preview request failed ({0})"
 
@@ -1287,11 +1571,17 @@ msgid "socialLinkedIn"
 msgstr "LinkedIn URL"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:319
+msgid "links"
+msgstr "Links"
+
+#. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:494
 msgid "liveEventsNotHereYet"
 msgstr "Live events can't be joined from this version of the app yet."
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:174
 #: src/features/events/EditEventDrawer.tsx:140
 #: src/features/events/EventInfoCard.tsx:113
 #: src/features/templates/TemplatePage.tsx:114
@@ -1305,6 +1595,11 @@ msgstr "Livestream"
 #: src/features/resources/ResourceDialog.tsx:89
 msgid "Load link"
 msgstr "Load link"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:99
+msgid "loading"
+msgstr "Loading"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:469
@@ -1337,6 +1632,11 @@ msgstr "logging in"
 msgid "login"
 msgstr "Login"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/LogoField.tsx:78
+msgid "logo"
+msgstr "Logo"
+
 #: src/components/layout/OnboardingBanner.tsx:33
 #: src/components/layout/OnboardingBanner.tsx:38
 msgid "Looking good"
@@ -1346,6 +1646,17 @@ msgstr "Looking good"
 #: src/features/community/CreateCommunity.tsx:250
 msgid "makeThisSpacePrivate"
 msgstr "Make this space private"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:192
+msgid "settingHelperAgendaPreview"
+msgstr "Makes event agenda visible on the event landing page. When disabled, agenda is only visible within the event session."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:125
+#: src/features/community/admin/CommunityAdminPage.tsx:132
+msgid "manageCommunity"
+msgstr "Manage Community"
 
 #. js-lingui-explicit-id
 #: src/features/events/BreakoutsSection.tsx:103
@@ -1361,7 +1672,24 @@ msgstr "Maximum"
 msgid "Member"
 msgstr "Member"
 
-#: src/api/firebaseApi.ts:1252
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:424
+msgid "member"
+msgstr "Member"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:237
+msgid "rolesTooltip"
+msgstr "Member roles determine permissions and \n"
+"access within the community."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:90
+#: src/features/community/admin/MembersTab.tsx:196
+msgid "members"
+msgstr "Members"
+
+#: src/api/firebaseApi.ts:1337
 msgid "Membership update was not saved"
 msgstr "Membership update was not saved"
 
@@ -1433,6 +1761,16 @@ msgid "passwordRequirements"
 msgstr "Must be at least 12 characters long, and contain one lowercase and one uppercase letter."
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:225
+msgid "mustBeValidHexColor"
+msgstr "Must be HEX format"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:77
+msgid "mustBeAdminToAccessSection"
+msgstr "Must be logged in and an admin to access this section"
+
+#. js-lingui-explicit-id
 #: src/features/profile/ProfilePage.tsx:47
 msgid "mustBeLoggedInToAccessThisSection"
 msgstr "Must be logged in to access this section"
@@ -1495,6 +1833,11 @@ msgid "next"
 msgstr "Next"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:103
+msgid "nextPage"
+msgstr "Next page"
+
+#. js-lingui-explicit-id
 #: src/features/events/BreakoutsSection.tsx:56
 #: src/features/events/EventInfoCard.tsx:571
 #: src/features/events/ParticipantsDialog.tsx:100
@@ -1517,6 +1860,11 @@ msgstr "No announcements sent yet"
 #: src/components/layout/AnnouncementsBell.tsx:86
 msgid "No announcements yet."
 msgstr "No announcements yet."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:137
+msgid "noChatDataForEvent"
+msgstr "No chat data for this event."
 
 #: src/features/posts/PostCards.tsx:175
 msgid "No Comments"
@@ -1541,14 +1889,34 @@ msgstr "No events found"
 msgid "No events found"
 msgstr "No events found"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:624
+msgid "noFollowRequestsCurrently"
+msgstr "No follow requests currently"
+
 #: src/utils/imageUpload.ts:171
 msgid "No image upload provider is configured. Set the VITE_CLOUDINARY_* variables or VITE_FIREBASE_STORAGE_BUCKET."
 msgstr "No image upload provider is configured. Set the VITE_CLOUDINARY_* variables or VITE_FIREBASE_STORAGE_BUCKET."
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:381
+msgid "noMatchingMembersFound"
+msgstr "No matching members found."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:137
+msgid "noMembersFoundToExport"
+msgstr "No members found to export."
+
+#. js-lingui-explicit-id
 #: src/features/events/ParticipantsDialog.tsx:146
 msgid "noOneIsHereYet"
 msgstr "No one is here yet."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:156
+msgid "noPollsOrSuggestionsDataForEvent"
+msgstr "No polls or suggestions data for this event."
 
 #. placeholder {0}: Math.round(startupTimeoutMs / 1000)
 #: src/api/firebaseAuthService.ts:219
@@ -1565,6 +1933,11 @@ msgid "No templates found."
 msgstr "No templates found."
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:226
+msgid "noTitle"
+msgstr "NO TITLE"
+
+#. js-lingui-explicit-id
 #: src/features/templates/TemplatePage.tsx:309
 msgid "noUpcomingEvents"
 msgstr "No upcoming events."
@@ -1572,6 +1945,12 @@ msgstr "No upcoming events."
 #: src/utils/membership.ts:32
 msgid "Non-member"
 msgstr "Non-member"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:92
+#: src/features/community/admin/EventDataDialog.tsx:102
+msgid "none"
+msgstr "None"
 
 #. js-lingui-explicit-id
 #: src/features/profile/ProfilePage.tsx:39
@@ -1589,6 +1968,7 @@ msgid "notifyMeAboutNewEvents"
 msgstr "Notify me about new events"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:182
 #: src/features/events/EventSettingsDrawer.tsx:145
 msgid "odometer"
 msgstr "Odometer"
@@ -1603,7 +1983,7 @@ msgstr "Office 365 Calendar"
 msgid "onboardingBanner.progress"
 msgstr "Onboarding progress"
 
-#: src/api/firebaseApi.ts:2245
+#: src/api/firebaseApi.ts:2570
 msgid "Only HTTP and HTTPS links can be previewed."
 msgstr "Only HTTP and HTTPS links can be previewed."
 
@@ -1660,6 +2040,11 @@ msgstr "Password reset link sent to {email}"
 msgid "Paste or enter URL"
 msgstr "Paste or enter URL"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:100
+msgid "settingHelperMemberTemplates"
+msgstr "Permits members to build and save reusable event templates within your community."
+
 #: src/features/home/HomePage.tsx:57
 #~ msgid "Placeholder: the home page is not built yet. This is a plain list of your communities."
 #~ msgstr "Placeholder: the home page is not built yet. This is a plain list of your communities."
@@ -1695,6 +2080,7 @@ msgid "pleaseEnterPassword"
 msgstr "Please enter a password"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:109
 #: src/features/community/CreateCommunity.tsx:169
 msgid "enterValidCommunityUrl"
 msgstr "Please enter a valid community URL"
@@ -1702,11 +2088,13 @@ msgstr "Please enter a valid community URL"
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:193
 #: src/features/auth/SignInForm.tsx:61
+#: src/features/community/admin/OverviewTab.tsx:116
 msgid "pleaseEnterValidEmail"
 msgstr "Please enter a valid email address."
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInForm.tsx:55
+#: src/features/community/admin/OverviewTab.tsx:105
 #: src/features/community/CreateCommunity.tsx:165
 msgid "enterValidName"
 msgstr "Please enter a valid name"
@@ -1741,6 +2129,11 @@ msgstr "Poll"
 msgid "pollQuestion"
 msgstr "Poll Question"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:238
+msgid "pollsSuggestionsData"
+msgstr "Polls & Suggestions Data"
+
 #: src/features/posts/CreatePostDialog.tsx:201
 #: src/features/resources/ResourceDialog.tsx:144
 msgid "Post"
@@ -1754,7 +2147,7 @@ msgstr "Post has been created"
 msgid "Post has been updated"
 msgstr "Post has been updated"
 
-#: src/api/firebaseApi.ts:2155
+#: src/api/firebaseApi.ts:2480
 msgid "Post not found"
 msgstr "Post not found"
 
@@ -1795,6 +2188,11 @@ msgid "prerequisiteBadge.text"
 msgstr "Prerequisite Required"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:60
+msgid "presets"
+msgstr "Presets"
+
+#. js-lingui-explicit-id
 #: src/features/profile/ProfileTab.tsx:150
 msgid "preview"
 msgstr "Preview"
@@ -1805,16 +2203,23 @@ msgid "previewAgenda"
 msgstr "Preview Agenda"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:90
+msgid "previousPage"
+msgstr "Previous page"
+
+#. js-lingui-explicit-id
 #: src/components/layout/SideBar.tsx:377
 msgid "sidebar.privacyPolicy"
 msgstr "Privacy Policy"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:160
 #: src/features/events/EventInfoCard.tsx:313
 msgid "privateVisibility"
 msgstr "Private"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:89
 #: src/features/profile/ProfilePage.tsx:38
 msgid "profile"
 msgstr "Profile"
@@ -1835,6 +2240,7 @@ msgid "profileUpdated"
 msgstr "Profile updated"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:159
 #: src/features/events/EditEventDrawer.tsx:260
 #: src/features/events/EventInfoCard.tsx:312
 msgid "publicVisibility"
@@ -1879,9 +2285,15 @@ msgid "React App"
 msgstr "React App"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:173
 #: src/features/events/EventSettingsDrawer.tsx:127
 msgid "record"
 msgstr "Recording"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:217
+msgid "recording"
+msgstr "Recordings"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:715
@@ -1894,6 +2306,21 @@ msgid "somethingWentWrongLongMiddle"
 msgstr "Refresh the page and try logging in to Frankly again.\n"
 "\n"
 "If you continue having trouble, you can"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:153
+msgid "registered"
+msgstr "Registered"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:224
+msgid "registrationDataDownload"
+msgstr "Registrations"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/LogoField.tsx:70
+msgid "remove"
+msgstr "Remove"
 
 #. js-lingui-explicit-id
 #: src/features/content/PrePostTab.tsx:334
@@ -1918,6 +2345,21 @@ msgid "Request To Follow"
 msgstr "Request To Follow"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:201
+msgid "requests"
+msgstr "Requests"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:113
+msgid "settingRequireApprovalForNewMembers"
+msgstr "Require approval for new members"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:269
+msgid "required"
+msgstr "Required"
+
+#. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:72
 msgid "forgotPasswordSuffix"
 msgstr "reset your password"
@@ -1926,7 +2368,7 @@ msgstr "reset your password"
 msgid "Resource added"
 msgstr "Resource added"
 
-#: src/api/firebaseApi.ts:2326
+#: src/api/firebaseApi.ts:2651
 msgid "Resource not found"
 msgstr "Resource not found"
 
@@ -1958,11 +2400,21 @@ msgid "restoreSettings"
 msgstr "Restore Default Settings"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:260
+#: src/features/community/admin/MembersTab.tsx:428
+#: src/features/community/admin/MembersTab.tsx:443
+#: src/features/community/admin/MembersTab.tsx:532
+#: src/features/community/admin/MembersTab.tsx:554
+msgid "role"
+msgstr "Role"
+
+#. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:534
 msgid "rsvp"
 msgstr "RSVP"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:373
 #: src/features/content/PrePostTab.tsx:399
 msgid "save"
 msgstr "Save"
@@ -2028,6 +2480,11 @@ msgstr "Seconds"
 msgid "seeAll"
 msgstr "See all"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:250
+msgid "seeManagingYourCommunity"
+msgstr "See Managing Your Community for details."
+
 #: src/features/posts/PostCards.tsx:211
 msgid "See more"
 msgstr "See more"
@@ -2051,6 +2508,12 @@ msgid "Select a time"
 msgstr "Select a time"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:199
+#: src/features/community/admin/EventDataDialog.tsx:202
+msgid "selectData"
+msgstr "Select Data"
+
+#. js-lingui-explicit-id
 #: src/components/layout/SideBar.tsx:334
 msgid "sidebar.selectLanguage"
 msgstr "Select Language"
@@ -2064,6 +2527,11 @@ msgstr "Select space:"
 #: src/features/events/MessageParticipantsDialog.tsx:60
 msgid "send"
 msgstr "Send"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/CommunityAdminPage.tsx:92
+msgid "settings"
+msgstr "Settings"
 
 #. js-lingui-explicit-id
 #: src/features/profile/NotificationsTab.tsx:125
@@ -2090,6 +2558,11 @@ msgstr "Share on LinkedIn"
 msgid "shareSection.twitter"
 msgstr "Share on X"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:630
+msgid "shareYourCommunityWithOthers"
+msgstr "Share your community with others"
+
 #: src/components/layout/AnnouncementsBell.tsx:43
 msgid "Show Announcements Button"
 msgstr "Show Announcements Button"
@@ -2107,6 +2580,11 @@ msgstr "Show Password"
 #: src/components/layout/NavBar.tsx:239
 msgid "Show sidebar"
 msgstr "Show sidebar"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/SettingsTab.tsx:165
+msgid "settingHelperFloatingChat"
+msgstr "Shows temporary chat notification bubbles at the bottom of the screen during events."
 
 #. js-lingui-explicit-id
 #: src/features/auth/SignInDialog.tsx:30
@@ -2141,6 +2619,11 @@ msgid "smartMatch"
 msgstr "Smart Match"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:69
+msgid "permissionsMemberDescription"
+msgstr "Someone who has joined the community. May attend events, create posts, and receive community announcements."
+
+#. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:40
 msgid "backendUnknownTitle"
 msgstr "Something went wrong"
@@ -2164,6 +2647,17 @@ msgid "Something went wrong loading events."
 msgstr "Something went wrong loading events."
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/DataTab.tsx:47
+msgid "errorLoadingEvents"
+msgstr "Something went wrong loading events. Please refresh."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:370
+#: src/features/community/admin/MembersTab.tsx:385
+msgid "errorLoadingCommunityMembers"
+msgstr "Something went wrong loading memberships. Please refresh."
+
+#. js-lingui-explicit-id
 #: src/features/profile/NotificationsTab.tsx:99
 msgid "errorLoadingNotificationSettings"
 msgstr "Something went wrong loading notification settings. Please refresh."
@@ -2176,6 +2670,11 @@ msgstr "Something went wrong loading participants. Please refresh."
 #: src/features/posts/PostsPage.tsx:31
 msgid "Something went wrong loading posts."
 msgstr "Something went wrong loading posts."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:481
+msgid "errorLoadingRequests"
+msgstr "Something went wrong loading requests. Please refresh."
 
 #: src/features/resources/ResourcesPage.tsx:41
 msgid "Something went wrong loading resources."
@@ -2232,11 +2731,16 @@ msgstr "Something went wrong. Please try again."
 
 #. js-lingui-explicit-id
 #: src/app/layouts/RootLayout.tsx:110
+#: src/features/community/admin/MembersTab.tsx:400
+#: src/features/community/admin/MembersTab.tsx:503
+#: src/features/community/admin/OverviewTab.tsx:225
+#: src/features/community/admin/OverviewTab.tsx:246
+#: src/features/community/admin/SettingsTab.tsx:54
 #: src/features/community/CreateCommunity.tsx:185
 msgid "somethingWentWrongTryAgain"
 msgstr "Something went wrong. Please try again."
 
-#: src/api/firebaseApi.ts:1677
+#: src/api/firebaseApi.ts:1839
 msgid "Sorry, this event was canceled, so you cannot join it."
 msgstr "Sorry, this event was canceled, so you cannot join it."
 
@@ -2318,14 +2822,28 @@ msgstr "The backend looks misconfigured (a project or API key that doesn't exist
 msgid "eventHasNotStartedYet"
 msgstr "The event has not started yet. We'll see you soon!"
 
-#: src/api/firebaseApi.ts:489
+#: src/api/firebaseApi.ts:1002
+msgid "The files are still being prepared"
+msgstr "The files are still being prepared"
+
+#: src/api/firebaseApi.ts:497
 msgid "The live stream could not be set up."
 msgstr "The live stream could not be set up."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:198
+msgid "selectedColorsContrastError"
+msgstr "The selected colors do not have sufficient contrast. Please choose different colors."
 
 #. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:32
 msgid "backendDownTitle"
 msgstr "The service is unavailable"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:53
+msgid "theme"
+msgstr "Theme"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:64
@@ -2380,11 +2898,11 @@ msgstr "This event is locked"
 msgid "thisEventWasCanceled"
 msgstr "This event was canceled."
 
-#: src/api/firebaseApi.ts:1659
+#: src/api/firebaseApi.ts:1821
 msgid "This event was not found."
 msgstr "This event was not found."
 
-#: src/app/router.tsx:126
+#: src/app/router.tsx:147
 msgid "This page is not in the React app yet. Soon, this would fall back to the Flutter app."
 msgstr "This page is not in the React app yet. Soon, this would fall back to the Flutter app."
 
@@ -2393,7 +2911,7 @@ msgstr "This page is not in the React app yet. Soon, this would fall back to the
 msgid "templateNotFound"
 msgstr "This template could not be found."
 
-#: src/api/firebaseApi.ts:1386
+#: src/api/firebaseApi.ts:1548
 msgid "This template was not found."
 msgstr "This template was not found."
 
@@ -2446,6 +2964,11 @@ msgid "transcription"
 msgstr "Transcription"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/EventDataDialog.tsx:245
+msgid "transcriptsCsv"
+msgstr "Transcripts (CSV)"
+
+#. js-lingui-explicit-id
 #: src/components/BackendUnavailable.tsx:93
 msgid "tryAgain"
 msgstr "Please try again"
@@ -2484,6 +3007,11 @@ msgstr "Unfollow"
 #: src/components/layout/SideBar.tsx:163
 msgid "sidebar.unfollowConfirmTitle"
 msgstr "Unfollow {0}?"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/MembersTab.tsx:321
+msgid "unknownUser"
+msgstr "Unknown User"
 
 #: src/utils/imageUpload.ts:164
 msgid "Unknown VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\". Use \"cloudinary\" or \"firebase\"."
@@ -2530,6 +3058,11 @@ msgstr "Update"
 msgid "updateProfile"
 msgstr "Update Profile"
 
+#. js-lingui-explicit-id
+#: src/features/community/admin/LogoField.tsx:66
+msgid "upload"
+msgstr "Upload"
+
 #: src/utils/imageUpload.ts:27
 msgid "Upload aborted"
 msgstr "Upload aborted"
@@ -2567,6 +3100,11 @@ msgid "videoTabUrl"
 msgstr "URL"
 
 #. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:164
+msgid "displayIdWarning"
+msgstr "URL display name can only contain letters, numbers, and dashes."
+
+#. js-lingui-explicit-id
 #: src/features/content/PrePostTab.tsx:464
 msgid "urlParameter"
 msgstr "URL Parameter"
@@ -2575,6 +3113,16 @@ msgstr "URL Parameter"
 #: src/features/content/PrePostTab.tsx:372
 msgid "urlPreview"
 msgstr "URL Preview"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:158
+msgid "useDarkerAccentColor"
+msgstr "Use a darker accent color."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/ThemeColorSection.tsx:145
+msgid "useLighterBackgroundColor"
+msgstr "Use a lighter background color."
 
 #: src/utils/users.ts:44
 msgid "User-{suffix}"
@@ -2634,6 +3182,11 @@ msgstr "We couldn’t find an account with this email. Try "
 #: src/features/auth/AccountErrorMessage.tsx:201
 msgid "somethingWentWrongLongPrefix"
 msgstr "We’re sorry, something went wrong."
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:139
+msgid "websiteUrl"
+msgstr "Website URL"
 
 #: src/components/EmptyPageContent.tsx:80
 msgid "When new {type} are added, you'll see them here."
@@ -2748,7 +3301,7 @@ msgstr "You haven't joined any communities."
 msgid "noUpcomingEventsMessage"
 msgstr "You haven't registered for any upcoming events."
 
-#: src/api/firebaseApi.ts:149
+#: src/api/firebaseApi.ts:157
 msgid "You must be signed in to continue."
 msgstr "You must be signed in to continue."
 
@@ -2766,6 +3319,11 @@ msgstr "You will stop receiving updates and lose access to its events."
 #: src/features/community/CreateCommunity.tsx:301
 msgid "communitySuccessPrefix"
 msgstr "You've successfully created your community"
+
+#. js-lingui-explicit-id
+#: src/features/community/admin/OverviewTab.tsx:143
+msgid "yourChangesToProfileCantBeSaved"
+msgstr "Your changes to Profile can't be saved"
 
 #. js-lingui-explicit-id
 #: src/features/auth/AccountErrorMessage.tsx:157
