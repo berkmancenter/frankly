@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "tsc -b && vite build",
+    "build:hosting": "npm run build:proxied && node scripts/assembleHosting.ts",
     "build:proxied": "tsc -b && PROXIED=1 vite build",
     "coverage": "vitest run --coverage",
     "dev": "vite",
