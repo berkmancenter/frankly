@@ -8,6 +8,16 @@ msgstr ""
 "Language: zh_Hant_TW\n"
 
 #. js-lingui-explicit-id
+#: src/components/pickers.tsx:79
+#~ msgid "monthCalendar.nextMonth"
+#~ msgstr "下個月"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:68
+#~ msgid "monthCalendar.previousMonth"
+#~ msgstr "上個月"
+
+#. js-lingui-explicit-id
 #: src/components/ProfileChip.tsx:61
 msgid "profileChip.youSuffix"
 msgstr " (你)"
@@ -39,7 +49,7 @@ msgid "{0}"
 msgstr "{0}"
 
 #. js-lingui-explicit-id
-#: src/features/home/HomePage.tsx:26
+#: src/features/home/HomePage.tsx:30
 msgid "appNameHome"
 msgstr "{appName} - 首頁"
 
@@ -54,11 +64,11 @@ msgid "termsOfService"
 msgstr "{appName} 的服務條款"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:58
+#: src/features/events/ParticipantsDialog.tsx:73
 msgid "participantCount"
 msgstr "{count} 位參與者"
 
-#: src/api/firebaseApi.ts:773
+#: src/api/firebaseApi.ts:902
 msgid "{entity} not found"
 msgstr "找不到{entity}"
 
@@ -71,12 +81,12 @@ msgid "{maxParticipants, plural, one {# person} other {# people}}"
 msgstr "{maxParticipants, plural, one {# 人} other {# 人}}"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:61
+#: src/features/events/ParticipantsDialog.tsx:79
 msgid "registrationCountWithActive"
 msgstr "{regCount} 筆報名 ({activeCount} 筆有效)"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:60
+#: src/features/events/ParticipantsDialog.tsx:75
 msgid "registrationCountWithAttended"
 msgstr "{regCount} 筆報名 ({attendedCount} 人已參加)"
 
@@ -107,7 +117,7 @@ msgstr "100"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventPage.tsx:119
-#: src/features/templates/TemplatePage.tsx:229
+#: src/features/templates/TemplatePage.tsx:228
 msgid "about"
 msgstr "關於"
 
@@ -141,17 +151,17 @@ msgid "addATag"
 msgstr "新增標籤"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:242
+#: src/features/content/PrePostTab.tsx:378
 msgid "addActionLink"
 msgstr "新增行動連結"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:185
+#: src/features/content/PrePostTab.tsx:283
 msgid "addActionLinksAfter"
 msgstr "新增參與者應在活動結束後造訪的行動連結"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:184
+#: src/features/content/PrePostTab.tsx:278
 msgid "addActionLinksBefore"
 msgstr "新增參與者應在活動開始前造訪的行動連結"
 
@@ -177,12 +187,12 @@ msgid "addOption"
 msgstr "新增選項"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:48
+#: src/features/content/PrePostTab.tsx:76
 msgid "addPostEvent"
 msgstr "新增活動後環節"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:47
+#: src/features/content/PrePostTab.tsx:71
 msgid "addPreEvent"
 msgstr "新增活動前環節"
 
@@ -196,12 +206,12 @@ msgid "addToCalendar"
 msgstr "加入行事曆"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:271
+#: src/features/content/PrePostTab.tsx:431
 msgid "addUrlParameter"
 msgstr "新增 URL 參數"
 
 #: src/components/layout/NavBar.tsx:232
-#: src/utils/membership.ts:26
+#: src/utils/membership.ts:27
 msgid "Admin"
 msgstr "管理員"
 
@@ -211,8 +221,8 @@ msgid "sidebar.admin"
 msgstr "管理員"
 
 #. js-lingui-explicit-id
-#: src/features/events/EventPage.tsx:124
-#: src/features/templates/TemplatePage.tsx:232
+#: src/features/events/EventPage.tsx:125
+#: src/features/templates/TemplatePage.tsx:231
 msgid "agendaTab"
 msgstr "議程"
 
@@ -241,7 +251,7 @@ msgstr "議程項目已儲存"
 msgid "agendaItemsWereRemoved"
 msgstr "議程項目已移除"
 
-#: src/features/events/CreateEventDialog.tsx:236
+#: src/features/events/CreateEventDialog.tsx:244
 msgid "Allow the community to join"
 msgstr "允許社群成員加入"
 
@@ -251,12 +261,12 @@ msgid "alreadyUserSignIn"
 msgstr "已有帳戶？"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:265
+#: src/components/pickers.tsx:174
 msgid "timeInput.am"
 msgstr "上午"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:250
+#: src/components/pickers.tsx:159
 msgid "timeInput.amOrPm"
 msgstr "上午或下午"
 
@@ -298,13 +308,13 @@ msgid "cancelEventConfirmation"
 msgstr "確定要取消此活動嗎？此操作無法復原。"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:72
+#: src/features/events/ParticipantsDialog.tsx:94
 msgid "confirmCancelUserParticipation"
 msgstr "確定要取消此使用者參加這個活動嗎？"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:565
-#: src/features/events/ParticipantsDialog.tsx:68
+#: src/features/events/ParticipantsDialog.tsx:89
 msgid "confirmCancelYourParticipation"
 msgstr "確定要取消你參加此活動嗎？"
 
@@ -328,12 +338,12 @@ msgid "confirmDeleteEventAnnouncement"
 msgstr "確定要刪除此活動公告嗎？此操作無法復原。"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:90
+#: src/features/content/PrePostTab.tsx:144
 msgid "confirmDeletePostEventItem"
 msgstr "確定要刪除此活動後議程項目嗎？此操作無法復原。"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:86
+#: src/features/content/PrePostTab.tsx:139
 msgid "confirmDeletePreEventItem"
 msgstr "確定要刪除此活動前議程項目嗎？此操作無法復原。"
 
@@ -364,7 +374,7 @@ msgstr "附加圖片"
 msgid "Attached"
 msgstr "已附加"
 
-#: src/utils/membership.ts:32
+#: src/utils/membership.ts:33
 msgid "Attendee"
 msgstr "參與者"
 
@@ -373,11 +383,11 @@ msgstr "參與者"
 msgid "autoEndMeeting"
 msgstr "自動結束會議"
 
-#: src/features/events/CreateEventDialog.tsx:201
+#: src/features/events/CreateEventDialog.tsx:209
 msgid "Back"
 msgstr "返回"
 
-#: src/utils/membership.ts:30
+#: src/utils/membership.ts:31
 msgid "Banned"
 msgstr "已被封鎖"
 
@@ -396,7 +406,7 @@ msgid "breakoutUpdated"
 msgstr "分組討論已更新！"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:224
+#: src/features/content/PrePostTab.tsx:350
 msgid "buttonText"
 msgstr "按鈕文字"
 
@@ -415,13 +425,13 @@ msgstr "依人數"
 #: src/features/content/agenda/AgendaStepCard.tsx:130
 #: src/features/content/agenda/AgendaStepCard.tsx:203
 #: src/features/content/AgendaTab.tsx:66
-#: src/features/content/PrePostTab.tsx:95
+#: src/features/content/PrePostTab.tsx:150
 #: src/features/events/BreakoutsSection.tsx:239
 #: src/features/events/EventAbout.tsx:102
 #: src/features/events/EventInfoCard.tsx:564
 #: src/features/events/EventInfoCard.tsx:586
 #: src/features/events/EventInfoCard.tsx:663
-#: src/features/events/ParticipantsDialog.tsx:66
+#: src/features/events/ParticipantsDialog.tsx:87
 msgid "cancel"
 msgstr "取消"
 
@@ -466,7 +476,7 @@ msgstr "請檢查你的網路連線，然後再試一次。"
 msgid "Choose a photo"
 msgstr "選擇照片"
 
-#: src/features/events/CreateEventDialog.tsx:81
+#: src/features/events/CreateEventDialog.tsx:89
 msgid "Choose Template"
 msgstr "選擇範本"
 
@@ -480,11 +490,6 @@ msgstr "全部清除"
 msgid "communitySuccessSuffix"
 msgstr "點擊右上角的齒輪圖示以編輯您的社群設定。"
 
-#. js-lingui-explicit-id
-#: src/features/content/PrePostCardView.tsx:48
-msgid "close"
-msgstr "關閉"
-
 #: src/components/AppDialog.tsx:44
 #: src/components/ConfirmDialog.tsx:81
 #: src/features/events/EventSettingsDrawer.tsx:175
@@ -492,6 +497,11 @@ msgstr "關閉"
 #: src/features/posts/CreatePostDialog.tsx:92
 #: src/features/profile/ProfileDrawer.tsx:46
 msgid "Close"
+msgstr "關閉"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostCardView.tsx:48
+msgid "close"
 msgstr "關閉"
 
 #. js-lingui-explicit-id
@@ -520,7 +530,7 @@ msgid "collapseStep"
 msgstr "收合"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:126
+#: src/features/content/PrePostTab.tsx:205
 msgid "collapseCard"
 msgstr "收合"
 
@@ -542,8 +552,8 @@ msgstr "留言不能是空白"
 msgid "communityName"
 msgstr "社區名稱"
 
-#: src/api/firebaseApi.ts:807
-#: src/api/firebaseApi.ts:1101
+#: src/api/firebaseApi.ts:936
+#: src/api/firebaseApi.ts:1230
 msgid "Community not found"
 msgstr "找不到該社群"
 
@@ -611,7 +621,7 @@ msgstr "建立"
 msgid "createACommunity"
 msgstr "建立社群"
 
-#: src/features/events/CreateEventDialog.tsx:359
+#: src/features/events/CreateEventDialog.tsx:367
 msgid "Create a new template"
 msgstr "建立新範本"
 
@@ -635,16 +645,16 @@ msgid "Create an event"
 msgstr "建立活動"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:138
+#: src/features/templates/TemplatePage.tsx:137
 msgid "createEventFromThisTemplate"
 msgstr "使用此範本建立活動"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:174
+#: src/features/templates/TemplatePage.tsx:173
 msgid "createEventButton"
 msgstr "建立活動"
 
-#: src/features/events/CreateEventDialog.tsx:208
+#: src/features/events/CreateEventDialog.tsx:216
 msgid "Create Event"
 msgstr "建立活動"
 
@@ -660,13 +670,13 @@ msgstr "建立貼文"
 msgid "Create your first event"
 msgstr "建立你的第一個活動"
 
-#: src/api/firebaseApi.ts:1476
+#: src/api/firebaseApi.ts:1647
 msgid "Created event was not found"
 msgstr "找不到已建立的活動"
 
 #. js-lingui-explicit-id
-#: src/features/events/EventPage.tsx:130
-#: src/features/templates/TemplatePage.tsx:239
+#: src/features/events/EventPage.tsx:132
+#: src/features/templates/TemplatePage.tsx:238
 msgid "ctasTab"
 msgstr "行動號召"
 
@@ -683,7 +693,7 @@ msgstr "設定分組討論（選填）"
 #. js-lingui-explicit-id
 #: src/features/content/agenda/AgendaStepCard.tsx:129
 #: src/features/content/AgendaTab.tsx:65
-#: src/features/content/PrePostTab.tsx:94
+#: src/features/content/PrePostTab.tsx:149
 #: src/features/events/BreakoutsSection.tsx:238
 #: src/features/events/EventAbout.tsx:101
 msgid "delete"
@@ -715,8 +725,8 @@ msgid "Delete announcement"
 msgstr "刪除公告"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:110
-#: src/features/content/PrePostTab.tsx:246
+#: src/features/content/PrePostTab.tsx:181
+#: src/features/content/PrePostTab.tsx:392
 msgid "deleteCard"
 msgstr "刪除卡片"
 
@@ -732,12 +742,12 @@ msgid "deleteOption"
 msgstr "刪除選項"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:83
+#: src/features/content/PrePostTab.tsx:136
 msgid "deletePostEventItem"
 msgstr "刪除活動後項目"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:82
+#: src/features/content/PrePostTab.tsx:135
 msgid "deletePreEventItem"
 msgstr "刪除活動前項目"
 
@@ -749,7 +759,7 @@ msgstr "刪除問題"
 #. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:246
 #: src/features/events/EventAbout.tsx:38
-#: src/features/templates/TemplatePage.tsx:268
+#: src/features/templates/TemplatePage.tsx:267
 msgid "description"
 msgstr "說明"
 
@@ -809,7 +819,7 @@ msgid "Edit {0}"
 msgstr "編輯{0}"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:115
+#: src/features/content/PrePostTab.tsx:191
 msgid "editCard"
 msgstr "編輯卡片"
 
@@ -831,7 +841,7 @@ msgid "editItem"
 msgstr "編輯項目"
 
 #. js-lingui-explicit-id
-#: src/features/events/EditTemplateNotice.tsx:62
+#: src/features/events/EditTemplateNotice.tsx:80
 msgid "editTheTemplate"
 msgstr "請編輯範本。"
 
@@ -858,7 +868,7 @@ msgid "enterEvent"
 msgstr "進入活動"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:199
+#: src/features/content/PrePostTab.tsx:300
 msgid "enterHeadline"
 msgstr "輸入主標題"
 
@@ -868,12 +878,12 @@ msgid "enterImageTitle"
 msgstr "輸入圖片標題"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:182
+#: src/features/content/PrePostTab.tsx:272
 msgid "enterMessageExampleAfter"
 msgstr "輸入訊息（例如：「請在活動結束後填寫此問卷」）"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:181
+#: src/features/content/PrePostTab.tsx:268
 msgid "enterMessageExampleBefore"
 msgstr "輸入訊息（例如：「請在活動開始前填寫此問卷」）"
 
@@ -883,7 +893,7 @@ msgid "enterQuestionWithNumber"
 msgstr "輸入問題 {number}"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:230
+#: src/features/content/PrePostTab.tsx:358
 msgid "enterUrl"
 msgstr "輸入 URL"
 
@@ -903,7 +913,7 @@ msgstr "輸入文字雲提示"
 msgid "forgotPasswordEnterEmail"
 msgstr "輸入您的電子郵件"
 
-#: src/api/firebaseApi.ts:397
+#: src/api/firebaseApi.ts:471
 msgid "Error in updating agenda ordering. Please refresh."
 msgstr "更新議程順序時發生錯誤。請重新整理頁面。"
 
@@ -939,7 +949,7 @@ msgid "expandStep"
 msgstr "展開"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:126
+#: src/features/content/PrePostTab.tsx:206
 msgid "expandCard"
 msgstr "展開"
 
@@ -953,7 +963,7 @@ msgstr "展開"
 msgid "socialFacebook"
 msgstr "Facebook 連結"
 
-#: src/utils/membership.ts:28
+#: src/utils/membership.ts:29
 msgid "Facilitator"
 msgstr "主持人"
 
@@ -1100,34 +1110,34 @@ msgid "hidePassword"
 msgstr "隐藏密码"
 
 #. js-lingui-explicit-id
-#: src/features/events/EditTemplateNotice.tsx:65
+#: src/features/events/EditTemplateNotice.tsx:84
 msgid "hideNotice"
 msgstr "隱藏此通知"
 
 #. js-lingui-explicit-id
-#: src/features/profile/EventsTab.tsx:52
+#: src/features/profile/EventsTab.tsx:41
 msgid "historyHeader"
 msgstr "歷史記錄"
 
 #. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:138
-#: src/features/templates/TemplatePage.tsx:104
+#: src/features/templates/TemplatePage.tsx:103
 msgid "hosted"
 msgstr "有主持人"
 
 #. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:139
 #: src/features/events/EventInfoCard.tsx:111
-#: src/features/templates/TemplatePage.tsx:109
+#: src/features/templates/TemplatePage.tsx:108
 msgid "hostless"
 msgstr "無主持人"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:234
+#: src/components/pickers.tsx:143
 msgid "timeInput.hour"
 msgstr "小時"
 
-#: src/features/events/CreateEventDialog.tsx:245
+#: src/features/events/CreateEventDialog.tsx:253
 msgid "I'll share this with a private group"
 msgstr "我會與私人群組分享"
 
@@ -1137,18 +1147,18 @@ msgid "iCalCalendar"
 msgstr "iCal 日曆"
 
 #. js-lingui-explicit-id
-#: src/features/events/EditTemplateNotice.tsx:55
+#: src/features/events/EditTemplateNotice.tsx:68
 msgid "editingFutureInstancesNotice"
 msgstr "如果你想編輯後續場次， "
+
+#: src/features/posts/CreatePostDialog.tsx:165
+msgid "Image"
+msgstr "圖片"
 
 #. js-lingui-explicit-id
 #: src/features/content/agenda/agendaTypes.ts:14
 #: src/features/events/EditEventDrawer.tsx:207
 msgid "image"
-msgstr "圖片"
-
-#: src/features/posts/CreatePostDialog.tsx:165
-msgid "Image"
 msgstr "圖片"
 
 #. js-lingui-explicit-id
@@ -1176,11 +1186,11 @@ msgstr "Instagram 連結"
 msgid "invalidEmail"
 msgstr "無效的電子郵件"
 
-#: src/api/firebaseApi.ts:1421
+#: src/api/firebaseApi.ts:1588
 msgid "Invalid event schedule"
 msgstr "活動時程無效"
 
-#: src/api/firebaseApi.ts:131
+#: src/api/firebaseApi.ts:135
 msgid "Invalid or missing {field}"
 msgstr "{field}無效或遺失"
 
@@ -1262,12 +1272,12 @@ msgstr "連結已複製！"
 msgid "linkMustBeMp4"
 msgstr "連結必須是 MP4 格式"
 
-#: src/api/firebaseApi.ts:1940
+#: src/api/firebaseApi.ts:2238
 msgid "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
 msgstr "連結預覽尚未設定。請設定 VITE_LINK_PREVIEW_API_KEY。"
 
 #. placeholder {0}: response.status
-#: src/api/firebaseApi.ts:1954
+#: src/api/firebaseApi.ts:2252
 msgid "Link preview request failed ({0})"
 msgstr "連結預覽請求失敗（{0}）"
 
@@ -1284,7 +1294,7 @@ msgstr "目前此版本的應用程式還無法加入直播活動。"
 #. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:140
 #: src/features/events/EventInfoCard.tsx:113
-#: src/features/templates/TemplatePage.tsx:115
+#: src/features/templates/TemplatePage.tsx:114
 msgid "livestream"
 msgstr "直播"
 
@@ -1347,11 +1357,11 @@ msgstr "配對問題"
 msgid "maximum"
 msgstr "最大值"
 
-#: src/utils/membership.ts:29
+#: src/utils/membership.ts:30
 msgid "Member"
 msgstr "成員"
 
-#: src/api/firebaseApi.ts:1123
+#: src/api/firebaseApi.ts:1252
 msgid "Membership update was not saved"
 msgstr "成員資格更新未儲存"
 
@@ -1377,7 +1387,7 @@ msgid "messageParticipants"
 msgstr "傳訊息給參與者"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:242
+#: src/components/pickers.tsx:151
 msgid "timeInput.minute"
 msgstr "分鐘"
 
@@ -1386,12 +1396,12 @@ msgstr "分鐘"
 msgid "agendaMinutes"
 msgstr "分鐘"
 
-#: src/utils/membership.ts:27
+#: src/utils/membership.ts:28
 msgid "Moderator"
 msgstr "版主"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:333
+#: src/features/templates/TemplatePage.tsx:330
 msgid "moreFromName"
 msgstr "來自 {communityName} 的更多內容"
 
@@ -1428,7 +1438,7 @@ msgid "mustBeLoggedInToAccessThisSection"
 msgstr "必須登入才能存取此區塊"
 
 #. js-lingui-explicit-id
-#: src/features/home/HomePage.tsx:51
+#: src/features/home/HomePage.tsx:73
 msgid "myCommunities"
 msgstr "我的社區"
 
@@ -1452,6 +1462,11 @@ msgid "profileMenu.myProfile"
 msgstr "我的個人檔案"
 
 #. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:117
+msgid "myUpcomingEvents"
+msgstr "我的即將舉行的活動"
+
+#. js-lingui-explicit-id
 #: src/features/profile/ProfileTab.tsx:123
 msgid "name"
 msgstr "姓名"
@@ -1469,7 +1484,7 @@ msgstr "新公告"
 msgid "newToApp"
 msgstr "新來到 {appName}？"
 
-#: src/features/events/CreateEventDialog.tsx:208
+#: src/features/events/CreateEventDialog.tsx:216
 msgid "Next"
 msgstr "下一步"
 
@@ -1480,14 +1495,9 @@ msgid "next"
 msgstr "下一步"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:79
-msgid "monthCalendar.nextMonth"
-msgstr "下個月"
-
-#. js-lingui-explicit-id
 #: src/features/events/BreakoutsSection.tsx:56
 #: src/features/events/EventInfoCard.tsx:571
-#: src/features/events/ParticipantsDialog.tsx:77
+#: src/features/events/ParticipantsDialog.tsx:100
 msgid "no"
 msgstr "否"
 
@@ -1513,17 +1523,17 @@ msgid "No Comments"
 msgstr "沒有留言"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:272
+#: src/features/templates/TemplatePage.tsx:271
 msgid "noDescriptionForEvent"
 msgstr "此活動沒有說明"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:382
+#: src/features/templates/TemplatePage.tsx:379
 msgid "noEvents"
 msgstr "沒有活動"
 
 #. js-lingui-explicit-id
-#: src/features/profile/EventsTab.tsx:82
+#: src/features/profile/EventsTab.tsx:71
 msgid "noEventsFound"
 msgstr "找不到活動"
 
@@ -1536,7 +1546,7 @@ msgid "No image upload provider is configured. Set the VITE_CLOUDINARY_* variabl
 msgstr "尚未設定圖片上傳服務。請設定 VITE_CLOUDINARY_* 變數或 VITE_FIREBASE_STORAGE_BUCKET。"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:101
+#: src/features/events/ParticipantsDialog.tsx:146
 msgid "noOneIsHereYet"
 msgstr "這裡還沒有人。"
 
@@ -1550,16 +1560,16 @@ msgstr "{0} 秒後後端仍無回應。"
 msgid "noTemplatesFound"
 msgstr "找不到範本。"
 
-#: src/features/events/CreateEventDialog.tsx:453
+#: src/features/events/CreateEventDialog.tsx:461
 msgid "No templates found."
 msgstr "找不到範本。"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:312
+#: src/features/templates/TemplatePage.tsx:309
 msgid "noUpcomingEvents"
 msgstr "沒有即將舉行的活動。"
 
-#: src/utils/membership.ts:31
+#: src/utils/membership.ts:32
 msgid "Non-member"
 msgstr "非成員"
 
@@ -1593,7 +1603,7 @@ msgstr "Office 365 日曆"
 msgid "onboardingBanner.progress"
 msgstr "入門引導進度"
 
-#: src/api/firebaseApi.ts:1947
+#: src/api/firebaseApi.ts:2245
 msgid "Only HTTP and HTTPS links can be previewed."
 msgstr "僅支援預覽 HTTP 和 HTTPS 連結。"
 
@@ -1627,7 +1637,7 @@ msgstr "我們的後端目前沒有回應。請幾分鐘後再試一次。"
 msgid "outlookCalendar"
 msgstr "Outlook 日曆"
 
-#: src/utils/membership.ts:25
+#: src/utils/membership.ts:26
 msgid "Owner"
 msgstr "擁有者"
 
@@ -1651,8 +1661,8 @@ msgid "Paste or enter URL"
 msgstr "貼上或輸入網址"
 
 #: src/features/home/HomePage.tsx:57
-msgid "Placeholder: the home page is not built yet. This is a plain list of your communities."
-msgstr "預留位置：首頁尚未完成。這裡只是你所屬社群的簡單清單。"
+#~ msgid "Placeholder: the home page is not built yet. This is a plain list of your communities."
+#~ msgstr "預留位置：首頁尚未完成。這裡只是你所屬社群的簡單清單。"
 
 #. js-lingui-explicit-id
 #: src/features/content/agenda/AgendaStepCard.tsx:82
@@ -1665,7 +1675,7 @@ msgstr "請新增一些答案"
 msgid "pleaseAnswerQuestions"
 msgstr "請回答幾個問題，以便我們為你配對合適的小組。"
 
-#: src/features/events/CreateEventDialog.tsx:168
+#: src/features/events/CreateEventDialog.tsx:176
 msgid "Please choose a time in the future."
 msgstr "請選擇未來的時間。"
 
@@ -1717,7 +1727,7 @@ msgid "Plus one"
 msgstr "加一"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:264
+#: src/components/pickers.tsx:173
 msgid "timeInput.pm"
 msgstr "下午"
 
@@ -1744,7 +1754,7 @@ msgstr "貼文已建立"
 msgid "Post has been updated"
 msgstr "貼文已更新"
 
-#: src/api/firebaseApi.ts:1857
+#: src/api/firebaseApi.ts:2155
 msgid "Post not found"
 msgstr "找不到該貼文"
 
@@ -1753,7 +1763,7 @@ msgid "Post text"
 msgstr "貼文內容"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:77
+#: src/features/content/PrePostTab.tsx:130
 msgid "postEvent"
 msgstr "活動後"
 
@@ -1768,14 +1778,14 @@ msgid "sidebar.posts"
 msgstr "貼文"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:77
+#: src/features/content/PrePostTab.tsx:129
 msgid "preEvent"
 msgstr "活動前"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:449
 #: src/features/events/EventInfoCard.tsx:457
-#: src/features/templates/TemplatePage.tsx:159
+#: src/features/templates/TemplatePage.tsx:158
 msgid "prereqRequired"
 msgstr "需先完成前置條件"
 
@@ -1793,11 +1803,6 @@ msgstr "預覽"
 #: src/features/events/EventSettingsDrawer.tsx:151
 msgid "previewAgenda"
 msgstr "預覽議程"
-
-#. js-lingui-explicit-id
-#: src/components/pickers.tsx:68
-msgid "monthCalendar.previousMonth"
-msgstr "上個月"
 
 #. js-lingui-explicit-id
 #: src/components/layout/SideBar.tsx:377
@@ -1835,7 +1840,7 @@ msgstr "個人資料已更新"
 msgid "publicVisibility"
 msgstr "公開"
 
-#: src/features/events/CreateEventDialog.tsx:82
+#: src/features/events/CreateEventDialog.tsx:90
 msgid "Public or private?"
 msgstr "公開還是私人？"
 
@@ -1891,7 +1896,7 @@ msgstr "請刷新頁面並嘗試重新登入 Frankly。\n"
 "如果問題持續，您可以 "
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:216
+#: src/features/content/PrePostTab.tsx:334
 msgid "removeActionLink"
 msgstr "移除行動連結"
 
@@ -1900,7 +1905,7 @@ msgid "Remove image"
 msgstr "移除圖片"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:115
+#: src/features/events/ParticipantsDialog.tsx:165
 msgid "removeParticipant"
 msgstr "移除參與者"
 
@@ -1921,7 +1926,7 @@ msgstr "重設您的密碼"
 msgid "Resource added"
 msgstr "資源已新增"
 
-#: src/api/firebaseApi.ts:2028
+#: src/api/firebaseApi.ts:2326
 msgid "Resource not found"
 msgstr "找不到該資源"
 
@@ -1958,7 +1963,7 @@ msgid "rsvp"
 msgstr "RSVP"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:250
+#: src/features/content/PrePostTab.tsx:399
 msgid "save"
 msgstr "儲存"
 
@@ -1987,7 +1992,7 @@ msgid "Save title"
 msgstr "儲存標題"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:190
+#: src/features/content/PrePostTab.tsx:291
 msgid "cardSaved"
 msgstr "已儲存"
 
@@ -2009,7 +2014,7 @@ msgstr "搜尋活動"
 msgid "searchTemplates"
 msgstr "搜尋範本"
 
-#: src/features/events/CreateEventDialog.tsx:284
+#: src/features/events/CreateEventDialog.tsx:292
 msgid "Search templates"
 msgstr "搜尋範本"
 
@@ -2019,7 +2024,7 @@ msgid "agendaSeconds"
 msgstr "秒"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:299
+#: src/features/templates/TemplatePage.tsx:296
 msgid "seeAll"
 msgstr "查看全部"
 
@@ -2033,15 +2038,15 @@ msgid "seeMoreEvents"
 msgstr "查看更多活動"
 
 #. js-lingui-explicit-id
-#: src/components/events/EventPageParticipantsList.tsx:32
+#: src/components/events/EventPageParticipantsList.tsx:37
 msgid "seeWhoIsGoing"
 msgstr "查看誰會參加"
 
-#: src/features/events/CreateEventDialog.tsx:83
+#: src/features/events/CreateEventDialog.tsx:91
 msgid "Select a day"
 msgstr "選擇日期"
 
-#: src/features/events/CreateEventDialog.tsx:84
+#: src/features/events/CreateEventDialog.tsx:92
 msgid "Select a time"
 msgstr "選擇時間"
 
@@ -2140,17 +2145,17 @@ msgstr "智慧配對"
 msgid "backendUnknownTitle"
 msgstr "發生錯誤"
 
-#: src/features/events/CreateEventDialog.tsx:104
+#: src/features/events/CreateEventDialog.tsx:112
 msgid "Something went wrong creating the event. Please try again."
 msgstr "建立活動時發生錯誤。請再試一次。"
 
 #. js-lingui-explicit-id
-#: src/features/home/HomePage.tsx:66
+#: src/features/home/HomePage.tsx:82
 msgid "errorLoadingCommunitiesMessage"
 msgstr "載入社群時發生錯誤。請重新整理頁面。"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:305
+#: src/features/templates/TemplatePage.tsx:302
 msgid "somethingWentWrongLoadingEvents"
 msgstr "載入活動時發生錯誤。"
 
@@ -2164,7 +2169,7 @@ msgid "errorLoadingNotificationSettings"
 msgstr "載入通知設定時發生問題，請重新整理頁面。"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:94
+#: src/features/events/ParticipantsDialog.tsx:132
 msgid "participantsLoadError"
 msgstr "載入參與者時發生錯誤。請重新整理頁面。"
 
@@ -2180,7 +2185,8 @@ msgstr "載入資源時發生錯誤。"
 msgid "Something went wrong loading the community."
 msgstr "載入社群時發生錯誤。"
 
-#: src/features/profile/EventsTab.tsx:41
+#: src/features/home/HomePage.tsx:122
+#: src/features/profile/EventsTab.tsx:30
 msgid "Something went wrong loading your events."
 msgstr "載入你的活動時發生問題。"
 
@@ -2200,8 +2206,8 @@ msgstr "發生錯誤。請重新整理頁面。"
 #: src/features/content/agenda/AgendaStepCard.tsx:138
 #: src/features/content/AgendaTab.tsx:54
 #: src/features/content/AgendaTab.tsx:74
-#: src/features/content/PrePostTab.tsx:98
-#: src/features/content/PrePostTab.tsx:192
+#: src/features/content/PrePostTab.tsx:155
+#: src/features/content/PrePostTab.tsx:293
 #: src/features/events/BreakoutsSection.tsx:65
 #: src/features/events/BreakoutsSection.tsx:454
 #: src/features/events/BreakoutsSection.tsx:473
@@ -2213,7 +2219,7 @@ msgstr "發生錯誤。請重新整理頁面。"
 #: src/features/events/EventInfoCard.tsx:643
 #: src/features/events/EventSettingsDrawer.tsx:102
 #: src/features/events/MessageParticipantsDialog.tsx:38
-#: src/features/events/ParticipantsDialog.tsx:82
+#: src/features/events/ParticipantsDialog.tsx:105
 #: src/features/posts/AddCommentDialog.tsx:93
 #: src/features/posts/CreatePostDialog.tsx:61
 #: src/features/profile/NotificationsTab.tsx:111
@@ -2230,7 +2236,7 @@ msgstr "發生錯誤。請再試一次。"
 msgid "somethingWentWrongTryAgain"
 msgstr "出現錯誤，請重試。"
 
-#: src/api/firebaseApi.ts:1499
+#: src/api/firebaseApi.ts:1677
 msgid "Sorry, this event was canceled, so you cannot join it."
 msgstr "抱歉，此活動已取消，你無法加入。"
 
@@ -2312,7 +2318,7 @@ msgstr "後端似乎設定有誤（專案或 API 金鑰不存在，或服務已�
 msgid "eventHasNotStartedYet"
 msgstr "活動尚未開始。很快見！"
 
-#: src/api/firebaseApi.ts:409
+#: src/api/firebaseApi.ts:489
 msgid "The live stream could not be set up."
 msgstr "無法設定直播。"
 
@@ -2374,7 +2380,7 @@ msgstr "此活動已鎖定"
 msgid "thisEventWasCanceled"
 msgstr "此活動已取消。"
 
-#: src/api/firebaseApi.ts:1488
+#: src/api/firebaseApi.ts:1659
 msgid "This event was not found."
 msgstr "未找到此活動。"
 
@@ -2383,11 +2389,11 @@ msgid "This page is not in the React app yet. Soon, this would fall back to the 
 msgstr "此頁面尚未移至 React 應用程式。很快將改回使用 Flutter 應用程式。"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:81
+#: src/features/templates/TemplatePage.tsx:80
 msgid "templateNotFound"
 msgstr "找不到此範本。"
 
-#: src/api/firebaseApi.ts:1250
+#: src/api/firebaseApi.ts:1386
 msgid "This template was not found."
 msgstr "未找到此範本。"
 
@@ -2405,7 +2411,7 @@ msgid "time"
 msgstr "時間"
 
 #. placeholder {0}: timeZoneAbbreviation(now)
-#: src/features/events/CreateEventDialog.tsx:161
+#: src/features/events/CreateEventDialog.tsx:169
 msgid "Time shown in {0}"
 msgstr "時間以 {0} 顯示"
 
@@ -2455,7 +2461,7 @@ msgid "agendaItemType"
 msgstr "議程項目類型"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:144
+#: src/features/templates/TemplatePage.tsx:143
 msgid "eventHostingType"
 msgstr "活動類型"
 
@@ -2484,9 +2490,18 @@ msgid "Unknown VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\". Use \"cloudinary\" or
 msgstr "未知的 VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\"。請使用 \"cloudinary\" 或 \"firebase\"。"
 
 #. js-lingui-explicit-id
+#: src/components/CommunitiesCarousel.tsx:100
+msgid "unnamedCommunity"
+msgstr "未命名社群"
+
+#. js-lingui-explicit-id
 #: src/components/layout/SideBar.tsx:102
 msgid "sidebar.unnamedCommunity"
 msgstr "未命名社群"
+
+#: src/components/CommunitiesCarousel.tsx:99
+#~ msgid "Unnamed Community"
+#~ msgstr ""
 
 #. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:114
@@ -2495,14 +2510,14 @@ msgid "unsavedChanges"
 msgstr "未儲存的變更"
 
 #. js-lingui-explicit-id
-#: src/features/profile/EventsTab.tsx:48
+#: src/features/profile/EventsTab.tsx:37
 msgid "upcomingHeader"
 msgstr "即將舉行"
 
 #. js-lingui-explicit-id
 #: src/features/community/CommunityHome.tsx:350
-#: src/features/templates/TemplatePage.tsx:236
-#: src/features/templates/TemplatePage.tsx:290
+#: src/features/templates/TemplatePage.tsx:235
+#: src/features/templates/TemplatePage.tsx:289
 msgid "upcomingEvents"
 msgstr "即將舉行的活動"
 
@@ -2552,12 +2567,12 @@ msgid "videoTabUrl"
 msgstr "URL"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:297
+#: src/features/content/PrePostTab.tsx:464
 msgid "urlParameter"
 msgstr "URL 參數"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:236
+#: src/features/content/PrePostTab.tsx:372
 msgid "urlPreview"
 msgstr "URL 預覽"
 
@@ -2586,7 +2601,7 @@ msgid "videoUrlIsRequired"
 msgstr "影片 URL 為必填"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:115
+#: src/features/content/PrePostTab.tsx:190
 msgid "viewCard"
 msgstr "檢視卡片"
 
@@ -2625,7 +2640,7 @@ msgid "When new {type} are added, you'll see them here."
 msgstr "新增{type}後，你會在這裡看到。"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:385
+#: src/features/templates/TemplatePage.tsx:382
 msgid "whenNewEventsAreAdded"
 msgstr "新增活動後，你會在這裡看到。"
 
@@ -2656,7 +2671,7 @@ msgstr "是"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:570
-#: src/features/events/ParticipantsDialog.tsx:76
+#: src/features/events/ParticipantsDialog.tsx:99
 msgid "yesCancel"
 msgstr "是，取消"
 
@@ -2680,9 +2695,10 @@ msgid "You + {0}"
 msgstr "你 + {0}"
 
 #. js-lingui-explicit-id
-#: src/features/events/EditTemplateNotice.tsx:53
+#: src/features/events/EditTemplateNotice.tsx:63
 msgid "editingEventNotice"
 msgstr "你正在編輯活動。 \n"
+""
 
 #: src/features/profile/NotificationsTab.tsx:47
 msgid "You aren't a member of any communities."
@@ -2704,8 +2720,8 @@ msgid "emailAndPasswordMismatchCheck"
 msgstr "您可以檢查您輸入的內容並重試。"
 
 #: src/features/home/HomePage.tsx:80
-msgid "You don't belong to any communities"
-msgstr "你不屬於任何社群"
+#~ msgid "You don't belong to any communities"
+#~ msgstr "你不屬於任何社群"
 
 #. js-lingui-explicit-id
 #: src/app/layouts/RootLayout.tsx:125
@@ -2722,7 +2738,17 @@ msgstr "這些設定有未儲存的變更。要捨棄嗎？"
 msgid "discardEventChanges"
 msgstr "此活動有未儲存的變更。要捨棄嗎？"
 
-#: src/api/firebaseApi.ts:145
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:90
+msgid "youHaventJoinedAnyCommunities"
+msgstr "您尚未加入任何社區"
+
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:125
+msgid "noUpcomingEventsMessage"
+msgstr "您尚未註冊任何即將舉行的活動。"
+
+#: src/api/firebaseApi.ts:149
 msgid "You must be signed in to continue."
 msgstr "你必須登入才能繼續。"
 
