@@ -90,7 +90,7 @@ export function createAppTheme({
   return createTheme({
     palette: {
       primary: { main: primary, contrastText: colors.onPrimary },
-      secondary: { main: secondary, contrastText: colors.onSecondary },
+      secondary: { main: secondary },
       error: { main: colors.error, contrastText: colors.onError },
       background: { default: colors.surface, paper: colors.surfaceContainerLowest },
       text: {

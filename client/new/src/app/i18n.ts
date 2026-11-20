@@ -23,6 +23,7 @@ export async function dynamicActivate(locale: string) {
     const { messages } = await import(`../locales/${locale}/messages.po`);
     i18n.load(locale, messages);
     i18n.activate(locale);
+    document.documentElement.lang = locale;
 
     // Store the active locale in localStorage so it persists
     localStorage.setItem("locale", locale);
