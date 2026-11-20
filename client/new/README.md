@@ -70,7 +70,9 @@ React Router 8 ≥ 22.22), so bumping them is a Node upgrade, not a code change.
    `src/app/router.tsx` (a page outside a community goes in the top-level `children` there).
 2. Add the data-surface `Api` methods it needs to `src/api/api.ts` and the implementation in `src/api/firebaseApi.ts`.
 3. When it should go live behind the proxy / at the edge, add its URL pattern to
-   `migrated-routes.json`. The router test checks the two agree.
+   `migrated-routes.json`. The router test checks the two agree. Then run `npm run routes:flutter` and
+   rebuild Flutter: it regenerates the list Flutter uses to hand those URLs to React with a full page load
+   (its in-page navigation never reaches the server), and `build:hosting` refuses to run while it's stale.
 
 ## State model
 

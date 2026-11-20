@@ -24,6 +24,7 @@ import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } fr
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compilePattern, loadConfig } from "../../../proxy/src/rules.mts";
+import { isDartCurrent } from "./flutterRoutes.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const CLIENT_DIR = join(here, "..");
@@ -104,6 +105,9 @@ function main(): void {
   const catchAll = webRewrites.at(-1);
   if (catchAll?.source !== "**") fail(`the "web" rewrites must end with the "**" catch-all.`);
 
+  if (!isDartCurrent()) {
+    fail("client/lib/core/routing/react_routes.g.dart is out of date. Run `npm run routes:flutter`, then rebuild Flutter.");
+  }
   assemble(config.assetBase, config.staticPrefixes);
 
   const pages: Rewrite[] = config.routes.map((route) => ({
