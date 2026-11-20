@@ -8,11 +8,10 @@ import { EventCard } from "@/components/events/EventCards";
 import { ErrorState, LoadingState } from "@/components/States";
 import { useMyEvents } from "@/queries/profile";
 import { useClock } from "@/utils/clock";
+import { splitMyEvents } from "@/utils/events/myEvents";
 import { fontSizes } from "@/theme/tokens";
 
 const MAX_SHOWN = 40;
-
-const time = (event: Event) => Date.parse(event.scheduledTime ?? "");
 
 // The "my events" tab: what the user is registered for, upcoming (soonest first) then history (latest first).
 export function EventsTab() {
@@ -20,20 +19,10 @@ export function EventsTab() {
   const clock = useClock();
   const events = useMyEvents();
 
-  const { upcoming, past } = useMemo(() => {
-    const now = clock.now().getTime();
-    const scheduled = (events.data ?? []).filter(
-      (event) => event.status === "active" && event.scheduledTime,
-    );
-    return {
-      upcoming: scheduled
-        .filter((event) => time(event) > now)
-        .sort((a, b) => time(a) - time(b)),
-      past: scheduled
-        .filter((event) => time(event) < now)
-        .sort((a, b) => time(b) - time(a)),
-    };
-  }, [events.data, clock]);
+  const { upcoming, past } = useMemo(
+    () => splitMyEvents(events.data ?? [], clock.now()),
+    [events.data, clock],
+  );
 
   if (events.isPending) return <LoadingState height={300} />;
   if (events.isError) {

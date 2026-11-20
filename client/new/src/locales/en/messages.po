@@ -8,6 +8,16 @@ msgstr ""
 "Language: en\n"
 
 #. js-lingui-explicit-id
+#: src/components/pickers.tsx:79
+#~ msgid "monthCalendar.nextMonth"
+#~ msgstr "Next month"
+
+#. js-lingui-explicit-id
+#: src/components/pickers.tsx:68
+#~ msgid "monthCalendar.previousMonth"
+#~ msgstr "Previous month"
+
+#. js-lingui-explicit-id
 #: src/components/ProfileChip.tsx:61
 msgid "profileChip.youSuffix"
 msgstr " (you)"
@@ -39,7 +49,7 @@ msgid "{0}"
 msgstr "{0}"
 
 #. js-lingui-explicit-id
-#: src/features/home/HomePage.tsx:26
+#: src/features/home/HomePage.tsx:30
 msgid "appNameHome"
 msgstr "{appName} - Home"
 
@@ -54,11 +64,11 @@ msgid "termsOfService"
 msgstr "{appName} Terms of Service"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:58
+#: src/features/events/ParticipantsDialog.tsx:73
 msgid "participantCount"
 msgstr "{count} participants"
 
-#: src/api/firebaseApi.ts:773
+#: src/api/firebaseApi.ts:902
 msgid "{entity} not found"
 msgstr "{entity} not found"
 
@@ -71,12 +81,12 @@ msgid "{maxParticipants, plural, one {# person} other {# people}}"
 msgstr "{maxParticipants, plural, one {# person} other {# people}}"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:61
+#: src/features/events/ParticipantsDialog.tsx:79
 msgid "registrationCountWithActive"
 msgstr "{regCount} registrations ({activeCount} active)"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:60
+#: src/features/events/ParticipantsDialog.tsx:75
 msgid "registrationCountWithAttended"
 msgstr "{regCount} registrations ({attendedCount} attended)"
 
@@ -107,7 +117,7 @@ msgstr "100"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventPage.tsx:119
-#: src/features/templates/TemplatePage.tsx:229
+#: src/features/templates/TemplatePage.tsx:228
 msgid "about"
 msgstr "About"
 
@@ -141,17 +151,17 @@ msgid "addATag"
 msgstr "Add a tag"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:242
+#: src/features/content/PrePostTab.tsx:378
 msgid "addActionLink"
 msgstr "Add action link"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:185
+#: src/features/content/PrePostTab.tsx:283
 msgid "addActionLinksAfter"
 msgstr "Add action links participants should visit after the event"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:184
+#: src/features/content/PrePostTab.tsx:278
 msgid "addActionLinksBefore"
 msgstr "Add action links participants should visit before the event"
 
@@ -177,12 +187,12 @@ msgid "addOption"
 msgstr "Add option"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:48
+#: src/features/content/PrePostTab.tsx:76
 msgid "addPostEvent"
 msgstr "Add Post-event"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:47
+#: src/features/content/PrePostTab.tsx:71
 msgid "addPreEvent"
 msgstr "Add Pre-event"
 
@@ -196,12 +206,12 @@ msgid "addToCalendar"
 msgstr "Add to calendar"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:271
+#: src/features/content/PrePostTab.tsx:431
 msgid "addUrlParameter"
 msgstr "Add URL Parameter"
 
 #: src/components/layout/NavBar.tsx:232
-#: src/utils/membership.ts:26
+#: src/utils/membership.ts:27
 msgid "Admin"
 msgstr "Admin"
 
@@ -211,8 +221,8 @@ msgid "sidebar.admin"
 msgstr "Admin"
 
 #. js-lingui-explicit-id
-#: src/features/events/EventPage.tsx:124
-#: src/features/templates/TemplatePage.tsx:232
+#: src/features/events/EventPage.tsx:125
+#: src/features/templates/TemplatePage.tsx:231
 msgid "agendaTab"
 msgstr "Agenda"
 
@@ -241,7 +251,7 @@ msgstr "Agenda item was saved"
 msgid "agendaItemsWereRemoved"
 msgstr "Agenda items were removed"
 
-#: src/features/events/CreateEventDialog.tsx:236
+#: src/features/events/CreateEventDialog.tsx:244
 msgid "Allow the community to join"
 msgstr "Allow the community to join"
 
@@ -251,12 +261,12 @@ msgid "alreadyUserSignIn"
 msgstr "Already have an account?"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:265
+#: src/components/pickers.tsx:174
 msgid "timeInput.am"
 msgstr "AM"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:250
+#: src/components/pickers.tsx:159
 msgid "timeInput.amOrPm"
 msgstr "AM or PM"
 
@@ -298,13 +308,13 @@ msgid "cancelEventConfirmation"
 msgstr "Are you sure you want to cancel this event? This action cannot be undone."
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:72
+#: src/features/events/ParticipantsDialog.tsx:94
 msgid "confirmCancelUserParticipation"
 msgstr "Are you sure you want to cancel this user's participation in this event?"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:565
-#: src/features/events/ParticipantsDialog.tsx:68
+#: src/features/events/ParticipantsDialog.tsx:89
 msgid "confirmCancelYourParticipation"
 msgstr "Are you sure you want to cancel your participation in this event?"
 
@@ -328,12 +338,12 @@ msgid "confirmDeleteEventAnnouncement"
 msgstr "Are you sure you want to delete this event announcement? This action cannot be undone."
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:90
+#: src/features/content/PrePostTab.tsx:144
 msgid "confirmDeletePostEventItem"
 msgstr "Are you sure you want to delete this post-event agenda item? This action cannot be undone."
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:86
+#: src/features/content/PrePostTab.tsx:139
 msgid "confirmDeletePreEventItem"
 msgstr "Are you sure you want to delete this pre-event agenda item? This action cannot be undone."
 
@@ -364,7 +374,7 @@ msgstr "Attach image"
 msgid "Attached"
 msgstr "Attached"
 
-#: src/utils/membership.ts:32
+#: src/utils/membership.ts:33
 msgid "Attendee"
 msgstr "Attendee"
 
@@ -373,11 +383,11 @@ msgstr "Attendee"
 msgid "autoEndMeeting"
 msgstr "Auto-end meeting"
 
-#: src/features/events/CreateEventDialog.tsx:201
+#: src/features/events/CreateEventDialog.tsx:209
 msgid "Back"
 msgstr "Back"
 
-#: src/utils/membership.ts:30
+#: src/utils/membership.ts:31
 msgid "Banned"
 msgstr "Banned"
 
@@ -396,7 +406,7 @@ msgid "breakoutUpdated"
 msgstr "Breakout Updated!"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:224
+#: src/features/content/PrePostTab.tsx:350
 msgid "buttonText"
 msgstr "Button Text"
 
@@ -415,13 +425,13 @@ msgstr "By Size"
 #: src/features/content/agenda/AgendaStepCard.tsx:130
 #: src/features/content/agenda/AgendaStepCard.tsx:203
 #: src/features/content/AgendaTab.tsx:66
-#: src/features/content/PrePostTab.tsx:95
+#: src/features/content/PrePostTab.tsx:150
 #: src/features/events/BreakoutsSection.tsx:239
 #: src/features/events/EventAbout.tsx:102
 #: src/features/events/EventInfoCard.tsx:564
 #: src/features/events/EventInfoCard.tsx:586
 #: src/features/events/EventInfoCard.tsx:663
-#: src/features/events/ParticipantsDialog.tsx:66
+#: src/features/events/ParticipantsDialog.tsx:87
 msgid "cancel"
 msgstr "Cancel"
 
@@ -466,7 +476,7 @@ msgstr "Check your internet connection and try again."
 msgid "Choose a photo"
 msgstr "Choose a photo"
 
-#: src/features/events/CreateEventDialog.tsx:81
+#: src/features/events/CreateEventDialog.tsx:89
 msgid "Choose Template"
 msgstr "Choose Template"
 
@@ -480,11 +490,6 @@ msgstr "Clear all"
 msgid "communitySuccessSuffix"
 msgstr "Click the gear icon in the top right to edit your community settings."
 
-#. js-lingui-explicit-id
-#: src/features/content/PrePostCardView.tsx:48
-msgid "close"
-msgstr "Close"
-
 #: src/components/AppDialog.tsx:44
 #: src/components/ConfirmDialog.tsx:81
 #: src/features/events/EventSettingsDrawer.tsx:175
@@ -492,6 +497,11 @@ msgstr "Close"
 #: src/features/posts/CreatePostDialog.tsx:92
 #: src/features/profile/ProfileDrawer.tsx:46
 msgid "Close"
+msgstr "Close"
+
+#. js-lingui-explicit-id
+#: src/features/content/PrePostCardView.tsx:48
+msgid "close"
 msgstr "Close"
 
 #. js-lingui-explicit-id
@@ -520,7 +530,7 @@ msgid "collapseStep"
 msgstr "Collapse"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:126
+#: src/features/content/PrePostTab.tsx:205
 msgid "collapseCard"
 msgstr "Collapse"
 
@@ -542,8 +552,8 @@ msgstr "Comment cannot be empty"
 msgid "communityName"
 msgstr "Community Name"
 
-#: src/api/firebaseApi.ts:807
-#: src/api/firebaseApi.ts:1101
+#: src/api/firebaseApi.ts:936
+#: src/api/firebaseApi.ts:1230
 msgid "Community not found"
 msgstr "Community not found"
 
@@ -611,7 +621,7 @@ msgstr "Create"
 msgid "createACommunity"
 msgstr "Create a community"
 
-#: src/features/events/CreateEventDialog.tsx:359
+#: src/features/events/CreateEventDialog.tsx:367
 msgid "Create a new template"
 msgstr "Create a new template"
 
@@ -635,16 +645,16 @@ msgid "Create an event"
 msgstr "Create an event"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:138
+#: src/features/templates/TemplatePage.tsx:137
 msgid "createEventFromThisTemplate"
 msgstr "Create an event from this template"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:174
+#: src/features/templates/TemplatePage.tsx:173
 msgid "createEventButton"
 msgstr "Create event"
 
-#: src/features/events/CreateEventDialog.tsx:208
+#: src/features/events/CreateEventDialog.tsx:216
 msgid "Create Event"
 msgstr "Create Event"
 
@@ -660,13 +670,13 @@ msgstr "Create post"
 msgid "Create your first event"
 msgstr "Create your first event"
 
-#: src/api/firebaseApi.ts:1476
+#: src/api/firebaseApi.ts:1647
 msgid "Created event was not found"
 msgstr "Created event was not found"
 
 #. js-lingui-explicit-id
-#: src/features/events/EventPage.tsx:130
-#: src/features/templates/TemplatePage.tsx:239
+#: src/features/events/EventPage.tsx:132
+#: src/features/templates/TemplatePage.tsx:238
 msgid "ctasTab"
 msgstr "CTAs"
 
@@ -683,7 +693,7 @@ msgstr "Define Breakouts (Optional)"
 #. js-lingui-explicit-id
 #: src/features/content/agenda/AgendaStepCard.tsx:129
 #: src/features/content/AgendaTab.tsx:65
-#: src/features/content/PrePostTab.tsx:94
+#: src/features/content/PrePostTab.tsx:149
 #: src/features/events/BreakoutsSection.tsx:238
 #: src/features/events/EventAbout.tsx:101
 msgid "delete"
@@ -715,8 +725,8 @@ msgid "Delete announcement"
 msgstr "Delete announcement"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:110
-#: src/features/content/PrePostTab.tsx:246
+#: src/features/content/PrePostTab.tsx:181
+#: src/features/content/PrePostTab.tsx:392
 msgid "deleteCard"
 msgstr "Delete card"
 
@@ -732,12 +742,12 @@ msgid "deleteOption"
 msgstr "Delete option"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:83
+#: src/features/content/PrePostTab.tsx:136
 msgid "deletePostEventItem"
 msgstr "Delete Post-Event Item"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:82
+#: src/features/content/PrePostTab.tsx:135
 msgid "deletePreEventItem"
 msgstr "Delete Pre-Event Item"
 
@@ -749,7 +759,7 @@ msgstr "Delete question"
 #. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:246
 #: src/features/events/EventAbout.tsx:38
-#: src/features/templates/TemplatePage.tsx:268
+#: src/features/templates/TemplatePage.tsx:267
 msgid "description"
 msgstr "Description"
 
@@ -809,7 +819,7 @@ msgid "Edit {0}"
 msgstr "Edit {0}"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:115
+#: src/features/content/PrePostTab.tsx:191
 msgid "editCard"
 msgstr "Edit card"
 
@@ -831,7 +841,7 @@ msgid "editItem"
 msgstr "Edit Item"
 
 #. js-lingui-explicit-id
-#: src/features/events/EditTemplateNotice.tsx:62
+#: src/features/events/EditTemplateNotice.tsx:80
 msgid "editTheTemplate"
 msgstr "edit the template."
 
@@ -858,7 +868,7 @@ msgid "enterEvent"
 msgstr "Enter Event"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:199
+#: src/features/content/PrePostTab.tsx:300
 msgid "enterHeadline"
 msgstr "Enter Headline"
 
@@ -868,12 +878,12 @@ msgid "enterImageTitle"
 msgstr "Enter Image title"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:182
+#: src/features/content/PrePostTab.tsx:272
 msgid "enterMessageExampleAfter"
 msgstr "Enter message (e.g. \"Take this survey after the event\")"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:181
+#: src/features/content/PrePostTab.tsx:268
 msgid "enterMessageExampleBefore"
 msgstr "Enter message (e.g. \"Take this survey before the event\")"
 
@@ -883,7 +893,7 @@ msgid "enterQuestionWithNumber"
 msgstr "Enter Question {number}"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:230
+#: src/features/content/PrePostTab.tsx:358
 msgid "enterUrl"
 msgstr "Enter URL"
 
@@ -903,7 +913,7 @@ msgstr "Enter Word Cloud prompt"
 msgid "forgotPasswordEnterEmail"
 msgstr "Enter your email"
 
-#: src/api/firebaseApi.ts:397
+#: src/api/firebaseApi.ts:471
 msgid "Error in updating agenda ordering. Please refresh."
 msgstr "Error in updating agenda ordering. Please refresh."
 
@@ -939,7 +949,7 @@ msgid "expandStep"
 msgstr "Expand"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:126
+#: src/features/content/PrePostTab.tsx:206
 msgid "expandCard"
 msgstr "Expand"
 
@@ -953,7 +963,7 @@ msgstr "Expand"
 msgid "socialFacebook"
 msgstr "Facebook URL"
 
-#: src/utils/membership.ts:28
+#: src/utils/membership.ts:29
 msgid "Facilitator"
 msgstr "Facilitator"
 
@@ -1100,34 +1110,34 @@ msgid "hidePassword"
 msgstr "Hide password"
 
 #. js-lingui-explicit-id
-#: src/features/events/EditTemplateNotice.tsx:65
+#: src/features/events/EditTemplateNotice.tsx:84
 msgid "hideNotice"
 msgstr "Hide this notice"
 
 #. js-lingui-explicit-id
-#: src/features/profile/EventsTab.tsx:52
+#: src/features/profile/EventsTab.tsx:41
 msgid "historyHeader"
 msgstr "HISTORY"
 
 #. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:138
-#: src/features/templates/TemplatePage.tsx:104
+#: src/features/templates/TemplatePage.tsx:103
 msgid "hosted"
 msgstr "Hosted"
 
 #. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:139
 #: src/features/events/EventInfoCard.tsx:111
-#: src/features/templates/TemplatePage.tsx:109
+#: src/features/templates/TemplatePage.tsx:108
 msgid "hostless"
 msgstr "Hostless"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:234
+#: src/components/pickers.tsx:143
 msgid "timeInput.hour"
 msgstr "Hour"
 
-#: src/features/events/CreateEventDialog.tsx:245
+#: src/features/events/CreateEventDialog.tsx:253
 msgid "I'll share this with a private group"
 msgstr "I'll share this with a private group"
 
@@ -1137,18 +1147,18 @@ msgid "iCalCalendar"
 msgstr "iCal Calendar"
 
 #. js-lingui-explicit-id
-#: src/features/events/EditTemplateNotice.tsx:55
+#: src/features/events/EditTemplateNotice.tsx:68
 msgid "editingFutureInstancesNotice"
 msgstr "If you want to edit future instances, "
+
+#: src/features/posts/CreatePostDialog.tsx:165
+msgid "Image"
+msgstr "Image"
 
 #. js-lingui-explicit-id
 #: src/features/content/agenda/agendaTypes.ts:14
 #: src/features/events/EditEventDrawer.tsx:207
 msgid "image"
-msgstr "Image"
-
-#: src/features/posts/CreatePostDialog.tsx:165
-msgid "Image"
 msgstr "Image"
 
 #. js-lingui-explicit-id
@@ -1176,11 +1186,11 @@ msgstr "Instagram URL"
 msgid "invalidEmail"
 msgstr "Invalid email"
 
-#: src/api/firebaseApi.ts:1421
+#: src/api/firebaseApi.ts:1588
 msgid "Invalid event schedule"
 msgstr "Invalid event schedule"
 
-#: src/api/firebaseApi.ts:131
+#: src/api/firebaseApi.ts:135
 msgid "Invalid or missing {field}"
 msgstr "Invalid or missing {field}"
 
@@ -1262,12 +1272,12 @@ msgstr "Link Copied!"
 msgid "linkMustBeMp4"
 msgstr "Link must be MP4"
 
-#: src/api/firebaseApi.ts:1940
+#: src/api/firebaseApi.ts:2238
 msgid "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
 msgstr "Link preview is not configured. Set VITE_LINK_PREVIEW_API_KEY."
 
 #. placeholder {0}: response.status
-#: src/api/firebaseApi.ts:1954
+#: src/api/firebaseApi.ts:2252
 msgid "Link preview request failed ({0})"
 msgstr "Link preview request failed ({0})"
 
@@ -1284,7 +1294,7 @@ msgstr "Live events can't be joined from this version of the app yet."
 #. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:140
 #: src/features/events/EventInfoCard.tsx:113
-#: src/features/templates/TemplatePage.tsx:115
+#: src/features/templates/TemplatePage.tsx:114
 msgid "livestream"
 msgstr "Livestream"
 
@@ -1347,11 +1357,11 @@ msgstr "Matching questions"
 msgid "maximum"
 msgstr "Maximum"
 
-#: src/utils/membership.ts:29
+#: src/utils/membership.ts:30
 msgid "Member"
 msgstr "Member"
 
-#: src/api/firebaseApi.ts:1123
+#: src/api/firebaseApi.ts:1252
 msgid "Membership update was not saved"
 msgstr "Membership update was not saved"
 
@@ -1377,7 +1387,7 @@ msgid "messageParticipants"
 msgstr "Message Participants"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:242
+#: src/components/pickers.tsx:151
 msgid "timeInput.minute"
 msgstr "Minute"
 
@@ -1386,12 +1396,12 @@ msgstr "Minute"
 msgid "agendaMinutes"
 msgstr "Minutes"
 
-#: src/utils/membership.ts:27
+#: src/utils/membership.ts:28
 msgid "Moderator"
 msgstr "Moderator"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:333
+#: src/features/templates/TemplatePage.tsx:330
 msgid "moreFromName"
 msgstr "More from {communityName}"
 
@@ -1428,7 +1438,7 @@ msgid "mustBeLoggedInToAccessThisSection"
 msgstr "Must be logged in to access this section"
 
 #. js-lingui-explicit-id
-#: src/features/home/HomePage.tsx:51
+#: src/features/home/HomePage.tsx:73
 msgid "myCommunities"
 msgstr "My Communities"
 
@@ -1452,6 +1462,11 @@ msgid "profileMenu.myProfile"
 msgstr "My Profile"
 
 #. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:117
+msgid "myUpcomingEvents"
+msgstr "My Upcoming Events"
+
+#. js-lingui-explicit-id
 #: src/features/profile/ProfileTab.tsx:123
 msgid "name"
 msgstr "Name"
@@ -1469,7 +1484,7 @@ msgstr "New Announcement"
 msgid "newToApp"
 msgstr "New to {appName}?"
 
-#: src/features/events/CreateEventDialog.tsx:208
+#: src/features/events/CreateEventDialog.tsx:216
 msgid "Next"
 msgstr "Next"
 
@@ -1480,14 +1495,9 @@ msgid "next"
 msgstr "Next"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:79
-msgid "monthCalendar.nextMonth"
-msgstr "Next month"
-
-#. js-lingui-explicit-id
 #: src/features/events/BreakoutsSection.tsx:56
 #: src/features/events/EventInfoCard.tsx:571
-#: src/features/events/ParticipantsDialog.tsx:77
+#: src/features/events/ParticipantsDialog.tsx:100
 msgid "no"
 msgstr "No"
 
@@ -1513,17 +1523,17 @@ msgid "No Comments"
 msgstr "No Comments"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:272
+#: src/features/templates/TemplatePage.tsx:271
 msgid "noDescriptionForEvent"
 msgstr "No description for this event"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:382
+#: src/features/templates/TemplatePage.tsx:379
 msgid "noEvents"
 msgstr "No events"
 
 #. js-lingui-explicit-id
-#: src/features/profile/EventsTab.tsx:82
+#: src/features/profile/EventsTab.tsx:71
 msgid "noEventsFound"
 msgstr "No events found"
 
@@ -1536,7 +1546,7 @@ msgid "No image upload provider is configured. Set the VITE_CLOUDINARY_* variabl
 msgstr "No image upload provider is configured. Set the VITE_CLOUDINARY_* variables or VITE_FIREBASE_STORAGE_BUCKET."
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:101
+#: src/features/events/ParticipantsDialog.tsx:146
 msgid "noOneIsHereYet"
 msgstr "No one is here yet."
 
@@ -1550,16 +1560,16 @@ msgstr "No response from the backend after {0} seconds."
 msgid "noTemplatesFound"
 msgstr "No templates found."
 
-#: src/features/events/CreateEventDialog.tsx:453
+#: src/features/events/CreateEventDialog.tsx:461
 msgid "No templates found."
 msgstr "No templates found."
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:312
+#: src/features/templates/TemplatePage.tsx:309
 msgid "noUpcomingEvents"
 msgstr "No upcoming events."
 
-#: src/utils/membership.ts:31
+#: src/utils/membership.ts:32
 msgid "Non-member"
 msgstr "Non-member"
 
@@ -1593,7 +1603,7 @@ msgstr "Office 365 Calendar"
 msgid "onboardingBanner.progress"
 msgstr "Onboarding progress"
 
-#: src/api/firebaseApi.ts:1947
+#: src/api/firebaseApi.ts:2245
 msgid "Only HTTP and HTTPS links can be previewed."
 msgstr "Only HTTP and HTTPS links can be previewed."
 
@@ -1627,7 +1637,7 @@ msgstr "Our backend isn't responding right now. Please try again in a few minute
 msgid "outlookCalendar"
 msgstr "Outlook Calendar"
 
-#: src/utils/membership.ts:25
+#: src/utils/membership.ts:26
 msgid "Owner"
 msgstr "Owner"
 
@@ -1651,8 +1661,8 @@ msgid "Paste or enter URL"
 msgstr "Paste or enter URL"
 
 #: src/features/home/HomePage.tsx:57
-msgid "Placeholder: the home page is not built yet. This is a plain list of your communities."
-msgstr "Placeholder: the home page is not built yet. This is a plain list of your communities."
+#~ msgid "Placeholder: the home page is not built yet. This is a plain list of your communities."
+#~ msgstr "Placeholder: the home page is not built yet. This is a plain list of your communities."
 
 #. js-lingui-explicit-id
 #: src/features/content/agenda/AgendaStepCard.tsx:82
@@ -1665,7 +1675,7 @@ msgstr "Please add some answers"
 msgid "pleaseAnswerQuestions"
 msgstr "Please answer a few questions so we can match you with the right group."
 
-#: src/features/events/CreateEventDialog.tsx:168
+#: src/features/events/CreateEventDialog.tsx:176
 msgid "Please choose a time in the future."
 msgstr "Please choose a time in the future."
 
@@ -1717,7 +1727,7 @@ msgid "Plus one"
 msgstr "Plus one"
 
 #. js-lingui-explicit-id
-#: src/components/pickers.tsx:264
+#: src/components/pickers.tsx:173
 msgid "timeInput.pm"
 msgstr "PM"
 
@@ -1744,7 +1754,7 @@ msgstr "Post has been created"
 msgid "Post has been updated"
 msgstr "Post has been updated"
 
-#: src/api/firebaseApi.ts:1857
+#: src/api/firebaseApi.ts:2155
 msgid "Post not found"
 msgstr "Post not found"
 
@@ -1753,7 +1763,7 @@ msgid "Post text"
 msgstr "Post text"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:77
+#: src/features/content/PrePostTab.tsx:130
 msgid "postEvent"
 msgstr "Post-event"
 
@@ -1768,14 +1778,14 @@ msgid "sidebar.posts"
 msgstr "Posts"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:77
+#: src/features/content/PrePostTab.tsx:129
 msgid "preEvent"
 msgstr "Pre-event"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:449
 #: src/features/events/EventInfoCard.tsx:457
-#: src/features/templates/TemplatePage.tsx:159
+#: src/features/templates/TemplatePage.tsx:158
 msgid "prereqRequired"
 msgstr "Prerequisite required"
 
@@ -1793,11 +1803,6 @@ msgstr "Preview"
 #: src/features/events/EventSettingsDrawer.tsx:151
 msgid "previewAgenda"
 msgstr "Preview Agenda"
-
-#. js-lingui-explicit-id
-#: src/components/pickers.tsx:68
-msgid "monthCalendar.previousMonth"
-msgstr "Previous month"
 
 #. js-lingui-explicit-id
 #: src/components/layout/SideBar.tsx:377
@@ -1835,7 +1840,7 @@ msgstr "Profile updated"
 msgid "publicVisibility"
 msgstr "Public"
 
-#: src/features/events/CreateEventDialog.tsx:82
+#: src/features/events/CreateEventDialog.tsx:90
 msgid "Public or private?"
 msgstr "Public or private?"
 
@@ -1891,7 +1896,7 @@ msgstr "Refresh the page and try logging in to Frankly again.\n"
 "If you continue having trouble, you can"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:216
+#: src/features/content/PrePostTab.tsx:334
 msgid "removeActionLink"
 msgstr "Remove action link"
 
@@ -1900,7 +1905,7 @@ msgid "Remove image"
 msgstr "Remove image"
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:115
+#: src/features/events/ParticipantsDialog.tsx:165
 msgid "removeParticipant"
 msgstr "Remove participant"
 
@@ -1921,7 +1926,7 @@ msgstr "reset your password"
 msgid "Resource added"
 msgstr "Resource added"
 
-#: src/api/firebaseApi.ts:2028
+#: src/api/firebaseApi.ts:2326
 msgid "Resource not found"
 msgstr "Resource not found"
 
@@ -1958,7 +1963,7 @@ msgid "rsvp"
 msgstr "RSVP"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:250
+#: src/features/content/PrePostTab.tsx:399
 msgid "save"
 msgstr "Save"
 
@@ -1987,7 +1992,7 @@ msgid "Save title"
 msgstr "Save title"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:190
+#: src/features/content/PrePostTab.tsx:291
 msgid "cardSaved"
 msgstr "Saved"
 
@@ -2009,7 +2014,7 @@ msgstr "Search events"
 msgid "searchTemplates"
 msgstr "Search templates"
 
-#: src/features/events/CreateEventDialog.tsx:284
+#: src/features/events/CreateEventDialog.tsx:292
 msgid "Search templates"
 msgstr "Search templates"
 
@@ -2019,7 +2024,7 @@ msgid "agendaSeconds"
 msgstr "Seconds"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:299
+#: src/features/templates/TemplatePage.tsx:296
 msgid "seeAll"
 msgstr "See all"
 
@@ -2033,15 +2038,15 @@ msgid "seeMoreEvents"
 msgstr "See More Events"
 
 #. js-lingui-explicit-id
-#: src/components/events/EventPageParticipantsList.tsx:32
+#: src/components/events/EventPageParticipantsList.tsx:37
 msgid "seeWhoIsGoing"
 msgstr "See who is going"
 
-#: src/features/events/CreateEventDialog.tsx:83
+#: src/features/events/CreateEventDialog.tsx:91
 msgid "Select a day"
 msgstr "Select a day"
 
-#: src/features/events/CreateEventDialog.tsx:84
+#: src/features/events/CreateEventDialog.tsx:92
 msgid "Select a time"
 msgstr "Select a time"
 
@@ -2140,17 +2145,17 @@ msgstr "Smart Match"
 msgid "backendUnknownTitle"
 msgstr "Something went wrong"
 
-#: src/features/events/CreateEventDialog.tsx:104
+#: src/features/events/CreateEventDialog.tsx:112
 msgid "Something went wrong creating the event. Please try again."
 msgstr "Something went wrong creating the event. Please try again."
 
 #. js-lingui-explicit-id
-#: src/features/home/HomePage.tsx:66
+#: src/features/home/HomePage.tsx:82
 msgid "errorLoadingCommunitiesMessage"
 msgstr "Something went wrong loading communities. Please refresh."
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:305
+#: src/features/templates/TemplatePage.tsx:302
 msgid "somethingWentWrongLoadingEvents"
 msgstr "Something went wrong loading events."
 
@@ -2164,7 +2169,7 @@ msgid "errorLoadingNotificationSettings"
 msgstr "Something went wrong loading notification settings. Please refresh."
 
 #. js-lingui-explicit-id
-#: src/features/events/ParticipantsDialog.tsx:94
+#: src/features/events/ParticipantsDialog.tsx:132
 msgid "participantsLoadError"
 msgstr "Something went wrong loading participants. Please refresh."
 
@@ -2180,7 +2185,8 @@ msgstr "Something went wrong loading resources."
 msgid "Something went wrong loading the community."
 msgstr "Something went wrong loading the community."
 
-#: src/features/profile/EventsTab.tsx:41
+#: src/features/home/HomePage.tsx:122
+#: src/features/profile/EventsTab.tsx:30
 msgid "Something went wrong loading your events."
 msgstr "Something went wrong loading your events."
 
@@ -2200,8 +2206,8 @@ msgstr "Something went wrong. Please refresh."
 #: src/features/content/agenda/AgendaStepCard.tsx:138
 #: src/features/content/AgendaTab.tsx:54
 #: src/features/content/AgendaTab.tsx:74
-#: src/features/content/PrePostTab.tsx:98
-#: src/features/content/PrePostTab.tsx:192
+#: src/features/content/PrePostTab.tsx:155
+#: src/features/content/PrePostTab.tsx:293
 #: src/features/events/BreakoutsSection.tsx:65
 #: src/features/events/BreakoutsSection.tsx:454
 #: src/features/events/BreakoutsSection.tsx:473
@@ -2213,7 +2219,7 @@ msgstr "Something went wrong. Please refresh."
 #: src/features/events/EventInfoCard.tsx:643
 #: src/features/events/EventSettingsDrawer.tsx:102
 #: src/features/events/MessageParticipantsDialog.tsx:38
-#: src/features/events/ParticipantsDialog.tsx:82
+#: src/features/events/ParticipantsDialog.tsx:105
 #: src/features/posts/AddCommentDialog.tsx:93
 #: src/features/posts/CreatePostDialog.tsx:61
 #: src/features/profile/NotificationsTab.tsx:111
@@ -2230,7 +2236,7 @@ msgstr "Something went wrong. Please try again."
 msgid "somethingWentWrongTryAgain"
 msgstr "Something went wrong. Please try again."
 
-#: src/api/firebaseApi.ts:1499
+#: src/api/firebaseApi.ts:1677
 msgid "Sorry, this event was canceled, so you cannot join it."
 msgstr "Sorry, this event was canceled, so you cannot join it."
 
@@ -2312,7 +2318,7 @@ msgstr "The backend looks misconfigured (a project or API key that doesn't exist
 msgid "eventHasNotStartedYet"
 msgstr "The event has not started yet. We'll see you soon!"
 
-#: src/api/firebaseApi.ts:409
+#: src/api/firebaseApi.ts:489
 msgid "The live stream could not be set up."
 msgstr "The live stream could not be set up."
 
@@ -2374,7 +2380,7 @@ msgstr "This event is locked"
 msgid "thisEventWasCanceled"
 msgstr "This event was canceled."
 
-#: src/api/firebaseApi.ts:1488
+#: src/api/firebaseApi.ts:1659
 msgid "This event was not found."
 msgstr "This event was not found."
 
@@ -2383,11 +2389,11 @@ msgid "This page is not in the React app yet. Soon, this would fall back to the 
 msgstr "This page is not in the React app yet. Soon, this would fall back to the Flutter app."
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:81
+#: src/features/templates/TemplatePage.tsx:80
 msgid "templateNotFound"
 msgstr "This template could not be found."
 
-#: src/api/firebaseApi.ts:1250
+#: src/api/firebaseApi.ts:1386
 msgid "This template was not found."
 msgstr "This template was not found."
 
@@ -2405,7 +2411,7 @@ msgid "time"
 msgstr "Time"
 
 #. placeholder {0}: timeZoneAbbreviation(now)
-#: src/features/events/CreateEventDialog.tsx:161
+#: src/features/events/CreateEventDialog.tsx:169
 msgid "Time shown in {0}"
 msgstr "Time shown in {0}"
 
@@ -2455,7 +2461,7 @@ msgid "agendaItemType"
 msgstr "Type of agenda item"
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:144
+#: src/features/templates/TemplatePage.tsx:143
 msgid "eventHostingType"
 msgstr "Type of event"
 
@@ -2484,9 +2490,18 @@ msgid "Unknown VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\". Use \"cloudinary\" or
 msgstr "Unknown VITE_IMAGE_UPLOAD_PROVIDER \"{requested}\". Use \"cloudinary\" or \"firebase\"."
 
 #. js-lingui-explicit-id
+#: src/components/CommunitiesCarousel.tsx:100
+msgid "unnamedCommunity"
+msgstr "Unnamed Community"
+
+#. js-lingui-explicit-id
 #: src/components/layout/SideBar.tsx:102
 msgid "sidebar.unnamedCommunity"
 msgstr "Unnamed Community"
+
+#: src/components/CommunitiesCarousel.tsx:99
+#~ msgid "Unnamed Community"
+#~ msgstr "Unnamed Community"
 
 #. js-lingui-explicit-id
 #: src/features/events/EditEventDrawer.tsx:114
@@ -2495,14 +2510,14 @@ msgid "unsavedChanges"
 msgstr "Unsaved changes"
 
 #. js-lingui-explicit-id
-#: src/features/profile/EventsTab.tsx:48
+#: src/features/profile/EventsTab.tsx:37
 msgid "upcomingHeader"
 msgstr "UPCOMING"
 
 #. js-lingui-explicit-id
 #: src/features/community/CommunityHome.tsx:350
-#: src/features/templates/TemplatePage.tsx:236
-#: src/features/templates/TemplatePage.tsx:290
+#: src/features/templates/TemplatePage.tsx:235
+#: src/features/templates/TemplatePage.tsx:289
 msgid "upcomingEvents"
 msgstr "Upcoming Events"
 
@@ -2552,12 +2567,12 @@ msgid "videoTabUrl"
 msgstr "URL"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:297
+#: src/features/content/PrePostTab.tsx:464
 msgid "urlParameter"
 msgstr "URL Parameter"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:236
+#: src/features/content/PrePostTab.tsx:372
 msgid "urlPreview"
 msgstr "URL Preview"
 
@@ -2586,7 +2601,7 @@ msgid "videoUrlIsRequired"
 msgstr "Video URL is required"
 
 #. js-lingui-explicit-id
-#: src/features/content/PrePostTab.tsx:115
+#: src/features/content/PrePostTab.tsx:190
 msgid "viewCard"
 msgstr "View card"
 
@@ -2625,7 +2640,7 @@ msgid "When new {type} are added, you'll see them here."
 msgstr "When new {type} are added, you'll see them here."
 
 #. js-lingui-explicit-id
-#: src/features/templates/TemplatePage.tsx:385
+#: src/features/templates/TemplatePage.tsx:382
 msgid "whenNewEventsAreAdded"
 msgstr "When new events are added, you’ll see them here."
 
@@ -2656,7 +2671,7 @@ msgstr "Yes"
 
 #. js-lingui-explicit-id
 #: src/features/events/EventInfoCard.tsx:570
-#: src/features/events/ParticipantsDialog.tsx:76
+#: src/features/events/ParticipantsDialog.tsx:99
 msgid "yesCancel"
 msgstr "Yes, cancel"
 
@@ -2680,7 +2695,7 @@ msgid "You + {0}"
 msgstr "You + {0}"
 
 #. js-lingui-explicit-id
-#: src/features/events/EditTemplateNotice.tsx:53
+#: src/features/events/EditTemplateNotice.tsx:63
 msgid "editingEventNotice"
 msgstr "You are editing an event. \n"
 ""
@@ -2705,8 +2720,8 @@ msgid "emailAndPasswordMismatchCheck"
 msgstr "You can check what you entered and try again."
 
 #: src/features/home/HomePage.tsx:80
-msgid "You don't belong to any communities"
-msgstr "You don't belong to any communities"
+#~ msgid "You don't belong to any communities"
+#~ msgstr "You don't belong to any communities"
 
 #. js-lingui-explicit-id
 #: src/app/layouts/RootLayout.tsx:125
@@ -2723,7 +2738,17 @@ msgstr "You have unsaved changes to these settings. Discard them?"
 msgid "discardEventChanges"
 msgstr "You have unsaved changes to this event. Discard them?"
 
-#: src/api/firebaseApi.ts:145
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:90
+msgid "youHaventJoinedAnyCommunities"
+msgstr "You haven't joined any communities."
+
+#. js-lingui-explicit-id
+#: src/features/home/HomePage.tsx:125
+msgid "noUpcomingEventsMessage"
+msgstr "You haven't registered for any upcoming events."
+
+#: src/api/firebaseApi.ts:149
 msgid "You must be signed in to continue."
 msgstr "You must be signed in to continue."
 
