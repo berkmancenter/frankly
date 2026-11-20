@@ -114,6 +114,8 @@ export interface Community {
   description?: string;
   contactEmail?: string;
   profileImageUrl?: string;
+  /** Backdrop of the community's card on the home page. */
+  bannerImageUrl?: string;
   isPublic: boolean;
   /** `RRGGBB` (no `#`) — page background inside community pages. */
   themeLightColor?: string;
