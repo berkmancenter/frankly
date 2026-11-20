@@ -103,6 +103,27 @@ const COMMUNITY_PAGES: Entry[] = [
       lazy: page(() => import("@/features/events/EventPage"), "EventPage"),
     },
   },
+  // Built but not listed in `migrated-routes.json` until every admin tab is built.
+  {
+    pattern: "/space/:displayId/admin",
+    route: {
+      path: "admin",
+      lazy: page(
+        () => import("@/features/community/admin/CommunityAdminPage"),
+        "CommunityAdminPage",
+      ),
+    },
+  },
+  {
+    pattern: "/space/:displayId/admin/:tab",
+    route: {
+      path: "admin/:tab",
+      lazy: page(
+        () => import("@/features/community/admin/CommunityAdminPage"),
+        "CommunityAdminPage",
+      ),
+    },
+  },
   {
     pattern: "/space/:displayId/discuss/upcoming",
     route: {
