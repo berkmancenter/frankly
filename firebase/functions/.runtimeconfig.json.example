@@ -40,7 +40,7 @@
     "storage_secret_key": "<value>",
     "storage_access_key": "<value>",
     "storage_bucket_name": "<value>",
-    "recording_region": ""
+    "recording_region": "<value>"
   },
   "frankly_match": {
     "api_url": "<value>",
