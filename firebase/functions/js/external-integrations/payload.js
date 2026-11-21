@@ -123,8 +123,6 @@ function buildPayload({ delivery, attempt, sentAt, event, session, externalRefer
 
 module.exports = {
     SCHEMA_VERSION,
-    EVENT_RECORDING_READY,
-    EVENT_TRANSCRIPT_READY,
     SUPPORTED_EVENT_TYPES,
     deliveryIdFor,
     deliverableArtifacts,
