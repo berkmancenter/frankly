@@ -108,6 +108,20 @@ test('closes the connection after a 2xx instead of reading a slow body', async (
     )
 })
 
+test('returns the status when an error body stays open past the time limit', async () => {
+    await withServer(
+        (req, res) => {
+            // Send the status, then a little body, and never end it.
+            res.writeHead(401, { 'Content-Type': 'text/plain' })
+            res.write('denied')
+        },
+        async (base) => {
+            const result = await postJson(base, { ...local, timeoutMs: 200 })
+            assert.deepEqual(result, { status: 401, bodySnippet: 'denied' })
+        }
+    )
+})
+
 test('times out a receiver that never answers', async () => {
     await withServer(
         () => {},

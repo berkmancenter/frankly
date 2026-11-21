@@ -20,9 +20,11 @@ const DEFAULT_MAX_ERROR_BYTES = 1024
  *   emulator and for tests.
  *
  * Resolves `{ status, bodySnippet }`. `bodySnippet` is `''` for 2xx
- * responses, otherwise at most `maxErrorBytes` of the response body. Rejects
- * on network errors and timeouts; errors from `lookup` are passed through
- * unchanged, so a blocked address keeps its `retryable: false` mark.
+ * responses, otherwise at most `maxErrorBytes` of the response body. If the
+ * status has arrived but the error body is still open at the time limit, it
+ * resolves with the status and the body read so far. Rejects on network
+ * errors and timeouts before a status arrives; errors from `lookup` are passed
+ * through unchanged, so a blocked address keeps its `retryable: false` mark.
  */
 function postJson(
     url,
@@ -54,6 +56,10 @@ function postJson(
         }
 
         let settled = false
+        // Set once error response headers have arrived. At the deadline the
+        // known status is returned with whatever body was read so far, instead
+        // of a timeout that would make a final 4xx look retryable.
+        let finishWithStatus = null
         const finish = (fn, value) => {
             if (settled) return
             settled = true
@@ -71,7 +77,8 @@ function postJson(
         })
 
         const timer = setTimeout(() => {
-            req.destroy(new Error(`Request timed out after ${timeoutMs} ms`))
+            if (finishWithStatus) finishWithStatus()
+            else req.destroy(new Error(`Request timed out after ${timeoutMs} ms`))
         }, timeoutMs)
 
         req.on('error', (err) => finish(reject, err))
@@ -96,6 +103,7 @@ function postJson(
                     bodySnippet: Buffer.concat(chunks).subarray(0, maxErrorBytes).toString('utf8'),
                 })
             }
+            finishWithStatus = done
             res.on('data', (chunk) => {
                 chunks.push(chunk)
                 size += chunk.length
