@@ -283,7 +283,7 @@ firebase functions:config:set \
 | `allowed_domains` | empty (any public https host) | Comma separated domains webhook URLs may use. Subdomains are included. |
 | `signed_url_ttl_minutes` | `60` | Lifetime of download URLs (5 to 10080). |
 | `request_timeout_ms` | `10000` | Timeout of one request (1000 to 60000). |
-| `allow_local_targets_in_emulator` | `false` | `"true"` allows `http://localhost` receivers. Only honoured in the Functions emulator, for local testing. |
+| `allow_local_targets_in_emulator` | `true` | In the Functions emulator, `http://localhost` receivers are allowed for local testing unless this is `"false"`. Ignored outside the emulator. |
 
 Retries use the same Cloud Tasks queue (`scheduled-functions` in `us-east4`) and `app.functions_url_prefix` as Frankly's other scheduled functions.
 

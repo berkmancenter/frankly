@@ -39,8 +39,27 @@ test('local targets are only allowed inside the Functions emulator', () => {
         parseExternalIntegrationsConfig(raw, { FUNCTIONS_EMULATOR: 'true' }).allowLocalTargets,
         true
     )
+    assert.equal(parseExternalIntegrationsConfig({}, {}).allowLocalTargets, false)
+    assert.equal(parseExternalIntegrationsConfig(undefined, {}).allowLocalTargets, false)
+})
+
+test('local targets are allowed by default in the emulator unless set to "false"', () => {
+    const emulator = { FUNCTIONS_EMULATOR: 'true' }
+    assert.equal(parseExternalIntegrationsConfig(undefined, emulator).allowLocalTargets, true)
+    assert.equal(parseExternalIntegrationsConfig({}, emulator).allowLocalTargets, true)
     assert.equal(
-        parseExternalIntegrationsConfig({}, { FUNCTIONS_EMULATOR: 'true' }).allowLocalTargets,
+        parseExternalIntegrationsConfig({ allow_local_targets_in_emulator: true }, emulator)
+            .allowLocalTargets,
+        true
+    )
+    assert.equal(
+        parseExternalIntegrationsConfig({ allow_local_targets_in_emulator: 'false' }, emulator)
+            .allowLocalTargets,
+        false
+    )
+    assert.equal(
+        parseExternalIntegrationsConfig({ allow_local_targets_in_emulator: false }, emulator)
+            .allowLocalTargets,
         false
     )
 })
