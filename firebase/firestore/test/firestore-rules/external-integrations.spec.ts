@@ -182,6 +182,22 @@ describe("External integration rules", () => {
       await firebase.assertFails(
         db.doc(settingsPath).set({ ...valid("host"), updatedBy: "someoneElse" })
       );
+      await firebase.assertFails(
+        db.doc(settingsPath).set({ ...valid("host"), updatedAt: "not-a-date" })
+      );
+    });
+
+    it("accepts a timestamp or null updatedAt", async () => {
+      const db = authed("host");
+      await firebase.assertSucceeds(
+        db.doc(settingsPath).set({
+          ...valid("host"),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+      );
+      await firebase.assertSucceeds(
+        db.doc(settingsPath).set({ ...valid("host"), updatedAt: null })
+      );
     });
 
     it("is readable by signed-in users", async () => {

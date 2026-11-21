@@ -177,6 +177,12 @@ describe("External integration rules", () => {
             yield firebase.assertFails(db.doc(settingsPath).set(Object.assign(Object.assign({}, valid("host")), { integrationId: "other" })));
             yield firebase.assertFails(db.doc(settingsPath).set(Object.assign(Object.assign({}, valid("host")), { enabled: "yes" })));
             yield firebase.assertFails(db.doc(settingsPath).set(Object.assign(Object.assign({}, valid("host")), { updatedBy: "someoneElse" })));
+            yield firebase.assertFails(db.doc(settingsPath).set(Object.assign(Object.assign({}, valid("host")), { updatedAt: "not-a-date" })));
+        }));
+        it("accepts a timestamp or null updatedAt", () => __awaiter(void 0, void 0, void 0, function* () {
+            const db = authed("host");
+            yield firebase.assertSucceeds(db.doc(settingsPath).set(Object.assign(Object.assign({}, valid("host")), { updatedAt: firebase.firestore.FieldValue.serverTimestamp() })));
+            yield firebase.assertSucceeds(db.doc(settingsPath).set(Object.assign(Object.assign({}, valid("host")), { updatedAt: null })));
         }));
         it("is readable by signed-in users", () => __awaiter(void 0, void 0, void 0, function* () {
             yield admin.doc(settingsPath).set(valid("host"));

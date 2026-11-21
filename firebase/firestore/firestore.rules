@@ -422,6 +422,7 @@ service cloud.firestore {
                                    && data.get('integrationId', null) == integrationId
                                    && data.get('enabled', null) is bool
                                    && data.get('updatedBy', request.auth.uid) == request.auth.uid
+                                   && (data.get('updatedAt', null) == null || data.updatedAt is timestamp)
                                    && (data.get('externalReference', null) == null
                                        || (data.externalReference is string && data.externalReference.size() <= 500));
                         }
