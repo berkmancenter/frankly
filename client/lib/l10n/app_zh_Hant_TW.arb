@@ -868,7 +868,7 @@
   "participantActions": "參與者操作",
   "participantActionsForUserWithId": "使用者ID為{userId}的參與者操作",
   "participantCount": "{count}位參與者",
-  "recordingsAreSentTo": "本活動的錄影將傳送到",
+  "recordingsAreSentTo": "本活動的錄影將傳送到以下外部服務。",
   "registrationCountLabel": "{count}個註冊",
   "@registrationCountLabel": {
     "placeholders": {

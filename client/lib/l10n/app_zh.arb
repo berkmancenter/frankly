@@ -873,7 +873,7 @@
   "participantActions": "参与者操作",
   "participantActionsForUserWithId": "ID为{userId}的用户的参与者操作",
   "participantCount": "{count}位参与者",
-  "recordingsAreSentTo": "本活动的录音将发送到",
+  "recordingsAreSentTo": "本活动的录音将发送到以下外部服务。",
   "registrationCountLabel": "{count}个注册",
   "@registrationCountLabel": {
     "placeholders": {

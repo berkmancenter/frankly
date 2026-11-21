@@ -884,7 +884,7 @@
   "participantActions": "Acciones del participante",
   "participantActionsForUserWithId": "Acciones del participante para el usuario con ID {userId}",
   "participantCount": "{count} participantes",
-  "recordingsAreSentTo": "Las grabaciones de este evento se envían a",
+  "recordingsAreSentTo": "Las grabaciones de este evento se envían a los siguientes servicios externos.",
   "registrationCountLabel": "{count} {count, plural, =1{Registro} other{Registros}}",
   "@registrationCountLabel": {
     "placeholders": {
