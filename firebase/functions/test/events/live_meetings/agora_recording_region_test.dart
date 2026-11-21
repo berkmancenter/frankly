@@ -12,5 +12,16 @@ void main() {
       expect(recordingAcquireClientRequest('EU'), {'region': 'EU'});
       expect(recordingAcquireClientRequest(' eu '), {'region': 'EU'});
     });
+
+    test('accepts every supported region', () {
+      for (final region in ['CN', 'AP', 'EU', 'NA']) {
+        expect(recordingAcquireClientRequest(region), {'region': region});
+      }
+    });
+
+    test('leaves out an unsupported region', () {
+      expect(recordingAcquireClientRequest('US'), isEmpty);
+      expect(recordingAcquireClientRequest('europe'), isEmpty);
+    });
   });
 }

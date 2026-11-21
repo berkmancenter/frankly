@@ -37,11 +37,29 @@ final _agoraStorageSecretKey =
 final _agoraRecordingRegion =
     functions.config.get('agora.recording_region') as String?;
 
+/// Region codes accepted by Agora Cloud Recording.
+const agoraRecordingRegions = {'CN', 'AP', 'EU', 'NA'};
+
 /// `clientRequest` for the Cloud Recording acquire call. Without a configured
-/// region the request stays empty, which is the previous behaviour.
+/// region the request stays empty, which is the previous behaviour. An unknown
+/// region is logged and left out, so recording still works with Agora's
+/// default region instead of failing.
 Map<String, Object> recordingAcquireClientRequest(String? recordingRegion) {
+  final Map<String, Object> request = {};
+
   final region = recordingRegion?.trim().toUpperCase() ?? '';
-  return {if (region.isNotEmpty) 'region': region};
+  if (region.isNotEmpty) {
+    if (agoraRecordingRegions.contains(region)) {
+      request['region'] = region;
+    } else {
+      print(
+        'Ignoring invalid agora.recording_region "$recordingRegion". '
+        'Expected one of ${agoraRecordingRegions.join(', ')}.',
+      );
+    }
+  }
+
+  return request;
 }
 
 class AgoraUtils {
