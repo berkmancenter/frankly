@@ -1,6 +1,6 @@
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_switch_tile.dart';
+import 'package:client/features/external_integrations/data/models/event_integration_change.dart';
 import 'package:client/features/external_integrations/presentation/widgets/integration_badge.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
@@ -17,11 +17,27 @@ typedef _SectionData = (
 /// Event settings: lets the host switch each external integration on or off
 /// for this event and set the optional pass-through reference. Renders
 /// nothing when the community has no active integration.
+///
+/// Nothing is written here. Edits are reported through [onChanged] and kept
+/// in [pendingChanges] by the event settings drawer, which writes them when
+/// the drawer is saved.
 class EventExternalIntegrationsSection extends StatefulWidget {
   final Event event;
 
-  const EventExternalIntegrationsSection({required this.event, Key? key})
-      : super(key: key);
+  /// Unsaved changes keyed by integration id.
+  final Map<String, EventIntegrationChange> pendingChanges;
+
+  /// Called with an integration's new values, or `null` when they match the
+  /// saved settings again.
+  final void Function(String integrationId, EventIntegrationChange? change)
+      onChanged;
+
+  const EventExternalIntegrationsSection({
+    required this.event,
+    required this.pendingChanges,
+    required this.onChanged,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<EventExternalIntegrationsSection> createState() =>
@@ -72,9 +88,11 @@ class _EventExternalIntegrationsSectionState
               for (final integration in integrations)
                 _EventIntegrationTile(
                   key: ValueKey(integration.id),
-                  event: widget.event,
                   integration: integration,
                   settings: settings[integration.id],
+                  pendingChange: widget.pendingChanges[integration.id],
+                  onChanged: (change) =>
+                      widget.onChanged(integration.id, change),
                 ),
             ],
           ),
@@ -85,14 +103,16 @@ class _EventExternalIntegrationsSectionState
 }
 
 class _EventIntegrationTile extends StatefulWidget {
-  final Event event;
   final ExternalIntegration integration;
   final EventExternalIntegrationSettings? settings;
+  final EventIntegrationChange? pendingChange;
+  final void Function(EventIntegrationChange? change) onChanged;
 
   const _EventIntegrationTile({
-    required this.event,
     required this.integration,
     required this.settings,
+    required this.pendingChange,
+    required this.onChanged,
     Key? key,
   }) : super(key: key);
 
@@ -102,24 +122,26 @@ class _EventIntegrationTile extends StatefulWidget {
 
 class _EventIntegrationTileState extends State<_EventIntegrationTile> {
   late final TextEditingController _reference;
-  bool _saving = false;
 
-  bool get _enabled => widget.settings?.enabled ?? false;
+  bool get _savedEnabled => widget.settings?.enabled ?? false;
+  String get _savedReference => widget.settings?.externalReference ?? '';
+  bool get _enabled => widget.pendingChange?.enabled ?? _savedEnabled;
 
   @override
   void initState() {
     super.initState();
-    _reference =
-        TextEditingController(text: widget.settings?.externalReference ?? '');
+    _reference = TextEditingController(
+      text: widget.pendingChange?.externalReference ?? _savedReference,
+    );
   }
 
   @override
   void didUpdateWidget(_EventIntegrationTile oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final saved = widget.settings?.externalReference ?? '';
-    if (oldWidget.settings?.externalReference != saved &&
-        _reference.text == (oldWidget.settings?.externalReference ?? '')) {
-      _reference.text = saved;
+    // Follow a saved value that changed elsewhere, unless the host is
+    // editing this field.
+    if (widget.pendingChange == null && _reference.text != _savedReference) {
+      _reference.text = _savedReference;
     }
   }
 
@@ -129,18 +151,16 @@ class _EventIntegrationTileState extends State<_EventIntegrationTile> {
     super.dispose();
   }
 
-  Future<void> _save({required bool enabled}) async {
-    setState(() => _saving = true);
-    await alertOnError(
-      context,
-      () => externalIntegrationsService.updateEventSettings(
-        event: widget.event,
-        integrationId: widget.integration.id,
-        enabled: enabled,
-        externalReference: _reference.text,
-      ),
+  /// Reports the current values to the drawer, or `null` when they match
+  /// what is saved, so there is nothing to save.
+  void _update({bool? enabled}) {
+    final change = EventIntegrationChange(
+      enabled: enabled ?? _enabled,
+      externalReference: _reference.text,
     );
-    if (mounted) setState(() => _saving = false);
+    final unchanged = change.enabled == _savedEnabled &&
+        change.externalReference.trim() == _savedReference;
+    widget.onChanged(unchanged ? null : change);
   }
 
   @override
@@ -148,8 +168,6 @@ class _EventIntegrationTileState extends State<_EventIntegrationTile> {
     final description = widget.integration.description;
     final referenceLabel = widget.integration.externalReferenceLabel ??
         context.l10n.eventIntegrationReferenceHint;
-    final referenceChanged =
-        _reference.text.trim() != (widget.settings?.externalReference ?? '');
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -162,8 +180,7 @@ class _EventIntegrationTileState extends State<_EventIntegrationTile> {
               child: IntegrationBadge(integration: widget.integration),
             ),
             val: _enabled,
-            loading: _saving,
-            onUpdate: (value) => _save(enabled: value),
+            onUpdate: (value) => _update(enabled: value),
           ),
           if (description != null && description.isNotEmpty)
             Padding(
@@ -183,17 +200,8 @@ class _EventIntegrationTileState extends State<_EventIntegrationTile> {
                   labelText: referenceLabel,
                   isDense: true,
                   counterText: '',
-                  suffixIcon: referenceChanged
-                      ? IconButton(
-                          tooltip: context.l10n.save,
-                          icon: Icon(Icons.check),
-                          onPressed:
-                              _saving ? null : () => _save(enabled: true),
-                        )
-                      : null,
                 ),
-                onChanged: (_) => setState(() {}),
-                onSubmitted: (_) => _save(enabled: true),
+                onChanged: (_) => _update(),
               ),
             ),
         ],

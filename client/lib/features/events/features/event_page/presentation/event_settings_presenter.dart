@@ -9,6 +9,9 @@ import 'package:client/core/data/services/firestore_database.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/dialogs.dart';
+import 'package:client/core/utils/error_utils.dart';
+import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/features/external_integrations/data/models/event_integration_change.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
@@ -116,6 +119,21 @@ class EventSettingsPresenter {
     _view.updateView();
   }
 
+  /// Records an unsaved external integration change. `null` means the
+  /// integration's values match what is saved again.
+  void updateIntegrationSetting(
+    String integrationId,
+    EventIntegrationChange? change,
+  ) {
+    if (change == null) {
+      _model.integrationChanges.remove(integrationId);
+    } else {
+      _model.integrationChanges[integrationId] = change;
+    }
+    _appDrawerProvider.setUnsavedChanges(_helper.wereChangesMade(_model));
+    _view.updateView();
+  }
+
   Future<void> saveSettings() async {
     switch (_model.eventSettingsDrawerType) {
       case EventSettingsDrawerType.template:
@@ -137,10 +155,37 @@ class EventSettingsPresenter {
         break;
       case EventSettingsDrawerType.event:
         await _eventProvider.updateEventSettings(_model.eventSettings);
+        if (!await _saveIntegrationChanges()) return;
         break;
     }
 
     _view.closeDrawer();
+  }
+
+  /// Writes pending external integration changes. Returns false and keeps
+  /// the drawer open if a write fails, so the host can try again.
+  Future<bool> _saveIntegrationChanges() async {
+    final event = _eventProvider.event;
+    try {
+      for (final entry in _model.integrationChanges.entries.toList()) {
+        await externalIntegrationsService.updateEventSettings(
+          event: event,
+          integrationId: entry.key,
+          enabled: entry.value.enabled,
+          externalReference: entry.value.externalReference,
+        );
+        _model.integrationChanges.remove(entry.key);
+      }
+    } catch (e, s) {
+      loggingService.log(e, logType: LogType.error, stackTrace: s);
+      _appDrawerProvider.setUnsavedChanges(_helper.wereChangesMade(_model));
+      _view.showMessage(
+        sanitizeError(e.toString()),
+        toastType: ToastType.failed,
+      );
+      return false;
+    }
+    return true;
   }
 
   Future<void> restoreDefaultSettings() async {
@@ -181,6 +226,7 @@ class EventSettingsPresenter {
 @visibleForTesting
 class EventSettingsPresenterHelper {
   bool wereChangesMade(EventSettingsModel model) {
-    return model.eventSettings != model.initialEventSettings;
+    return model.eventSettings != model.initialEventSettings ||
+        model.integrationChanges.isNotEmpty;
   }
 }

@@ -6,11 +6,30 @@ import 'package:client/core/localization/app_localization_service.dart';
 import 'package:client/features/events/features/event_page/presentation/views/event_settings_drawer.dart';
 import 'package:client/features/events/features/event_page/data/models/event_settings_model.dart';
 import 'package:client/features/events/features/event_page/presentation/event_settings_presenter.dart';
+import 'package:client/features/external_integrations/data/models/event_integration_change.dart';
+import 'package:client/features/external_integrations/data/services/external_integrations_service.dart';
+import 'package:client/core/utils/toast_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../../mocked_classes.mocks.dart';
+
+class _FakeExternalIntegrationsService extends ExternalIntegrationsService {
+  final writes = <(String, bool, String?)>[];
+  bool fail = false;
+
+  @override
+  Future<void> updateEventSettings({
+    required Event event,
+    required String integrationId,
+    required bool enabled,
+    String? externalReference,
+  }) async {
+    if (fail) throw Exception('write failed');
+    writes.add((integrationId, enabled, externalReference));
+  }
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -122,6 +141,66 @@ void main() {
       verify(
         mockEventProvider.updateEventSettings(model.eventSettings),
       ).called(1);
+    });
+
+    group('external integrations', () {
+      late _FakeExternalIntegrationsService integrations;
+
+      setUp(() {
+        integrations = _FakeExternalIntegrationsService();
+        if (GetIt.instance.isRegistered<ExternalIntegrationsService>()) {
+          GetIt.instance.unregister<ExternalIntegrationsService>();
+        }
+        GetIt.instance
+            .registerSingleton<ExternalIntegrationsService>(integrations);
+        when(mockEventProvider.event).thenReturn(mockEvent);
+        model.eventSettings = defaultSettings();
+        model.initialEventSettings = defaultSettings();
+      });
+
+      test('updateIntegrationSetting keeps the change until save', () {
+        const change =
+            EventIntegrationChange(enabled: true, externalReference: 'p-1');
+
+        presenter.updateIntegrationSetting('int1', change);
+
+        expect(model.integrationChanges, {'int1': change});
+        expect(EventSettingsPresenterHelper().wereChangesMade(model), isTrue);
+        expect(integrations.writes, isEmpty);
+        verify(mockView.updateView()).called(1);
+
+        presenter.updateIntegrationSetting('int1', null);
+        expect(model.integrationChanges, isEmpty);
+        expect(EventSettingsPresenterHelper().wereChangesMade(model), isFalse);
+      });
+
+      test('saveSettings writes pending changes and closes the drawer',
+          () async {
+        model.integrationChanges['int1'] =
+            const EventIntegrationChange(enabled: true, externalReference: 'p');
+
+        await presenter.saveSettings();
+
+        verify(mockEventProvider.updateEventSettings(model.eventSettings))
+            .called(1);
+        expect(integrations.writes, [('int1', true, 'p')]);
+        expect(model.integrationChanges, isEmpty);
+        verify(mockView.closeDrawer()).called(1);
+      });
+
+      test('saveSettings keeps the drawer open when a write fails', () async {
+        integrations.fail = true;
+        model.integrationChanges['int1'] =
+            const EventIntegrationChange(enabled: false, externalReference: '');
+
+        await presenter.saveSettings();
+
+        expect(model.integrationChanges, hasLength(1));
+        verify(
+          mockView.showMessage(any, toastType: ToastType.failed),
+        ).called(1);
+        verifyNever(mockView.closeDrawer());
+      });
     });
 
     test('restoreDefaultSettings', () {

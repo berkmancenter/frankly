@@ -169,6 +169,8 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
           if (widget.eventSettingsDrawerType == EventSettingsDrawerType.event)
             EventExternalIntegrationsSection(
               event: context.read<EventProvider>().event,
+              pendingChanges: _model.integrationChanges,
+              onChanged: _presenter.updateIntegrationSetting,
             ),
           SizedBox(height: 40),
           ActionButton(

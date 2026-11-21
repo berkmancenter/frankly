@@ -1,4 +1,5 @@
 import 'package:client/core/localization/app_localization_service.dart';
+import 'package:client/features/external_integrations/data/models/event_integration_change.dart';
 import 'package:client/features/external_integrations/data/services/external_integrations_service.dart';
 import 'package:client/features/external_integrations/presentation/widgets/event_external_integrations_section.dart';
 import 'package:client/features/external_integrations/presentation/widgets/recording_destination_notice.dart';
@@ -23,6 +24,18 @@ class _FakeExternalIntegrationsService extends ExternalIntegrationsService {
     Event event,
   ) =>
       Stream.value(settings);
+
+  int writes = 0;
+
+  @override
+  Future<void> updateEventSettings({
+    required Event event,
+    required String integrationId,
+    required bool enabled,
+    String? externalReference,
+  }) async {
+    writes++;
+  }
 
   @override
   Stream<List<ExternalIntegration>> enabledIntegrationsForEvent(Event event) =>
@@ -118,7 +131,14 @@ void main() {
   group('EventExternalIntegrationsSection', () {
     testWidgets('is hidden when the community has no active integration',
         (tester) async {
-      await pump(tester, EventExternalIntegrationsSection(event: event));
+      await pump(
+        tester,
+        EventExternalIntegrationsSection(
+          event: event,
+          pendingChanges: const {},
+          onChanged: (_, __) {},
+        ),
+      );
       expect(find.text(l10n.eventIntegrationsTitle), findsNothing);
     });
 
@@ -134,11 +154,62 @@ void main() {
           externalReference: 'p-42',
         ),
       };
-      await pump(tester, EventExternalIntegrationsSection(event: event));
+      await pump(
+        tester,
+        EventExternalIntegrationsSection(
+          event: event,
+          pendingChanges: const {},
+          onChanged: (_, __) {},
+        ),
+      );
       expect(find.text(l10n.eventIntegrationsTitle), findsOneWidget);
       expect(find.text('Example Receiver'), findsOneWidget);
       expect(find.text('Project ID'), findsOneWidget);
       expect(find.text('p-42'), findsOneWidget);
+      expect(find.byType(IconButton), findsNothing);
+    });
+
+    testWidgets('reports edits as pending changes without saving them',
+        (tester) async {
+      service.active = [integration];
+      final pending = <String, EventIntegrationChange>{};
+      await pump(
+        tester,
+        StatefulBuilder(
+          builder: (context, setState) => EventExternalIntegrationsSection(
+            event: event,
+            pendingChanges: pending,
+            onChanged: (id, change) => setState(() {
+              if (change == null) {
+                pending.remove(id);
+              } else {
+                pending[id] = change;
+              }
+            }),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+      expect(
+        pending['int1'],
+        const EventIntegrationChange(enabled: true, externalReference: ''),
+      );
+
+      await tester.enterText(find.byType(TextField), 'p-7');
+      await tester.pump();
+      expect(
+        pending['int1'],
+        const EventIntegrationChange(enabled: true, externalReference: 'p-7'),
+      );
+
+      // Back to the saved values: nothing left to save.
+      await tester.enterText(find.byType(TextField), '');
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+      expect(pending, isEmpty);
+      expect(service.writes, 0);
     });
   });
 }
