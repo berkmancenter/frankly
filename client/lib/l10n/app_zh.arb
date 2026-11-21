@@ -716,7 +716,7 @@
   "length": "时长",
   "lightColorHex": "浅色十六进制值",
   "linkCopied": "链接已复制！",
-  "linkMustBeMp4": "链接必须为 MP4",
+  "linkMustBeMp4OrWebm": "链接必须为 MP4 或 WebM",
   "linkedinUrl": "LinkedIn链接",
   "links": "链接",
   "livestream": "直播",

@@ -402,7 +402,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
               child: CustomTextField(
                 padding: EdgeInsets.zero,
                 controller: _textEditingController,
-                labelText: context.l10n.linkMustBeMp4,
+                labelText: context.l10n.linkMustBeMp4OrWebm,
                 onChanged: (value) => _presenter.updateVideoUrl(value),
               ),
             ),

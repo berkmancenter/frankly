@@ -726,7 +726,7 @@
   "length": "Duración",
   "lightColorHex": "Color claro HEX#",
   "linkCopied": "¡Enlace copiado!",
-  "linkMustBeMp4": "El enlace debe ser MP4",
+  "linkMustBeMp4OrWebm": "El enlace debe ser MP4 o WebM",
   "linkedinUrl": "URL de LinkedIn",
   "links": "Enlaces",
   "livestream": "Transmisión en vivo",

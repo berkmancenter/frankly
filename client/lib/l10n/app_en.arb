@@ -656,7 +656,7 @@
   "length": "Length",
   "lightColorHex": "Light Color HEX#",
   "linkCopied": "Link Copied!",
-  "linkMustBeMp4": "Link must be MP4",
+  "linkMustBeMp4OrWebm": "Link must be MP4 or WebM",
   "linkedinUrl": "LinkedIn URL",
   "links": "Links",
   "livestream": "Livestream",
