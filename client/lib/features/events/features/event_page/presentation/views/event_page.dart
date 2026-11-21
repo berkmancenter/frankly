@@ -182,7 +182,22 @@ class EventPageState extends State<EventPage> implements EventPageView {
               context.read<EventProvider>().event.eventSettings;
           final isRecording = eventSettings?.alwaysRecord == true;
           final isTranscribing = eventSettings?.alwaysTranscribe == true;
-          if (isRecording || isTranscribing) {
+          var showConsent = isRecording;
+          if (!isRecording && isTranscribing) {
+            // A transcript alone only needs a notice when it is sent to an
+            // external service.
+            try {
+              final destinations = await externalIntegrationsService
+                  .enabledIntegrationsForEvent(event)
+                  .first;
+              showConsent = destinations.isNotEmpty;
+            } catch (_) {
+              // Can't tell. Show the dialog, which retries the lookup.
+              showConsent = true;
+            }
+            if (!mounted) return false;
+          }
+          if (showConsent) {
             // Continue stays off until the participant can see where the
             // recordings are sent.
             final destinationsLoaded = ValueNotifier(false);
