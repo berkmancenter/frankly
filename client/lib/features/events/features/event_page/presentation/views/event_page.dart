@@ -175,10 +175,14 @@ class EventPageState extends State<EventPage> implements EventPageView {
             return false;
           }
 
-          // If the event is always recorded, show a consent dialog before joining
-          if(!mounted) return false;
-          if (context.read<EventProvider>().event.eventSettings?.alwaysRecord ==
-              true) {
+          // If the event is always recorded or transcribed, show a consent
+          // dialog before joining.
+          if (!mounted) return false;
+          final eventSettings =
+              context.read<EventProvider>().event.eventSettings;
+          final isRecording = eventSettings?.alwaysRecord == true;
+          final isTranscribing = eventSettings?.alwaysTranscribe == true;
+          if (isRecording || isTranscribing) {
             final proceed = await showDialog<bool>(
               context: context,
               builder: (context) => AlertDialog(
@@ -187,7 +191,8 @@ class EventPageState extends State<EventPage> implements EventPageView {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(context.l10n.hostWillReceiveDownloadableCopy),
+                    if (isRecording)
+                      Text(context.l10n.hostWillReceiveDownloadableCopy),
                     RecordingDestinationNotice(event: event),
                   ],
                 ),
@@ -279,7 +284,6 @@ class EventPageState extends State<EventPage> implements EventPageView {
       },
     );
   }
-
 
   Widget _buildGuide() {
     return Column(
