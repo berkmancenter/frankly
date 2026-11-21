@@ -183,6 +183,9 @@ class EventPageState extends State<EventPage> implements EventPageView {
           final isRecording = eventSettings?.alwaysRecord == true;
           final isTranscribing = eventSettings?.alwaysTranscribe == true;
           if (isRecording || isTranscribing) {
+            // Continue stays off until the participant can see where the
+            // recordings are sent.
+            final destinationsLoaded = ValueNotifier(false);
             final proceed = await showDialog<bool>(
               context: context,
               builder: (context) => AlertDialog(
@@ -193,7 +196,10 @@ class EventPageState extends State<EventPage> implements EventPageView {
                   children: [
                     if (isRecording)
                       Text(context.l10n.hostWillReceiveDownloadableCopy),
-                    RecordingDestinationNotice(event: event),
+                    RecordingDestinationNotice(
+                      event: event,
+                      onLoaded: () => destinationsLoaded.value = true,
+                    ),
                   ],
                 ),
                 actions: [
@@ -204,9 +210,13 @@ class EventPageState extends State<EventPage> implements EventPageView {
                     ),
                     child: Text(context.l10n.leave),
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, true),
-                    child: Text(context.l10n.continueButton),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: destinationsLoaded,
+                    builder: (context, loaded, _) => TextButton(
+                      onPressed:
+                          loaded ? () => Navigator.pop(context, true) : null,
+                      child: Text(context.l10n.continueButton),
+                    ),
                   ),
                 ],
               ),

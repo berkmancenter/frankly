@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:client/core/localization/app_localization_service.dart';
 import 'package:client/features/external_integrations/data/models/event_integration_change.dart';
 import 'package:client/features/external_integrations/data/services/external_integrations_service.dart';
@@ -37,8 +39,12 @@ class _FakeExternalIntegrationsService extends ExternalIntegrationsService {
     writes++;
   }
 
+  /// When set, used instead of the default lookup.
+  Stream<List<ExternalIntegration>>? enabledStream;
+
   @override
   Stream<List<ExternalIntegration>> enabledIntegrationsForEvent(Event event) =>
+      enabledStream ??
       Stream.value(
         active.where((i) => settings[i.id]?.enabled ?? false).toList(),
       );
@@ -125,6 +131,70 @@ void main() {
       await pump(tester, RecordingDestinationNotice(event: event));
       expect(find.text(l10n.recordingsAreSentTo), findsOneWidget);
       expect(find.text('Example Receiver'), findsOneWidget);
+    });
+  });
+
+  group('RecordingDestinationNotice loading', () {
+    testWidgets('shows a spinner and does not report loaded while waiting',
+        (tester) async {
+      final controller = StreamController<List<ExternalIntegration>>();
+      addTearDown(controller.close);
+      service.enabledStream = controller.stream;
+      var loaded = 0;
+      await pump(
+        tester,
+        RecordingDestinationNotice(event: event, onLoaded: () => loaded++),
+      );
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(loaded, 0);
+
+      controller.add([integration]);
+      await tester.pump();
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      expect(find.text('Example Receiver'), findsOneWidget);
+      expect(loaded, 1);
+
+      controller.add([]);
+      await tester.pump();
+      expect(find.text('Example Receiver'), findsNothing);
+      expect(loaded, 1);
+    });
+
+    testWidgets('reports loaded when no integration is on', (tester) async {
+      var loaded = 0;
+      await pump(
+        tester,
+        RecordingDestinationNotice(event: event, onLoaded: () => loaded++),
+      );
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      expect(loaded, 1);
+    });
+
+    testWidgets('shows an error with reload when the lookup fails',
+        (tester) async {
+      service.enabledStream = Stream.error(Exception('offline'));
+      var loaded = 0;
+      await pump(
+        tester,
+        RecordingDestinationNotice(event: event, onLoaded: () => loaded++),
+      );
+      expect(find.text(l10n.somethingWentWrong), findsOneWidget);
+      expect(loaded, 0);
+
+      service.enabledStream = null;
+      service.active = [integration];
+      service.settings = {
+        'int1': EventExternalIntegrationSettings(
+          integrationId: 'int1',
+          enabled: true,
+        ),
+      };
+      await tester.tap(find.text(l10n.reload));
+      await tester.pump();
+      await tester.pump();
+      expect(find.text(l10n.somethingWentWrong), findsNothing);
+      expect(find.text('Example Receiver'), findsOneWidget);
+      expect(loaded, 1);
     });
   });
 

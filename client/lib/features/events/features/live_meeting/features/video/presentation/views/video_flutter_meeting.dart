@@ -105,6 +105,9 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   void _showRecordingAlert(BuildContext context) {
     final liveMeetingProvider = LiveMeetingProvider.read(context);
     final event = EventProvider.read(context).event;
+    // Continue stays off until the participant can see where the recordings
+    // are sent.
+    final destinationsLoaded = ValueNotifier(false);
     showDialog(
       context: context,
       builder: (dialogContext) {
@@ -118,7 +121,10 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(dialogContext.l10n.hostBeganRecording),
-              RecordingDestinationNotice(event: event),
+              RecordingDestinationNotice(
+                event: event,
+                onLoaded: () => destinationsLoaded.value = true,
+              ),
             ],
           ),
           actions: [
@@ -132,9 +138,13 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
               ),
               child: Text(dialogContext.l10n.leave),
             ),
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(dialogContext.l10n.continueButton),
+            ValueListenableBuilder<bool>(
+              valueListenable: destinationsLoaded,
+              builder: (context, loaded, _) => TextButton(
+                onPressed:
+                    loaded ? () => Navigator.of(dialogContext).pop() : null,
+                child: Text(dialogContext.l10n.continueButton),
+              ),
             ),
           ],
         );
