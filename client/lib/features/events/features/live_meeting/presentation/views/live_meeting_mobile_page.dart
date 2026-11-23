@@ -1056,9 +1056,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
                     padding: const EdgeInsets.all(12),
                     child: Icon(
                       Icons.close,
-                      color: isAdmin
-                          ? context.theme.colorScheme.onPrimary
-                          : context.theme.colorScheme.onPrimaryContainer,
+                      color: context.theme.colorScheme.primary,
                       size: 20,
                     ),
                   ),

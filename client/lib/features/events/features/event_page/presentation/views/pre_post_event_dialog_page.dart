@@ -178,7 +178,7 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
     return ActionButton(
       color: context.theme.colorScheme.primary,
       type: ActionButtonType.filled,
-      text: buttonTextNotEmpty ? buttonText : 'Open Link',
+      text: buttonTextNotEmpty ? buttonText : context.l10n.openLink,
       onPressed: () =>
           alertOnError(context, () => _presenter.launchSurvey(urlParams)),
     );
@@ -187,7 +187,7 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
   Widget _buildNextButton() {
     return ActionButton(
       onPressed: () => Navigator.pop(context),
-      text: 'Next',
+      text: context.l10n.next,
     );
   }
 }

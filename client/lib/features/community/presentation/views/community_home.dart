@@ -240,7 +240,7 @@ class _CommunityHomeState extends State<CommunityHome> {
     return CustomStreamBuilder<List<Event>>(
       entryFrom: '_CommunityHomeState._buildEvents',
       stream: Provider.of<CommunityHomeProvider>(context).eventsStream,
-      errorMessage: 'Error loading events. Please refresh!',
+      errorMessage: context.l10n.errorLoadingEventsRefresh,
       builder: (_, events) {
         if (events == null || events.isEmpty) {
           if (Provider.of<CommunityPermissionsProvider>(context)
@@ -261,7 +261,7 @@ class _CommunityHomeState extends State<CommunityHome> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: HeightConstrainedText(
-                  'Upcoming Events',
+                  context.l10n.upcomingEvents,
                   style: AppTextStyle.headline4.copyWith(
                     color: context.theme.colorScheme.secondary,
                   ),
@@ -291,7 +291,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                         ),
                         alignment: Alignment.center,
                         child: HeightConstrainedText(
-                          'See More Events',
+                          context.l10n.seeMoreEvents,
                           style: AppTextStyle.eyebrowSmall,
                         ),
                       ),
@@ -315,7 +315,7 @@ class _CommunityHomeState extends State<CommunityHome> {
             type: EmptyPageType.events,
             subtitleText: (communityHasEvents ?? true)
                 ? context.l10n.noEventsFound
-                : 'Create your first event!',
+                : context.l10n.createYourFirstEvent,
             onButtonPress: () => CreateEventDialog.show(context),
           );
         },

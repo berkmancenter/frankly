@@ -162,7 +162,7 @@ class _ManipulateDiscussionThreadPageState
                         Icon(Icons.attach_file_rounded),
                         SizedBox(width: 10),
                         HeightConstrainedText(
-                          'Image',
+                          context.l10n.image,
                           style: AppTextStyle.bodyMedium.copyWith(
                             color: context.theme.colorScheme.primary,
                           ),

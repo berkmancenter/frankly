@@ -79,7 +79,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HeightConstrainedText(
-            'Intro Text',
+            context.l10n.introText,
             style: AppTextStyle.subhead
                 .copyWith(color: context.theme.colorScheme.secondary),
           ),
@@ -189,7 +189,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             ),
             SizedBox(height: 10),
             HeightConstrainedText(
-              'Intro Length',
+              context.l10n.introLength,
               style: AppTextStyle.subhead,
             ),
             SizedBox(height: 10),
@@ -239,7 +239,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           ],
           SizedBox(height: 18),
           HeightConstrainedText(
-            'Participants will be sent into rooms at $breakoutsInitiationTime.\n${context.l10n.bufferAndIntroTime(
+            '${context.l10n.participantsSentToRoomsAt(breakoutsInitiationTime)}\n${context.l10n.bufferAndIntroTime(
               waitingBufferDurationDescription,
               introLengthDurationDescription,
             )}.',
@@ -253,7 +253,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                 loadingHeight: 10.0,
                 color: context.theme.colorScheme.primary,
                 textColor: context.theme.colorScheme.onPrimary,
-                text: 'Save',
+                text: context.l10n.save,
                 onPressed: () => alertOnError(
                   context,
                   () async {

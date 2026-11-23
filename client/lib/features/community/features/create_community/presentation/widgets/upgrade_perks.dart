@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/styles/styles.dart';
@@ -40,7 +41,7 @@ class UpgradePerks extends StatelessWidget {
                   SizedBox(width: 10),
                   Flexible(
                     child: HeightConstrainedText(
-                      'Upgrade for more',
+                      context.l10n.upgradeForMore,
                       style: AppTextStyle.headline3,
                     ),
                   ),
@@ -56,7 +57,7 @@ class UpgradePerks extends StatelessWidget {
               SizedBox(height: 20),
               ActionButton(
                 textColor: context.theme.colorScheme.primary,
-                text: 'Explore plans',
+                text: context.l10n.explorePlansCta,
                 expand: true,
                 type: ActionButtonType.outline,
                 borderRadius: BorderRadius.circular(10),
@@ -69,7 +70,7 @@ class UpgradePerks extends StatelessWidget {
                 ActionButton(
                   color: context.theme.colorScheme.primary,
                   textColor: context.theme.colorScheme.onPrimary,
-                  text: 'Upgrade',
+                  text: context.l10n.upgrade,
                   expand: true,
                   borderRadius: BorderRadius.circular(10),
                   onPressed: onUpgradeTap,

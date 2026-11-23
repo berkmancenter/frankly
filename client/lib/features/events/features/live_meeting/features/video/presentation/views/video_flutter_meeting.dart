@@ -183,8 +183,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     return CustomStreamBuilder(
       entryFrom: '_VideoFlutterMeetingState.build',
       stream: Stream.fromFuture(_conferenceRoom.connectionFuture),
-      errorMessage: 'Something went wrong loading room. Please refresh!',
-      loadingMessage: 'Connecting to room...',
+      errorMessage: context.l10n.somethingWentWrongLoadingRoom,
+      loadingMessage: context.l10n.connectingToRoom,
       textStyle: TextStyle(color: context.theme.colorScheme.onSurface),
       builder: (context, agoraRoom) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -373,6 +373,7 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
                               maxWidth: math.max(600, constraints.maxWidth / 2),
                             ),
                             child: GlobalKeyedSubtree(
+                              // ignore: hardcoded_string -- widget key, not user-visible
                               label: 'meeting-guide-card',
                               child: MeetingGuideCard(
                                 onMinimizeCard: () => alertOnError(
@@ -435,6 +436,7 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
                   padding: EdgeInsets.symmetric(vertical: 45, horizontal: 10),
                   alignment: Alignment.center,
                   child: GlobalKeyedSubtree(
+                    // ignore: hardcoded_string -- widget key, not user-visible
                     label: 'meeting-guide-card',
                     child: MeetingGuideCard(
                       onMinimizeCard: () => alertOnError(
@@ -552,7 +554,7 @@ class _GetHelpButtonState extends State<GetHelpButton> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
               child: HeightConstrainedText(
-                'Need Help?',
+                context.l10n.needHelpButton,
                 style: TextStyle(
                   fontWeight: FontWeight.w300,
                   color: Theme.of(context).isDark

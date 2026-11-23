@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +11,6 @@ import 'package:client/features/events/features/event_page/presentation/pre_post
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -80,12 +80,15 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
   }
 
   Future<void> _showDeleteDialog() async {
-    final title = _presenter.getTitle();
+    final isPreEvent = widget.prePostCardType == PrePostCardType.preEvent;
 
-    await ConfirmDialog(
-      title: context.l10n.deleteAgendaItemName(title),
-      mainText: 'Are you sure want to delete?',
-      cancelText: context.l10n.cancel,
+    await DeleteDialog(
+      title: isPreEvent
+          ? context.l10n.deletePreEventItem
+          : context.l10n.deletePostEventItem,
+      content: isPreEvent
+          ? context.l10n.confirmDeletePreEventItem
+          : context.l10n.confirmDeletePostEventItem,
       onConfirm: (context) {
         Navigator.pop(context);
         widget.onDelete();
@@ -346,7 +349,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeightConstrainedText(
-                'URL Preview',
+                context.l10n.urlPreview,
                 style: context.theme.textTheme.bodyMedium,
               ),
               SizedBox(height: 4),
@@ -364,7 +367,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             child: ActionButton(
               onPressed: () => _presenter.addNewURLParamRow(urlIndex),
               icon: Icon(Icons.add),
-              text: 'Add URL Parameter',
+              text: context.l10n.addUrlParameter,
             ),
           ),
       ],
@@ -409,7 +412,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HeightConstrainedText(
-                  'URL Preview',
+                  context.l10n.urlPreview,
                   style: context.theme.textTheme.bodyMedium,
                 ),
                 SizedBox(height: 4),
@@ -439,7 +442,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                       child: ActionButton(
                         onPressed: () => _presenter.addNewURLParamRow(urlIndex),
                         icon: Icon(Icons.add),
-                        text: 'Add URL Parameter',
+                        text: context.l10n.addUrlParameter,
                       ),
                     ),
                 ],

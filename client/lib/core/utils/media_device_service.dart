@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:client/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:universal_html/html.dart' as html;
@@ -22,6 +21,27 @@ class MediaDeviceService {
 
   String? selectedAudioInputId;
   String? selectedVideoInputId;
+
+  /// Picks the device id to select, given the id currently held by
+  /// `currentId`, the id stored in shared preferences, and the ids of
+  /// the devices that were actually enumerated.
+  ///
+  /// Remembered ids win, and the first available device
+  /// is only used when nothing is remembered.
+  String? resolveSelectedDeviceId({
+    required String? currentId,
+    required String? storedId,
+    required List<String> availableIds,
+  }) {
+    String? selected;
+    for (final id in [currentId, storedId]) {
+      if (id != null && (availableIds.isEmpty || availableIds.contains(id))) {
+        selected = id;
+        break;
+      }
+    }
+    return selected ?? (availableIds.isNotEmpty ? availableIds.first : null);
+  }
 
   Future<PermissionStatus> requestPermissions(Permission permission) async {
     try {
@@ -57,9 +77,12 @@ class MediaDeviceService {
   /// permission has actually been granted, so whenever permission is granted
   /// during [getUserMedia] itself, lists built by [init]
   /// are still empty and the UI has nothing to render even though the camera was acquired.
-  Future<void> _refreshDeviceListIfStale() async {
+  /// [forceRefresh] can be used to force a refresh even if the device lists are not empty.
+  Future<void> _refreshDeviceListIfStale({bool forceRefresh = false}) async {
     if (_previewMediaStream == null) return;
-    if (audioInputs.isNotEmpty && videoInputs.isNotEmpty) return;
+    if (!forceRefresh && audioInputs.isNotEmpty && videoInputs.isNotEmpty) {
+      return;
+    }
     try {
       await _refreshDeviceList();
     } catch (e) {
@@ -94,19 +117,26 @@ class MediaDeviceService {
           .toList();
     }
 
-    // First, check for defaults from shared preferences.
-    selectedAudioInputId ??= sharedPreferencesService.getDefaultMicrophoneId();
-    selectedVideoInputId ??= sharedPreferencesService.getDefaultCameraId();
+    _applyDeviceSelection();
+  }
 
-    // If no defaults, use the first available device.
-    // Don't save this as a default preference as it wasn't explicitly chosen.
-    if (selectedAudioInputId == null && audioInputs.isNotEmpty) {
-      selectedAudioInputId = audioInputs.first.deviceId;
-    }
-
-    if (selectedVideoInputId == null && videoInputs.isNotEmpty) {
-      selectedVideoInputId = videoInputs.first.deviceId;
-    }
+  /// Makes sure the selected ids name an available device, so the UI always
+  /// has a valid default. Defaults come from shared preferences, falling back
+  /// to the first available device. Don't save the fallback as a default
+  /// preference as it wasn't explicitly chosen.
+  void _applyDeviceSelection() {
+    selectedAudioInputId = resolveSelectedDeviceId(
+      currentId: selectedAudioInputId,
+      storedId: sharedPreferencesService.getDefaultMicrophoneId(),
+      availableIds:
+          audioInputs.map((d) => d.deviceId).whereType<String>().toList(),
+    );
+    selectedVideoInputId = resolveSelectedDeviceId(
+      currentId: selectedVideoInputId,
+      storedId: sharedPreferencesService.getDefaultCameraId(),
+      availableIds:
+          videoInputs.map((d) => d.deviceId).whereType<String>().toList(),
+    );
   }
 
   Future<void> selectAudioDevice({
@@ -223,6 +253,7 @@ class MediaDeviceService {
       _previewMediaStream =
           await html.window.navigator.mediaDevices?.getUserMedia(constraints);
       await _refreshDeviceListIfStale();
+      _applyDeviceSelection();
     } catch (e) {
       // If getUserMedia fails, it could be due to either a permission error
       // (user denied access) or a device error (requested device not available).
@@ -255,7 +286,10 @@ class MediaDeviceService {
           if (retryConstraints.isNotEmpty) {
             _previewMediaStream = await html.window.navigator.mediaDevices
                 ?.getUserMedia(retryConstraints);
-            await _refreshDeviceListIfStale();
+            await _refreshDeviceListIfStale(forceRefresh: true);
+            // Forgotten devices leave the selection null; re-select a default
+            // so the UI doesn't show an empty dropdown.
+            _applyDeviceSelection();
             return;
           }
         } catch (retryError) {

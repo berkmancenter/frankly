@@ -368,12 +368,16 @@ class EventProvider with ChangeNotifier {
 
   Future<void> cancelParticipation({required String participantId}) async {
     final participantIsUser = userService.currentUserId == participantId;
-    final identifier = participantIsUser ? 'your' : 'this user\'s';
     final cancelParticipation = await ConfirmDialog(
       title: appLocalizationService.getLocalization().cancel,
-      mainText:
-          'Are you sure you want to cancel $identifier participation in this event?',
-      confirmText: 'Yes, cancel',
+      mainText: participantIsUser
+          ? appLocalizationService
+              .getLocalization()
+              .confirmCancelYourParticipation
+          : appLocalizationService
+              .getLocalization()
+              .confirmCancelUserParticipation,
+      confirmText: appLocalizationService.getLocalization().yesCancel,
       cancelText: appLocalizationService.getLocalization().no,
     ).show();
     if (cancelParticipation) {
@@ -400,6 +404,7 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Email');
     firstRow.add('Member Status');
     firstRow.add('RSVP Time');
+    firstRow.add('Join Time');
     firstRow.add('Last Active Time');
     firstRow.add('Room Assigned');
     rows.add(firstRow);
@@ -429,9 +434,15 @@ class EventProvider with ChangeNotifier {
             ? registrationCsvDateTimeFormat(date: createdDate)
             : '',
       );
-      final mostRecentPresentTime = participantData
-          .firstWhereOrNull((p) => p.id == registrationData[i].id)
-          ?.mostRecentPresentTime;
+      final participant = participantData
+          .firstWhereOrNull((p) => p.id == registrationData[i].id);
+      final firstPresentTime = participant?.firstPresentTime;
+      row.add(
+        firstPresentTime != null
+            ? dateTimeFormat(date: firstPresentTime.toLocal())
+            : '',
+      );
+      final mostRecentPresentTime = participant?.mostRecentPresentTime;
       row.add(
         mostRecentPresentTime != null
             ? registrationCsvDateTimeFormat(date: mostRecentPresentTime)
