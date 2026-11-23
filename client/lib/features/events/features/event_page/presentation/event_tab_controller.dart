@@ -106,7 +106,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           ),
         if (eventTabsModel.enableMessages)
           CustomTabAndContent(
-            tab: 'Announcements',
+            tab: context.l10n.announcements,
             content: (context) => _buildAnnouncements(context),
           ),
         if (eventTabsModel.enableAdminPanel)
@@ -130,7 +130,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       entryFrom: '_EventPageState._buildGuide',
       stream: context.watch<EventTabsControllerState>().eventMessagesStream,
       errorBuilder: (_) => HeightConstrainedText(
-        'There was an error while loading Announcements',
+        context.l10n.errorLoadingAnnouncements,
         style: context.theme.textTheme.bodyMedium!
             .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
       ),
@@ -141,7 +141,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         if (localEventMessages.isEmpty) {
           return compact
               ? HeightConstrainedText(
-                  'No announcements sent yet',
+                  context.l10n.noAnnouncementsSentYet,
                   style: context.theme.textTheme.bodyMedium!.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                   ),
@@ -232,7 +232,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         SizedBox(height: 24),
         if (description != null && description.isNotEmpty) ...[
           HeightConstrainedText(
-            'Description',
+            context.l10n.description,
             style: context.theme.textTheme.titleMedium,
           ),
           SizedBox(height: 8),
@@ -247,7 +247,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           Row(
             children: [
               HeightConstrainedText(
-                'Announcements',
+                context.l10n.announcements,
                 style: context.theme.textTheme.titleMedium,
               ),
               Spacer(),
@@ -255,7 +255,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
                 CustomInkWell(
                   onTap: () => tabsController.openTab(TabType.messages),
                   child: HeightConstrainedText(
-                    'See all',
+                    context.l10n.seeAll,
                     style: context.theme.textTheme.titleSmall,
                   ),
                 ),
@@ -267,7 +267,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         ],
         ...[
           HeightConstrainedText(
-            'More Upcoming Events',
+            context.l10n.moreUpcomingEvents,
             style: context.theme.textTheme.titleMedium,
           ),
           SizedBox(height: 8),
@@ -318,7 +318,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeightConstrainedText(
-              'More from ${community.name}',
+              context.l10n.moreFromName(community.name ?? ''),
               style: context.theme.textTheme.titleMedium,
             ),
             SizedBox(height: 8),
@@ -355,12 +355,12 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       entryFrom: '_EventPageState._buildEvents',
       stream: eventProvider.upcomingEventsStream,
       height: 100,
-      errorMessage: 'Something went wrong loading events.',
+      errorMessage: context.l10n.somethingWentWrongLoadingEvents,
       builder: (_, __) {
         final events = eventProvider.upcomingEvents;
         if (events.isEmpty) {
           return HeightConstrainedText(
-            'No upcoming events.',
+            context.l10n.noUpcomingEvents,
             style: context.theme.textTheme.bodyMedium!.copyWith(
               color: context.theme.colorScheme.onSurfaceVariant,
             ),
@@ -392,12 +392,12 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       child: EmptyPageContent(
         type: EmptyPageType.announcements,
         subtitleText: canEditEvent
-            ? 'Send a message to all the participants in the group'
-            : 'If the host sends a message, you\'ll see it here.',
+            ? context.l10n.sendMessageToAllParticipantsInGroup
+            : context.l10n.hostMessagesWillShowHere,
         onButtonPress: canEditEvent ? _showSendMessageDialog : null,
         showContainer: false,
         buttonType: ActionButtonType.outline,
-        buttonText: 'Message participants',
+        buttonText: context.l10n.messageParticipants,
       ),
     );
   }
@@ -420,7 +420,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           ),
           child: ChatWidget(
             parentPath: context.watch<ChatModel>().parentPath,
-            messageInputHint: 'Say something',
+            messageInputHint: context.l10n.saySomething,
             allowBroadcast: liveMeetingProvider != null &&
                 (!liveMeetingProvider.isInBreakout ||
                     liveMeetingProvider.isInBreakoutWaitingRoom) &&

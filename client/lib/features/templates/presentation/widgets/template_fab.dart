@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
@@ -40,7 +41,7 @@ class _TemplateFabState extends State<TemplateFab> {
     if (!showFab) return SizedBox.shrink();
 
     return CommunityPageFloatingActionButton(
-      text: 'Create an event',
+      text: context.l10n.createAnEvent,
       onTap: () async {
         final communityId =
             Provider.of<CommunityProvider>(context, listen: false).communityId;

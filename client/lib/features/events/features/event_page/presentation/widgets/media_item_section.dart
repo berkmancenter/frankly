@@ -1,8 +1,8 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/features/events/features/live_meeting/features/live_stream/presentation/widgets/url_video_widget.dart';
 import 'package:dotted_border/dotted_border.dart' as dotted_border;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
@@ -73,7 +73,7 @@ class MediaItemSection extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     alignment: Alignment.centerLeft,
                     child: HeightConstrainedText(
-                      'Add video or image',
+                      context.l10n.addVideoOrImage,
                       style: context.theme.textTheme.bodyMedium!.copyWith(
                         color: context.theme.colorScheme.onSurfaceVariant,
                       ),
@@ -127,9 +127,8 @@ class MediaItemSection extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  ConfirmDialog(
+                  DeleteDialog(
                     title: context.l10n.confirmDeleteMedia,
-                    cancelText: context.l10n.cancel,
                     onConfirm: (_) {
                       Navigator.pop(context);
                       onDelete();

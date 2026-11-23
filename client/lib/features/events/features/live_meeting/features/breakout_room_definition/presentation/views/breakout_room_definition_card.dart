@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart';
 import 'package:flutter/material.dart' hide ReorderableList;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -13,7 +14,6 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
@@ -467,9 +467,9 @@ class _QuestionCardState extends State<QuestionCard> {
                           onPressed: _breakoutCardViewType ==
                                   BreakoutCardViewType.edit
                               ? () async {
-                                  final delete = await ConfirmDialog(
-                                    mainText: context.l10n.confirmDelete,
-                                    cancelText: context.l10n.cancel,
+                                  final delete = await DeleteDialog(
+                                    title: context.l10n.deleteOption,
+                                    content: context.l10n.confirmDelete,
                                   ).show(context: context);
                                   if (delete) {
                                     if (!context.mounted) return;

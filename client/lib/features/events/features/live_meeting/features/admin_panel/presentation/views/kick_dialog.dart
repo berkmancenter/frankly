@@ -59,7 +59,7 @@ class _KickDialogState extends State<KickDialog> {
               disabledBorder: InputBorder.none,
             ),
             title: HeightConstrainedText(
-              'Lock room to prevent any new registrants from joining?',
+              context.l10n.lockRoomPrompt,
             ),
           ),
         ],

@@ -157,7 +157,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
     return CustomStreamBuilder<List<Announcement>>(
       stream: Provider.of<AnnouncementsProvider>(context).announcements,
       entryFrom: '_AnnouncementsState._buildAnnouncementsLoading',
-      errorMessage: 'There was an error loading announcements.',
+      errorMessage: context.l10n.errorLoadingAnnouncements,
       showLoading: false,
       builder: (_, announcements) {
         return _buildNotificationButton((announcements ?? []).isEmpty);

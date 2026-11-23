@@ -232,7 +232,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         if (widget.fieldsView == FieldsView.edit) ...[
           SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
-            label: 'Email',
+            label: context.l10n.email,
+            // ignore: hardcoded_string -- example handle/URL placeholder
             hint: 'contact@yourdomain.com',
             borderType: widget.borderType,
             initialValue: widget.community.contactEmail,
@@ -257,7 +258,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         if (widget.fieldsView == FieldsView.links) ...[
           SizedBox(height: 35),
           _buildCreateCommunityTextField(
-            label: 'Website URL',
+            label: context.l10n.websiteUrl,
+            // ignore: hardcoded_string -- example handle/URL placeholder
             hint: 'https://yourwebsite.com',
             borderType: widget.borderType,
             initialValue: widget.community.websiteUrl,
@@ -269,7 +271,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           ),
           SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
+            // ignore: hardcoded_string -- brand name
             label: 'Bluesky',
+            // ignore: hardcoded_string -- example handle/URL placeholder
             hint: 'bsky.app/profile/yourhandle',
             borderType: widget.borderType,
             initialValue: widget.community.blueskyUrl,
@@ -282,7 +286,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           ),
           SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
+            // ignore: hardcoded_string -- brand name
             label: 'Facebook',
+            // ignore: hardcoded_string -- example handle/URL placeholder
             hint: 'facebook.com/yourpage',
             borderType: widget.borderType,
             initialValue: widget.community.facebookUrl,
@@ -295,7 +301,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           ),
           SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
+            // ignore: hardcoded_string -- brand name
             label: 'LinkedIn',
+            // ignore: hardcoded_string -- example handle/URL placeholder
             hint: 'linkedin.com/in/yourprofile',
             borderType: widget.borderType,
             initialValue: widget.community.linkedinUrl,
@@ -308,7 +316,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           ),
           SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
+            // ignore: hardcoded_string -- brand name
             label: 'X',
+            // ignore: hardcoded_string -- example handle/URL placeholder
             hint: 'x.com/yourhandle',
             borderType: widget.borderType,
             initialValue: widget.community.twitterUrl,
@@ -320,7 +330,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           ),
           SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
+            // ignore: hardcoded_string -- brand name
             label: 'Youtube',
+            // ignore: hardcoded_string -- example handle/URL placeholder
             hint: 'youtube.com/yourchannel',
             borderType: widget.borderType,
             initialValue: widget.community.youtubeUrl,
@@ -333,7 +345,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           ),
           SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
+            // ignore: hardcoded_string -- brand name
             label: 'Instagram',
+            // ignore: hardcoded_string -- example handle/URL placeholder
             hint: 'instagram.com/yourhandle',
             borderType: widget.borderType,
             initialValue: widget.community.youtubeUrl,

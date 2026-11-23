@@ -302,6 +302,7 @@ class Participant with _$Participant implements SerializeableRequest {
   static const String kFieldCurrentBreakoutRoomId = 'currentBreakoutRoomId';
   static const String kFieldLastUpdatedTime = 'lastUpdatedTime';
   static const String kFieldMostRecentPresentTime = 'mostRecentPresentTime';
+  static const String kFieldFirstPresentTime = 'firstPresentTime';
   static const String kFieldBreakoutRoomSurveyQuestions =
       'breakoutRoomSurveyQuestions';
   static const String kFieldZipCode = 'zipCode';
@@ -339,6 +340,11 @@ class Participant with _$Participant implements SerializeableRequest {
     @Default([]) List<BreakoutQuestion> breakoutRoomSurveyQuestions,
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
     DateTime? mostRecentPresentTime,
+
+    /// Time the participant was first marked present in the live meeting. Set
+    /// once by the EventParticipantOnWrite function and never overwritten.
+    @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+    DateTime? firstPresentTime,
     String? zipCode,
     String? email,
     String? name,

@@ -22,6 +22,7 @@ We encourage and value all contributions. See the [Table of Contents](#table-of-
 - [Contributing](#contributing)
   - [Getting Started](#getting-started)
   - [How to Contribute](#how-to-contribute)
+    - [Pull Request Communication](#pull-request-communication)
   - [What to Work On](#what-to-work-on)
 - [Styleguides](#styleguides)
   - [Commit Messages](#commit-messages)
@@ -74,7 +75,7 @@ We would love for you to contribute to Frankly! To set up your development envir
 
 If the feature you want to work on requires third-party services (e.g. Agora for video calling, or Mux for running livestreams), please follow the instructions in the README to set up your own accounts. The free tiers of these services should allow for testing development use cases.
 
-If you have any questions about the instructions, please feel free to [submit an issue](https://github.com/berkmancenter/frankly/issues/new). We welcome any suggestions for improvements to the README from contributors, especially as a Pull Request to the documentation itself.
+If you have any questions about the instructions, please feel free to [submit an issue](https://github.com/berkmancenter/frankly/issues/new). We welcome any suggestions for improvements to the README from contributors, especially as a Pull Request to the [documentation](https://berkmancenter.github.io/frankly/) itself.
 
 ### How to Contribute
 
@@ -85,6 +86,10 @@ When you're ready to make your first contribution to Frankly, you can open a pul
 3. **Provide a title and description**: When you open a pull request, the description will automatically populate with a template that the Frankly team uses for PRs. Please fill this out to help the team with the review process, and provide a descriptive title.
 
 You're done! 🎉 Our team will review your pull request from this point. Thank you for contributing to Frankly!
+
+### Pull Request Communication
+
+Please respond to review comments and requested changes on your pull request in a timely manner. If review feedback has not been addressed within two weeks, maintainers may close the pull request or reassign the remaining work so that the project can continue moving forward. If you need additional time, please leave a comment on the pull request to let the maintainers know.
 
 ### What to Work On
 

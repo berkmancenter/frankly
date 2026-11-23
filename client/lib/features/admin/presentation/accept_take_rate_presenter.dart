@@ -42,7 +42,7 @@ class AcceptTakeRatePresenter {
               ),
               SizedBox(height: 20),
               ActionButton(
-                text: 'Agree and continue',
+                text: context.l10n.agreeAndContinue,
                 color: context.theme.colorScheme.primary,
                 textColor: context.theme.colorScheme.onPrimary,
                 expand: true,
