@@ -356,6 +356,7 @@ class AgoraRoom with ChangeNotifier {
     // the video/audio being enabled with the wrong device.
     await engine.enableLocalVideo(false);
     await engine.enableLocalAudio(false);
+    await engine.muteLocalAudioStream(true);
     if (_isDisposed) return;
 
     await engine.joinChannel(
@@ -452,6 +453,10 @@ class AgoraParticipant with ChangeNotifier {
   bool audioIsStreaming = false;
   bool videoIsStreaming = false;
 
+  // Mic capture has been started on the engine. Once started it stays on.
+  bool _localAudioCaptureOn = false;
+  String? _appliedAudioDeviceId;
+
   // This local preview is used for displaying user's video to self.
   bool videoLocalPreviewStarted = false;
 
@@ -467,6 +472,7 @@ class AgoraParticipant with ChangeNotifier {
       await _rtcEngine.getAudioDeviceManager().setRecordingDevice(
             deviceId,
           );
+      _appliedAudioDeviceId = deviceId;
     } catch (e) {
       print('Error setting device ID $deviceId. $e');
     }
@@ -485,22 +491,21 @@ class AgoraParticipant with ChangeNotifier {
   }
 
   Future<void> enableAudio({required bool setEnabled}) async {
-    if (setEnabled) {
+    // Capture is started once and kept running. enableLocalAudio(false)
+    // releases the mic, which makes Bluetooth headsets drop out of HFP.
+    final selectedAudioDeviceId = mediaDeviceService.selectedAudioInputId;
+    if (setEnabled &&
+        (!_localAudioCaptureOn ||
+            selectedAudioDeviceId != _appliedAudioDeviceId)) {
       await updateAgoraAudioDevice();
-      await _rtcEngine.enableLocalAudio(true);
-      await _rtcEngine.updateChannelMediaOptions(
-        ChannelMediaOptions(
-          publishMicrophoneTrack: true,
-        ),
-      );
-    } else {
-      await _rtcEngine.enableLocalAudio(false);
-      await _rtcEngine.updateChannelMediaOptions(
-        ChannelMediaOptions(
-          publishMicrophoneTrack: false,
-        ),
-      );
+      if (!_localAudioCaptureOn) {
+        await _rtcEngine.enableLocalAudio(true);
+        _localAudioCaptureOn = true;
+      }
     }
+    // Mute only stops publishing; capture stays on.
+    await _rtcEngine.muteLocalAudioStream(!setEnabled);
+
     audioTrackEnabled = setEnabled;
     audioIsStreaming = setEnabled;
   }
