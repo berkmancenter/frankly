@@ -455,6 +455,7 @@ class AgoraParticipant with ChangeNotifier {
 
   // Mic capture has been started on the engine. Once started it stays on.
   bool _localAudioCaptureOn = false;
+  String? _appliedAudioDeviceId;
 
   // This local preview is used for displaying user's video to self.
   bool videoLocalPreviewStarted = false;
@@ -471,6 +472,7 @@ class AgoraParticipant with ChangeNotifier {
       await _rtcEngine.getAudioDeviceManager().setRecordingDevice(
             deviceId,
           );
+      _appliedAudioDeviceId = deviceId;
     } catch (e) {
       print('Error setting device ID $deviceId. $e');
     }
@@ -491,10 +493,15 @@ class AgoraParticipant with ChangeNotifier {
   Future<void> enableAudio({required bool setEnabled}) async {
     // Capture is started once and kept running. enableLocalAudio(false)
     // releases the mic, which makes Bluetooth headsets drop out of HFP.
-    if (setEnabled && !_localAudioCaptureOn) {
+    final selectedAudioDeviceId = mediaDeviceService.selectedAudioInputId;
+    if (setEnabled &&
+        (!_localAudioCaptureOn ||
+            selectedAudioDeviceId != _appliedAudioDeviceId)) {
       await updateAgoraAudioDevice();
-      await _rtcEngine.enableLocalAudio(true);
-      _localAudioCaptureOn = true;
+      if (!_localAudioCaptureOn) {
+        await _rtcEngine.enableLocalAudio(true);
+        _localAudioCaptureOn = true;
+      }
     }
     // Mute only stops publishing; capture stays on.
     await _rtcEngine.muteLocalAudioStream(!setEnabled);
