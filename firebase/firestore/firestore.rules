@@ -279,10 +279,26 @@ service cloud.firestore {
                     allow get: if hasAuth();
 
                     match /event-participants/{participantId} {
+                        function isSelf() {
+                            return hasAuth() && request.auth.uid == participantId;
+                        }
+
+                        // Self writes may join (active), leave (canceled) or leave status unset.
+                        function hasSelfAllowedStatus() {
+                            return request.resource.data.get('status', null) in [null, 'active', 'canceled'];
+                        }
+
                         allow write: if isCommunityMod()
-                                        || isDocCreator(getEventDataAfter())
-                                        || request.auth.uid == participantId;
-                        allow update: if isCommunityFacilitator() && (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','lastUpdatedTime']));
+                                        || isDocCreator(getEventDataAfter());
+                        allow update: if isCommunityFacilitator()
+                                         && !isSelf()
+                                         && (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','lastUpdatedTime']));
+
+                        // Participants manage their own doc but can't lift a ban or delete it.
+                        allow create: if isSelf() && hasSelfAllowedStatus();
+                        allow update: if isSelf()
+                                         && resource.data.get('status', null) != 'banned'
+                                         && hasSelfAllowedStatus();
 
                         allow read: if hasAuth() && (isHosted() || isCommunityMod() || request.auth.uid == participantId);
                     }
