@@ -15,8 +15,10 @@ void main() {
     expect(file.existsSync(), isTrue, reason: 'run from the client/ directory');
 
     final config = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
-    final rewrites =
-        (config['hosting']['rewrites'] as List).cast<Map<String, dynamic>>();
+    final web = (config['hosting'] as List)
+        .where((h) => h['target'] == 'web')
+        .first as Map<String, dynamic>;
+    final rewrites = (web['rewrites'] as List);
 
     final apiRewrites = <String, String>{};
     for (final rewrite in rewrites) {
