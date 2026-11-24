@@ -76,6 +76,8 @@ export interface Membership {
   status: MembershipStatus;
   /** Set when the community requires approval: `Follow` becomes a request. */
   requestStatus?: "pending" | "approved" | "denied";
+  /** Hidden from the community's member list (staff accounts, for instance). */
+  invisible?: boolean;
 }
 
 /** The signed-in user and all of their community memberships. */
@@ -103,16 +105,44 @@ export interface CommunitySettings {
   requireApprovalToJoin: boolean;
   /** Whether hosts may create events with no host. */
   enableHostless: boolean;
+  disableEmailDigests: boolean;
+  multiplePeopleOnStage: boolean;
+  multipleVideoTypes: boolean;
+  enableUpdatedLiveMeetingMobile: boolean;
+  enableAVCheck: boolean;
+  /** Kept as stored; the platform team orders featured communities with it. */
+  featuredOrder?: number;
 }
+
+/** The links a community can show, each a full URL. */
+export const COMMUNITY_LINK_FIELDS = [
+  "websiteUrl",
+  "blueskyUrl",
+  "facebookUrl",
+  "linkedinUrl",
+  "twitterUrl",
+  "youtubeUrl",
+  "instagramUrl",
+] as const;
+export type CommunityLinkField = (typeof COMMUNITY_LINK_FIELDS)[number];
 
 export interface Community {
   id: string;
   /** URL slug: `/space/:displayId`. */
   displayId: string;
+  /** Every slug that reaches this community, newest first. `displayId` is the first. */
+  displayIds: string[];
   name: string;
   tagLine?: string;
   description?: string;
   contactEmail?: string;
+  websiteUrl?: string;
+  blueskyUrl?: string;
+  facebookUrl?: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  youtubeUrl?: string;
+  instagramUrl?: string;
   profileImageUrl?: string;
   /** Backdrop of the community's card on the home page. */
   bannerImageUrl?: string;
@@ -135,6 +165,14 @@ export interface Community {
 export interface MemberDetails {
   user: PublicUser;
   membership: Membership;
+  /** Only the community's admins are sent member emails. */
+  email?: string;
+}
+
+/** Someone asking to join a community that approves its members. */
+export interface JoinRequest {
+  user: PublicUser;
+  communityId: string;
 }
 
 /* ----------------------------------------------------------------------------
@@ -461,4 +499,75 @@ export interface Announcement {
   message: string;
   creatorId: string;
   createdDate?: string;
+}
+
+
+/* ----------------------------------------------------------------------------
+ * What admins download about an event
+ * ------------------------------------------------------------------------- */
+
+export type RecordingSessionStatus = "starting" | "recording" | "stopping" | "stopped" | "failed";
+
+/** One recording of an event's main room or of a breakout room. */
+export interface RecordingSession {
+  id: string;
+  status: RecordingSessionStatus;
+  /** ISO time the recording stopped. */
+  stoppedAt?: string;
+  /** Video was being recorded, so a video file is due. */
+  hasRecorder: boolean;
+  /** Speech was being transcribed, so a transcript is due. */
+  hasTranscriber: boolean;
+  /** Files produced so far. */
+  videoParts: number;
+  transcriptParts: number;
+}
+
+/** Someone who signed up for an event, with what they answered while signing up. */
+export interface RegistrantRecord {
+  userId: string;
+  displayName: string;
+  email: string;
+  memberStatus: string;
+  /** ISO times. */
+  registeredAt?: string;
+  firstPresentAt?: string;
+  lastPresentAt?: string;
+  /** The text of the choice they made for each sign-up question, in question order ("" when none). */
+  answers: string[];
+}
+
+export interface BreakoutRoomRecord {
+  roomId: string;
+  roomName: string;
+  participantIds: string[];
+}
+
+export interface ChatRecord {
+  /** ISO time. */
+  createdAt?: string;
+  userId: string;
+  message?: string;
+  emotion?: EmotionType;
+  roomId: string;
+  deleted: boolean;
+}
+
+export interface SuggestionRecord {
+  createdAt?: string;
+  userId: string;
+  agendaItemId?: string;
+  message: string;
+  roomId: string;
+  upvotes?: number;
+  downvotes?: number;
+  deleted: boolean;
+}
+
+export interface PollRecord {
+  answeredAt?: string;
+  userId: string;
+  question: string;
+  response: string;
+  roomId: string;
 }

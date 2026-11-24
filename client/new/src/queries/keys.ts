@@ -21,6 +21,7 @@ export const qk = {
   /** Prefix for everything that belongs to one community. */
   community: (communityId: string) => ['community', communityId] as const,
   members: (communityId: string) => ['community', communityId, 'members'] as const,
+  joinRequests: (communityId: string) => ['community', communityId, 'join-requests'] as const,
   prePostEnabled: (communityId: string) => ['community', communityId, 'pre-post-enabled'] as const,
   donationsEnabled: (communityId: string) => ['community', communityId, 'donations-enabled'] as const,
   template: (communityId: string, templateId: string) => ['community', communityId, 'templates', templateId] as const,
@@ -39,6 +40,9 @@ export const qk = {
   eventMessages: (eventId: string) => ['events', eventId, 'messages'] as const,
   calendarLinks: (eventId: string) => ['events', eventId, 'calendar-links'] as const,
   eventParticipants: (eventId: string) => ['events', eventId, 'participants'] as const,
+  recordingSessions: (eventId: string) => ['events', eventId, 'recording-sessions'] as const,
+  eventChat: (eventId: string) => ['events', eventId, 'chat-data'] as const,
+  eventSuggestionsPolls: (eventId: string) => ['events', eventId, 'suggestions-polls'] as const,
 
   thread: (threadId: string) => ['threads', threadId] as const,
   threadComments: (threadId: string) => ['threads', threadId, 'comments'] as const,

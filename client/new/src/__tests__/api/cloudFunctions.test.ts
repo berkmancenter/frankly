@@ -91,4 +91,57 @@ describe('CloudFunctions', () => {
     );
     expect(callable).toHaveBeenCalledWith({ eventPath: 'event/path' });
   });
+
+  it('uses the same-origin rewrite for the admin callables', async () => {
+    vi.stubGlobal('window', {
+      location: { hostname: 'app.frankly.org', origin: 'https://app.frankly.org' },
+    });
+    const fetch = vi.fn().mockImplementation(async () => new Response(JSON.stringify({ result: '' }), { status: 200 }));
+    vi.stubGlobal('fetch', fetch);
+    const auth = { currentUser: { getIdToken: vi.fn().mockResolvedValue('t') } } as unknown as Auth;
+    const client = new CloudFunctions({ sameOrigin: true }, {} as FirebaseApp, auth);
+
+    await client.call('UpdateCommunity', {});
+    await client.call('resolveJoinRequest', {});
+
+    expect(fetch.mock.calls.map(([url]) => url)).toEqual([
+      'https://app.frankly.org/api/UpdateCommunity',
+      'https://app.frankly.org/api/resolveJoinRequest',
+    ]);
+  });
+
+  describe('post', () => {
+    const signedIn = (token: string | null = 'firebase-id-token') =>
+      ({ currentUser: token ? { getIdToken: vi.fn().mockResolvedValue(token) } : null }) as unknown as Auth;
+
+    it('sends the body and the signed-in user\'s token to the HTTP function and returns its JSON', async () => {
+      const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ recordings: [] }), { status: 200 }));
+      vi.stubGlobal('fetch', fetch);
+      const client = new CloudFunctions({ httpBaseUrl: 'https://functions.test/app' }, {} as FirebaseApp, signedIn());
+
+      await expect(client.post('downloadRecording', { eventPath: 'p' })).resolves.toEqual({ recordings: [] });
+
+      expect(fetch).toHaveBeenCalledWith('https://functions.test/app/downloadRecording', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer firebase-id-token' },
+        body: JSON.stringify({ eventPath: 'p' }),
+      });
+    });
+
+    it('rejects when nobody is signed in, without calling', async () => {
+      const fetch = vi.fn();
+      vi.stubGlobal('fetch', fetch);
+      const client = new CloudFunctions({ httpBaseUrl: 'https://functions.test' }, {} as FirebaseApp, signedIn(null));
+
+      await expect(client.post('downloadRecording', {})).rejects.toThrow('Not authenticated');
+      expect(fetch).not.toHaveBeenCalled();
+    });
+
+    it('rejects on any status but 200', async () => {
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}', { status: 500 })));
+      const client = new CloudFunctions({ httpBaseUrl: 'https://functions.test' }, {} as FirebaseApp, signedIn());
+
+      await expect(client.post('repairSessionArtifacts', {})).rejects.toThrow('failed with status 500');
+    });
+  });
 });

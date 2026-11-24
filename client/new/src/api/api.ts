@@ -4,6 +4,9 @@ import type {
   Announcement,
   Community,
   CommunityResource,
+  BreakoutRoomRecord,
+  ChatRecord,
+  CommunitySettings,
   DiscussionThread,
   DiscussionThreadComment,
   EmotionType,
@@ -12,12 +15,18 @@ import type {
   EventMessage,
   EventSettings,
   EventUpdate,
+  JoinRequest,
+  PollRecord,
   PrePostCard,
+  RecordingSession,
+  RegistrantRecord,
+  SuggestionRecord,
   SurveyAnswer,
   SurveyQuestion,
   MemberDetails,
   Me,
   Membership,
+  MembershipStatus,
   NewEventInput,
   Participant,
   NotificationSettings,
@@ -37,6 +46,28 @@ export class ApiError extends Error {
     this.name = "ApiError";
     this.code = code;
   }
+}
+
+/** What an admin can change on a community; absent fields are left alone. */
+export interface CommunityUpdate {
+  name?: string;
+  /** The new URL slug; the old ones keep working. */
+  displayId?: string;
+  tagLine?: string;
+  description?: string;
+  contactEmail?: string;
+  websiteUrl?: string;
+  blueskyUrl?: string;
+  facebookUrl?: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  youtubeUrl?: string;
+  instagramUrl?: string;
+  profileImageUrl?: string;
+  themeLightColor?: string;
+  themeDarkColor?: string;
+  settings?: CommunitySettings;
+  eventSettings?: EventSettings;
 }
 
 export interface NewCommunityInput {
@@ -103,6 +134,23 @@ export interface Api {
     create(
       input: NewCommunityInput,
     ): Promise<{ communityId: string; displayId: string }>;
+    /** Saves an admin's changes. Rejects with `ApiError("invalid")` when the server refuses them, e.g. the URL is taken. */
+    update(community: Community, patch: CommunityUpdate): Promise<void>;
+    /** Gives a member another role. */
+    setRole(
+      communityId: string,
+      userId: string,
+      status: MembershipStatus,
+    ): Promise<void>;
+    /** People waiting to be let in, oldest first. */
+    listJoinRequests(communityId: string): Promise<JoinRequest[]>;
+    /** Lets someone in (with `role`, default member) or turns them away. */
+    resolveJoinRequest(input: {
+      communityId: string;
+      userId: string;
+      approve: boolean;
+      role?: MembershipStatus;
+    }): Promise<void>;
   };
 
   templates: {
@@ -157,6 +205,23 @@ export interface Api {
     updatePrePost(event: Event, which: 'pre' | 'post', card: PrePostCard | null): Promise<void>;
     updateSettings(event: Event, settings: EventSettings): Promise<Event>;
     hasAttendedTemplate(templateId: string): Promise<boolean>;
+    /** Who signed up, with member details; for admins only. */
+    registrants(event: Event): Promise<RegistrantRecord[]>;
+    /** The rooms people were split into during the event. */
+    breakoutRooms(event: Event): Promise<BreakoutRoomRecord[]>;
+    /** Everything said in chat during the event, in every room. */
+    chatMessages(event: Event): Promise<ChatRecord[]>;
+    /** What people suggested and answered to polls during the event. */
+    suggestionsAndPolls(
+      event: Event,
+    ): Promise<{ suggestions: SuggestionRecord[]; polls: PollRecord[] }>;
+    recordingSessions(event: Event): Promise<RecordingSession[]>;
+    /** Short-lived links to the event's video files; rejects when they are not ready yet. */
+    recordingUrls(event: Event): Promise<string[]>;
+    /** The same for the transcripts. */
+    transcriptUrls(event: Event): Promise<string[]>;
+    /** Asks the server to look again for files a stopped recording is missing. */
+    repairRecording(sessionId: string): Promise<{ noTranscript: boolean }>;
   };
 
   threads: {

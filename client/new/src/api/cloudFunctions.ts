@@ -11,6 +11,8 @@ import { isDev } from "@/utils/dev";
 
 export interface CloudFunctionsOptions {
   region?: string;
+  /** Where the plain HTTP functions live (no trailing slash), for `post`. */
+  httpBaseUrl?: string;
   sameOrigin?: boolean;
   emulator?: {
     host: string;
@@ -32,6 +34,8 @@ const sameOriginCallables = new Set([
   "createEvent",
   "sendAnnouncement",
   "updateMembership",
+  "UpdateCommunity",
+  "resolveJoinRequest",
 ]);
 
 class CallableRequestError extends Error {
@@ -94,6 +98,28 @@ export class CloudFunctions {
         await new Promise((resolve) => setTimeout(resolve, 300 * 2 ** attempt));
       }
     }
+  }
+
+  /**
+   * Calls a plain HTTP function (not a callable) with the signed-in user's token, and returns its
+   * JSON body. Rejects on any status but 200.
+   */
+  async post<Response = unknown>(name: string, body: unknown): Promise<Response> {
+    const auth = this.auth ?? getAuth(this.app ?? getApp());
+    const idToken = await auth.currentUser?.getIdToken();
+    if (!idToken) throw new Error("Not authenticated");
+    const response = await fetch(`${this.options.httpBaseUrl ?? ""}/${name}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+      },
+      body: JSON.stringify(body),
+    });
+    if (response.status !== 200) {
+      throw new Error(`Function ${name} failed with status ${response.status}`);
+    }
+    return (await response.json()) as Response;
   }
 
   private shouldUseSameOrigin(name: string): boolean {

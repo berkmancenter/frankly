@@ -8,7 +8,12 @@ export const termsUrl: string = import.meta.env.VITE_TERMS_URL || "";
 // test environment when `VITE_ENABLE_DEV_EVENT_SETTINGS=true`.
 export const enableDevEventSettings = (): boolean =>
   import.meta.env.NODE_ENV !== "production" ||
-  import.meta.env.VITE_ENABLE_DEV_SETTINGS === "true";
+  import.meta.env.VITE_ENABLE_DEV_EVENT_SETTINGS === "true";
+
+// The same for the developer switches in the community's admin settings.
+export const enableDevAdminSettings = (): boolean =>
+  import.meta.env.NODE_ENV !== "production" ||
+  import.meta.env.VITE_ENABLE_DEV_ADMIN_SETTINGS === "true";
 
 /** Developer-only features when the app is served from `localhost`. */
 export const isLocalhost = (): boolean =>

@@ -48,6 +48,18 @@ function firebaseOptions(useEmulators: boolean): FirebaseOptions {
 	return options;
 }
 
+// Plain HTTP functions are reached at the explicit prefix, else on the emulator, else on Google's host.
+function httpFunctionsBaseUrl(projectId: string | undefined, useEmulators: boolean, emulatorHost: string): string {
+	const explicit = import.meta.env.VITE_FUNCTIONS_URL_PREFIX;
+	if (explicit) return explicit.replace(/\/$/, '');
+	const region = import.meta.env.VITE_FIREBASE_FUNCTIONS_REGION || 'us-central1';
+	if (useEmulators) {
+		const port = Number(import.meta.env.VITE_FIREBASE_FUNCTIONS_EMULATOR_PORT) || 5001;
+		return `http://${emulatorHost}:${port}/${projectId}/${region}`;
+	}
+	return `https://${region}-${projectId}.cloudfunctions.net`;
+}
+
 export function getFirebaseClient(): FirebaseClient {
 	if (client) return client;
 
@@ -89,6 +101,7 @@ export function getFirebaseClient(): FirebaseClient {
 		functions: new CloudFunctions(
 			{
 				region: import.meta.env.VITE_FIREBASE_FUNCTIONS_REGION || 'us-central1',
+				httpBaseUrl: httpFunctionsBaseUrl(options.projectId, useEmulators, emulatorHost),
 				sameOrigin: true,
 				...(useEmulators
 					? {
