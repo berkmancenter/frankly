@@ -85,6 +85,12 @@ class Environment {
   static const enableDevAdminSettings =
       bool.fromEnvironment('ENABLE_DEV_ADMIN_SETTINGS');
   static const enableTraceLog = bool.fromEnvironment('ENABLE_TRACE_LOG');
+
+  // Shows the community admin section for external integrations (webhooks
+  // that receive recordings and transcripts). Off by default. Event hosts and
+  // participants only see integrations a community has configured.
+  static const enableExternalIntegrations =
+      bool.fromEnvironment('ENABLE_EXTERNAL_INTEGRATIONS');
   static const enableEmulators = String.fromEnvironment(
     'EMULATORS',
     defaultValue: 'functions,firestore,auth,database',

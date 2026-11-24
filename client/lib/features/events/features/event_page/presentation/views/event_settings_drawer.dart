@@ -5,6 +5,8 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/models/event_settings_model.dart';
 import 'package:client/features/events/features/event_page/presentation/event_settings_presenter.dart';
+import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
+import 'package:client/features/external_integrations/presentation/widgets/event_external_integrations_section.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/custom_switch_tile.dart';
@@ -324,6 +326,12 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
             val: _model.eventSettings.agendaPreview ?? true,
             style: context.theme.textTheme.bodyMedium,
           ),
+          if (widget.eventSettingsDrawerType == EventSettingsDrawerType.event)
+            EventExternalIntegrationsSection(
+              event: context.read<EventProvider>().event,
+              pendingChanges: _model.integrationChanges,
+              onChanged: _presenter.updateIntegrationSetting,
+            ),
           SizedBox(height: 40),
           ActionButton(
             expand: true,

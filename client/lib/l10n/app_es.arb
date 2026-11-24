@@ -443,6 +443,7 @@
       }
     }
   },
+  "addIntegration": "Añadir integración",
   "aVIssues": "Problemas de A/V",
   "about": "Acerca de",
   "aboutHint": "Añade más detalles sobre los objetivos de esta comunidad",
@@ -668,6 +669,57 @@
   "deletePostEventItem": "Eliminar elemento post-evento",
   "deletePreEventItem": "Eliminar elemento pre-evento",
   "deleteResource": "Eliminar recurso",
+  "deliveryAttempts": "{count} {count, plural, =1{intento} other{intentos}}",
+  "@deliveryAttempts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deliveryKindRecording": "Grabación",
+  "deliveryKindTranscript": "Transcripción",
+  "deliveryResend": "Reenviar",
+  "deliveryResent": "Enviado de nuevo",
+  "deliveryStatusDelivered": "Entregado",
+  "deliveryStatusFailed": "Fallido",
+  "deliveryStatusPending": "Pendiente",
+  "editIntegration": "Editar integración",
+  "eventIntegrationNeedsRecording": "Solo se envía algo en los eventos que se graban.",
+  "eventIntegrationReferenceHint": "Referencia (opcional)",
+  "eventIntegrationsTitle": "Enviar grabaciones a",
+  "externalIntegrations": "Integraciones",
+  "externalIntegrationsDescription": "Envía las grabaciones y transcripciones de esta comunidad a otras herramientas mediante webhooks firmados.",
+  "integrationActive": "Activa",
+  "integrationCopySecret": "Copiar secreto",
+  "integrationDelete": "Eliminar integración",
+  "integrationDeleteConfirm": "¿Eliminar {name}? Ya no se le enviarán grabaciones.",
+  "@integrationDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "integrationDeliveries": "Enviado a integraciones",
+  "integrationDescription": "Descripción breve",
+  "integrationDisplayName": "Nombre",
+  "integrationDone": "Listo",
+  "integrationEnabledForNewEvents": "Activar por defecto en los eventos nuevos",
+  "integrationEventRecordingReady": "Una grabación está lista",
+  "integrationEventsToSend": "Enviar cuando",
+  "integrationEventTranscriptReady": "Una transcripción está lista",
+  "integrationInactive": "Inactiva",
+  "integrationLogoUrl": "URL del logotipo (https)",
+  "integrationNameRequired": "El nombre y la URL del webhook son obligatorios, y hay que elegir al menos un evento.",
+  "integrationReferenceLabel": "Etiqueta de la referencia por evento (opcional)",
+  "integrationRemoved": "Integración eliminada",
+  "integrationRotateSecret": "Cambiar secreto",
+  "integrationRotateSecretConfirm": "El secreto actual dejará de funcionar de inmediato. Actualiza tu receptor con el nuevo. ¿Continuar?",
+  "integrationSaved": "Integración guardada",
+  "integrationSecretShownOnce": "Copia este secreto ahora y guárdalo en tu receptor. No se volverá a mostrar.",
+  "integrationSigningSecret": "Secreto de firma",
+  "integrationWebhookUrl": "URL del webhook (https)",
   "keepEvent": "Mantener evento",
   "deleteAgendaItem":"Eliminar el elemento de agenda {title}",
   "deleteAgendaItemGeneral": "Eliminar elemento de agenda",
@@ -994,6 +1046,7 @@
   "noDevicesFound": "No se encontraron dispositivos",
   "noEvents": "Sin eventos",
   "noEventsFound": "No se encontraron eventos.",
+  "noExternalIntegrations": "Todavía no hay integraciones.",
   "noFollowRequestsCurrently": "No hay solicitudes de seguimiento actualmente",
   "noItems": "No hay {name}",
   "noLetThemStay": "No, déjalos quedarse",
@@ -1138,6 +1191,7 @@
   "recording": "Grabando",
   "recordingIndicator": "Grabando",
   "recordingPreparing": "Preparando grabación...",
+  "recordingsAreSentTo": "Las grabaciones de este evento se envían a los siguientes servicios externos.",
   "recordingStatusChecking": "(verificando...)",
   "recordingStatusFailed": "(error)",
   "recordingStatusFile": "archivo",

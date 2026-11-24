@@ -4,6 +4,8 @@ import 'package:client/core/utils/dialogs.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/views/event_settings_drawer.dart';
+import 'package:client/features/external_integrations/data/services/external_integrations_service.dart';
+import 'package:data_models/external_integrations/external_integration.dart';
 import 'package:data_models/events/event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,6 +16,19 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../../mocked_classes.mocks.dart';
+
+/// No external integrations, so the drawer only shows its usual settings.
+class _NoExternalIntegrationsService extends ExternalIntegrationsService {
+  @override
+  Stream<List<ExternalIntegration>> activeIntegrations(String communityId) =>
+      Stream.value(const []);
+
+  @override
+  Stream<Map<String, EventExternalIntegrationSettings>> eventSettings(
+    Event event,
+  ) =>
+      Stream.value(const {});
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +53,9 @@ void main() {
     GetIt.instance.registerSingleton(AppLocalizationService());
     final l10n = await AppLocalizations.delegate.load(const Locale('en'));
     GetIt.instance<AppLocalizationService>().setLocalization(l10n);
+    GetIt.instance.registerSingleton<ExternalIntegrationsService>(
+      _NoExternalIntegrationsService(),
+    );
   });
 
   tearDownAll(() async {
@@ -60,8 +78,7 @@ void main() {
     when(mockEvent.eventSettings).thenReturn(settingsWithAutoEnd);
     when(mockEvent.templateId).thenReturn('misc');
     when(mockEventProvider.template).thenReturn(mockTemplate);
-    when(mockTemplate.eventSettings)
-        .thenReturn(EventSettings.defaultSettings);
+    when(mockTemplate.eventSettings).thenReturn(EventSettings.defaultSettings);
   });
 
   tearDown(() {

@@ -1,0 +1,285 @@
+import 'dart:async';
+
+import 'package:client/core/localization/app_localization_service.dart';
+import 'package:client/features/external_integrations/data/models/event_integration_change.dart';
+import 'package:client/features/external_integrations/data/services/external_integrations_service.dart';
+import 'package:client/features/external_integrations/presentation/widgets/event_external_integrations_section.dart';
+import 'package:client/features/external_integrations/presentation/widgets/recording_destination_notice.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/external_integrations/external_integration.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+
+class _FakeExternalIntegrationsService extends ExternalIntegrationsService {
+  List<ExternalIntegration> active = [];
+  Map<String, EventExternalIntegrationSettings> settings = {};
+
+  @override
+  Stream<List<ExternalIntegration>> activeIntegrations(String communityId) =>
+      Stream.value(active);
+
+  @override
+  Stream<Map<String, EventExternalIntegrationSettings>> eventSettings(
+    Event event,
+  ) =>
+      Stream.value(settings);
+
+  int writes = 0;
+
+  @override
+  Future<void> updateEventSettings({
+    required Event event,
+    required String integrationId,
+    required bool enabled,
+    String? externalReference,
+  }) async {
+    writes++;
+  }
+
+  /// When set, used instead of the default lookup.
+  Stream<List<ExternalIntegration>>? enabledStream;
+
+  @override
+  Stream<List<ExternalIntegration>> enabledIntegrationsForEvent(Event event) =>
+      enabledStream ??
+      Stream.value(
+        active.where((i) => settings[i.id]?.enabled ?? false).toList(),
+      );
+}
+
+void main() {
+  late AppLocalizations l10n;
+  late _FakeExternalIntegrationsService service;
+
+  final event = Event(
+    id: 'e1',
+    status: EventStatus.active,
+    collectionPath: 'community/c1/templates/t1/events',
+    communityId: 'c1',
+    templateId: 't1',
+    creatorId: 'host',
+  );
+
+  final integration = ExternalIntegration(
+    id: 'int1',
+    communityId: 'c1',
+    displayName: 'Example Receiver',
+    events: [ExternalIntegrationEventTypes.recordingReady],
+  );
+
+  setUpAll(() async {
+    GetIt.instance.registerSingleton(AppLocalizationService());
+    l10n = await AppLocalizations.delegate.load(const Locale('en'));
+    GetIt.instance<AppLocalizationService>().setLocalization(l10n);
+  });
+
+  setUp(() {
+    service = _FakeExternalIntegrationsService();
+    if (GetIt.instance.isRegistered<ExternalIntegrationsService>()) {
+      GetIt.instance.unregister<ExternalIntegrationsService>();
+    }
+    GetIt.instance.registerSingleton<ExternalIntegrationsService>(service);
+  });
+
+  tearDownAll(() async {
+    await GetIt.instance.reset();
+  });
+
+  Future<void> pump(WidgetTester tester, Widget child) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en'),
+        home: Scaffold(body: SingleChildScrollView(child: child)),
+      ),
+    );
+    await tester.pump();
+  }
+
+  group('RecordingDestinationNotice', () {
+    testWidgets('shows nothing when no integration is configured',
+        (tester) async {
+      await pump(tester, RecordingDestinationNotice(event: event));
+      expect(find.text(l10n.recordingsAreSentTo), findsNothing);
+    });
+
+    testWidgets('shows nothing when the integration is off for the event',
+        (tester) async {
+      service.active = [integration];
+      await pump(tester, RecordingDestinationNotice(event: event));
+      expect(find.text(l10n.recordingsAreSentTo), findsNothing);
+    });
+
+    testWidgets('names the integration when it is on for the event',
+        (tester) async {
+      service.active = [integration];
+      service.settings = {
+        'int1': EventExternalIntegrationSettings(
+          integrationId: 'int1',
+          enabled: true,
+        ),
+      };
+      await pump(tester, RecordingDestinationNotice(event: event));
+      expect(find.text(l10n.recordingsAreSentTo), findsOneWidget);
+      expect(find.text('Example Receiver'), findsOneWidget);
+    });
+  });
+
+  group('RecordingDestinationNotice loading', () {
+    testWidgets('shows a spinner and does not report loaded while waiting',
+        (tester) async {
+      final controller = StreamController<List<ExternalIntegration>>();
+      addTearDown(controller.close);
+      service.enabledStream = controller.stream;
+      var loaded = 0;
+      await pump(
+        tester,
+        RecordingDestinationNotice(event: event, onLoaded: () => loaded++),
+      );
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(loaded, 0);
+
+      controller.add([integration]);
+      await tester.pump();
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      expect(find.text('Example Receiver'), findsOneWidget);
+      expect(loaded, 1);
+
+      controller.add([]);
+      await tester.pump();
+      expect(find.text('Example Receiver'), findsNothing);
+      expect(loaded, 1);
+    });
+
+    testWidgets('reports loaded when no integration is on', (tester) async {
+      var loaded = 0;
+      await pump(
+        tester,
+        RecordingDestinationNotice(event: event, onLoaded: () => loaded++),
+      );
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      expect(loaded, 1);
+    });
+
+    testWidgets('shows an error with reload when the lookup fails',
+        (tester) async {
+      service.enabledStream = Stream.error(Exception('offline'));
+      var loaded = 0;
+      await pump(
+        tester,
+        RecordingDestinationNotice(event: event, onLoaded: () => loaded++),
+      );
+      expect(find.text(l10n.somethingWentWrong), findsOneWidget);
+      expect(loaded, 0);
+
+      service.enabledStream = null;
+      service.active = [integration];
+      service.settings = {
+        'int1': EventExternalIntegrationSettings(
+          integrationId: 'int1',
+          enabled: true,
+        ),
+      };
+      await tester.tap(find.text(l10n.reload));
+      await tester.pump();
+      await tester.pump();
+      expect(find.text(l10n.somethingWentWrong), findsNothing);
+      expect(find.text('Example Receiver'), findsOneWidget);
+      expect(loaded, 1);
+    });
+  });
+
+  group('EventExternalIntegrationsSection', () {
+    testWidgets('is hidden when the community has no active integration',
+        (tester) async {
+      await pump(
+        tester,
+        EventExternalIntegrationsSection(
+          event: event,
+          pendingChanges: const {},
+          onChanged: (_, __) {},
+        ),
+      );
+      expect(find.text(l10n.eventIntegrationsTitle), findsNothing);
+    });
+
+    testWidgets('shows a toggle per integration and the reference field',
+        (tester) async {
+      service.active = [
+        integration.copyWith(externalReferenceLabel: 'Project ID'),
+      ];
+      service.settings = {
+        'int1': EventExternalIntegrationSettings(
+          integrationId: 'int1',
+          enabled: true,
+          externalReference: 'p-42',
+        ),
+      };
+      await pump(
+        tester,
+        EventExternalIntegrationsSection(
+          event: event,
+          pendingChanges: const {},
+          onChanged: (_, __) {},
+        ),
+      );
+      expect(find.text(l10n.eventIntegrationsTitle), findsOneWidget);
+      expect(find.text('Example Receiver'), findsOneWidget);
+      expect(find.text('Project ID'), findsOneWidget);
+      expect(find.text('p-42'), findsOneWidget);
+      expect(find.byType(IconButton), findsNothing);
+    });
+
+    testWidgets('reports edits as pending changes without saving them',
+        (tester) async {
+      service.active = [integration];
+      final pending = <String, EventIntegrationChange>{};
+      await pump(
+        tester,
+        StatefulBuilder(
+          builder: (context, setState) => EventExternalIntegrationsSection(
+            event: event,
+            pendingChanges: pending,
+            onChanged: (id, change) => setState(() {
+              if (change == null) {
+                pending.remove(id);
+              } else {
+                pending[id] = change;
+              }
+            }),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+      expect(
+        pending['int1'],
+        const EventIntegrationChange(enabled: true, externalReference: ''),
+      );
+
+      await tester.enterText(find.byType(TextField), 'p-7');
+      await tester.pump();
+      expect(
+        pending['int1'],
+        const EventIntegrationChange(enabled: true, externalReference: 'p-7'),
+      );
+
+      // Back to the saved values: nothing left to save.
+      await tester.enterText(find.byType(TextField), '');
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+      expect(pending, isEmpty);
+      expect(service.writes, 0);
+    });
+  });
+}

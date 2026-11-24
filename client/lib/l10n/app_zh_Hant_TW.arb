@@ -445,6 +445,7 @@
       }
     }
   },
+  "addIntegration": "新增整合",
   "aVIssues": "影音問題？",
   "about": "關於",
   "aboutHint": "新增更多關於此社群目標的詳細資訊",
@@ -670,6 +671,57 @@
   "deletePostEventItem": "刪除活動後項目",
   "deletePreEventItem": "刪除活動前項目",
   "deleteResource": "刪除資源",
+  "deliveryAttempts": "{count} 次嘗試",
+  "@deliveryAttempts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deliveryKindRecording": "錄影",
+  "deliveryKindTranscript": "逐字稿",
+  "deliveryResend": "重新傳送",
+  "deliveryResent": "已重新傳送",
+  "deliveryStatusDelivered": "已送達",
+  "deliveryStatusFailed": "失敗",
+  "deliveryStatusPending": "待傳送",
+  "editIntegration": "編輯整合",
+  "eventIntegrationNeedsRecording": "只有錄影的活動才會傳送內容。",
+  "eventIntegrationReferenceHint": "參考值（選填）",
+  "eventIntegrationsTitle": "將錄影傳送到",
+  "externalIntegrations": "整合",
+  "externalIntegrationsDescription": "透過簽署的 Webhook 將本社群的錄影和逐字稿傳送到其他工具。",
+  "integrationActive": "已啟用",
+  "integrationCopySecret": "複製密鑰",
+  "integrationDelete": "刪除整合",
+  "integrationDeleteConfirm": "要刪除 {name} 嗎？錄影將不再傳送給它。",
+  "@integrationDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "integrationDeliveries": "已傳送到整合",
+  "integrationDescription": "簡短說明",
+  "integrationDisplayName": "名稱",
+  "integrationDone": "完成",
+  "integrationEnabledForNewEvents": "新活動預設開啟",
+  "integrationEventRecordingReady": "錄影已完成",
+  "integrationEventsToSend": "傳送時機",
+  "integrationEventTranscriptReady": "逐字稿已完成",
+  "integrationInactive": "已停用",
+  "integrationLogoUrl": "標誌網址 (https)",
+  "integrationNameRequired": "名稱和 Webhook 網址為必填，且至少要選擇一個事件。",
+  "integrationReferenceLabel": "每個活動參考值的標籤（選填）",
+  "integrationRemoved": "已刪除的整合",
+  "integrationRotateSecret": "更換密鑰",
+  "integrationRotateSecretConfirm": "目前的密鑰會立即失效。請以新密鑰更新你的接收端。要繼續嗎？",
+  "integrationSaved": "整合已儲存",
+  "integrationSecretShownOnce": "請立即複製此密鑰並存放在你的接收端。之後不會再顯示。",
+  "integrationSigningSecret": "簽署密鑰",
+  "integrationWebhookUrl": "Webhook 網址 (https)",
   "keepEvent": "保留活動",
   "deleteAgendaItem":"刪除{title}議程項目",
   "deleteAgendaItemGeneral": "刪除議程項目",
@@ -996,6 +1048,7 @@
   "noDevicesFound": "未找到設備",
   "noEvents": "暫無活動",
   "noEventsFound": "未找到活動。",
+  "noExternalIntegrations": "尚未設定整合。",
   "noFollowRequestsCurrently": "目前沒有追蹤請求",
   "noItems": "沒有{name}",
   "noLetThemStay": "不，讓他們留下",
@@ -1140,6 +1193,7 @@
   "recording": "錄製中",
   "recordingIndicator": "正在錄製",
   "recordingPreparing": "正在準備錄製...",
+  "recordingsAreSentTo": "本活動的錄影將傳送到以下外部服務。",
   "recordingStatusChecking": "(檢查中...)",
   "recordingStatusFailed": "(失敗)",
   "recordingStatusFile": "個檔案",

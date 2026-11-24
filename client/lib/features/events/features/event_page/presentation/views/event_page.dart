@@ -8,6 +8,7 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
+import 'package:client/features/external_integrations/presentation/widgets/recording_destination_notice.dart';
 import 'package:client/features/events/features/event_page/presentation/views/event_page_contract.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_page_meeting_agenda.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_page_provider.dart';
@@ -174,16 +175,47 @@ class EventPageState extends State<EventPage> implements EventPageView {
             return false;
           }
 
-          // If the event is always recorded, show a consent dialog before joining
-          if(!mounted) return false;
-          if (context.read<EventProvider>().event.eventSettings?.alwaysRecord ==
-              true) {
+          // If the event is always recorded or transcribed, show a consent
+          // dialog before joining.
+          if (!mounted) return false;
+          final eventSettings =
+              context.read<EventProvider>().event.eventSettings;
+          final isRecording = eventSettings?.alwaysRecord == true;
+          final isTranscribing = eventSettings?.alwaysTranscribe == true;
+          var showConsent = isRecording;
+          if (!isRecording && isTranscribing) {
+            // A transcript alone only needs a notice when it is sent to an
+            // external service.
+            try {
+              final destinations = await externalIntegrationsService
+                  .enabledIntegrationsForEvent(event)
+                  .first;
+              showConsent = destinations.isNotEmpty;
+            } catch (_) {
+              // Can't tell. Show the dialog, which retries the lookup.
+              showConsent = true;
+            }
+            if (!mounted) return false;
+          }
+          if (showConsent) {
+            // Continue stays off until the participant can see where the
+            // recordings are sent.
+            final destinationsLoaded = ValueNotifier(false);
             final proceed = await showDialog<bool>(
               context: context,
               builder: (context) => AlertDialog(
                 title: Text(context.l10n.thisEventIsBeingRecorded),
-                content: Text(
-                  context.l10n.hostWillReceiveDownloadableCopy,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (isRecording)
+                      Text(context.l10n.hostWillReceiveDownloadableCopy),
+                    RecordingDestinationNotice(
+                      event: event,
+                      onLoaded: () => destinationsLoaded.value = true,
+                    ),
+                  ],
                 ),
                 actions: [
                   TextButton(
@@ -193,9 +225,13 @@ class EventPageState extends State<EventPage> implements EventPageView {
                     ),
                     child: Text(context.l10n.leave),
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, true),
-                    child: Text(context.l10n.continueButton),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: destinationsLoaded,
+                    builder: (context, loaded, _) => TextButton(
+                      onPressed:
+                          loaded ? () => Navigator.pop(context, true) : null,
+                      child: Text(context.l10n.continueButton),
+                    ),
                   ),
                 ],
               ),
@@ -271,7 +307,6 @@ class EventPageState extends State<EventPage> implements EventPageView {
       },
     );
   }
-
 
   Widget _buildGuide() {
     return Column(

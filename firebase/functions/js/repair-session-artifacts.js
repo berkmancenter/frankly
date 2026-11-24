@@ -3,6 +3,7 @@ const admin = require('firebase-admin')
 const cors = require('cors')({ origin: true })
 
 const { reconcileArtifacts, transcriptState } = require('./session-artifacts')
+const { deliverSessionArtifacts } = require('./external-integrations')
 
 const firestore = admin.firestore()
 const storage = admin.storage()
@@ -68,6 +69,9 @@ const repairSessionArtifacts = functions.https.onRequest((req, res) => {
                 console.log(
                     `Repaired session ${sessionId}: new mp4s=${mp4s}/${mp4Total} new vtts=${vtts}/${vttTotal} merged=${merged}`
                 )
+                // Late artifacts go to external integrations too. Delivery ids
+                // are stable, so already sent artifacts are not sent again.
+                await deliverSessionArtifacts({ sessionId, sessionRef: sessionDoc.ref })
             }
 
             const transcript = transcriptState({ session, hasTrx: result.hasTrx })

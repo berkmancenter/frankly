@@ -526,6 +526,7 @@
       }
     }
   },
+  "addIntegration": "Add integration",
   "aVIssues": "A/V issues?",
   "about": "About",
   "aboutHint": "Add more detail as to the goals of this community",
@@ -751,6 +752,57 @@
   "deletePostEventItem": "Delete Post-Event Item",
   "deletePreEventItem": "Delete Pre-Event Item",
   "deleteResource": "Delete Resource",
+  "deliveryAttempts": "{count} {count, plural, =1{attempt} other{attempts}}",
+  "@deliveryAttempts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deliveryKindRecording": "Recording",
+  "deliveryKindTranscript": "Transcript",
+  "deliveryResend": "Resend",
+  "deliveryResent": "Sent again",
+  "deliveryStatusDelivered": "Delivered",
+  "deliveryStatusFailed": "Failed",
+  "deliveryStatusPending": "Pending",
+  "editIntegration": "Edit integration",
+  "eventIntegrationNeedsRecording": "Only events that are recorded send anything.",
+  "eventIntegrationReferenceHint": "Reference (optional)",
+  "eventIntegrationsTitle": "Send recordings to",
+  "externalIntegrations": "Integrations",
+  "externalIntegrationsDescription": "Send this community's recordings and transcripts to other tools through signed webhooks.",
+  "integrationActive": "Active",
+  "integrationCopySecret": "Copy secret",
+  "integrationDelete": "Delete integration",
+  "integrationDeleteConfirm": "Delete {name}? Recordings will no longer be sent to it.",
+  "@integrationDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "integrationDeliveries": "Sent to integrations",
+  "integrationDescription": "Short description",
+  "integrationDisplayName": "Name",
+  "integrationDone": "Done",
+  "integrationEnabledForNewEvents": "Turn on for new events by default",
+  "integrationEventRecordingReady": "A recording is ready",
+  "integrationEventsToSend": "Send when",
+  "integrationEventTranscriptReady": "A transcript is ready",
+  "integrationInactive": "Inactive",
+  "integrationLogoUrl": "Logo URL (https)",
+  "integrationNameRequired": "Name and webhook URL are required, and at least one event must be selected.",
+  "integrationReferenceLabel": "Label for the per-event reference (optional)",
+  "integrationRemoved": "Removed integration",
+  "integrationRotateSecret": "Rotate secret",
+  "integrationRotateSecretConfirm": "The current secret stops working right away. Update your receiver with the new one. Continue?",
+  "integrationSaved": "Integration saved",
+  "integrationSecretShownOnce": "Copy this secret now and store it in your receiver. It will not be shown again.",
+  "integrationSigningSecret": "Signing secret",
+  "integrationWebhookUrl": "Webhook URL (https)",
   "keepEvent": "Keep Event",
   "deleteAgendaItem":"Delete {title} agenda item",
   "deleteAgendaItemGeneral": "Delete Agenda Item",
@@ -1075,6 +1127,7 @@
   "noDevicesFound": "No devices found.",
   "noEvents": "No events",
   "noEventsFound": "No events found",
+  "noExternalIntegrations": "No integrations yet.",
   "noFollowRequestsCurrently": "No follow requests currently",
   "noItems": "No {name}",
   "noLetThemStay": "No, let them stay",
@@ -1219,6 +1272,7 @@
   "recording": "Recordings",
   "recordingIndicator": "Recording",
   "recordingPreparing": "Preparing recording...",
+  "recordingsAreSentTo": "Recordings from this event are sent to the following external services.",
   "recordingStatusChecking": "(checking...)",
   "recordingStatusFailed": "(failed)",
   "recordingStatusFile": "file",

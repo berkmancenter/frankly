@@ -13,6 +13,7 @@ const {
     mergeTranscript,
     reconcileArtifacts,
 } = require('./session-artifacts')
+const { deliverSessionArtifacts } = require('./external-integrations')
 
 const firestore = admin.firestore()
 const storage = admin.storage()
@@ -161,6 +162,10 @@ const produceSessions = functions
                 console.error(`Error in late reconcile for session ${sessionId}:`, err)
             }
         }
+
+        // --- Send ready artifacts to external integrations ---
+        // Runs last and never throws, so it cannot block artifact processing.
+        await deliverSessionArtifacts({ sessionId, sessionRef: ref })
 
         return null
     })

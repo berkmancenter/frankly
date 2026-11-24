@@ -5,6 +5,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../utils/infra/firestore_event_function.dart';
 import '../utils/infra/on_firestore_helper.dart';
+import 'external_integration_defaults.dart';
 import 'live_meetings/breakouts/check_hostless_go_to_breakouts.dart';
 import '../on_firestore_function.dart';
 import 'notifications/event_emails.dart';
@@ -14,8 +15,13 @@ import 'package:data_models/community/community.dart';
 
 class OnEvent extends OnFirestoreFunction<Event> {
   EventEmails eventEmails;
-  OnEvent({EventEmails? eventEmails})
-      : eventEmails = eventEmails ?? EventEmails(),
+  ExternalIntegrationDefaults externalIntegrationDefaults;
+  OnEvent({
+    EventEmails? eventEmails,
+    ExternalIntegrationDefaults? externalIntegrationDefaults,
+  })  : eventEmails = eventEmails ?? EventEmails(),
+        externalIntegrationDefaults =
+            externalIntegrationDefaults ?? ExternalIntegrationDefaults(),
         super(
           [
             AppFirestoreFunctionData(
@@ -157,6 +163,16 @@ class OnEvent extends OnFirestoreFunction<Event> {
       firestoreHelper,
       OnboardingStep.hostEvent,
     );
+
+    try {
+      await externalIntegrationDefaults.applyToNewEvent(
+        communityId: communityId,
+        eventPath: documentSnapshot.reference.path,
+      );
+    } catch (e) {
+      // Never block event creation on integration defaults.
+      print('Error applying external integration defaults: $e');
+    }
   }
 
   @override
