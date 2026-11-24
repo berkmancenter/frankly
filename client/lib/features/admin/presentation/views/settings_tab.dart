@@ -268,7 +268,9 @@ class _SettingsTabState extends State<SettingsTab> {
     return Center(
       child: ActionButton(
         text:
-            '${agreement.stripeConnectedAccountId == null ? 'Set' : 'Edit'} Linked Payee Account',
+            agreement.stripeConnectedAccountId == null
+                ? context.l10n.linkedPayeeAccountSet
+                : context.l10n.linkedPayeeAccountEdit,
         onPressed: () =>
             alertOnError(context, () => _stripeButtonPressed(agreement)),
       ),

@@ -62,7 +62,7 @@ class _JumpToRoomDialogState extends State<JumpToRoomDialog> {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             child: Text(
-              'Jump To Room',
+              context.l10n.jumpToRoom,
               style: TextStyle(
                 color: context.theme.colorScheme.onPrimary,
                 fontSize: 16,

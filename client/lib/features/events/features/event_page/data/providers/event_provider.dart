@@ -9,6 +9,7 @@ import 'package:collection/collection.dart';
 import 'package:csv/csv.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/utils/firestore_utils.dart';
@@ -23,6 +24,10 @@ import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_html/html.dart';
+
+String registrationCsvDateTimeFormat({required DateTime date}) {
+  return DateFormat("yyyy-MM-dd HH:mm:ss 'UTC'").format(date.toUtc());
+}
 
 class EventProvider with ChangeNotifier {
   final CommunityProvider communityProvider;
@@ -363,12 +368,16 @@ class EventProvider with ChangeNotifier {
 
   Future<void> cancelParticipation({required String participantId}) async {
     final participantIsUser = userService.currentUserId == participantId;
-    final identifier = participantIsUser ? 'your' : 'this user\'s';
     final cancelParticipation = await ConfirmDialog(
       title: appLocalizationService.getLocalization().cancel,
-      mainText:
-          'Are you sure you want to cancel $identifier participation in this event?',
-      confirmText: 'Yes, cancel',
+      mainText: participantIsUser
+          ? appLocalizationService
+              .getLocalization()
+              .confirmCancelYourParticipation
+          : appLocalizationService
+              .getLocalization()
+              .confirmCancelUserParticipation,
+      confirmText: appLocalizationService.getLocalization().yesCancel,
       cancelText: appLocalizationService.getLocalization().no,
     ).show();
     if (cancelParticipation) {
@@ -395,6 +404,7 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Email');
     firstRow.add('Member Status');
     firstRow.add('RSVP Time');
+    firstRow.add('Join Time');
     firstRow.add('Last Active Time');
     firstRow.add('Room Assigned');
     rows.add(firstRow);
@@ -420,14 +430,22 @@ class EventProvider with ChangeNotifier {
       final createdDate =
           registrationData[i].memberEvent?.participant?.createdDate;
       row.add(
-        createdDate != null ? dateTimeFormat(date: createdDate.toLocal()) : '',
+        createdDate != null
+            ? registrationCsvDateTimeFormat(date: createdDate)
+            : '',
       );
-      final mostRecentPresentTime = participantData
-          .firstWhereOrNull((p) => p.id == registrationData[i].id)
-          ?.mostRecentPresentTime;
+      final participant = participantData
+          .firstWhereOrNull((p) => p.id == registrationData[i].id);
+      final firstPresentTime = participant?.firstPresentTime;
+      row.add(
+        firstPresentTime != null
+            ? dateTimeFormat(date: firstPresentTime.toLocal())
+            : '',
+      );
+      final mostRecentPresentTime = participant?.mostRecentPresentTime;
       row.add(
         mostRecentPresentTime != null
-            ? dateTimeFormat(date: mostRecentPresentTime.toLocal())
+            ? registrationCsvDateTimeFormat(date: mostRecentPresentTime)
             : '',
       );
 
@@ -566,6 +584,7 @@ class EventProvider with ChangeNotifier {
     required List<PollData> pollData,
     required String eventId,
     required List<BreakoutRoom> breakoutRooms,
+    required List<AgendaItem> agendaItems,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -580,10 +599,6 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Downvotes');
     firstRow.add('Deleted');
     rows.add(firstRow);
-
-    // Get agenda items from event to map agendaItemId to prompt text
-    final event = _eventStream.value;
-    final agendaItems = event?.agendaItems ?? [];
 
     // Process suggestion data
     for (int i = 0; i < suggestionData.length; i++) {

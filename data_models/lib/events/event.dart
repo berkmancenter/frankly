@@ -57,6 +57,7 @@ class Event with _$Event implements SerializeableRequest {
   static const String kDurationInMinutes = 'durationInMinutes';
   static const String kFieldEventSettings = 'eventSettings';
   static const String kFieldCommunityId = 'communityId';
+  static const String kFieldEndedAt = 'endedAt';
 
   static const int defaultMinParticipants = 0;
   static const int defaultMaxParticipants = 8;
@@ -103,6 +104,10 @@ class Event with _$Event implements SerializeableRequest {
     PrePostCard? postEventCardData,
     EventSettings? eventSettings,
     @Default(60) int durationInMinutes,
+
+    /// Set server-side when the meeting is ended (manually or auto-end).
+    @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+    DateTime? endedAt,
 
     /// ID used to tie meetings back to external communities
     String? externalCommunityId,
@@ -223,6 +228,8 @@ class EventSettings with _$EventSettings {
   static const kFieldChat = 'chat';
   static const kFieldShowChatMessagesInRealTime = 'showChatMessagesInRealTime';
   static const kFieldAgendaPreview = 'agendaPreview';
+  static const kFieldAutoEndMeeting = 'autoEndMeeting';
+  static const kFieldAutoEndGracePeriodMinutes = 'autoEndGracePeriodMinutes';
 
   static const EventSettings defaultSettings = EventSettings(
     reminderEmails: true,
@@ -237,6 +244,8 @@ class EventSettings with _$EventSettings {
     alwaysTranscribe: false,
     enablePrerequisites: false,
     agendaPreview: true,
+    autoEndMeeting: false,
+    autoEndGracePeriodMinutes: 0,
   );
 
   const factory EventSettings({
@@ -254,6 +263,8 @@ class EventSettings with _$EventSettings {
     bool? alwaysTranscribe,
     bool? enablePrerequisites,
     bool? agendaPreview,
+    bool? autoEndMeeting,
+    int? autoEndGracePeriodMinutes,
   }) = _EventSettings;
 
   factory EventSettings.fromJson(Map<String, dynamic> json) =>
@@ -291,6 +302,7 @@ class Participant with _$Participant implements SerializeableRequest {
   static const String kFieldCurrentBreakoutRoomId = 'currentBreakoutRoomId';
   static const String kFieldLastUpdatedTime = 'lastUpdatedTime';
   static const String kFieldMostRecentPresentTime = 'mostRecentPresentTime';
+  static const String kFieldFirstPresentTime = 'firstPresentTime';
   static const String kFieldBreakoutRoomSurveyQuestions =
       'breakoutRoomSurveyQuestions';
   static const String kFieldZipCode = 'zipCode';
@@ -328,6 +340,11 @@ class Participant with _$Participant implements SerializeableRequest {
     @Default([]) List<BreakoutQuestion> breakoutRoomSurveyQuestions,
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
     DateTime? mostRecentPresentTime,
+
+    /// Time the participant was first marked present in the live meeting. Set
+    /// once by the EventParticipantOnWrite function and never overwritten.
+    @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+    DateTime? firstPresentTime,
     String? zipCode,
     String? email,
     String? name,

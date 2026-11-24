@@ -80,7 +80,7 @@ class CommunityPageState extends State<CommunityPage> {
       child: CustomStreamBuilder<Community?>(
         entryFrom: '_CommunityPageState._buildCommunityContent',
         stream: context.watch<CommunityProvider>().communityStream,
-        errorMessage: 'Something went wrong loading this community.',
+        errorMessage: context.l10n.somethingWentWrongLoadingCommunity,
         builder: (_, community) {
           final darkThemeColor =
               ThemeUtils.parseColor(community?.themeDarkColor) ??

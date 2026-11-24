@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -357,10 +358,9 @@ class _AgendaItemCardState extends State<AgendaItemCard>
   }
 
   Future<void> _showDeleteDialog() async {
-    final delete = await ConfirmDialog(
+    final delete = await DeleteDialog(
       title: context.l10n.deleteAgendaItemGeneral,
-      mainText: 'Are you sure you want to delete?',
-      cancelText: context.l10n.cancel,
+      content: context.l10n.confirmDeleteAgendaItem,
     ).show(context: context);
 
     if (delete && mounted) {

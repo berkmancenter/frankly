@@ -177,7 +177,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
     final participantIds = widget.participantIds;
     if (participantIds.isEmpty) {
       return HeightConstrainedText(
-        '1 person',
+        context.l10n.onePerson,
         style: context.theme.textTheme.bodyMedium!
             .copyWith(color: context.theme.colorScheme.onSurface),
       );
@@ -190,7 +190,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
         final showName = !loading && name != null;
 
         return HeightConstrainedText(
-          showName ? name : '1 person',
+          showName ? name : context.l10n.onePerson,
           style: context.theme.textTheme.bodyMedium!
               .copyWith(color: context.theme.colorScheme.onSurface),
         );

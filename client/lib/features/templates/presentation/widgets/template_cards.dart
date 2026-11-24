@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -91,7 +92,7 @@ class TemplateCard extends StatelessWidget {
               ).templatePage(templateId: template.id),
             ),
             child: Tooltip(
-              message: template.title ?? 'Event Template',
+              message: template.title ?? context.l10n.eventTemplate,
               child: Container(
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(10)),

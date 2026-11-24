@@ -27,7 +27,7 @@ class AgendaItemWordCloud extends StatelessWidget {
         children: [
           CustomTextField(
             initialValue: wordCloudData.prompt,
-            labelText: 'Word Cloud Prompt',
+            labelText: context.l10n.wordCloudLabelText,
             hintText: context.l10n.enterWordCloudPrompt,
             onChanged: (value) {
               wordCloudData.prompt = value;
@@ -36,7 +36,7 @@ class AgendaItemWordCloud extends StatelessWidget {
           ),
           SizedBox(height: 20),
           HeightConstrainedText(
-            'Participants will be asked to respond with a list of words or short phrases.',
+            context.l10n.wordCloudDescription,
             style: context.theme.textTheme.bodyMedium,
           ),
         ],

@@ -509,7 +509,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                         SizedBox(width: 8),
                         Text(
-                          context.l10n.record,
+                          context.l10n.recordingIndicator,
                           style: TextStyle(
                             color: context.theme.colorScheme.onPrimary,
                           ),
@@ -1056,9 +1056,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
                     padding: const EdgeInsets.all(12),
                     child: Icon(
                       Icons.close,
-                      color: isAdmin
-                          ? context.theme.colorScheme.onPrimary
-                          : context.theme.colorScheme.onPrimaryContainer,
+                      color: context.theme.colorScheme.primary,
                       size: 20,
                     ),
                   ),

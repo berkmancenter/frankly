@@ -202,7 +202,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
     return CustomStreamBuilder<List<ChatMessage>>(
       stream: context.watch<ChatModel>().messagesStream,
       entryFrom: '_ChatWidgetState._buildChatLoading',
-      errorMessage: 'There was an error loading chat messages.',
+      errorMessage: context.l10n.errorLoadingChatMessages,
       builder: (_, messages) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

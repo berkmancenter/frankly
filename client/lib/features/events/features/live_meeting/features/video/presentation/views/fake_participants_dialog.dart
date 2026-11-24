@@ -48,7 +48,7 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
         ),
         ActionButton(
           onPressed: () => Navigator.of(context).pop(_textController.text),
-          text: 'Save',
+          text: context.l10n.save,
         ),
       ],
     );
@@ -69,6 +69,7 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             child: Text(
+            // ignore: hardcoded_string -- dev-only, gated by Environment.enableFakeParticipants / ENABLE_FAKE_PARTICIPANTS.
               'Fake Participants',
               style: TextStyle(
                 color: context.theme.colorScheme.onPrimary,

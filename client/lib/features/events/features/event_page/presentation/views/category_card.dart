@@ -1,8 +1,8 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:client/features/events/features/live_meeting/features/breakout_room_definition/presentation/breakout_room_presenter.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/styles.dart';
 import 'package:provider/src/provider.dart';
@@ -75,9 +75,9 @@ class _CategoryCardState extends State<CategoryCard> {
                           .deleteBreakoutRoomCategory(widget.position),
                     );
                   } else {
-                    final delete = await ConfirmDialog(
-                      mainText: 'Are you sure you want to delete?',
-                      cancelText: context.l10n.cancel,
+                    final delete = await DeleteDialog(
+                      title: context.l10n.delete,
+                      content: context.l10n.confirmDelete,
                     ).show(context: context);
                     if (delete && context.mounted) {
                       await alertOnError(

@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +11,6 @@ import 'package:client/features/events/features/event_page/presentation/pre_post
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -80,12 +80,15 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
   }
 
   Future<void> _showDeleteDialog() async {
-    final title = _presenter.getTitle();
+    final isPreEvent = widget.prePostCardType == PrePostCardType.preEvent;
 
-    await ConfirmDialog(
-      title: context.l10n.deleteAgendaItemName(title),
-      mainText: 'Are you sure want to delete?',
-      cancelText: context.l10n.cancel,
+    await DeleteDialog(
+      title: isPreEvent
+          ? context.l10n.deletePreEventItem
+          : context.l10n.deletePostEventItem,
+      content: isPreEvent
+          ? context.l10n.confirmDeletePreEventItem
+          : context.l10n.confirmDeletePostEventItem,
       onConfirm: (context) {
         Navigator.pop(context);
         widget.onDelete();
@@ -189,13 +192,19 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
   }
 
   Widget _buildEditablePrePostCard() {
-    final String beforeAfter;
+    final String headingText;
+    final String messageHintText;
+    final String actionLinksText;
     switch (widget.prePostCardType) {
       case PrePostCardType.preEvent:
-        beforeAfter = 'before';
+        headingText = context.l10n.whatMessageToShowParticipantsBefore;
+        messageHintText = context.l10n.enterMessageExampleBefore;
+        actionLinksText = context.l10n.addActionLinksBefore;
         break;
       case PrePostCardType.postEvent:
-        beforeAfter = 'after';
+        headingText = context.l10n.whatMessageToShowParticipantsAfter;
+        messageHintText = context.l10n.enterMessageExampleAfter;
+        actionLinksText = context.l10n.addActionLinksAfter;
         break;
     }
 
@@ -208,7 +217,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'What message do you want to show participants $beforeAfter the event?',
+              headingText,
               style: context.theme.textTheme.titleMedium,
             ),
             SizedBox(height: 30),
@@ -224,8 +233,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             ),
             SizedBox(height: 14),
             CustomTextField(
-              hintText:
-                  'Enter message (e.g. "Take this survey $beforeAfter the event")',
+              hintText: messageHintText,
               initialValue: _model.prePostCard.message,
               borderType: BorderType.outline,
               borderRadius: 10,
@@ -245,7 +253,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeightConstrainedText(
-                'Add action links participants should visit $beforeAfter the event',
+                actionLinksText,
                 style: context.theme.textTheme.titleMedium,
               ),
               SizedBox(height: 30),
@@ -341,7 +349,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeightConstrainedText(
-                'URL Preview',
+                context.l10n.urlPreview,
                 style: context.theme.textTheme.bodyMedium,
               ),
               SizedBox(height: 4),
@@ -359,7 +367,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             child: ActionButton(
               onPressed: () => _presenter.addNewURLParamRow(urlIndex),
               icon: Icon(Icons.add),
-              text: 'Add URL Parameter',
+              text: context.l10n.addUrlParameter,
             ),
           ),
       ],
@@ -404,7 +412,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HeightConstrainedText(
-                  'URL Preview',
+                  context.l10n.urlPreview,
                   style: context.theme.textTheme.bodyMedium,
                 ),
                 SizedBox(height: 4),
@@ -434,7 +442,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                       child: ActionButton(
                         onPressed: () => _presenter.addNewURLParamRow(urlIndex),
                         icon: Icon(Icons.add),
-                        text: 'Add URL Parameter',
+                        text: context.l10n.addUrlParameter,
                       ),
                     ),
                 ],
@@ -455,7 +463,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     }
 
     return CustomTextField(
-      labelText: 'Button Text',
+      labelText: context.l10n.buttonText,
       initialValue: buttonText,
       borderType: BorderType.outline,
       borderRadius: 10,
@@ -475,7 +483,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     }
 
     return CustomTextField(
-      labelText: 'Enter URL',
+      labelText: context.l10n.enterUrl,
       initialValue: surveyUrl,
       borderType: BorderType.outline,
       borderRadius: 10,

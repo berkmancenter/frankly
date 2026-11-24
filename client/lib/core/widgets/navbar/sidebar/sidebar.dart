@@ -188,7 +188,7 @@ class _SideBarState extends State<SideBar> {
                 height: 20,
               ),
             ),
-            text: '${Environment.appName} Home',
+            text: context.l10n.homeWithAppName(Environment.appName),
             onPressed: () => routerDelegate.beamTo(HomeLocation()),
           ),
           ActionButton(
@@ -256,6 +256,7 @@ class _SideBarState extends State<SideBar> {
             child: RichText(
               textAlign: TextAlign.right,
               text: TextSpan(
+                // ignore: hardcoded_string -- deliberate build/version indicator.
                 text: 'v$version',
                 style: context.theme.textTheme.labelMedium!.copyWith(
                   color: context.theme.colorScheme.onSurfaceVariant,
@@ -328,7 +329,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
             CircleIconButton(
               onPressed: _startCommunityTapped,
               icon: Icons.add,
-              toolTipText: 'Start a community',
+              toolTipText: context.l10n.startCommunity,
             ),
             SizedBox(width: 11),
             HeightConstrainedText(

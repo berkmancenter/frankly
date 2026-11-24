@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
@@ -10,7 +11,6 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/discussion_threads/presentation/widgets/app_generic_state_widget.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
@@ -68,12 +68,9 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
   }
 
   Future<void> _showDeleteThreadDialog() async {
-    await ConfirmDialog(
+    await DeleteDialog(
       title: context.l10n.deletePost,
-      mainText: context.l10n.confirmDeletePost,
-      cancelText: context.l10n.no,
-      confirmText: context.l10n.yes,
-      onCancel: (context) => Navigator.pop(context),
+      content: context.l10n.confirmDeletePost,
       onConfirm: (context) async {
         await alertOnError(context, () => _presenter.deleteThread());
         _goToThreadsPage();
@@ -89,7 +86,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         context,
         title: context.l10n.addComment,
         isMobile: isMobile,
-        labelText: 'Comment',
+        labelText: context.l10n.comment,
         validator: (text) => text == null || text.isEmpty
             ? context.l10n.commentCannotBeEmpty
             : null,
@@ -243,12 +240,13 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               HeightConstrainedText(
-                                '$commentCount ${commentCount == 1 ? 'comment' : 'comments'}',
+                                context.l10n.commentCount(commentCount),
                                 style: AppTextStyle.bodyMedium,
                               ),
                               if (commentCount != 0)
                                 HeightConstrainedText(
-                                  'Newest First', // Forced (mock) sorting
+                                  context.l10n
+                                      .newestFirst, // Forced (mock) sorting
                                   style: AppTextStyle.bodyMedium.copyWith(
                                     color: context
                                         .theme.colorScheme.onSurfaceVariant,
@@ -286,7 +284,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
           children: [
             AppClickableWidget(
               onTap: () => _goToThreadsPage(),
-              tooltipMessage: 'Back',
+              tooltipMessage: context.l10n.back,
               child: ProxiedImage(
                 null,
                 asset: AppAsset.kArrowBackPng,
@@ -339,7 +337,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                         PopupMenuItem(
                           value: DiscussionThreadOptionType.update,
                           child: Text(
-                            'Update Post',
+                            context.l10n.updatePost,
                             style: AppTextStyle.bodyMedium.copyWith(
                               color: context.theme.colorScheme.primary,
                             ),
@@ -348,7 +346,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                         PopupMenuItem(
                           value: DiscussionThreadOptionType.delete,
                           child: Text(
-                            'Delete Post',
+                            context.l10n.deletePost,
                             style: AppTextStyle.bodyMedium.copyWith(
                               color: context.theme.colorScheme.primary,
                             ),
@@ -474,7 +472,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
               context,
               title: context.l10n.addComment,
               isMobile: isMobile,
-              labelText: 'Comment',
+              labelText: context.l10n.comment,
               validator: (text) => text == null || text.isEmpty
                   ? context.l10n.commentCannotBeEmpty
                   : null,
@@ -503,7 +501,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
             ),
             SizedBox(width: 10),
             Text(
-              'Reply',
+              context.l10n.reply,
               style: AppTextStyle.bodyMedium,
             ),
           ],

@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:beamer/beamer.dart';
 import 'package:client/app.dart';
 import 'package:client/config/environment.dart';
@@ -117,7 +118,7 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
       return Scaffold(
         body: Center(
           child: HeightConstrainedText(
-            'You have been signed out. Please refresh to sign back in',
+            context.l10n.signedOutRefreshPrompt,
             style: AppTextStyle.subhead,
           ),
         ),
@@ -132,7 +133,7 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
             mainAxisSize: MainAxisSize.min,
             children: [
               HeightConstrainedText(
-                'There was an unexpected error during initialization.',
+                context.l10n.initializationError,
                 style: AppTextStyle.subhead,
               ),
               if (showError) ...[
