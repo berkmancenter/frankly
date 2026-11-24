@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/app.dart';
+import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:client/core/widgets/stream_utils.dart';
@@ -83,9 +84,11 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
         '&showControls=${widget.showControls}&autoplay=${widget.autoplay}&loop=${widget.loop}';
 
     String? playbackType = widget.playbackType;
-    if (playbackType == null && playbackUrl.endsWith('.mp4')) {
+    if (playbackType == null &&
+        MediaHelperService.urlHasExtension(playbackUrl, '.mp4')) {
       playbackType = 'video/mp4';
-    } else if (playbackType == null && playbackUrl.endsWith('.webm')) {
+    } else if (playbackType == null &&
+        MediaHelperService.urlHasExtension(playbackUrl, '.webm')) {
       playbackType = 'video/webm';
     }
     if (playbackType != null && playbackType.trim().isNotEmpty) {

@@ -32,6 +32,36 @@ final _agoraStorageAccessKey =
 final _agoraStorageSecretKey =
     functions.config.get('agora.storage_secret_key') as String;
 
+/// Optional Cloud Recording region ("EU", "NA", "AP" or "CN"). When set, Agora
+/// runs the recording in that region instead of picking one itself.
+final _agoraRecordingRegion =
+    functions.config.get('agora.recording_region') as String?;
+
+/// Region codes accepted by Agora Cloud Recording.
+const agoraRecordingRegions = {'CN', 'AP', 'EU', 'NA'};
+
+/// `clientRequest` for the Cloud Recording acquire call. Without a configured
+/// region the request stays empty, which is the previous behaviour. An unknown
+/// region is logged and left out, so recording still works with Agora's
+/// default region instead of failing.
+Map<String, Object> recordingAcquireClientRequest(String? recordingRegion) {
+  final Map<String, Object> request = {};
+
+  final region = recordingRegion?.trim().toUpperCase() ?? '';
+  if (region.isNotEmpty) {
+    if (agoraRecordingRegions.contains(region)) {
+      request['region'] = region;
+    } else {
+      print(
+        'Ignoring invalid agora.recording_region "$recordingRegion". '
+        'Expected one of ${agoraRecordingRegions.join(', ')}.',
+      );
+    }
+  }
+
+  return request;
+}
+
 class AgoraUtils {
   String createToken({required int uid, required String roomId}) {
     return agoraModule.RtcTokenBuilder.buildTokenWithUid(
@@ -219,7 +249,7 @@ class AgoraUtils {
     final body = convert.json.encode({
       'cname': roomId,
       'uid': _recordingUid.toString(),
-      'clientRequest': {},
+      'clientRequest': recordingAcquireClientRequest(_agoraRecordingRegion),
     });
 
     final result = await http.post(

@@ -71,15 +71,43 @@ window.checkCanAutoplay = function() {
   });
 }
 
+// The Cloudinary upload widget is loaded on first use rather than on every
+// page load, so visitors who never upload media make no request to Cloudinary.
+// The script is trusted through the CSP's 'strict-dynamic' because this
+// (nonced) script creates it.
+var cloudinaryWidgetPromise = null;
+
+function loadCloudinaryWidget() {
+    if (typeof cloudinary !== 'undefined') return Promise.resolve();
+    if (cloudinaryWidgetPromise) return cloudinaryWidgetPromise;
+
+    cloudinaryWidgetPromise = new Promise(function(resolve, reject) {
+        var script = document.createElement('script');
+        script.src = 'https://upload-widget.cloudinary.com/global/all.js';
+        script.type = 'text/javascript';
+        script.onload = function() { resolve(); };
+        script.onerror = function() {
+            cloudinaryWidgetPromise = null;
+            reject(new Error('Could not load the Cloudinary upload widget'));
+        };
+        document.head.appendChild(script);
+    });
+    return cloudinaryWidgetPromise;
+}
+
 window.pickMedia = function(parameters, onResult) {
-    // Parameters list
-    // https://cloudinary.com/documentation/upload_widget_reference#parameters
-    return cloudinary.openUploadWidget(
-        parameters,
-        (error, result) => {
-            // Always `stream` the result to Dart
-            onResult(JSON.stringify(error), JSON.stringify(result))
-        });
+    return loadCloudinaryWidget().then(function() {
+        // Parameters list
+        // https://cloudinary.com/documentation/upload_widget_reference#parameters
+        return cloudinary.openUploadWidget(
+            parameters,
+            (error, result) => {
+                // Always `stream` the result to Dart
+                onResult(JSON.stringify(error), JSON.stringify(result))
+            });
+    }, function(error) {
+        onResult(JSON.stringify(error.message), null);
+    });
 }
 
 window.playVimeoVideo = function(div, vimeoId, onEnded) {

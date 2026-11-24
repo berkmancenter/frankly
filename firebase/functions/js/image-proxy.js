@@ -1,8 +1,9 @@
 const functions = require('firebase-functions');
 const cors = require('cors')({origin: true})
 const fetch = require('node-fetch');
+const { regionalFunctions } = require('./function-region');
 
-const imageProxy = functions.https.onRequest((req, res) => {
+const imageProxy = regionalFunctions().https.onRequest((req, res) => {
   cors(req, res, async () => {
      console.log('Requested URI:', req.originalUrl);
      const url = req.query.url;

@@ -1,3 +1,5 @@
+import 'package:client/config/functions_url.dart';
+
 class Environment {
   // Firebase connection properties
   static const firebaseApiKey =
@@ -20,13 +22,28 @@ class Environment {
       String.fromEnvironment('FIREBASE_STORAGE_BUCKET', defaultValue: 'any');
   static const firebaseMeasurementId =
       String.fromEnvironment('FIREBASE_MEASUREMENT_ID', defaultValue: 'any');
-  static String get functionsUrlPrefix {
-    const explicit = String.fromEnvironment('FUNCTIONS_URL_PREFIX');
-    if (explicit.isNotEmpty) return explicit;
-    return 'http://127.0.0.1:5001/$firebaseProjectId/us-central1';
-  }
+  static const _functionsRegion = String.fromEnvironment('FUNCTIONS_REGION');
+
+  /// Region the Cloud Functions are deployed to. Must match the
+  /// `functions.region` runtime config. Defaults to us-central1.
+  static String get functionsRegion =>
+      _functionsRegion.trim().isEmpty ? 'us-central1' : _functionsRegion.trim();
+
+  /// Base URL for direct HTTP calls to Cloud Functions. Always points at
+  /// [functionsRegion]; see [resolveFunctionsUrlPrefix].
+  static String get functionsUrlPrefix => resolveFunctionsUrlPrefix(
+        explicitPrefix: const String.fromEnvironment('FUNCTIONS_URL_PREFIX'),
+        region: functionsRegion,
+        projectId: firebaseProjectId,
+      );
 
   static const agoraAppId = String.fromEnvironment('AGORA_APP_ID');
+
+  /// Agora region that media and signalling connect to: GLOBAL (default), EU,
+  /// NA, AS, JP, IN or CN. Set EU to keep connections on Agora's European
+  /// servers.
+  static const agoraArea =
+      String.fromEnvironment('AGORA_AREA', defaultValue: 'GLOBAL');
 
   static const sentryDSN = String.fromEnvironment('SENTRY_DSN');
   static const sentryEnvironment = String.fromEnvironment('SENTRY_ENVIRONMENT');
@@ -74,6 +91,21 @@ class Environment {
       String.fromEnvironment('CLOUDINARY_VIDEO_PRESET');
   static const cloudinaryCloudName =
       String.fromEnvironment('CLOUDINARY_CLOUD_NAME');
+
+  /// Where image and video uploads go: `cloudinary` (default) or `firebase`.
+  /// With `firebase`, uploads are stored in FIREBASE_STORAGE_BUCKET and the
+  /// Cloudinary upload widget is never loaded.
+  static const mediaUploadProvider = String.fromEnvironment(
+    'MEDIA_UPLOAD_PROVIDER',
+    defaultValue: 'cloudinary',
+  );
+  static const useFirebaseStorageUploads = mediaUploadProvider == 'firebase';
+
+  /// Uploads are off when neither Firebase Storage nor Cloudinary is
+  /// configured. Leaving CLOUDINARY_CLOUD_NAME unset with the default provider
+  /// turns them off and the Cloudinary upload widget is never loaded.
+  static const mediaUploadsEnabled =
+      useFirebaseStorageUploads || cloudinaryCloudName != '';
   static const linkPreviewApiKey =
       String.fromEnvironment('LINK_PREVIEW_API_KEY');
 

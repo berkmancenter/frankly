@@ -36,7 +36,8 @@
 .pub-cache/
 .pub/
 /build/
-.env
+.env*
+!.env*.example
 
 # Web related
 

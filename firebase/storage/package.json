@@ -1,0 +1,15 @@
+{
+  "name": "storage",
+  "description": "Cloud Storage security rules for Firebase",
+  "scripts": {
+    "test": "node --test test/storage-rules.test.mjs"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^3.0.4",
+    "firebase": "^10.14.1"
+  },
+  "private": true
+}

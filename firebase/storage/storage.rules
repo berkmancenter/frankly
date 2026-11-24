@@ -1,0 +1,43 @@
+rules_version = '2';
+
+// Media that signed-in users upload when the client is built with
+// MEDIA_UPLOAD_PROVIDER=firebase (see FirebaseStorageMediaUploader).
+//
+// Files are shared through download URLs, which carry their own access token,
+// so reads through the SDK are limited to the uploader. Everything outside
+// media/ is denied, which leaves server-side access (Admin SDK, signed URLs,
+// HMAC keys used for Agora recordings) unaffected.
+//
+// The client names files `{milliseconds}-{16 hex characters}.{extension}`
+// and sets the content type from the file's bytes. Only the image and video
+// types every supported browser can display are accepted, and the extension
+// must match the content type, so nothing can be stored as HTML, SVG or any
+// other type a browser might run. Size limits match the client.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /media/{userId}/{fileName} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      // New files only: an uploaded file is never replaced behind its URL.
+      // resource == null is checked explicitly: the Storage emulator, at
+      // least, evaluates an overwrite as a create.
+      allow create: if resource == null
+        && request.auth != null
+        && request.auth.uid == userId
+        && request.auth.token.firebase.sign_in_provider != 'anonymous'
+        && isAllowedMedia(fileName, request.resource);
+    }
+  }
+}
+
+function isAllowedMedia(fileName, file) {
+  let imageLimit = 10 * 1024 * 1024;
+  let videoLimit = 500 * 1024 * 1024;
+  let namePattern = '[0-9]+-[0-9a-f]{16}[.]';
+  return (fileName.matches(namePattern + 'jpg') && file.contentType == 'image/jpeg' && file.size <= imageLimit)
+    || (fileName.matches(namePattern + 'png') && file.contentType == 'image/png' && file.size <= imageLimit)
+    || (fileName.matches(namePattern + 'gif') && file.contentType == 'image/gif' && file.size <= imageLimit)
+    || (fileName.matches(namePattern + 'webp') && file.contentType == 'image/webp' && file.size <= imageLimit)
+    || (fileName.matches(namePattern + 'mp4') && file.contentType == 'video/mp4' && file.size <= videoLimit)
+    || (fileName.matches(namePattern + 'webm') && file.contentType == 'video/webm' && file.size <= videoLimit);
+}
