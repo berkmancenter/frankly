@@ -78,6 +78,124 @@
   </head>
 
   <body>
+    <!-- Cache epoch check: when /cache_epoch.json changes (Cache Bust Client
+       workflow), clear all caches and service workers once, then reload.
+       Then install flutter_service_worker.js for PWA caching. -->
+    <script nonce="__SCRIPT_NONCE__">
+      (function () {
+        var EPOCH_KEY = "frankly_cache_epoch";
+        var UPDATE_RELOAD_KEY = "frankly_service_worker_update_reloaded";
+
+        function waitForActivation(worker) {
+          if (worker.state === "activated") return Promise.resolve(true);
+          if (worker.state === "redundant") return Promise.resolve(false);
+          return new Promise(function (resolve) {
+            var onStateChange = function () {
+              if (worker.state === "activated") {
+                worker.removeEventListener("statechange", onStateChange);
+                resolve(true);
+              } else if (worker.state === "redundant") {
+                worker.removeEventListener("statechange", onStateChange);
+                resolve(false);
+              }
+            };
+            worker.addEventListener("statechange", onStateChange);
+            if (worker.state === "installed") {
+              worker.postMessage("skipWaiting");
+            }
+          });
+        }
+
+        async function registerServiceWorker() {
+          if (!("serviceWorker" in navigator)) return true;
+          var previousController = navigator.serviceWorker.controller;
+          var registration = await navigator.serviceWorker.register(
+            "flutter_service_worker.js",
+          );
+          var updatedWorker = registration.installing || registration.waiting;
+          if (!previousController || !updatedWorker) return true;
+          if (!(await waitForActivation(updatedWorker))) return true;
+
+          var reloaded = false;
+          var saved = false;
+          try {
+            reloaded = sessionStorage.getItem(UPDATE_RELOAD_KEY) === "1";
+            if (reloaded) {
+              sessionStorage.removeItem(UPDATE_RELOAD_KEY);
+              saved = true;
+            } else {
+              sessionStorage.setItem(UPDATE_RELOAD_KEY, "1");
+              saved = sessionStorage.getItem(UPDATE_RELOAD_KEY) === "1";
+            }
+          } catch (e) {}
+          if (reloaded || !saved) return true;
+          window.location.reload();
+          return false;
+        }
+
+        async function readEpoch() {
+          try {
+            var res = await fetch("/cache_epoch.json", { cache: "no-store" });
+            var type = res.headers.get("content-type") || "";
+            if (!res.ok || type.indexOf("application/json") === -1) return null;
+            var data = await res.json();
+            return typeof data.token === "string" ? data.token : null;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        // Returns true if anything was cleared.
+        async function purge() {
+          var cleared = false;
+          if ("serviceWorker" in navigator) {
+            if (navigator.serviceWorker.controller) cleared = true;
+            var regs = await navigator.serviceWorker.getRegistrations();
+            for (var reg of regs) {
+              cleared = true;
+              await reg.unregister();
+            }
+          }
+          if ("caches" in window) {
+            var keys = await caches.keys();
+            for (var key of keys) {
+              cleared = true;
+              await caches.delete(key);
+            }
+          }
+          return cleared;
+        }
+
+        async function checkEpoch() {
+          var token = await readEpoch();
+          var stored = null;
+          try {
+            stored = localStorage.getItem(EPOCH_KEY);
+          } catch (e) {}
+          // Offline, missing file, or unchanged: keep caching.
+          if (token === null || token === stored) {
+            return registerServiceWorker();
+          }
+          var cleared = await purge();
+          var saved = false;
+          try {
+            localStorage.setItem(EPOCH_KEY, token);
+            saved = localStorage.getItem(EPOCH_KEY) === token;
+          } catch (e) {}
+          // Can't persist the token: skip caching to avoid a reload loop.
+          if (!saved) return true;
+          if (cleared) {
+            window.location.reload();
+            return false;
+          }
+          return registerServiceWorker();
+        }
+
+        window.__franklyBootstrapReady = checkEpoch().catch(
+          registerServiceWorker,
+        );
+      })();
+    </script>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script
       nonce="__SCRIPT_NONCE__"
@@ -150,10 +268,19 @@
     <script nonce="__SCRIPT_NONCE__" src="./utils/dev-init.js"></script>
 
     <div id="flutter-container" role="main"></div>
-    <script
-      src="flutter_bootstrap.js?version=__VERSION__"
-      async
-      nonce="__SCRIPT_NONCE__"
-    ></script>
+    <script nonce="__SCRIPT_NONCE__">
+      window.__franklyBootstrapReady
+        .catch(function () {
+          return true;
+        })
+        .then(function (ready) {
+          if (!ready) return;
+          var bootstrap = document.createElement("script");
+          bootstrap.src = "flutter_bootstrap.js?version=__VERSION__";
+          bootstrap.async = true;
+          bootstrap.nonce = "__SCRIPT_NONCE__";
+          document.body.appendChild(bootstrap);
+        });
+    </script>
   </body>
 </html>
