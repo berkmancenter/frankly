@@ -414,6 +414,7 @@ class _EventInfoState extends State<EventInfo> {
                   shouldShowVideoPreview: true,
                   hostedEvent: widget.event.isHosted,
                   isMirrorCheck: true,
+                  isSelfView: true,
                 );
               },
             );

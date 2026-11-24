@@ -19,10 +19,12 @@ class MediaSettingsWidget extends StatefulWidget {
     required this.shouldShowVideoPreview,
     this.hostedEvent = false,
     this.isMirrorCheck = false,
+    this.isSelfView = false,
   });
   final bool shouldShowVideoPreview;
   final bool hostedEvent;
   final bool isMirrorCheck;
+  final bool isSelfView;
 
   @override
   State<MediaSettingsWidget> createState() => _MediaSettingsWidgetState();
@@ -63,7 +65,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       ..style.width = '100%'
       ..style.height = '100%'
       ..style.objectFit = 'cover'
-      ..style.transform = widget.isMirrorCheck ? 'scaleX(-1)' : 'none';
+      ..style.transform = widget.isSelfView ? 'scaleX(-1)' : 'none';
 
     ui_web.platformViewRegistry.registerViewFactory(
       _viewType,
