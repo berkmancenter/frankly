@@ -1347,4 +1347,31 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
             });
         });
     });
+    describe("/memberships/{userId}/community-membership/{communityId}", () => {
+        const membershipPath = (userId) => `memberships/${userId}/community-membership/communityId`;
+        it("member can read own membership", () => __awaiter(void 0, void 0, void 0, function* () {
+            yield dbAdmin.doc(membershipPath("alice")).set({ status: "member" });
+            const alice = getAuthedFirestore("alice");
+            yield firebase.assertSucceeds(alice.doc(membershipPath("alice")).get());
+        }));
+        it("banned user cannot set own status", () => __awaiter(void 0, void 0, void 0, function* () {
+            yield dbAdmin.doc(membershipPath("alice")).set({ status: "banned" });
+            const alice = getAuthedFirestore("alice");
+            const ref = alice.doc(membershipPath("alice"));
+            yield firebase.assertFails(ref.update({ status: "member" }));
+            yield firebase.assertFails(ref.delete());
+        }));
+        it("user cannot create own membership", () => __awaiter(void 0, void 0, void 0, function* () {
+            const alice = getAuthedFirestore("alice");
+            yield firebase.assertFails(alice.doc(membershipPath("alice")).set({ status: "member" }));
+        }));
+        it("admin and owner cannot write directly", () => __awaiter(void 0, void 0, void 0, function* () {
+            yield dbAdmin.doc(membershipPath("bob")).set({ status: "member" });
+            for (const status of ["admin", "owner"]) {
+                yield dbAdmin.doc(membershipPath("alice")).set({ status });
+                const alice = getAuthedFirestore("alice");
+                yield firebase.assertFails(alice.doc(membershipPath("bob")).update({ status: "banned" }));
+            }
+        }));
+    });
 }));

@@ -30,15 +30,6 @@ service cloud.firestore {
             return getOrDefault(statusDoc, 'status', 'nonmember');
         }
 
-        function isCommunityCreator(communityId) {
-            return hasAuth()
-                   && getAfter(/databases/$(database)/documents/community/$(communityId)).data.get('creatorId', '') == request.auth.uid;
-        }
-
-        function isOwner(status) {
-            return status in ['owner'];
-        }
-
         function isAdmin(status) {
             return status in ['owner', 'admin'];
         }
@@ -50,17 +41,6 @@ service cloud.firestore {
 
         function isFacilitator(status) {
             return status in ['owner', 'admin', 'moderator', 'mod', 'facilitator'];
-        }
-
-        function requiresApprovalToJoin(communityId) {
-            return 'requireApprovalToJoin' in getOrDefault(get(/databases/$(database)/documents/community/$(communityId)), 'enabledFeatureFlags', []);
-        }
-
-        // TODO: Figure out why this is causing updating membership to fail on communities that require
-        // approval
-        function hasApprovalToJoin(communityId) {
-            // let approvalStatus = getOrDefault(get(/databases/$(database)/documents/community/$(communityId)/join-requests/$(request.auth.uid)), 'status', '');
-            return true;
         }
 
         match /testing/{testDoc} {
@@ -431,32 +411,9 @@ service cloud.firestore {
         }
 
         match /memberships/{userId}/community-membership/{communityId} {
-            // Verify user can make more elevated membership changes
-            function canChangeElevatedMembership(targetStatus) {
-                let requesterStatus = getMembershipStatus(communityId);
-                let currentStatus = getOrDefault(resource, 'status', 'nonmember');
-
-                // Owners can modify existing members
-                return  (currentStatus != 'nonmember' && (isOwner(requesterStatus) || (isAdmin(requesterStatus) && !('owner' in [targetStatus, currentStatus]))));
-            }
-
-            
-
-            function canChangeSelfStatus(targetStatus) {
-                // Statuses that can be self-set by anyone
-                let requiresApproval = requiresApprovalToJoin(communityId) && !hasApprovalToJoin(communityId);
-                let selfStatuses = (requiresApproval == true) ? ['attendee', 'nonmember'] : ['member', 'attendee', 'nonmember'];
-
-                return (targetStatus in selfStatuses) || (targetStatus == 'owner' && resource == null && isCommunityCreator(communityId));
-            }
-
-            function isValidMemberUpdate() {
-                let targetStatus = getOrDefault(request.resource, 'status', null);
-                return (userId == request.auth.uid && canChangeSelfStatus(targetStatus)) || canChangeElevatedMembership(targetStatus);
-            }
-
             allow read: if request.auth.uid != null;
-            allow write: if hasAuth() && isValidMemberUpdate();
+            // Write only through cloud functions, such as updateMembership.
+            allow write: if false;
         }
 
         match /external-partners/{partnerId} {

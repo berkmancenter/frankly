@@ -278,4 +278,64 @@ void main() {
 
     expect(updatedMembership.status, equals(MembershipStatus.nonmember));
   });
+
+  group('Banned user', () {
+    const bannedId = 'bannedUserId';
+
+    setUp(() async {
+      await communityTestUtils.addCommunityMember(
+        communityId: communityId,
+        userId: bannedId,
+        status: MembershipStatus.banned,
+      );
+    });
+
+    test('cannot change own status to member', () async {
+      await expectLater(
+        () => UpdateMembership().action(
+          UpdateMembershipRequest(
+            communityId: communityId,
+            userId: bannedId,
+            status: MembershipStatus.member,
+          ),
+          CallableContext(bannedId, null, 'fakeInstanceId'),
+        ),
+        throwsA(
+          predicate(
+            (e) =>
+                e is HttpsError &&
+                e.code == HttpsError.failedPrecondition &&
+                e.message == 'unauthorized',
+          ),
+        ),
+      );
+
+      final snapshot = await firestore
+          .document('memberships/$bannedId/community-membership/$communityId')
+          .get();
+      final membership = Membership.fromJson(
+        firestoreUtils.fromFirestoreJson(snapshot.data.toMap()),
+      );
+      expect(membership.status, equals(MembershipStatus.banned));
+    });
+
+    test('can be unbanned by an admin', () async {
+      await UpdateMembership().action(
+        UpdateMembershipRequest(
+          communityId: communityId,
+          userId: bannedId,
+          status: MembershipStatus.member,
+        ),
+        CallableContext(adminId, null, 'fakeInstanceId'),
+      );
+
+      final snapshot = await firestore
+          .document('memberships/$bannedId/community-membership/$communityId')
+          .get();
+      final membership = Membership.fromJson(
+        firestoreUtils.fromFirestoreJson(snapshot.data.toMap()),
+      );
+      expect(membership.status, equals(MembershipStatus.member));
+    });
+  });
 }
