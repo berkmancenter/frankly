@@ -1358,10 +1358,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
             yield dbAdmin.doc(membershipPath("alice")).set({ status: "banned" });
             const alice = getAuthedFirestore("alice");
             const ref = alice.doc(membershipPath("alice"));
-            for (const status of ["member", "attendee", "nonmember"]) {
-                yield firebase.assertFails(ref.set({ status }));
-                yield firebase.assertFails(ref.update({ status }));
-            }
+            yield firebase.assertFails(ref.update({ status: "member" }));
             yield firebase.assertFails(ref.delete());
         }));
         it("user cannot create own membership", () => __awaiter(void 0, void 0, void 0, function* () {

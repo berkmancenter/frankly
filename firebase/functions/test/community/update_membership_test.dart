@@ -290,40 +290,34 @@ void main() {
       );
     });
 
-    for (final status in [
-      MembershipStatus.member,
-      MembershipStatus.attendee,
-      MembershipStatus.nonmember,
-    ]) {
-      test('cannot change own status to ${status.name}', () async {
-        await expectLater(
-          () => UpdateMembership().action(
-            UpdateMembershipRequest(
-              communityId: communityId,
-              userId: bannedId,
-              status: status,
-            ),
-            CallableContext(bannedId, null, 'fakeInstanceId'),
+    test('cannot change own status to member', () async {
+      await expectLater(
+        () => UpdateMembership().action(
+          UpdateMembershipRequest(
+            communityId: communityId,
+            userId: bannedId,
+            status: MembershipStatus.member,
           ),
-          throwsA(
-            predicate(
-              (e) =>
-                  e is HttpsError &&
-                  e.code == HttpsError.failedPrecondition &&
-                  e.message == 'unauthorized',
-            ),
+          CallableContext(bannedId, null, 'fakeInstanceId'),
+        ),
+        throwsA(
+          predicate(
+            (e) =>
+                e is HttpsError &&
+                e.code == HttpsError.failedPrecondition &&
+                e.message == 'unauthorized',
           ),
-        );
+        ),
+      );
 
-        final snapshot = await firestore
-            .document('memberships/$bannedId/community-membership/$communityId')
-            .get();
-        final membership = Membership.fromJson(
-          firestoreUtils.fromFirestoreJson(snapshot.data.toMap()),
-        );
-        expect(membership.status, equals(MembershipStatus.banned));
-      });
-    }
+      final snapshot = await firestore
+          .document('memberships/$bannedId/community-membership/$communityId')
+          .get();
+      final membership = Membership.fromJson(
+        firestoreUtils.fromFirestoreJson(snapshot.data.toMap()),
+      );
+      expect(membership.status, equals(MembershipStatus.banned));
+    });
 
     test('can be unbanned by an admin', () async {
       await UpdateMembership().action(

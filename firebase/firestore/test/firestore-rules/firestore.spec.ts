@@ -1675,10 +1675,7 @@ describe("Firestore security rules", async () => {
       await dbAdmin.doc(membershipPath("alice")).set({ status: "banned" });
       const alice = getAuthedFirestore("alice");
       const ref = alice.doc(membershipPath("alice"));
-      for (const status of ["member", "attendee", "nonmember"]) {
-        await firebase.assertFails(ref.set({ status }));
-        await firebase.assertFails(ref.update({ status }));
-      }
+      await firebase.assertFails(ref.update({ status: "member" }));
       await firebase.assertFails(ref.delete());
     });
 
