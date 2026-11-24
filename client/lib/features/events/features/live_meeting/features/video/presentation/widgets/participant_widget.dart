@@ -132,7 +132,10 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
         videoViewController = VideoViewController(
           rtcEngine: conferenceRoom.room!.engine,
           // The local Agora user's UID is set to 0.
-          canvas: VideoCanvas(uid: 0),
+          canvas: VideoCanvas(
+            uid: 0,
+            mirrorMode: VideoMirrorModeType.videoMirrorModeEnabled,
+          ),
         );
       }
       isVideoViewInitialized = true;
