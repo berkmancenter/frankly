@@ -9,3 +9,6 @@ dist/
 
 # Vitest JSON reporter output
 .vitest/
+
+# Assembled deploy folder for the react hosting target
+hosting/

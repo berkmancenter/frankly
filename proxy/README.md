@@ -1,4 +1,4 @@
-# dev-proxy
+# proxy
 
 One local origin for both frontends while the client moves from Flutter to React.
 
@@ -7,8 +7,9 @@ browser ──► http://localhost:3000 ──┬─► React  (client/new, Vite
                                     └─► Flutter (flutter run)       everything else
 ```
 
-The same decision will be made at the edge in production (Firebase Hosting rewrites), so what you
-see locally is what the routing rules mean there.
+The same decision is made at the edge in production: `rules.mts` also generates the Firebase Hosting
+rewrites (`client/new/scripts/assembleHosting.ts`), so what you see locally is what the routing rules
+mean there.
 
 ## What React owns today
 
@@ -54,7 +55,7 @@ The proxy is TypeScript (`src/*.mts`). `start`, `dev` and `test` compile it to `
 `tsc` first and then run the output, so there is nothing to build by hand; `npm run typecheck`
 checks types without emitting.
 
-`npm --prefix dev-proxy start` runs the proxy alone (start React yourself with
+`npm --prefix proxy start` runs the proxy alone (start React yourself with
 `npm --prefix client/new run dev:proxied`). Every response carries an `x-frankly-upstream:
 react|flutter` header, handy in devtools.
 
@@ -87,6 +88,6 @@ must be an address the browser can reach.
 ## Tests
 
 ```bash
-npm --prefix dev-proxy test         # builds, then runs the routing rules + the proxy against stub upstreams (incl. WebSocket)
+npm --prefix proxy test         # builds, then runs the routing rules + the proxy against stub upstreams (incl. WebSocket)
 npm --prefix client/new test        # includes: router and migrated-routes.json agree
 ```

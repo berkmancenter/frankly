@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { createProxy } from "./proxy.mjs";
 import { loadConfig } from "./rules.mjs";
 
-// This file runs from `dist/`, one level below the dev-proxy folder.
+// This file runs from `dist/`, one level below the proxy folder.
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const configPath = fileURLToPath(
   new URL("../../client/new/migrated-routes.json", import.meta.url),

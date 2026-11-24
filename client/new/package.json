@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "tsc -b && vite build",
+    "build:hosting": "chmod +x build.sh && ./build.sh",
     "build:proxied": "tsc -b && PROXIED=1 vite build",
     "coverage": "vitest run --coverage",
     "dev": "vite",
@@ -17,6 +18,7 @@
     "locales:extract": "lingui extract",
     "locales:transpile": "node src/locales/flutterTranspile.ts",
     "preview": "vite preview",
+    "routes:flutter": "node scripts/flutterRoutes.ts",
     "skill:translate": "command -v claude >/dev/null 2>&1 || { echo 'Warning: Claude CLI is required.' >&2; exit 1; }; claude \"/translate-missing\"",
     "test": "vitest run",
     "test:watch": "vitest",

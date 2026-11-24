@@ -52,8 +52,13 @@ npm run build        # tsc + vite build
 
 **Next to the Flutter app:** `npm run dev:proxied` / `npm run build:proxied` serve the assets under
 `/_new/` and register only the pages in [`migrated-routes.json`](migrated-routes.json); everything
-else is handed back to Flutter. Run it through [`dev-proxy`](../../dev-proxy/README.md) (one origin,
+else is handed back to Flutter. Run it through [`proxy`](../../proxy/README.md) (one origin,
 path-based routing). Standalone there is no Flutter, so a page that is not migrated just says so.
+
+**Deploying with Flutter fallback:** build Flutter (`client/build/web`), then `npm run build:hosting`,
+then `firebase deploy --only hosting:react` from the repo root. The script assembles `hosting/` (Flutter
+at the root, React under `/_new/`) and regenerates the `react` entry in `firebase.json` from the `web`
+entry and `migrated-routes.json`, so rerun it after adding a route.
 
 Needs Node ≥ 26.13. Tooling is pinned to majors that run there (Vite 6, React Router 7,
 TypeScript 5.9, Vitest 3); the newest majors need a newer Node (Vite 8 ≥ 20.19, Vitest 5 ≥ 22.12,
@@ -65,7 +70,9 @@ React Router 8 ≥ 22.22), so bumping them is a Node upgrade, not a code change.
    `src/app/router.tsx` (a page outside a community goes in the top-level `children` there).
 2. Add the data-surface `Api` methods it needs to `src/api/api.ts` and the implementation in `src/api/firebaseApi.ts`.
 3. When it should go live behind the proxy / at the edge, add its URL pattern to
-   `migrated-routes.json`. The router test checks the two agree.
+   `migrated-routes.json`. The router test checks the two agree. Then run `npm run routes:flutter` and
+   rebuild Flutter: it regenerates the list Flutter uses to hand those URLs to React with a full page load
+   (its in-page navigation never reaches the server), and `build:hosting` refuses to run while it's stale.
 
 ## State model
 

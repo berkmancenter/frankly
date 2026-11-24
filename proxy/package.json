@@ -1,8 +1,8 @@
 {
-  "name": "frankly-dev-proxy",
+  "name": "frankly-proxy",
   "private": true,
   "version": "0.1.0",
-  "description": "Local reverse proxy that serves the Flutter client and the React client (client/new) from one origin, routing by path.",
+  "description": "Routing rules and local reverse proxy that serve the Flutter client and the React client (client/new) from one origin, routing by path.",
   "type": "module",
   "engines": {
     "node": ">=20.18"
