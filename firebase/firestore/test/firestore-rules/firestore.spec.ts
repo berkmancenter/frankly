@@ -1178,7 +1178,7 @@ describe("Firestore security rules", async () => {
               await firebase.assertSucceeds(userDocRef.get());
               await firebase.assertSucceeds(userDocRef.set(originalDataMap));
               await firebase.assertSucceeds(userDocRef.update(updateDataMap));
-              await firebase.assertSucceeds(userDocRef.delete());
+              await firebase.assertFails(userDocRef.delete());
             });
             it("request by different user", async () => {
               const user = getAuthedFirestore("bob");
@@ -1190,6 +1190,87 @@ describe("Firestore security rules", async () => {
               await firebase.assertFails(userDocRef.set(originalDataMap));
               await firebase.assertFails(userDocRef.update(updateDataMap));
               await firebase.assertFails(userDocRef.delete());
+            });
+          });
+
+          describe("self status changes", () => {
+            const selfId = "eventParticipantId";
+            const presence = { id: selfId, isPresent: true };
+
+            function selfDocRef() {
+              return communityRulesHelper.getDocumentRef(
+                getAuthedFirestore(selfId)
+              );
+            }
+
+            async function seedStatus(status: string) {
+              await communityRulesHelper
+                .getDocumentRef(dbAdmin)
+                .set({ id: selfId, status });
+            }
+
+            beforeEach(async () => {
+              await communityRulesHelper.getDocumentRef(dbAdmin).delete();
+            });
+
+            it("first join creates an active doc", async () => {
+              await firebase.assertSucceeds(
+                selfDocRef().set({ id: selfId, status: "active" }, { merge: true })
+              );
+            });
+            it("presence write creates a doc without status", async () => {
+              await firebase.assertSucceeds(
+                selfDocRef().set(presence, { merge: true })
+              );
+            });
+            it("can't create a doc with another status", async () => {
+              await firebase.assertFails(
+                selfDocRef().set({ id: selfId, status: "banned" })
+              );
+            });
+            it("leave sets canceled", async () => {
+              await seedStatus("active");
+              await firebase.assertSucceeds(
+                selfDocRef().set(
+                  { status: "canceled", lastUpdatedTime: "123" },
+                  { merge: true }
+                )
+              );
+            });
+            it("rejoin moves canceled to active", async () => {
+              await seedStatus("canceled");
+              await firebase.assertSucceeds(
+                selfDocRef().set({ status: "active" }, { merge: true })
+              );
+            });
+            it("active participant updates presence", async () => {
+              await seedStatus("active");
+              await firebase.assertSucceeds(
+                selfDocRef().set(presence, { merge: true })
+              );
+            });
+            it("can't set another status on an existing doc", async () => {
+              await seedStatus("active");
+              await firebase.assertFails(
+                selfDocRef().update({ status: "banned" })
+              );
+            });
+            it("banned participant can't write their doc", async () => {
+              await seedStatus("banned");
+              const ref = selfDocRef();
+              await firebase.assertFails(
+                ref.set({ status: "active" }, { merge: true })
+              );
+              await firebase.assertFails(ref.update({ status: "canceled" }));
+              await firebase.assertFails(ref.set(presence, { merge: true }));
+              await firebase.assertFails(ref.delete());
+            });
+            it("banned facilitator can't lift own ban", async () => {
+              await seedStatus("banned");
+              await communityRulesHelper.createMembership(selfId, "facilitator");
+              await firebase.assertFails(
+                selfDocRef().update({ status: "active", lastUpdatedTime: "123" })
+              );
             });
           });
 

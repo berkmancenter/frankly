@@ -1007,7 +1007,7 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             yield firebase.assertSucceeds(userDocRef.get());
                             yield firebase.assertSucceeds(userDocRef.set(originalDataMap));
                             yield firebase.assertSucceeds(userDocRef.update(updateDataMap));
-                            yield firebase.assertSucceeds(userDocRef.delete());
+                            yield firebase.assertFails(userDocRef.delete());
                         }));
                         it("request by different user", () => __awaiter(void 0, void 0, void 0, function* () {
                             const user = getAuthedFirestore("bob");
@@ -1018,6 +1018,61 @@ describe("Firestore security rules", () => __awaiter(void 0, void 0, void 0, fun
                             yield firebase.assertFails(userDocRef.set(originalDataMap));
                             yield firebase.assertFails(userDocRef.update(updateDataMap));
                             yield firebase.assertFails(userDocRef.delete());
+                        }));
+                    });
+                    describe("self status changes", () => {
+                        const selfId = "eventParticipantId";
+                        const presence = { id: selfId, isPresent: true };
+                        function selfDocRef() {
+                            return communityRulesHelper.getDocumentRef(getAuthedFirestore(selfId));
+                        }
+                        function seedStatus(status) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                yield communityRulesHelper
+                                    .getDocumentRef(dbAdmin)
+                                    .set({ id: selfId, status });
+                            });
+                        }
+                        beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
+                            yield communityRulesHelper.getDocumentRef(dbAdmin).delete();
+                        }));
+                        it("first join creates an active doc", () => __awaiter(void 0, void 0, void 0, function* () {
+                            yield firebase.assertSucceeds(selfDocRef().set({ id: selfId, status: "active" }, { merge: true }));
+                        }));
+                        it("presence write creates a doc without status", () => __awaiter(void 0, void 0, void 0, function* () {
+                            yield firebase.assertSucceeds(selfDocRef().set(presence, { merge: true }));
+                        }));
+                        it("can't create a doc with another status", () => __awaiter(void 0, void 0, void 0, function* () {
+                            yield firebase.assertFails(selfDocRef().set({ id: selfId, status: "banned" }));
+                        }));
+                        it("leave sets canceled", () => __awaiter(void 0, void 0, void 0, function* () {
+                            yield seedStatus("active");
+                            yield firebase.assertSucceeds(selfDocRef().set({ status: "canceled", lastUpdatedTime: "123" }, { merge: true }));
+                        }));
+                        it("rejoin moves canceled to active", () => __awaiter(void 0, void 0, void 0, function* () {
+                            yield seedStatus("canceled");
+                            yield firebase.assertSucceeds(selfDocRef().set({ status: "active" }, { merge: true }));
+                        }));
+                        it("active participant updates presence", () => __awaiter(void 0, void 0, void 0, function* () {
+                            yield seedStatus("active");
+                            yield firebase.assertSucceeds(selfDocRef().set(presence, { merge: true }));
+                        }));
+                        it("can't set another status on an existing doc", () => __awaiter(void 0, void 0, void 0, function* () {
+                            yield seedStatus("active");
+                            yield firebase.assertFails(selfDocRef().update({ status: "banned" }));
+                        }));
+                        it("banned participant can't write their doc", () => __awaiter(void 0, void 0, void 0, function* () {
+                            yield seedStatus("banned");
+                            const ref = selfDocRef();
+                            yield firebase.assertFails(ref.set({ status: "active" }, { merge: true }));
+                            yield firebase.assertFails(ref.update({ status: "canceled" }));
+                            yield firebase.assertFails(ref.set(presence, { merge: true }));
+                            yield firebase.assertFails(ref.delete());
+                        }));
+                        it("banned facilitator can't lift own ban", () => __awaiter(void 0, void 0, void 0, function* () {
+                            yield seedStatus("banned");
+                            yield communityRulesHelper.createMembership(selfId, "facilitator");
+                            yield firebase.assertFails(selfDocRef().update({ status: "active", lastUpdatedTime: "123" }));
                         }));
                     });
                     it("facilitator updating status to banned", () => __awaiter(void 0, void 0, void 0, function* () {
