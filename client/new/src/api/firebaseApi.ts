@@ -643,6 +643,9 @@ function mapCommunity(id: string, value: unknown): Community {
     ...(stringValue(data.profileImageUrl)
       ? { profileImageUrl: stringValue(data.profileImageUrl) }
       : {}),
+    ...(stringValue(data.bannerImageUrl)
+      ? { bannerImageUrl: stringValue(data.bannerImageUrl) }
+      : {}),
     isPublic: optionalBoolean(data.isPublic, false),
     ...(stringValue(data.themeLightColor)
       ? { themeLightColor: stringValue(data.themeLightColor) }

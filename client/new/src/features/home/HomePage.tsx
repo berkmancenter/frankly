@@ -1,20 +1,24 @@
 import Box from "@mui/material/Box";
-import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { Link } from "react-router";
-import { paths } from "@/app/paths";
+import { useMemo } from "react";
 import { StandalonePage } from "@/app/layouts/StandalonePage";
-import { CommunityCircleIcon } from "@/components/CommunityCircleIcon";
+import { EventCard } from "@/components/events/EventCards";
+import { CommunitiesCarousel } from "@/components/CommunitiesCarousel";
 import { ErrorState, LoadingState } from "@/components/States";
 import { SignInCard } from "@/features/auth/SignInCard";
 import { useIsRegistered } from "@/features/auth/useAuthSession";
 import { CreateCommunityButton } from "@/features/community/CreateCommunity";
 import { useMyCommunities } from "@/queries/communities";
-import { colors, fontSizes } from "@/theme/tokens";
+import { useMyEvents } from "@/queries/profile";
+import { fontSizes } from "@/theme/tokens";
 import { appName } from "@/utils/appInfo";
+import { useClock } from "@/utils/clock";
+import { splitMyEvents } from "@/utils/events/myEvents";
 import { useDocumentTitle } from "@/utils/useDocumentTitle";
 import { useIsMobile } from "@/utils/useResponsive";
+
+const MAX_UPCOMING = 20;
 
 /**
  * The page at "/". A visitor without an account gets the sign-in form:
@@ -27,38 +31,50 @@ export function HomePage() {
   const registered = useIsRegistered();
   return (
     <StandalonePage>
-      {registered ? <MyCommunities /> : <SignInCard />}
+      {registered ? <MyCommunitiesEvents /> : <SignInCard />}
     </StandalonePage>
   );
 }
 
-/**
- * Placeholder for the communities list: a plain list of the user's communities, or a note that
- * there are none.
- */
-function MyCommunities() {
+/** The signed-in home page: the user's communities, then the events they're registered for. */
+function MyCommunitiesEvents() {
+  const isMobile = useIsMobile();
+  return (
+    <Box
+      sx={{
+        maxWidth: isMobile ? 550 : 1100,
+        mx: "auto",
+        px: isMobile ? "20px" : 0,
+        py: "40px",
+      }}
+    >
+      <CommunitiesSection />
+      {/* Half the width on desktop, like a sidebar-less column. */}
+      <Box sx={{ mt: "30px", width: isMobile ? "100%" : "50%" }}>
+        <UpcomingEventsSection />
+      </Box>
+    </Box>
+  );
+}
+
+// The communities carousel, or a note that there are none yet.
+function CommunitiesSection() {
   const { t } = useLingui();
   const communities = useMyCommunities();
   const isMobile = useIsMobile();
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto", px: "20px", py: "40px" }}>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
+    <section>
+      <Box sx={{ display: "flex", alignItems: "center", mb: "20px" }}>
         <Typography
           component="h1"
-          sx={{ fontSize: fontSizes["3xl"], fontWeight: 700 }}
+          sx={{ fontSize: fontSizes.xl, fontWeight: 700 }}
         >
           <Trans id="myCommunities">My Communities</Trans>
         </Typography>
         <Box sx={{ flex: 1 }} />
         <CreateCommunityButton showLabel={!isMobile} />
       </Box>
-      <Typography sx={{ mt: "8px", color: colors.onSurfaceVariant }}>
-        <Trans>
-          Placeholder: the home page is not built yet. This is a plain list of
-          your communities.
-        </Trans>
-      </Typography>
       {communities.isPending ? (
         <LoadingState height="40vh" />
       ) : communities.isError ? (
@@ -70,57 +86,53 @@ function MyCommunities() {
           })}
         />
       ) : communities.data.length === 0 ? (
-        <Typography
-          sx={{
-            py: "40px",
-            textAlign: "center",
-            color: colors.onSurfaceVariant,
-          }}
-        >
-          <Trans>You don't belong to any communities</Trans>
+        <Typography sx={{ textAlign: isMobile ? "center" : "left" }}>
+          <Trans id="youHaventJoinedAnyCommunities">
+            You haven't joined any communities.
+          </Trans>
         </Typography>
       ) : (
-        <Box
-          component="ul"
-          sx={{
-            listStyle: "none",
-            p: 0,
-            mt: "24px",
-            display: "grid",
-            gap: "8px",
-          }}
-        >
-          {communities.data.map((community) => (
-            <li key={community.id}>
-              <ButtonBase
-                component={Link}
-                to={paths.community(community.displayId).home}
-                sx={{
-                  width: "100%",
-                  gap: "16px",
-                  p: "12px",
-                  justifyContent: "flex-start",
-                  textAlign: "left",
-                  borderRadius: "12px",
-                  bgcolor: colors.surfaceContainerLowest,
-                }}
-              >
-                <CommunityCircleIcon community={community} size={48} />
-                <Box sx={{ minWidth: 0 }}>
-                  <Typography sx={{ fontSize: fontSizes.md, fontWeight: 500 }}>
-                    {community.name}
-                  </Typography>
-                  {community.tagLine && (
-                    <Typography sx={{ color: colors.onSurfaceVariant }}>
-                      {community.tagLine}
-                    </Typography>
-                  )}
-                </Box>
-              </ButtonBase>
-            </li>
+        <CommunitiesCarousel communities={communities.data} />
+      )}
+    </section>
+  );
+}
+
+// The next events the user is registered for, soonest first, or a note that there are none.
+function UpcomingEventsSection() {
+  const { t } = useLingui();
+  const clock = useClock();
+  const events = useMyEvents();
+  const upcoming = useMemo(
+    () => splitMyEvents(events.data ?? [], clock.now()).upcoming,
+    [events.data, clock],
+  );
+
+  return (
+    <section>
+      <Typography
+        component="h2"
+        sx={{ mb: "20px", fontSize: fontSizes.xl, fontWeight: 700 }}
+      >
+        <Trans id="myUpcomingEvents">My Upcoming Events</Trans>
+      </Typography>
+      {events.isPending ? (
+        <LoadingState height={100} />
+      ) : events.isError ? (
+        <ErrorState message={t`Something went wrong loading your events.`} />
+      ) : upcoming.length === 0 ? (
+        <Typography>
+          <Trans id="noUpcomingEventsMessage">
+            You haven't registered for any upcoming events.
+          </Trans>
+        </Typography>
+      ) : (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          {upcoming.slice(0, MAX_UPCOMING).map((event) => (
+            <EventCard key={event.id} event={event} />
           ))}
         </Box>
       )}
-    </Box>
+    </section>
   );
 }
