@@ -68,6 +68,7 @@ class ControlBarState extends State<ControlBar> {
                         .event
                         .isHosted,
                 isMirrorCheck: true,
+                isSelfView: true,
               );
             },
           );
@@ -122,6 +123,7 @@ class ControlBarState extends State<ControlBar> {
                   shouldShowVideoPreview:
                       !(defaultTargetPlatform == TargetPlatform.iOS ||
                           defaultTargetPlatform == TargetPlatform.android),
+                  isSelfView: true,
                 );
               },
             ),
