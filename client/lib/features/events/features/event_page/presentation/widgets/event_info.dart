@@ -6,7 +6,6 @@ import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -89,10 +88,10 @@ class EventInfo extends StatefulHookWidget {
   }) onJoinEvent;
 
   @override
-  _EventInfoState createState() => _EventInfoState();
+  EventInfoState createState() => EventInfoState();
 }
 
-class _EventInfoState extends State<EventInfo> {
+class EventInfoState extends State<EventInfo> {
   EventProvider get _eventProvider => Provider.of<EventProvider>(context);
 
   BehaviorSubjectWrapper<List<Featured>>? _featuredStream;

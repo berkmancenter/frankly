@@ -1005,14 +1005,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     final size = MediaQuery.of(context).size;
     final pillWidth = size.width / 3.5;
 
-    final eventTabsController = Provider.of<EventTabsControllerState>(context);
-
-    final selectedTabIndex =
-        eventTabsController.selectedTabController.selectedIndex;
-    final selectedTab = eventTabsController.tabs[selectedTabIndex];
-
     final localOnClose = widget.onClose;
-    final isAdmin = selectedTab == TabType.admin;
 
     return PointerInterceptor(
       child: Container(

@@ -29,10 +29,10 @@ import 'package:provider/provider.dart';
 
 class ControlBar extends StatefulWidget {
   @override
-  _ControlBarState createState() => _ControlBarState();
+  ControlBarState createState() => ControlBarState();
 }
 
-class _ControlBarState extends State<ControlBar> {
+class ControlBarState extends State<ControlBar> {
   LiveMeetingProvider get _liveMeetingProvider =>
       Provider.of<LiveMeetingProvider>(context);
 
@@ -301,10 +301,10 @@ class EmojiButton extends StatefulWidget {
   const EmojiButton({required this.emoji});
 
   @override
-  _EmojiButtonState createState() => _EmojiButtonState();
+  EmojiButtonState createState() => EmojiButtonState();
 }
 
-class _EmojiButtonState extends State<EmojiButton> {
+class EmojiButtonState extends State<EmojiButton> {
   Future<void>? _currentNetworkCall;
 
   @override
