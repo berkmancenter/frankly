@@ -212,7 +212,6 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
 
 class _DisabledVideoWidget extends StatelessWidget {
   const _DisabledVideoWidget({
-    super.key,
     required this.participant,
     required this.isNewlyConnected,
     required this.isRemote,
@@ -283,7 +282,6 @@ class _DisabledVideoWidget extends StatelessWidget {
 
 class _VideoOverlayWidget extends StatelessWidget {
   const _VideoOverlayWidget({
-    super.key,
     required this.participant,
     required this.showName,
     required this.audioEnabled,
@@ -407,7 +405,6 @@ class _VideoOverlayWidget extends StatelessWidget {
 
 class _EndRowIcon extends StatelessWidget {
   const _EndRowIcon({
-    super.key,
     required this.asset,
   });
 
