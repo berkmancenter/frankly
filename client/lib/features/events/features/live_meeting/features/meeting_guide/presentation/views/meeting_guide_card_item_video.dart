@@ -197,19 +197,19 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
                 children: [
                   if (allReady)
                     HeightConstrainedText(
-                      'Everyone is ready to move on.',
+                      context.l10n.everyoneReadyToMoveOn,
                       style: AppTextStyle.subhead
                           .copyWith(color: context.theme.colorScheme.onPrimary),
                     )
                   else ...[
                     HeightConstrainedText(
-                      'Some people are still finishing the video.',
+                      context.l10n.someStillFinishingVideo,
                       style: AppTextStyle.subhead
                           .copyWith(color: context.theme.colorScheme.onPrimary),
                     ),
                     if (totalTimeLeft > 0) ...[
                       HeightConstrainedText(
-                        'We\'ll be ready in:',
+                        context.l10n.readyIn,
                         style: AppTextStyle.subhead.copyWith(
                           color: context.theme.colorScheme.onPrimary,
                         ),

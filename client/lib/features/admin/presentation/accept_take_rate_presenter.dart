@@ -28,19 +28,21 @@ class AcceptTakeRatePresenter {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Payment terms',
+                context.l10n.paymentTerms,
                 style: AppTextStyle.headline3
                     .copyWith(color: context.theme.colorScheme.primary),
               ),
               SizedBox(height: 10),
               Text(
-                'On our free plan, any end user payments will incur a ${takeRate * 100}% commission. Upgrade your plan for a lower rate.',
+                context.l10n.takeRateDescription(
+                  (takeRate * 100).toString(),
+                ),
                 style: AppTextStyle.body
                     .copyWith(color: context.theme.colorScheme.secondary),
               ),
               SizedBox(height: 20),
               ActionButton(
-                text: 'Agree and continue',
+                text: context.l10n.agreeAndContinue,
                 color: context.theme.colorScheme.primary,
                 textColor: context.theme.colorScheme.onPrimary,
                 expand: true,

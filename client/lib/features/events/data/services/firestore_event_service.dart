@@ -164,8 +164,12 @@ class FirestoreEventService {
           .snapshots()
           .asyncMap((snapshot) async {
         final events = await _convertEventListAsync(snapshot.docs);
+        // Include recently started events & hide ones that were ended early.
         return events
-            .where((event) => event.status == EventStatus.active)
+            .where(
+              (event) =>
+                  event.status == EventStatus.active && event.endedAt == null,
+            )
             .toList();
       });
     });
@@ -730,6 +734,7 @@ class FirestoreEventService {
             (doc.data() ?? {})..['id'] = doc.id,
           ),
           errorMessage:
+              // ignore: hardcoded_string -- developer-facing log text
               'Error parsing event: ${doc.reference.path}/${doc.reference.id}',
         ),
     ];

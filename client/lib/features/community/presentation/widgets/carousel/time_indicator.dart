@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:client/core/utils/date_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
@@ -8,12 +9,14 @@ import 'package:client/core/widgets/height_constained_text.dart';
 /// Text is contained in a rounded container with vertical aspect ratio and box shadow
 class VerticalTimeAndDateIndicator extends StatelessWidget {
   final DateTime time;
+  final DateTime? endTime;
   final bool shadow;
   final bool isDisabled;
   final EdgeInsetsGeometry padding;
 
   const VerticalTimeAndDateIndicator({
     required this.time,
+    this.endTime,
     this.shadow = true,
     this.isDisabled = false,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -21,11 +24,9 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
   }) : super(key: key);
 
   String get _timeString {
-    final timeString = DateFormat('h:mma').format(time);
-    final correctlyFormattedTimeString =
-        timeString.substring(0, timeString.length - 1).toLowerCase();
-
-    return correctlyFormattedTimeString;
+    final start = formatTimeShort(time);
+    if (endTime == null) return start;
+    return '$start - ${formatTimeShort(endTime!)}';
   }
 
   @override

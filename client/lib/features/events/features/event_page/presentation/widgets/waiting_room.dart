@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'dart:math';
 
 import 'package:client/core/utils/date_utils.dart';
@@ -116,7 +117,7 @@ class _WaitingRoom extends StatelessWidget {
       children: [
         Flexible(
           child: HeightConstrainedText(
-            eventProvider.event.title ?? 'Your Event',
+            eventProvider.event.title ?? context.l10n.yourEvent,
             style: AppTextStyle.headline2
                 .copyWith(color: context.theme.colorScheme.onPrimary),
             textAlign: TextAlign.start,

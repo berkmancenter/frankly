@@ -119,6 +119,18 @@ class EventSettingsPresenter {
     _view.updateView();
   }
 
+  void updateSettingValue(String setting, dynamic value) {
+    final settings = EventSettings.fromJson(
+      _model.eventSettings.toJson()
+        ..addEntries([
+          MapEntry(setting, value),
+        ]),
+    );
+    _model.eventSettings = settings;
+    _appDrawerProvider.setUnsavedChanges(_helper.wereChangesMade(_model));
+    _view.updateView();
+  }
+
   /// Records an unsaved external integration change. `null` means the
   /// integration's values match what is saved again.
   void updateIntegrationSetting(

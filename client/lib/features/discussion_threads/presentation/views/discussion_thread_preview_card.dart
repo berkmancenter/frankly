@@ -251,7 +251,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                         onTap: onSeeMoreTap,
                         isIcon: false,
                         child: Text(
-                          'See more',
+                          context.l10n.seeMore,
                           style: AppTextStyle.bodyMedium.copyWith(
                             color: context.theme.colorScheme.onSurfaceVariant,
                           ),
@@ -316,7 +316,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                   SizedBox(width: 10),
                 ],
                 HeightConstrainedText(
-                  'Reply',
+                  context.l10n.reply,
                   style: AppTextStyle.bodyMedium.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                   ),

@@ -367,7 +367,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     HeightConstrainedText(
-                      'Tags',
+                      context.l10n.tags,
                       style: AppTextStyle.headline4.copyWith(
                         color: context.theme.colorScheme.primary,
                       ),
@@ -412,7 +412,7 @@ class _ProfileTabState extends State<_ProfileTab> {
       Row(
         children: [
           HeightConstrainedText(
-            widget.allowEdit ? 'Edit your profile' : '',
+            widget.allowEdit ? context.l10n.editYourProfile : '',
             style: AppTextStyle.headlineSmall.copyWith(
               fontSize: 16,
               color: context.theme.colorScheme.primary,

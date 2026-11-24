@@ -63,7 +63,7 @@ class _UpgradeTooltipContentsState extends State<_UpgradeTooltipContents> {
               UpgradeIcon(),
               SizedBox(width: 8),
               HeightConstrainedText(
-                'Upgrade for access',
+                context.l10n.upgradeForAccess,
                 style: AppTextStyle.headline4
                     .copyWith(color: context.theme.colorScheme.primary),
               ),

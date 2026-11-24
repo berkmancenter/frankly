@@ -1,7 +1,7 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:client/styles/styles.dart';
@@ -277,10 +277,11 @@ class EventPageState extends State<EventPage> implements EventPageView {
       context,
       title: context.l10n.messageParticipants,
       isMobile: isMobile,
-      labelText: 'Message',
-      validator: (message) =>
-          message == null || message.isEmpty ? 'Message cannot be empty' : null,
-      positiveButtonText: 'Send',
+      labelText: context.l10n.message,
+      validator: (message) => message == null || message.isEmpty
+          ? context.l10n.messageCannotBeEmpty
+          : null,
+      positiveButtonText: context.l10n.send,
     );
 
     if (!mounted) return;
@@ -294,12 +295,9 @@ class EventPageState extends State<EventPage> implements EventPageView {
   ) async {
     await showCustomDialog(
       builder: (context) {
-        return ConfirmDialog(
-          title: 'Are you sure you want to remove this message?',
-          cancelText: context.l10n.cancel,
-          onCancel: (context) {
-            Navigator.pop(context);
-          },
+        return DeleteDialog(
+          title: context.l10n.deleteEventAnnouncement,
+          content: context.l10n.confirmDeleteEventAnnouncement,
           onConfirm: (context) => alertOnError(context, () async {
             await _presenter.removeMessage(eventMessage);
             if (!context.mounted) return;
@@ -425,20 +423,20 @@ class EventPageState extends State<EventPage> implements EventPageView {
             Expanded(
               child: RichText(
                 text: TextSpan(
-                  text: 'You are editing an event. \n',
+                  text: context.l10n.editingEventNotice,
                   style: context.theme.textTheme.titleMedium!.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                     fontSize: 16,
                   ),
                   children: [
                     TextSpan(
-                      text: 'If you want to edit future instances, ',
+                      text: context.l10n.editingFutureInstancesNotice,
                       style: context.theme.textTheme.bodyMedium!.copyWith(
                         color: context.theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     TextSpan(
-                      text: 'edit the template.',
+                      text: context.l10n.editTheTemplate,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => routerDelegate.beamTo(
                               CommunityPageRoutes(

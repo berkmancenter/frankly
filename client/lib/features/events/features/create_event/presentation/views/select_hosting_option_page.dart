@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
 import 'package:client/features/events/features/create_event/presentation/widgets/event_dialog_buttons.dart';
@@ -16,7 +17,7 @@ class SelectHostingOptionPage extends StatelessWidget {
       children: [
         Center(
           child: HeightConstrainedText(
-            'Hosting option',
+            context.l10n.hostingOption,
             style: AppTextStyle.headline1,
           ),
         ),

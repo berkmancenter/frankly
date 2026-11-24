@@ -169,6 +169,7 @@
         "source": "/api/createStripeConnectedAccount",
         "function": "createStripeConnectedAccount"
       },
+      { "source": "/api/endMeetingForAll", "function": "endMeetingForAll" },
       { "source": "/api/eventEnded", "function": "eventEnded" },
       {
         "source": "/api/getCommunityCalendarLink",

@@ -75,7 +75,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Edit template',
+                context.l10n.editTemplate,
                 style: AppTextStyle.headlineSmall,
               ),
               AppClickableWidget(
@@ -128,7 +128,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
     return Row(
       children: [
         Text(
-          'Image',
+          context.l10n.image,
           style: AppTextStyle.body,
         ),
         Spacer(),

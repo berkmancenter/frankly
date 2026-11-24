@@ -22,6 +22,7 @@ import 'package:client/styles/app_asset.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/providers/agora_room.dart';
@@ -120,7 +121,12 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
         videoViewController = VideoViewController.remote(
           rtcEngine: conferenceRoom.room!.engine,
           canvas: VideoCanvas(uid: widget.participant.agoraUid),
-          connection: RtcConnection(channelId: conferenceRoom.roomName),
+          connection: RtcConnection(
+            channelId: conferenceRoom.roomName,
+            // The uid passed to joinChannel. The local participant's
+            // agoraUid is 0, so it cannot be used here.
+            localUid: uidToInt(userService.currentUserId!),
+          ),
         );
       } else {
         videoViewController = VideoViewController(
@@ -350,9 +356,9 @@ class _VideoOverlayWidget extends StatelessWidget {
                               builder: (_, isLoading, snapshot) =>
                                   HeightConstrainedText(
                                 isLoading
-                                    ? 'Loading...'
+                                    ? context.l10n.loadingEllipsis
                                     : snapshot.data?.displayName ??
-                                        'Participant',
+                                        context.l10n.participant,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyle.body.copyWith(
                                   color: context.theme.colorScheme.onPrimary,
@@ -486,7 +492,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
                     setState(() => _isPinnedLocal = !isPinned);
                   }),
           child: HeightConstrainedText(
-            isPinned ? 'Unpin' : 'Pin',
+            isPinned ? context.l10n.unpin : context.l10n.pin,
             style: AppTextStyle.bodyMedium
                 .copyWith(color: context.theme.colorScheme.primary),
           ),
@@ -498,7 +504,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             () => liveMeetingProvider.mute(userId: userId),
           ),
           child: HeightConstrainedText(
-            'Mute',
+            context.l10n.mute,
             style: AppTextStyle.bodyMedium
                 .copyWith(color: context.theme.colorScheme.primary),
           ),
@@ -510,7 +516,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             () => liveMeetingProvider.confirmProposeKick(context, userId),
           ),
           child: HeightConstrainedText(
-            'Propose to remove user',
+            context.l10n.proposeToRemoveUserAction,
             style: AppTextStyle.bodyMedium
                 .copyWith(color: context.theme.colorScheme.error),
           ),
@@ -530,7 +536,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           ),
         ),
         child: HeightConstrainedText(
-          isCurrentUser ? 'Edit Profile' : 'View Profile',
+          isCurrentUser ? context.l10n.editProfile : context.l10n.viewProfile,
           style: AppTextStyle.bodyMedium
               .copyWith(color: context.theme.colorScheme.primary),
         ),

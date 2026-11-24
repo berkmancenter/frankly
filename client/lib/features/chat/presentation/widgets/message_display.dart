@@ -115,7 +115,9 @@ class MessageDisplayState extends State<MessageDisplay> {
                             horizontal: 4,
                           ),
                           child: HeightConstrainedText(
-                            isAdmin ? 'ADMIN' : 'MOD',
+                            isAdmin
+                                ? context.l10n.adminBadge
+                                : context.l10n.modBadge,
                             style:
                                 context.theme.textTheme.labelMedium!.copyWith(
                               color: context.theme.colorScheme.onPrimary,
@@ -135,7 +137,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                   SizedBox(height: 4),
                   if (_removed)
                     HeightConstrainedText(
-                      'This message was removed.',
+                      context.l10n.messageRemoved,
                       style: context.theme.textTheme.bodyMedium!.copyWith(
                         color: Theme.of(context).isDark
                             ? context.theme.colorScheme.onPrimaryContainer

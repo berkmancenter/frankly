@@ -11,6 +11,7 @@ import 'package:client/features/events/features/create_event/presentation/widget
 import 'package:client/features/events/presentation/widgets/custom_drag_scroll_behaviour.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/templates/template.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:provider/provider.dart';
 
 /// Widget that shows all templates within the community and lets you search through
@@ -60,7 +61,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
   Widget _buildSearchBar() {
     return CustomTextField(
       padding: EdgeInsets.zero,
-      labelText: 'Search templates',
+      labelText: context.l10n.searchTemplates,
       labelStyle: TextStyle(color: context.theme.colorScheme.primary),
       textStyle:
           TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
@@ -121,7 +122,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
           SizedBox.shrink(),
         if (provider.displayTemplates.isEmpty && widget.onAddNew == null)
           HeightConstrainedText(
-            'No templates found.',
+            context.l10n.noTemplatesFound,
             style: AppTextStyle.body
                 .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
           )
@@ -162,7 +163,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
                       alignment: Alignment.center,
                       child: ActionButton(
                         onPressed: provider.showMoreTemplates,
-                        text: 'View more templates',
+                        text: context.l10n.viewMoreTemplates,
                       ),
                     ),
                 ],
@@ -178,7 +179,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
     return CustomStreamBuilder<List<Template>>(
       entryFrom: '_SelectTemplateState._buildTemplatesLoading',
       stream: Stream.fromFuture(provider.templatesFuture),
-      errorMessage: 'There was an error loading events.',
+      errorMessage: context.l10n.errorLoadingEventsShort,
       builder: (_, __) => _buildTemplates(),
     );
   }
@@ -218,7 +219,7 @@ class _AddNewTemplateButton extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 5, bottom: 10, right: 5),
               child: HeightConstrainedText(
-                'Create a new template',
+                context.l10n.createANewTemplate,
                 style: TextStyle(
                   fontSize: 13,
                   color: context.theme.colorScheme.primary,

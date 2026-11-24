@@ -141,9 +141,8 @@ class _MeetingGuideCardItemUserSuggestionsState
   Widget _buildEmptySuggestions() {
     return EmptyPageContent(
       type: EmptyPageType.suggestions,
-      titleText: 'Suggestions will show up here',
-      subtitleText:
-          'You can upvote and downvote suggested agenda items to discuss',
+      titleText: context.l10n.suggestionsWillShowUpHere,
+      subtitleText: context.l10n.upvoteDownvoteSuggestions,
     );
   }
 

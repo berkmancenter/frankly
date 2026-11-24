@@ -161,7 +161,7 @@ class _DonateWidgetState extends State<DonateWidget> {
               ? context.theme.colorScheme.onPrimary
               : Colors.transparent,
           child: HeightConstrainedText(
-            'Other',
+            context.l10n.other,
             style: TextStyle(
               color: _isOtherSelected
                   ? context.theme.colorScheme.primary
@@ -242,7 +242,9 @@ class _DonateWidgetState extends State<DonateWidget> {
     }
 
     return ActionButton(
-      text: enabled ? 'Donate \$$donationDisplay' : 'Donate',
+      text: enabled
+          ? context.l10n.donateAmount(donationDisplay.toString())
+          : context.l10n.donate,
       color: enabled
           ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.onPrimaryContainer,
@@ -260,7 +262,7 @@ class _DonateWidgetState extends State<DonateWidget> {
 
   Widget _buildSkip() {
     return ActionButton(
-      text: 'Skip',
+      text: context.l10n.skip,
       color: Colors.transparent,
       height: 55,
       textStyle: TextStyle(
@@ -314,7 +316,8 @@ class _DonateWidgetState extends State<DonateWidget> {
                     SizedBox(height: 18),
                     HeightConstrainedText(
                       widget.community.donationDialogText ??
-                          'If you enjoyed this event, support ${widget.community.name}.',
+                          context.l10n.donationSupportPrompt(
+                              widget.community.name ?? ''),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: context.theme.colorScheme.onPrimary,

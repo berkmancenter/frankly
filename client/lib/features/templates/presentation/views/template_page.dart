@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/delete_dialog.dart';
 import 'dart:math';
 
 import 'package:client/core/utils/template_utils.dart';
@@ -154,13 +155,13 @@ class _TemplatePageState extends State<TemplatePage>
         entryFrom: '_TemplatePageState._buildEvents',
         stream: Provider.of<TemplatePageProvider>(context).events,
         height: 100,
-        errorMessage: 'Something went wrong loading events.',
+        errorMessage: context.l10n.somethingWentWrongLoadingEvents,
         builder: (_, events) {
           if (events == null || events.isEmpty) {
             return EmptyPageContent(
               type: EmptyPageType.events,
-              titleText: 'No events',
-              subtitleText: 'When new events are added, you’ll see them here.',
+              titleText: context.l10n.noEvents,
+              subtitleText: context.l10n.whenNewEventsAreAdded,
               showContainer: false,
             );
           }
@@ -343,14 +344,14 @@ class _TemplatePageState extends State<TemplatePage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeightConstrainedText(
-          'Description',
+          context.l10n.description,
           style: AppTextStyle.headlineSmall.copyWith(
             fontSize: 16,
           ),
         ),
         SizedBox(height: 10),
         HeightConstrainedText(
-          template.description ?? 'No description for this event',
+          template.description ?? context.l10n.noDescriptionForEvent,
           style: AppTextStyle.body,
         ),
       ],
@@ -392,7 +393,7 @@ class _TemplatePageState extends State<TemplatePage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeightConstrainedText(
-              'More from ${community.name}',
+              context.l10n.moreFromName(community.name ?? ''),
               style: AppTextStyle.headlineSmall.copyWith(
                 fontSize: 16,
               ),
@@ -425,7 +426,7 @@ class _TemplatePageState extends State<TemplatePage>
     );
   }
 
-  Widget _buildUpcomingEvents(context) {
+  Widget _buildUpcomingEvents(BuildContext context) {
     final templatePageProvider = Provider.of<TemplatePageProvider>(context);
     final tabController = Provider.of<CustomTabControllerState>(context);
     return Column(
@@ -433,7 +434,7 @@ class _TemplatePageState extends State<TemplatePage>
         Row(
           children: [
             HeightConstrainedText(
-              'Upcoming Events',
+              context.l10n.upcomingEvents,
               style: AppTextStyle.headlineSmall.copyWith(
                 fontSize: 16,
               ),
@@ -443,7 +444,7 @@ class _TemplatePageState extends State<TemplatePage>
               CustomInkWell(
                 onTap: () => tabController.currentTab = 3,
                 child: HeightConstrainedText(
-                  'See all',
+                  context.l10n.seeAll,
                   style: AppTextStyle.bodyMedium,
                 ),
               ),
@@ -453,7 +454,7 @@ class _TemplatePageState extends State<TemplatePage>
           entryFrom: '_EventPageState._buildEvents',
           stream: templatePageProvider.events,
           height: 100,
-          errorMessage: 'Something went wrong loading events.',
+          errorMessage: context.l10n.somethingWentWrongLoadingEvents,
           builder: (_, events) {
             if (events == null || events.isEmpty) {
               return Align(
@@ -461,7 +462,7 @@ class _TemplatePageState extends State<TemplatePage>
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: HeightConstrainedText(
-                    'No upcoming events.',
+                    context.l10n.noUpcomingEvents,
                     style: AppTextStyle.body,
                   ),
                 ),
@@ -668,11 +669,11 @@ class _TemplatePageState extends State<TemplatePage>
       child: CustomStreamBuilder<Template?>(
         entryFrom: '_TemplatePageState.build',
         stream: context.watch<TemplatePageProvider>().templateStream,
-        errorMessage: 'There was an error loading templates.',
+        errorMessage: context.l10n.errorLoadingTemplates,
         builder: (_, template) {
           if (template == null) {
             return HeightConstrainedText(
-              'There was an error loading templates.',
+              context.l10n.errorLoadingTemplates,
             );
           }
           return _buildTemplateContents(template);
@@ -718,7 +719,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
           ),
         ),
       ),
-      toolTipText: 'Edit settings',
+      toolTipText: context.l10n.editSettings,
     );
   }
 
@@ -773,6 +774,14 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
             templateActionType: TemplateActionType.duplicate,
           );
         } else if (value == 'removeTemplate') {
+          if (!isRemoved) {
+            final confirmed = await DeleteDialog(
+              title: context.l10n.removeTemplate,
+              content: context.l10n.confirmRemoveTemplate,
+              confirmText: context.l10n.remove,
+            ).show();
+            if (!confirmed || !mounted) return;
+          }
           await alertOnError(context, () async {
             final newStatus =
                 isRemoved ? TemplateStatus.active : TemplateStatus.removed;
@@ -868,7 +877,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
           child: EditTemplateDrawer(),
         ),
       ),
-      toolTipText: 'Edit template',
+      toolTipText: context.l10n.editTemplate,
     );
   }
 
